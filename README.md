@@ -33,3 +33,17 @@ Neither app has secrets in it yet, but both read a couple of environment variabl
 | frontend | `API_URL`         | Your deployed backend's HTTPS URL, e.g. `https://api.tulo.com`    |
 
 Each app also has a `.env.example` (backend) / `.env.local.example` (frontend) file showing the local defaults — copy those to `.env` / `.env.local` for local development.
+
+## Deploying
+
+**Frontend (Vercel):** already connected — Vercel builds `/frontend` on every push (see `frontend/vercel.json`).
+
+**Backend (Render):** this repo includes a `render.yaml` at the root so Render can auto-detect the service. To deploy it:
+
+1. Go to [render.com](https://render.com) and sign in with your GitHub account.
+2. Click **New +** → **Blueprint**, and select the `ljtavgac/tulo` repo. Render will read `render.yaml` and configure the `tulo-backend` web service automatically.
+3. When prompted, set the `FRONTEND_ORIGIN` environment variable to your Vercel URL (e.g. `https://tulo.vercel.app`).
+4. Once deployed, copy the backend's URL (e.g. `https://tulo-backend.onrender.com`) and set it as the `API_URL` environment variable in your Vercel project (Settings → Environment Variables), then redeploy the frontend.
+5. Visit your live `/food` page — it should now show `Backend says: {"status":"ok"}`.
+
+Note: Render's free plan spins the service down after inactivity, so the first request after a while may take ~30–60 seconds to respond.
