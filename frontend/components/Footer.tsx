@@ -10,7 +10,7 @@ import { pagePath } from "@/lib/seo";
 // baked into its background, so pure black left a visible seam around it.
 // --color-ink is shared with body text/borders elsewhere, but using the
 // *token* here (not redefining its value) doesn't touch those.
-const LONG_TAIL_SECTIONS = FOOD_SECTIONS.filter((s) => !s.hasIndex);
+const LONG_TAIL_SECTIONS = FOOD_SECTIONS.filter((s) => !s.primaryNav);
 
 export default function Footer() {
   return (

@@ -21,9 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // One carousel per content template type, in the order they should appear.
-// Definitions has no standalone index page (see taxonomy.ts's hasIndex) --
-// those are discovered via cross-links from recipes/ingredients rather than
-// browsed directly, so that carousel gets no "See all" link.
 const HOMEPAGE_SECTIONS = [
   "recipe_or_dish",
   "ingredient_hub",

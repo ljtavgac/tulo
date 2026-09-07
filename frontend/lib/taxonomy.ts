@@ -16,10 +16,15 @@ export interface Section {
   label: string;
   templateType: string;
   path: string;
-  // Whether this section has a browsable index page. Long-tail supporting
-  // content (definitions, comparisons, substitutes) is discovered via
-  // cross-links from primary content rather than given its own nav entry.
+  // Whether this section has a browsable index page (all 8 do).
   hasIndex: boolean;
+  // Whether this section gets a tab in the primary header/nav bar. The
+  // long-tail sections (Definitions/Comparisons/Substitutes) still have a
+  // real index page -- for the footer's Guides column, breadcrumbs, and
+  // the homepage carousel's "See all" link -- but aren't promoted to
+  // primary nav; they're discovered via cross-links from recipes/
+  // ingredients or the footer, not a top-level tab.
+  primaryNav: boolean;
 }
 
 export interface Vertical {
@@ -37,14 +42,14 @@ export const VERTICALS: Vertical[] = [
     path: "/food",
     active: true,
     sections: [
-      { key: "recipes", label: "Recipes", templateType: "recipe_or_dish", path: `/food/${TEMPLATE_ROUTES.recipe_or_dish}`, hasIndex: true },
-      { key: "ingredients", label: "Ingredients", templateType: "ingredient_hub", path: `/food/${TEMPLATE_ROUTES.ingredient_hub}`, hasIndex: true },
-      { key: "how-to", label: "How-To", templateType: "howto_technique", path: `/food/${TEMPLATE_ROUTES.howto_technique}`, hasIndex: true },
-      { key: "collections", label: "Collections", templateType: "category_roundup", path: `/food/${TEMPLATE_ROUTES.category_roundup}`, hasIndex: true },
-      { key: "tools", label: "Tools", templateType: "tool_page", path: `/food/${TEMPLATE_ROUTES.tool_page}`, hasIndex: true },
-      { key: "what-is", label: "Definitions", templateType: "definition", path: `/food/${TEMPLATE_ROUTES.definition}`, hasIndex: false },
-      { key: "vs", label: "Comparisons", templateType: "comparison", path: `/food/${TEMPLATE_ROUTES.comparison}`, hasIndex: false },
-      { key: "substitutes", label: "Substitutes", templateType: "substitute", path: `/food/${TEMPLATE_ROUTES.substitute}`, hasIndex: false },
+      { key: "recipes", label: "Recipes", templateType: "recipe_or_dish", path: `/food/${TEMPLATE_ROUTES.recipe_or_dish}`, hasIndex: true, primaryNav: true },
+      { key: "ingredients", label: "Ingredients", templateType: "ingredient_hub", path: `/food/${TEMPLATE_ROUTES.ingredient_hub}`, hasIndex: true, primaryNav: true },
+      { key: "how-to", label: "How-To", templateType: "howto_technique", path: `/food/${TEMPLATE_ROUTES.howto_technique}`, hasIndex: true, primaryNav: true },
+      { key: "collections", label: "Collections", templateType: "category_roundup", path: `/food/${TEMPLATE_ROUTES.category_roundup}`, hasIndex: true, primaryNav: true },
+      { key: "tools", label: "Tools", templateType: "tool_page", path: `/food/${TEMPLATE_ROUTES.tool_page}`, hasIndex: true, primaryNav: true },
+      { key: "what-is", label: "Definitions", templateType: "definition", path: `/food/${TEMPLATE_ROUTES.definition}`, hasIndex: true, primaryNav: false },
+      { key: "vs", label: "Comparisons", templateType: "comparison", path: `/food/${TEMPLATE_ROUTES.comparison}`, hasIndex: true, primaryNav: false },
+      { key: "substitutes", label: "Substitutes", templateType: "substitute", path: `/food/${TEMPLATE_ROUTES.substitute}`, hasIndex: true, primaryNav: false },
     ],
   },
   // Not built yet -- defined so future verticals are additive. None of
@@ -61,7 +66,7 @@ export const ACTIVE_VERTICALS = VERTICALS.filter((v) => v.active);
 
 // Convenience accessor for the sections nav/footer actually render today.
 export const FOOD_SECTIONS = VERTICALS.find((v) => v.key === "food")!.sections;
-export const FOOD_INDEX_SECTIONS = FOOD_SECTIONS.filter((s) => s.hasIndex);
+export const FOOD_INDEX_SECTIONS = FOOD_SECTIONS.filter((s) => s.primaryNav);
 
 export function sectionForTemplate(templateType: string): Section | undefined {
   return FOOD_SECTIONS.find((s) => s.templateType === templateType);
