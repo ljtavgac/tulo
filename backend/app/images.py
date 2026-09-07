@@ -73,21 +73,23 @@ def _search_pexels(query: str) -> ImageResult | None:
 
 
 def search_image(query: str) -> ImageResult | None:
-    """Unsplash first, Pexels as fallback. None if no keys are configured,
-    both APIs error, or neither has a result for this query."""
+    """Unsplash first, Pexels as fallback. Returns None only if no keys are
+    configured or neither provider has a match for this query -- a real API
+    failure (bad key, rate limit, network error) raises requests.RequestException
+    instead of silently masquerading as "no result," so callers (see
+    fetch_stock_images.py, which already catches and logs per-page errors)
+    can tell "nothing found" apart from "something's broken" instead of
+    debugging blind."""
     if UNSPLASH_ACCESS_KEY:
         try:
             result = _search_unsplash(query)
             if result:
                 return result
-        except requests.RequestException:
-            pass
+        except requests.RequestException as e:
+            print(f"    Unsplash request failed ({e}), falling back to Pexels")
 
     if PEXELS_ACCESS_KEY:
-        try:
-            return _search_pexels(query)
-        except requests.RequestException:
-            return None
+        return _search_pexels(query)
 
     return None
 
