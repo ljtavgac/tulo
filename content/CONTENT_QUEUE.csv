@@ -1,8 +1,8 @@
 batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potential,proposed_article_title,page_purpose,category
-0,not_started,Homepage,homepage,,,,,Homepage,site_infrastructure,
-0,not_started,Kitchen Measurement Conversion Calculator,tool_page,65270.0,37.875,Tier 2+,65270.0,Kitchen Measurement Conversion Calculator,tool_page,Tool 1: Conversion
-0,not_started,Cooking Time & Temperature Guide,tool_page,20990.0,44.71428571428572,Tier 2+,20990.0,Cooking Time & Temperature Guide,tool_page,Tool 2: Time/Temp
-0,not_started,Custom Recipe Generator,tool_page,19110.0,45.5,Tier 2+,19110.0,Custom Recipe Generator,tool_page,Tool 3: Recipe Generator
+0,published,Homepage,homepage,,,,,Homepage,site_infrastructure,
+0,published,Kitchen Measurement Conversion Calculator,tool_page,65270.0,37.875,Tier 2+,65270.0,Kitchen Measurement Conversion Calculator,tool_page,Tool 1: Conversion
+0,published,Cooking Time & Temperature Guide,tool_page,20990.0,44.71428571428572,Tier 2+,20990.0,Cooking Time & Temperature Guide,tool_page,Tool 2: Time/Temp
+0,published,Custom Recipe Generator,tool_page,19110.0,45.5,Tier 2+,19110.0,Custom Recipe Generator,tool_page,Tool 3: Recipe Generator
 1,not_started,chives,ingredient_hub,135000.0,26.0,Tier 1,135000.0,Chive Recipe,seo_target,
 1,not_started,recipe for banana nut bread,recipe_or_dish,135000.0,27.0,Tier 1,135000.0,Banana Nut Bread Recipe,seo_target,
 1,not_started,Gluten Free Bread Recipe,recipe_or_dish,135000.0,22.0,Tier 1,135000.0,Gluten Free Bread Recipe,seo_target,
