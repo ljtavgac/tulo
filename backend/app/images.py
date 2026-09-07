@@ -31,65 +31,76 @@ class ImageResult:
     download_location: str | None = None
 
 
-def _search_unsplash(query: str) -> ImageResult | None:
+SEARCH_RESULTS_PER_PAGE = 10
+
+
+def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
     r = requests.get(
         "https://api.unsplash.com/search/photos",
         headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
-        params={"query": query, "per_page": 1},
+        params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
         timeout=10,
     )
     r.raise_for_status()
-    results = r.json().get("results", [])
-    if not results:
-        return None
-    photo = results[0]
-    return ImageResult(
-        url=photo["urls"]["regular"],
-        photographer=photo["user"]["name"],
-        photographer_url=photo["user"]["links"]["html"],
-        source="unsplash",
-        download_location=photo["links"]["download_location"],
-    )
+    for photo in r.json().get("results", []):
+        url = photo["urls"]["regular"]
+        if url in exclude_urls:
+            continue
+        return ImageResult(
+            url=url,
+            photographer=photo["user"]["name"],
+            photographer_url=photo["user"]["links"]["html"],
+            source="unsplash",
+            download_location=photo["links"]["download_location"],
+        )
+    return None
 
 
-def _search_pexels(query: str) -> ImageResult | None:
+def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
     r = requests.get(
         "https://api.pexels.com/v1/search",
         headers={"Authorization": PEXELS_ACCESS_KEY},
-        params={"query": query, "per_page": 1},
+        params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
         timeout=10,
     )
     r.raise_for_status()
-    results = r.json().get("photos", [])
-    if not results:
-        return None
-    photo = results[0]
-    return ImageResult(
-        url=photo["src"]["large"],
-        photographer=photo["photographer"],
-        photographer_url=photo["photographer_url"],
-        source="pexels",
-    )
+    for photo in r.json().get("photos", []):
+        url = photo["src"]["large"]
+        if url in exclude_urls:
+            continue
+        return ImageResult(
+            url=url,
+            photographer=photo["photographer"],
+            photographer_url=photo["photographer_url"],
+            source="pexels",
+        )
+    return None
 
 
-def search_image(query: str) -> ImageResult | None:
+def search_image(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
     """Unsplash first, Pexels as fallback. Returns None only if no keys are
-    configured or neither provider has a match for this query -- a real API
-    failure (bad key, rate limit, network error) raises requests.RequestException
-    instead of silently masquerading as "no result," so callers (see
-    fetch_stock_images.py, which already catches and logs per-page errors)
-    can tell "nothing found" apart from "something's broken" instead of
-    debugging blind."""
+    configured or neither provider has an unused match for this query -- a
+    real API failure (bad key, rate limit, network error) raises
+    requests.RequestException instead of silently masquerading as "no
+    result," so callers (see fetch_stock_images.py, which already catches
+    and logs per-page errors) can tell "nothing found" apart from
+    "something's broken" instead of debugging blind.
+
+    `exclude_urls` skips photos already assigned to another page in the
+    same run -- without it, a thin catalog for a niche query (e.g. a
+    specific regional dish name) can return the same "best match" photo
+    for several different searches, showing up as the same picture on
+    multiple recipes."""
     if UNSPLASH_ACCESS_KEY:
         try:
-            result = _search_unsplash(query)
+            result = _search_unsplash(query, exclude_urls)
             if result:
                 return result
         except requests.RequestException as e:
             print(f"    Unsplash request failed ({e}), falling back to Pexels")
 
     if PEXELS_ACCESS_KEY:
-        return _search_pexels(query)
+        return _search_pexels(query, exclude_urls)
 
     return None
 

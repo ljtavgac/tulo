@@ -36,11 +36,27 @@ SINGLE_IMAGE_TEMPLATES = {
     "definition": "hero_image_query",
 }
 
+# Templates whose image represents a finished, plated dish rather than a raw
+# ingredient or an in-progress technique shot. A bare dish name (e.g.
+# "eggplant parmesan") searched against a general-purpose stock site often
+# surfaces the raw ingredient or a generic product shot as the top match --
+# appending a food-styling qualifier biases toward an actual prepared dish.
+# Ingredient Hub/Definition/How-To keep the plain query: a raw or in-progress
+# shot is the *correct* image there, not a bug to work around.
+DISH_TEMPLATES = {"recipe_or_dish", "category_roundup"}
 
-def _apply_result(content: dict, query: str) -> bool:
+
+def _search_query_for(template_type: str, raw_query: str) -> str:
+    if template_type in DISH_TEMPLATES:
+        return f"{raw_query} plated dish"
+    return raw_query
+
+
+def _apply_result(content: dict, query: str, template_type: str, used_urls: set[str]) -> bool:
     """Looks up an image for `query` and writes image_url/image_attribution
     into `content` in place. Returns True if it found and wrote one."""
-    result = search_image(query)
+    search_query = _search_query_for(template_type, query)
+    result = search_image(search_query, exclude_urls=frozenset(used_urls))
     if result is None:
         return False
     content["image_url"] = result.url
@@ -51,6 +67,7 @@ def _apply_result(content: dict, query: str) -> bool:
     }
     if result.source == "unsplash" and result.download_location:
         ping_download(result.download_location)
+    used_urls.add(result.url)
     return True
 
 
@@ -58,6 +75,9 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
     """Returns (pages_updated, images_written)."""
     pages_updated = 0
     images_written = 0
+    # Shared across the whole run so two different pages/cards never end up
+    # with the literally same photo -- see search_image()'s exclude_urls.
+    used_urls: set[str] = set()
 
     for page in db.query(Page).all():
         # A deep copy, not a reference: mutating page.content directly (or a
@@ -74,7 +94,7 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
                 query = content[query_key]
                 print(f"  {page.slug}: searching '{query}'...")
                 try:
-                    if _apply_result(content, query):
+                    if _apply_result(content, query, page.template_type, used_urls):
                         images_written += 1
                         changed = True
                     else:
@@ -90,7 +110,7 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
                         continue
                     print(f"  {page.slug} / {card.get('title')}: searching '{query}'...")
                     try:
-                        if _apply_result(card, query):
+                        if _apply_result(card, query, page.template_type, used_urls):
                             images_written += 1
                             changed = True
                         else:
