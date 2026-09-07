@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { IngredientHubContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<IngredientHubContent>(slug);
+  if (!page || page.template_type !== "ingredient_hub") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function IngredientHubPage({
   params,

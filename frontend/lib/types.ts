@@ -29,6 +29,7 @@ export interface LinkRef {
 }
 
 export interface RecipeContent {
+  meta_description?: string;
   hero_image_query: string;
   why_it_works: string;
   prep_time_minutes: number;
@@ -49,6 +50,7 @@ export interface IngredientSubstitute {
 }
 
 export interface IngredientHubContent {
+  meta_description?: string;
   hero_image_query: string;
   description: string;
   substitutes: IngredientSubstitute[];
@@ -61,6 +63,7 @@ export interface IngredientHubContent {
 }
 
 export interface HowToContent {
+  meta_description?: string;
   hero_image_query: string;
   steps: string[];
   common_mistakes: string[];
@@ -70,6 +73,7 @@ export interface HowToContent {
 }
 
 export interface DefinitionContent {
+  meta_description?: string;
   hero_image_query: string;
   direct_answer: string;
   expanded_explanation: string;
@@ -91,6 +95,7 @@ export interface ComparisonSection {
 }
 
 export interface ComparisonContent {
+  meta_description?: string;
   item_a_name: string;
   item_b_name: string;
   comparison_table: ComparisonRow[];
@@ -108,6 +113,7 @@ export interface RankedSubstitute {
 }
 
 export interface SubstituteContent {
+  meta_description?: string;
   ranked_substitutes: RankedSubstitute[];
   baking_vs_cooking_note: string;
   hub_page_slug: string | null;
@@ -127,6 +133,7 @@ export interface SubCategory {
 }
 
 export interface CategoryRoundupContent {
+  meta_description?: string;
   intro: string;
   recipe_cards: RecipeCardData[];
   sub_categories: SubCategory[];
@@ -134,6 +141,7 @@ export interface CategoryRoundupContent {
 }
 
 export interface HomepageContent {
+  meta_description?: string;
   featured_recipe_slugs: string[];
   category_links: LinkRef[];
   tool_links: LinkRef[];

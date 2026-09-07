@@ -1,7 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getPage } from "@/lib/api";
 import type { HomepageContent } from "@/lib/types";
 import RecipeCard from "@/components/RecipeCard";
+import JsonLd from "@/components/JsonLd";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage<HomepageContent>("homepage");
+  const description = page?.content.meta_description;
+
+  return {
+    title: { absolute: SITE_NAME },
+    description,
+    alternates: { canonical: "/" },
+    openGraph: { title: SITE_NAME, description, url: "/" },
+  };
+}
 
 export default async function HomePage() {
   const page = await getPage<HomepageContent>("homepage");
@@ -18,6 +33,18 @@ export default async function HomePage() {
 
   return (
     <main>
+      {/* No SearchAction here -- the search bar below isn't wired to a
+          working /search route yet, and structured data should only claim
+          capabilities the page actually has. Add SearchAction once search
+          is real. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: SITE_NAME,
+          url: SITE_URL,
+        }}
+      />
       <section className="mx-auto max-w-3xl px-4 py-16 text-center">
         <h1 className="text-4xl font-bold">Tulo</h1>
         <p className="mx-auto mt-4 max-w-xl text-lg text-ink/70">{content.positioning_statement}</p>

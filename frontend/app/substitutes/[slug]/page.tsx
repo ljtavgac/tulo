@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { SubstituteContent } from "@/lib/types";
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<SubstituteContent>(slug);
+  if (!page || page.template_type !== "substitute") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function SubstitutePage({
   params,

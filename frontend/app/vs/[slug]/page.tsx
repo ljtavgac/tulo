@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { ComparisonContent } from "@/lib/types";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<ComparisonContent>(slug);
+  if (!page || page.template_type !== "comparison") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function ComparisonPage({
   params,

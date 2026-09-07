@@ -1,9 +1,23 @@
+import type { Metadata } from "next";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { CategoryRoundupContent } from "@/lib/types";
 import RecipeCard from "@/components/RecipeCard";
 import AdSlot from "@/components/AdSlot";
+import JsonLd from "@/components/JsonLd";
+import { absoluteUrl, buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<CategoryRoundupContent>(slug);
+  if (!page || page.template_type !== "category_roundup") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function CategoryRoundupPage({
   params,
@@ -22,6 +36,19 @@ export default async function CategoryRoundupPage({
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: page.title,
+          itemListElement: content.recipe_cards.map((card, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: card.title,
+            url: card.slug ? absoluteUrl(`/recipes/${card.slug}`) : undefined,
+          })),
+        }}
+      />
       <h1 className="text-3xl font-bold">{page.title}</h1>
       <p className="mt-4 max-w-2xl text-ink/80">{content.intro}</p>
 

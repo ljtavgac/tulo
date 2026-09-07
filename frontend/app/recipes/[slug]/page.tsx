@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { RecipeContent } from "@/lib/types";
@@ -5,7 +6,21 @@ import StockPhotoSlot from "@/components/StockPhotoSlot";
 import RecipeIngredientsPanel from "@/components/RecipeIngredientsPanel";
 import ShopIngredientsButton from "@/components/ShopIngredientsButton";
 import AdSlot from "@/components/AdSlot";
+import JsonLd from "@/components/JsonLd";
 import Link from "next/link";
+import { buildPageMetadata, minutesToIso8601 } from "@/lib/seo";
+import { formatUsQuantity } from "@/lib/format";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<RecipeContent>(slug);
+  if (!page || page.template_type !== "recipe_or_dish") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function RecipePage({
   params,
@@ -20,6 +35,28 @@ export default async function RecipePage({
 
   return (
     <main className="mx-auto grid max-w-5xl gap-8 px-4 py-8 lg:grid-cols-[1fr_260px]">
+      {/* No `image` field yet -- StockPhotoSlot is a placeholder, not a
+          real photo URL, and Recipe rich-result eligibility requires a
+          real, reachable image. Add it once stock photos are wired up. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Recipe",
+          name: page.title,
+          description: content.meta_description ?? content.why_it_works,
+          prepTime: minutesToIso8601(content.prep_time_minutes),
+          cookTime: minutesToIso8601(content.cook_time_minutes),
+          totalTime: minutesToIso8601(content.total_time_minutes),
+          recipeYield: `${content.servings} servings`,
+          recipeIngredient: content.ingredients.map(
+            (ing) => `${formatUsQuantity(ing.base_qty)} ${ing.unit_us} ${ing.name}`
+          ),
+          recipeInstructions: content.instructions.map((step) => ({
+            "@type": "HowToStep",
+            text: step,
+          })),
+        }}
+      />
       <article>
         <h1 className="text-3xl font-bold">{page.title}</h1>
         <StockPhotoSlot query={content.hero_image_query} className="mt-4" />

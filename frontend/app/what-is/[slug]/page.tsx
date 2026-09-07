@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { DefinitionContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
+import JsonLd from "@/components/JsonLd";
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<DefinitionContent>(slug);
+  if (!page || page.template_type !== "definition") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function DefinitionPage({
   params,
@@ -17,6 +31,14 @@ export default async function DefinitionPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "DefinedTerm",
+          name: page.title.replace(/^What Is /i, "").replace(/\?.*$/, ""),
+          description: content.direct_answer,
+        }}
+      />
       <h1 className="text-3xl font-bold">{page.title}</h1>
 
       {/* Direct answer up top, ahead of the hero image -- featured-snippet

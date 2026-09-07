@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
 import type { HowToContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
+import JsonLd from "@/components/JsonLd";
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPage<HowToContent>(slug);
+  if (!page || page.template_type !== "howto_technique") return {};
+  return buildPageMetadata(page);
+}
 
 export default async function HowToPage({
   params,
@@ -17,6 +31,18 @@ export default async function HowToPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          name: page.title,
+          description: content.meta_description,
+          step: content.steps.map((step) => ({
+            "@type": "HowToStep",
+            text: step,
+          })),
+        }}
+      />
       <h1 className="text-3xl font-bold">{page.title}</h1>
       <StockPhotoSlot query={content.hero_image_query} className="mt-4" />
 
