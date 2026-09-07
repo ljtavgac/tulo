@@ -62,6 +62,20 @@ def get_page(slug: str, db: Session = Depends(get_db)):
     return page
 
 
+def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None]:
+    """image_url, image_attribution, hero_image_query for a page's summary
+    thumbnail. Category Roundup pages have no hero image of their own (only
+    per-card images on recipe_cards), so this falls back to the first
+    card's image as a representative thumbnail for the collection."""
+    if content.get("image_url"):
+        return content["image_url"], content.get("image_attribution"), content.get("hero_image_query")
+    cards = content.get("recipe_cards")
+    if cards:
+        first = cards[0]
+        return first.get("image_url"), first.get("image_attribution"), first.get("image_query")
+    return None, None, content.get("hero_image_query")
+
+
 @app.get("/pages", response_model=list[PageSummary])
 def list_pages(
     template_type: str | None = Query(default=None),
@@ -79,7 +93,56 @@ def list_pages(
         # (Postgres full-text search, or an external service) is the
         # right upgrade once page count and traffic justify it.
         query = query.filter(Page.title.ilike(f"%{q}%"))
-    return query.all()
+
+    summaries = []
+    for page in query.all():
+        image_url, image_attribution, hero_image_query = _summary_image(page.content)
+        summaries.append(
+            PageSummary(
+                slug=page.slug,
+                template_type=page.template_type,
+                title=page.title,
+                image_url=image_url,
+                image_attribution=image_attribution,
+                hero_image_query=hero_image_query,
+            )
+        )
+    return summaries
+
+
+@app.get("/recipes/match")
+def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
+    """Backs the Custom Recipe Generator tool. There's no LLM wired into
+    this stack to actually generate a new recipe from scratch, so instead
+    of faking that, this matches the ingredients someone has on hand
+    against real recipes already in the database and ranks them by
+    overlap -- a genuinely working recommendation, not a placeholder, that
+    gets more useful as more recipes get published rather than needing a
+    rebuild later. `ingredients` is a comma-separated list, e.g.
+    "chicken thighs, spinach, feta, lemon"."""
+    terms = [t.strip().lower() for t in ingredients.split(",") if t.strip()]
+    if not terms:
+        return []
+
+    matches = []
+    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+        recipe_ingredients = [ing["name"].lower() for ing in page.content.get("ingredients", [])]
+        matched_terms = [
+            term for term in terms if any(term in name or name in term for name in recipe_ingredients)
+        ]
+        if matched_terms:
+            matches.append(
+                {
+                    "slug": page.slug,
+                    "title": page.title,
+                    "matched_count": len(matched_terms),
+                    "requested_count": len(terms),
+                    "total_ingredients": len(recipe_ingredients),
+                }
+            )
+
+    matches.sort(key=lambda m: m["matched_count"], reverse=True)
+    return matches[:5]
 
 
 # Manual trigger for fetch_stock_images.py, for hosts (like Render's free

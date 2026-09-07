@@ -2,6 +2,9 @@ export interface PageSummary {
   slug: string;
   template_type: string;
   title: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
+  hero_image_query?: string;
 }
 
 export interface PageRecord<T = Record<string, unknown>> {

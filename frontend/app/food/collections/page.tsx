@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { listPages } from "@/lib/api";
 import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
+import PageTile from "@/components/PageTile";
 
 const TITLE = "Collections";
 const DESCRIPTION = "Every curated recipe collection on Tulo -- organized by category, not an auto-generated tag archive.";
@@ -52,15 +52,16 @@ export default async function CollectionsIndexPage() {
         Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
       </p>
 
-      <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
         {pages.map((page) => (
           <li key={page.slug}>
-            <Link
+            <PageTile
               href={pagePath(page.template_type, page.slug)}
-              className="block rounded-lg border border-ink/10 p-4 text-sm font-semibold hover:border-accent hover:text-accent"
-            >
-              {page.title}
-            </Link>
+              title={page.title}
+              imageQuery={page.hero_image_query ?? page.title}
+              imageUrl={page.image_url}
+              imageAttribution={page.image_attribution}
+            />
           </li>
         ))}
       </ul>
