@@ -31,7 +31,12 @@ export default async function IngredientHubPage({
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-3xl font-bold">{page.title}</h1>
-      <StockPhotoSlot query={content.hero_image_query} className="mt-4" />
+      <StockPhotoSlot
+        query={content.hero_image_query}
+        imageUrl={content.image_url}
+        attribution={content.image_attribution}
+        className="mt-4"
+      />
 
       <p className="mt-4 text-ink/80">{content.description}</p>
 

@@ -28,9 +28,21 @@ export interface LinkRef {
   slug: string;
 }
 
+// Present once backend/app/fetch_stock_images.py has found a real photo
+// for a page's image query; absent (undefined) means keep showing the
+// placeholder. Attribution is required by Unsplash's API terms and good
+// practice for Pexels.
+export interface ImageAttribution {
+  photographer: string;
+  photographer_url: string;
+  source: "unsplash" | "pexels";
+}
+
 export interface RecipeContent {
   meta_description?: string;
   hero_image_query: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
   why_it_works: string;
   prep_time_minutes: number;
   cook_time_minutes: number;
@@ -52,6 +64,8 @@ export interface IngredientSubstitute {
 export interface IngredientHubContent {
   meta_description?: string;
   hero_image_query: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
   description: string;
   substitutes: IngredientSubstitute[];
   substitute_page_slug: string | null;
@@ -65,6 +79,8 @@ export interface IngredientHubContent {
 export interface HowToContent {
   meta_description?: string;
   hero_image_query: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
   steps: string[];
   common_mistakes: string[];
   equipment: string[];
@@ -75,6 +91,8 @@ export interface HowToContent {
 export interface DefinitionContent {
   meta_description?: string;
   hero_image_query: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
   direct_answer: string;
   expanded_explanation: string;
   usage_origin: string;
@@ -125,6 +143,8 @@ export interface RecipeCardData {
   slug: string | null;
   description: string;
   image_query: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
 }
 
 export interface SubCategory {
