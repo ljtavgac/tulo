@@ -50,7 +50,7 @@ export default async function DefinitionsIndexPage() {
       />
       <h1 className="mt-4 text-3xl font-bold">Definitions</h1>
       <p className="mt-3 max-w-2xl text-ink/70">
-        Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
+        Quick, direct answers to the &quot;what is X&quot; questions you actually typed into Google.
       </p>
 
       <PagedPageGrid initialPages={pages} templateType="definition" pageSize={PAGE_SIZE} />

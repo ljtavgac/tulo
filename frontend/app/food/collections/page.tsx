@@ -50,7 +50,7 @@ export default async function CollectionsIndexPage() {
       />
       <h1 className="mt-4 text-3xl font-bold">Collections</h1>
       <p className="mt-3 max-w-2xl text-ink/70">
-        Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
+        Real recipes organized by category, hand-picked -- not an auto-generated tag dump.
       </p>
 
       <PagedPageGrid initialPages={pages} templateType="category_roundup" pageSize={PAGE_SIZE} />

@@ -50,7 +50,7 @@ export default async function IngredientsIndexPage() {
       />
       <h1 className="mt-4 text-3xl font-bold">Ingredients</h1>
       <p className="mt-3 max-w-2xl text-ink/70">
-        Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
+        What each ingredient actually is, how to store it, and what to swap in when you&apos;re out.
       </p>
 
       <PagedPageGrid initialPages={pages} templateType="ingredient_hub" pageSize={PAGE_SIZE} />
