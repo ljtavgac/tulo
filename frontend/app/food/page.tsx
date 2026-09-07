@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPage } from "@/lib/api";
-import type { HomepageContent } from "@/lib/types";
+import type { HomepageContent, RecipeContent } from "@/lib/types";
 import RecipeCard from "@/components/RecipeCard";
 import JsonLd from "@/components/JsonLd";
 import { SITE_NAME, SITE_URL, pagePath } from "@/lib/seo";
@@ -30,6 +30,13 @@ export default async function HomePage() {
   }
 
   const { content } = page;
+
+  // featured_recipe_slugs is a bare list of slugs, not full page data, so
+  // each one needs its own fetch to get a real title/image instead of
+  // guessing a title from the slug text and showing a placeholder image.
+  const featuredRecipes = await Promise.all(
+    content.featured_recipe_slugs.map((slug) => getPage<RecipeContent>(slug))
+  );
 
   return (
     <main>
@@ -66,14 +73,19 @@ export default async function HomePage() {
       <section className="mx-auto max-w-5xl px-4 py-10">
         <h2 className="text-xl font-bold">Featured recipes</h2>
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-          {content.featured_recipe_slugs.map((slug) => (
-            <RecipeCard
-              key={slug}
-              title={slug.replace(/-/g, " ")}
-              imageQuery={slug.replace(/-/g, " ")}
-              slug={slug}
-            />
-          ))}
+          {content.featured_recipe_slugs.map((slug, i) => {
+            const recipe = featuredRecipes[i];
+            return (
+              <RecipeCard
+                key={slug}
+                title={recipe?.title ?? slug.replace(/-/g, " ")}
+                imageQuery={recipe?.content.hero_image_query ?? slug.replace(/-/g, " ")}
+                imageUrl={recipe?.content.image_url}
+                imageAttribution={recipe?.content.image_attribution}
+                slug={recipe ? slug : null}
+              />
+            );
+          })}
         </div>
       </section>
 
