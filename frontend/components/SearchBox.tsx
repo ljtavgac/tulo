@@ -112,7 +112,7 @@ export default function SearchBox() {
         aria-controls="search-suggestions"
         aria-activedescendant={activeIndex >= 0 ? `search-suggestion-${activeIndex}` : undefined}
         placeholder="Search recipes…"
-        className="w-full bg-transparent text-sm outline-none placeholder:text-ink/40"
+        className="w-full bg-transparent text-base outline-none placeholder:text-ink/40 sm:text-sm"
       />
 
       {dropdownOpen ? (
