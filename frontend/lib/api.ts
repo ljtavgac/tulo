@@ -20,9 +20,14 @@ export async function getPage<T = Record<string, unknown>>(
   return res.json();
 }
 
-export async function listPages(templateType?: string): Promise<PageSummary[]> {
+export async function listPages(
+  templateType?: string,
+  options?: { limit?: number; offset?: number }
+): Promise<PageSummary[]> {
   const url = new URL(`${API_URL}/pages`);
   if (templateType) url.searchParams.set("template_type", templateType);
+  if (options?.limit != null) url.searchParams.set("limit", String(options.limit));
+  if (options?.offset != null) url.searchParams.set("offset", String(options.offset));
   const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
   if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
   return res.json();

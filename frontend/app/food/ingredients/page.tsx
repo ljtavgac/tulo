@@ -4,10 +4,11 @@ import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
-import PageTile from "@/components/PageTile";
+import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Ingredients";
 const DESCRIPTION = "Every ingredient hub on Tulo -- substitutes, storage tips, and how to use it.";
+const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function IngredientsIndexPage() {
   const section = sectionForTemplate("ingredient_hub")!;
-  const pages = await listPages("ingredient_hub");
+  const pages = await listPages("ingredient_hub", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -52,19 +53,7 @@ export default async function IngredientsIndexPage() {
         Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
       </p>
 
-      <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {pages.map((page) => (
-          <li key={page.slug}>
-            <PageTile
-              href={pagePath(page.template_type, page.slug)}
-              title={page.title}
-              imageQuery={page.hero_image_query ?? page.title}
-              imageUrl={page.image_url}
-              imageAttribution={page.image_attribution}
-            />
-          </li>
-        ))}
-      </ul>
+      <PagedPageGrid initialPages={pages} templateType="ingredient_hub" pageSize={PAGE_SIZE} />
     </main>
   );
 }

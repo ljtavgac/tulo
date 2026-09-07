@@ -80,9 +80,17 @@ def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None]:
 def list_pages(
     template_type: str | None = Query(default=None),
     q: str | None = Query(default=None),
+    limit: int | None = Query(default=None, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ):
-    query = db.query(Page)
+    # Ordered explicitly so pagination is stable across requests -- without
+    # an order_by, a database is free to return rows in whatever order it
+    # finds convenient, which could reshuffle between one "load more" call
+    # and the next. Callers that want everything (the homepage carousels,
+    # the sitemap, RelatedLinks) just omit limit/offset and get the full,
+    # still-ordered list, unchanged from before this was added.
+    query = db.query(Page).order_by(Page.id)
     if template_type is not None:
         query = query.filter(Page.template_type == template_type)
     if q:
@@ -93,6 +101,9 @@ def list_pages(
         # (Postgres full-text search, or an external service) is the
         # right upgrade once page count and traffic justify it.
         query = query.filter(Page.title.ilike(f"%{q}%"))
+
+    if limit is not None:
+        query = query.offset(offset).limit(limit)
 
     summaries = []
     for page in query.all():

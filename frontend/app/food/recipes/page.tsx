@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { listPages } from "@/lib/api";
 import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
+import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Recipes";
 const DESCRIPTION = "Every recipe on Tulo -- ingredients and instructions up front, no story to scroll past.";
+const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function RecipesIndexPage() {
   const section = sectionForTemplate("recipe_or_dish")!;
-  const pages = await listPages("recipe_or_dish");
+  const pages = await listPages("recipe_or_dish", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -52,18 +53,7 @@ export default async function RecipesIndexPage() {
         Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
       </p>
 
-      <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {pages.map((page) => (
-          <li key={page.slug}>
-            <Link
-              href={pagePath(page.template_type, page.slug)}
-              className="block rounded-lg border border-ink/10 p-4 text-sm font-semibold hover:border-accent hover:text-accent"
-            >
-              {page.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <PagedPageGrid initialPages={pages} templateType="recipe_or_dish" pageSize={PAGE_SIZE} />
     </main>
   );
 }

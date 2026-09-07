@@ -4,10 +4,11 @@ import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
-import PageTile from "@/components/PageTile";
+import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Definitions";
 const DESCRIPTION = "Every definition page on Tulo -- quick, direct answers to \"what is X\" questions.";
+const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function DefinitionsIndexPage() {
   const section = sectionForTemplate("definition")!;
-  const pages = await listPages("definition");
+  const pages = await listPages("definition", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -52,19 +53,7 @@ export default async function DefinitionsIndexPage() {
         Here&apos;s what&apos;s live right now -- new batches publish regularly, so this list keeps growing.
       </p>
 
-      <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {pages.map((page) => (
-          <li key={page.slug}>
-            <PageTile
-              href={pagePath(page.template_type, page.slug)}
-              title={page.title}
-              imageQuery={page.hero_image_query ?? page.title}
-              imageUrl={page.image_url}
-              imageAttribution={page.image_attribution}
-            />
-          </li>
-        ))}
-      </ul>
+      <PagedPageGrid initialPages={pages} templateType="definition" pageSize={PAGE_SIZE} />
     </main>
   );
 }
