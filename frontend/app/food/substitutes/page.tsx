@@ -50,7 +50,7 @@ export default async function SubstitutesIndexPage() {
       />
       <h1 className="mt-4 text-3xl font-bold">Substitutes</h1>
       <p className="mt-3 max-w-2xl text-ink/70">
-        Ranked substitutes with exact ratios -- not just &quot;try something similar.&quot;
+        Ranked substitutes with exact ratios.
       </p>
 
       <PagedPageGrid initialPages={pages} templateType="substitute" pageSize={PAGE_SIZE} />

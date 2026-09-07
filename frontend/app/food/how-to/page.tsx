@@ -50,7 +50,7 @@ export default async function HowToIndexPage() {
       />
       <h1 className="mt-4 text-3xl font-bold">How-To Guides</h1>
       <p className="mt-3 max-w-2xl text-ink/70">
-        Clear, numbered steps for the techniques that trip people up -- plus the mistakes that ruin them.
+        Clear, numbered steps for the techniques that trip people up.
       </p>
 
       <PagedPageGrid initialPages={pages} templateType="howto_technique" pageSize={PAGE_SIZE} />
