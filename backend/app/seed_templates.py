@@ -52,16 +52,19 @@ SEED_PAGES = [
             "cook_time_minutes": 60,
             "total_time_minutes": 75,
             "servings": 10,
+            # Quantities are numeric (base_qty / base_qty_metric) rather than
+            # free-text strings so the frontend's serving-size scaler can
+            # actually recalculate them, not just relabel a fixed string.
             "ingredients": [
-                {"name": "ripe bananas, mashed", "qty_us": "3 medium (~1 1/2 cups)", "qty_metric": "340 g", "hub_slug": None},
-                {"name": "unsalted butter, melted", "qty_us": "1/3 cup", "qty_metric": "75 g", "hub_slug": None},
-                {"name": "granulated sugar", "qty_us": "3/4 cup", "qty_metric": "150 g", "hub_slug": None},
-                {"name": "large egg, beaten", "qty_us": "1", "qty_metric": "1", "hub_slug": None},
-                {"name": "vanilla extract", "qty_us": "1 tsp", "qty_metric": "5 ml", "hub_slug": None},
-                {"name": "baking soda", "qty_us": "1 tsp", "qty_metric": "5 g", "hub_slug": None},
-                {"name": "salt", "qty_us": "1/4 tsp", "qty_metric": "1.5 g", "hub_slug": None},
-                {"name": "all-purpose flour", "qty_us": "1 1/2 cups", "qty_metric": "190 g", "hub_slug": None},
-                {"name": "walnuts, chopped", "qty_us": "1 cup", "qty_metric": "120 g", "hub_slug": None},
+                {"name": "ripe bananas, mashed", "base_qty": 3, "unit_us": "medium banana(s)", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 1 / 3, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "large egg, beaten", "base_qty": 1, "unit_us": "egg(s)", "base_qty_metric": 1, "unit_metric": "egg(s)", "hub_slug": None},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "baking soda", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 190, "unit_metric": "g", "hub_slug": None},
+                {"name": "walnuts, chopped", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
             ],
             "instructions": [
                 "Preheat the oven to 350°F (175°C). Grease a 9x5-inch loaf pan.",
