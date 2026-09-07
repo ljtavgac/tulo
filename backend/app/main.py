@@ -12,7 +12,7 @@ from .fetch_stock_images import fetch_images
 from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY
 from .models import Page
 from .schemas import PageOut, PageSummary
-from .seed_templates import seed
+from .seed_templates import resync_ingredients, seed
 
 
 @asynccontextmanager
@@ -24,6 +24,10 @@ async def lifespan(app: FastAPI):
     db = SessionLocal()
     try:
         seed(db)
+        # Unlike seed(), this DOES touch pages that already exist -- see its
+        # docstring for why ingredient unit/quantity corrections need to
+        # reach already-seeded pages, not just freshly inserted ones.
+        resync_ingredients(db)
     finally:
         db.close()
     yield

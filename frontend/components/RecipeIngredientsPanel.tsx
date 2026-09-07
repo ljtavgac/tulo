@@ -29,11 +29,18 @@ export default function RecipeIngredientsPanel({
 
       <ul className="mt-4 space-y-2">
         {ingredients.map((ing) => {
+          // unit_metric === unit_us marks a count of discrete items (eggs,
+          // bananas, cloves of garlic) rather than a real unit conversion --
+          // there's no meaningful weight/volume equivalent for "1 banana",
+          // so both views show the same fraction-formatted count instead of
+          // one side rounding to whole grams (which could round a small
+          // fractional count down to a nonsensical "0").
+          const isCount = ing.unit_metric === ing.unit_us;
           const qty =
-            unit === "us"
+            unit === "us" || isCount
               ? formatUsQuantity(ing.base_qty * scale)
               : formatMetricQuantity(ing.base_qty_metric * scale);
-          const unitLabel = unit === "us" ? ing.unit_us : ing.unit_metric;
+          const unitLabel = unit === "us" || isCount ? ing.unit_us : ing.unit_metric;
 
           return (
             <li key={ing.name} className="text-sm">

@@ -8,6 +8,8 @@ Run standalone with `python -m app.seed_templates`, or it runs
 automatically on API startup if the pages table is empty (see main.py).
 """
 
+import copy
+
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal
@@ -66,7 +68,7 @@ SEED_PAGES = [
             # free-text strings so the frontend's serving-size scaler can
             # actually recalculate them, not just relabel a fixed string.
             "ingredients": [
-                {"name": "bananas, mashed", "base_qty": 3, "unit_us": "medium ripe", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
+                {"name": "bananas, mashed", "base_qty": 3, "unit_us": "medium ripe", "base_qty_metric": 3, "unit_metric": "medium ripe", "hub_slug": None},
                 {"name": "unsalted butter, melted", "base_qty": 1 / 3, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
                 {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
                 {"name": "egg, beaten", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
@@ -425,6 +427,47 @@ def seed(db: Session) -> int:
         inserted += 1
     db.commit()
     return inserted
+
+
+def resync_ingredients(db: Session) -> int:
+    """seed() never overwrites a page that already exists, which is right
+    for editorial content (titles, instructions) but wrong for ingredient
+    unit/quantity definitions -- those are closer to reference data than
+    content, and a correction (e.g. fixing a bad unit conversion) should
+    reach pages that were already seeded before the fix landed, not just
+    new ones. Re-syncs `ingredients` from SEED_PAGES by (page slug,
+    ingredient name); leaves the rest of the page's content -- including
+    any stock photo already fetched -- untouched. Safe to run on every
+    startup: idempotent, no-ops once a page matches SEED_PAGES.
+    """
+    seed_ingredients_by_slug = {
+        p["slug"]: {ing["name"]: ing for ing in p["content"]["ingredients"]}
+        for p in SEED_PAGES
+        if "ingredients" in p["content"]
+    }
+    updated = 0
+    for page in db.query(Page).filter(Page.slug.in_(seed_ingredients_by_slug.keys())).all():
+        seed_ingredients = seed_ingredients_by_slug[page.slug]
+        # A deep copy, not a reference -- see fetch_stock_images.py's
+        # fetch_images() for why mutating page.content directly would
+        # silently fail to persist.
+        content = copy.deepcopy(page.content)
+        changed = False
+        for ing in content.get("ingredients", []):
+            seed_ing = seed_ingredients.get(ing.get("name"))
+            if seed_ing and (
+                ing.get("base_qty_metric") != seed_ing["base_qty_metric"]
+                or ing.get("unit_metric") != seed_ing["unit_metric"]
+            ):
+                ing["base_qty_metric"] = seed_ing["base_qty_metric"]
+                ing["unit_metric"] = seed_ing["unit_metric"]
+                changed = True
+        if changed:
+            page.content = content
+            updated += 1
+    if updated:
+        db.commit()
+    return updated
 
 
 if __name__ == "__main__":

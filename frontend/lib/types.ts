@@ -23,6 +23,13 @@ export interface RecipeIngredient {
   hub_slug: string | null;
 }
 
+// For a discrete count of items (eggs, bananas, cloves of garlic) rather
+// than a real measurement, set unit_metric equal to unit_us (and
+// base_qty_metric equal to base_qty) instead of converting to a weight --
+// "1 banana" doesn't have a meaningful, universally-agreed gram equivalent
+// the way "1 cup" does. RecipeIngredientsPanel checks for this equality to
+// decide whether to treat an ingredient as a real US/metric conversion.
+
 export interface LinkRef {
   title: string;
   slug: string;
