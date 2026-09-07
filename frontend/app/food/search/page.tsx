@@ -3,6 +3,7 @@ import Link from "next/link";
 import { searchPages } from "@/lib/api";
 import { pagePath } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import StockPhotoSlot from "@/components/StockPhotoSlot";
 
 export const metadata: Metadata = {
   title: "Search",
@@ -60,15 +61,22 @@ export default async function SearchPage({
         <ul className="mt-6 divide-y divide-ink/10">
           {results.map((page) => (
             <li key={page.slug} className="py-4">
-              <Link
-                href={pagePath(page.template_type, page.slug)}
-                className="text-lg font-semibold hover:text-accent"
-              >
-                {page.title}
+              <Link href={pagePath(page.template_type, page.slug)} className="flex items-center gap-4">
+                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
+                  <StockPhotoSlot
+                    query={page.hero_image_query ?? page.title}
+                    imageUrl={page.image_url}
+                    aspect="thumbnail"
+                    compact
+                  />
+                </div>
+                <span className="min-w-0">
+                  <span className="block text-lg font-semibold hover:text-accent">{page.title}</span>
+                  <span className="mt-1 block text-xs uppercase tracking-wide text-ink/40">
+                    {TEMPLATE_LABELS[page.template_type] ?? page.template_type}
+                  </span>
+                </span>
               </Link>
-              <p className="mt-1 text-xs uppercase tracking-wide text-ink/40">
-                {TEMPLATE_LABELS[page.template_type] ?? page.template_type}
-              </p>
             </li>
           ))}
         </ul>

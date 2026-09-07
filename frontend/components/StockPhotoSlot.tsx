@@ -10,12 +10,17 @@ export default function StockPhotoSlot({
   imageUrl,
   attribution,
   aspect = "hero",
+  compact = false,
   className = "",
 }: {
   query: string;
   imageUrl?: string;
   attribution?: ImageAttribution;
   aspect?: "hero" | "thumbnail";
+  // Drops the query-text caption from the placeholder box, for the very
+  // small thumbnails (search autocomplete, results list) where that text
+  // has no room to render and would just overflow.
+  compact?: boolean;
   className?: string;
 }) {
   const aspectClass = aspect === "hero" ? "aspect-[16/9]" : "aspect-square";
@@ -46,9 +51,11 @@ export default function StockPhotoSlot({
       <span aria-hidden className="text-2xl">
         📷
       </span>
-      <span className="px-3 text-xs">
-        Stock photo slot — &ldquo;{query}&rdquo;
-      </span>
+      {compact ? null : (
+        <span className="px-3 text-xs">
+          Stock photo slot — &ldquo;{query}&rdquo;
+        </span>
+      )}
     </div>
   );
 }
