@@ -17,7 +17,7 @@ export default function Footer() {
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo variant="dark" className="h-12 w-auto" />
           <p className="mt-4 max-w-xs text-sm text-cream/70">
-            No life story before the recipe. No clutter. Just what you came here for.
+            Made for you.
           </p>
         </div>
 
