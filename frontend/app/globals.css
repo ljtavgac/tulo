@@ -3,11 +3,16 @@
 /*
  * Brand tokens sampled directly from the logo files (tulo-light.png /
  * tulo-dark.png), not approximated -- see PAGE_TEMPLATES.md's "Brand
- * Assets" section for the source of these values.
+ * Assets" section for the source of these values. --color-cream is true
+ * white rather than the logo's original off-white swatch: content areas
+ * read as flat grey against real displays at that shade, and every
+ * bg-cream/text-cream use elsewhere (cards relying on shadow-card for
+ * separation, light text on dark backgrounds) works at least as well, if
+ * not better, at full white.
  */
 @theme {
   --color-ink: #1f1e1c;
-  --color-cream: #f2f0eb;
+  --color-cream: #ffffff;
   --color-accent: #e8351c;
   --font-sans:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,

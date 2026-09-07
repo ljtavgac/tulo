@@ -5,6 +5,7 @@ import type { HomepageContent, RecipeContent } from "@/lib/types";
 import RecipeCard from "@/components/RecipeCard";
 import JsonLd from "@/components/JsonLd";
 import { SITE_NAME, SITE_URL, pagePath } from "@/lib/seo";
+import { FOOD_INDEX_SECTIONS } from "@/lib/taxonomy";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<HomepageContent>("homepage");
@@ -30,6 +31,8 @@ export default async function HomePage() {
   }
 
   const { content } = page;
+  const recipesSection = FOOD_INDEX_SECTIONS.find((s) => s.key === "recipes")!;
+  const collectionsSection = FOOD_INDEX_SECTIONS.find((s) => s.key === "collections")!;
 
   // featured_recipe_slugs is a bare list of slugs, not full page data, so
   // each one needs its own fetch to get a real title/image instead of
@@ -40,7 +43,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* No SearchAction here -- the search bar below isn't wired to a
+      {/* No SearchAction here -- the header's search bar isn't wired to a
           working /search route yet, and structured data should only claim
           capabilities the page actually has. Add SearchAction once search
           is real. */}
@@ -52,22 +55,22 @@ export default async function HomePage() {
           url: SITE_URL,
         }}
       />
-      <section className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="text-5xl font-bold md:text-6xl">Tulo</h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-ink/70">{content.positioning_statement}</p>
-        <form className="mx-auto mt-8 flex max-w-md gap-2" role="search">
-          <input
-            type="search"
-            placeholder="Search recipes, ingredients, techniques…"
-            className="flex-1 rounded-full border border-ink/20 px-4 py-2 text-sm focus:border-accent focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-cream"
+      <section className="mx-auto max-w-3xl px-4 py-20 text-center">
+        <h1 className="text-3xl font-bold leading-snug md:text-4xl">{content.positioning_statement}</h1>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link
+            href={recipesSection.path}
+            className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-cream hover:bg-accent/90"
           >
-            Search
-          </button>
-        </form>
+            Browse Recipes
+          </Link>
+          <Link
+            href={collectionsSection.path}
+            className="rounded-full border border-ink/20 px-6 py-2.5 text-sm font-semibold hover:border-accent hover:text-accent"
+          >
+            See Collections
+          </Link>
+        </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-10">
