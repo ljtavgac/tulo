@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { RecipeIngredient } from "@/lib/types";
 import { formatUsQuantity, formatMetricQuantity } from "@/lib/format";
+import { pagePath } from "@/lib/seo";
 import ServingsScaler from "./ServingsScaler";
 import UnitToggle, { type Unit } from "./UnitToggle";
 
@@ -40,7 +41,7 @@ export default function RecipeIngredientsPanel({
                 {qty} {unitLabel}
               </span>{" "}
               {ing.hub_slug ? (
-                <Link href={`/ingredients/${ing.hub_slug}`} className="underline hover:text-accent">
+                <Link href={pagePath("ingredient_hub", ing.hub_slug)} className="underline hover:text-accent">
                   {ing.name}
                 </Link>
               ) : (
