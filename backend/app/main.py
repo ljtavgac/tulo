@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import fetch_images
+from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY
 from .models import Page
 from .schemas import PageOut, PageSummary
 from .seed_templates import seed
@@ -87,6 +88,8 @@ def trigger_fetch_images(token: str, force: bool = False, db: Session = Depends(
         pages_updated, images_written = fetch_images(db, force=force)
 
     return {
+        "unsplash_configured": bool(UNSPLASH_ACCESS_KEY),
+        "pexels_configured": bool(PEXELS_ACCESS_KEY),
         "pages_updated": pages_updated,
         "images_written": images_written,
         "log": log.getvalue().splitlines(),
