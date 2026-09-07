@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Recipes";
-const DESCRIPTION = "Every recipe on Tulo -- ingredients and instructions up front, no story to scroll past.";
+const DESCRIPTION = "Every recipe on Tulo, ingredients and instructions up front, no story to scroll past.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

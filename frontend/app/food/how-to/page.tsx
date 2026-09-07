@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "How-To Guides";
-const DESCRIPTION = "Every technique guide on Tulo -- clear numbered steps and the common mistakes to avoid.";
+const DESCRIPTION = "Every technique guide on Tulo, clear numbered steps and the common mistakes to avoid.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

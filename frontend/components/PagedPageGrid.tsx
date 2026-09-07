@@ -73,7 +73,7 @@ export default function PagedPageGrid({
       </ul>
 
       {error ? (
-        <p className="mt-4 text-center text-sm text-accent">Couldn&apos;t load more -- try again.</p>
+        <p className="mt-4 text-center text-sm text-accent">Couldn&apos;t load more, try again.</p>
       ) : null}
 
       {hasMore ? (

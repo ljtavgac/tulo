@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Ingredients";
-const DESCRIPTION = "Every ingredient hub on Tulo -- substitutes, storage tips, and how to use it.";
+const DESCRIPTION = "Every ingredient hub on Tulo - substitutes, storage tips, and how to use it.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

@@ -55,7 +55,7 @@ export default async function HomePage() {
       {/* No visible hero copy or CTAs -- the recipes/ingredients/tools
           content below is the point, visible the moment the page loads.
           This heading is for accessibility/SEO only. */}
-      <h1 className="sr-only">{SITE_NAME} -- recipes, ingredient guides, and kitchen tools</h1>
+      <h1 className="sr-only">{SITE_NAME} - recipes, ingredient guides, and kitchen tools</h1>
       <JsonLd
         data={{
           "@context": "https://schema.org",

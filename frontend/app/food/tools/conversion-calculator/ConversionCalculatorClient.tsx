@@ -18,7 +18,7 @@ const FAQS = [
   {
     question: "How many grams are in a cup?",
     answer:
-      "It depends entirely on what's in the cup -- a cup of flour, a cup of sugar, and a cup of water all weigh different amounts, since a cup measures volume, not weight. Use the weight tab above with the specific ingredient's known conversion rather than one universal number.",
+      "It depends entirely on what's in the cup - a cup of flour, a cup of sugar, and a cup of water all weigh different amounts, since a cup measures volume, not weight. Use the weight tab above with the specific ingredient's known conversion rather than one universal number.",
   },
   {
     question: "How do I convert an oven temperature for a fan (convection) oven?",
@@ -28,7 +28,7 @@ const FAQS = [
   {
     question: "Is this calculator accurate for every ingredient?",
     answer:
-      "The volume and weight conversions are standard, exact unit-to-unit conversions (cups to milliliters, ounces to grams). They don't account for ingredient density, so a cup-to-gram conversion for a specific ingredient (flour, sugar, butter) can differ from these generic unit conversions -- check the ingredient's own recipe page for that.",
+      "The volume and weight conversions are standard, exact unit-to-unit conversions (cups to milliliters, ounces to grams). They don't account for ingredient density, so a cup-to-gram conversion for a specific ingredient (flour, sugar, butter) can differ from these generic unit conversions - check the ingredient's own recipe page for that.",
   },
 ];
 

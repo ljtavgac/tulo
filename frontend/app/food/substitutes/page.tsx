@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Substitutes";
-const DESCRIPTION = "Every substitute guide on Tulo -- ranked options with exact ratios.";
+const DESCRIPTION = "Every substitute guide on Tulo, ranked options with exact ratios.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

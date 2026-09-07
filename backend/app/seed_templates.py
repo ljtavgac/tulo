@@ -2,7 +2,7 @@
 Seeds one hand-authored example page per template type, for the template
 review step described in WORKFLOW.md ("build order: templates before
 content"). Titles/keywords below are copied from real CONTENT_QUEUE.csv
-rows as plain literals -- this module never reads or writes that CSV file.
+rows as plain literals, this module never reads or writes that CSV file.
 
 Run standalone with `python -m app.seed_templates`, or it runs
 automatically on API startup if the pages table is empty (see main.py).
@@ -23,7 +23,7 @@ SEED_PAGES = [
         "batch_number": 0,
         "content": {
             "meta_description": (
-                "Tulo is a no-clutter recipe site -- ingredients and instructions up "
+                "Tulo is a no-clutter recipe site, ingredients and instructions up "
                 "front, plus native serving-size scaling and unit conversion built "
                 "into every recipe."
             ),
@@ -39,7 +39,7 @@ SEED_PAGES = [
             "positioning_statement": (
                 "No life story before the recipe. No cross-vertical clutter. "
                 "Just the recipe, the ingredient info, and the tools you actually "
-                "came here for -- visible the moment the page loads."
+                "came here for, visible the moment the page loads."
             ),
         },
     },
@@ -57,7 +57,7 @@ SEED_PAGES = [
             "hero_image_query": "banana nut bread",
             "why_it_works": (
                 "Extra-ripe, well-spotted bananas add natural sweetness and "
-                "moisture, so this loaf stays tender without drying out -- and "
+                "moisture, so this loaf stays tender without drying out, and "
                 "a quick one-bowl method means less cleanup."
             ),
             "prep_time_minutes": 15,
@@ -84,16 +84,16 @@ SEED_PAGES = [
                 "Stir the melted butter into the mashed banana.",
                 "Mix in the sugar, beaten egg, and vanilla extract.",
                 "Sprinkle the baking soda and salt over the mixture and stir in.",
-                "Add the flour and mix until just combined -- don't overmix, or the bread will turn out dense.",
+                "Add the flour and mix until just combined, don't overmix, or the bread will turn out dense.",
                 "Fold in the chopped walnuts.",
                 "Pour the batter into the prepared loaf pan.",
                 "Bake for 55-65 minutes, until a toothpick inserted into the center comes out clean.",
                 "Cool in the pan for 10 minutes, then turn out onto a wire rack to cool completely before slicing.",
             ],
             "tips_and_variations": [
-                "Very ripe, heavily spotted (almost black) bananas give noticeably more flavor than yellow ones -- don't toss bananas just because they've browned.",
+                "Very ripe, heavily spotted (almost black) bananas give noticeably more flavor than yellow ones, don't toss bananas just because they've browned.",
                 "Swap up to half the flour for whole wheat flour for a heartier crumb. Going past half makes the loaf noticeably dense.",
-                "No walnuts on hand? Pecans work as a 1:1 swap, or leave nuts out entirely -- the texture changes slightly but the recipe still holds together.",
+                "No walnuts on hand? Pecans work as a 1:1 swap, or leave nuts out entirely, the texture changes slightly but the recipe still holds together.",
                 "For extra moisture, add 2 tablespoons of sour cream or plain yogurt along with the wet ingredients.",
             ],
             "storage_and_reheating": (
@@ -105,8 +105,8 @@ SEED_PAGES = [
             ),
             "nutrition_note": (
                 "Approximately 210 calories, 8g fat, 32g carbohydrates, and 4g "
-                "protein per slice, based on 10 slices per loaf. An estimate only "
-                "-- exact values depend on the specific ingredients used."
+                "protein per slice, based on 10 slices per loaf. An estimate only, "
+                "exact values depend on the specific ingredients used."
             ),
             "faqs": [
                 {
@@ -121,7 +121,7 @@ SEED_PAGES = [
                     "question": "Why is my banana bread dense or gummy?",
                     "answer": (
                         "The most common cause is overmixing once the flour is "
-                        "added -- stir only until the streaks of flour disappear. "
+                        "added, stir only until the streaks of flour disappear. "
                         "Underbaking is the second most common cause: test with a "
                         "toothpick in the very center of the loaf, not near the edge."
                     ),
@@ -181,20 +181,20 @@ SEED_PAGES = [
             "storage": (
                 "Fresh chives wilt quickly. Wrap loosely in a damp paper towel and "
                 "store in a sealed container or bag in the refrigerator crisper "
-                "drawer -- they'll keep for about a week. For longer storage, snip "
+                "drawer, they'll keep for about a week. For longer storage, snip "
                 "and freeze in an airtight bag or ice cube tray with a little water "
                 "or oil; frozen chives lose their crisp texture but keep their "
                 "flavor well for cooked dishes."
             ),
             "uses": (
-                "Snip with scissors directly onto finished dishes -- baked potatoes, "
+                "Snip with scissors directly onto finished dishes, baked potatoes, "
                 "scrambled eggs, soups, dips, and salads. Chives lose flavor and turn "
                 "dull if cooked for long, so add them at the very end or as a garnish "
                 "rather than early in cooking."
             ),
             "nutrition_note": (
                 "Chives are low in calories and used in small quantities, but they "
-                "contain vitamin K, vitamin C, and modest amounts of vitamin A -- "
+                "contain vitamin K, vitamin C, and modest amounts of vitamin A, "
                 "more of a flavor accent than a significant nutrient source at "
                 "typical serving sizes."
             ),
@@ -212,7 +212,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute dried chives for fresh?",
                     "answer": (
-                        "You can, but expect a real drop in flavor and color -- "
+                        "You can, but expect a real drop in flavor and color, "
                         "drying mutes chives' flavor more than most herbs. Use "
                         "about a third of the amount called for fresh, and add "
                         "them earlier in cooking rather than as a raw garnish."
@@ -250,7 +250,7 @@ SEED_PAGES = [
                 "Drizzle the cut sides with olive oil and season with salt and pepper.",
                 "Place both halves cut-side down on a parchment-lined baking sheet.",
                 "Roast for 40-50 minutes, until the skin gives slightly when pressed and a fork slides in easily.",
-                "Let the squash cool for about 10 minutes -- it holds heat and can burn fingers if handled right away.",
+                "Let the squash cool for about 10 minutes, it holds heat and can burn fingers if handled right away.",
                 "Using a fork, scrape the flesh lengthwise from the skin. It separates into long, spaghetti-like strands.",
             ],
             "common_mistakes": [
@@ -275,7 +275,7 @@ SEED_PAGES = [
                         "A fork should slide into the flesh with almost no "
                         "resistance, and the skin gives slightly when pressed. If "
                         "the fork meets resistance, the strands will be short and "
-                        "won't separate cleanly -- give it more time rather than "
+                        "won't separate cleanly, give it more time rather than "
                         "pulling it early."
                     ),
                 },
@@ -305,7 +305,7 @@ SEED_PAGES = [
             ),
             "hero_image_query": "tahini paste jar",
             "direct_answer": (
-                "Tahini is a smooth paste made from toasted, ground sesame seeds -- "
+                "Tahini is a smooth paste made from toasted, ground sesame seeds, "
                 "similar in consistency to thin peanut butter, with a nutty, "
                 "slightly bitter flavor and no added sweetness."
             ),
@@ -313,7 +313,7 @@ SEED_PAGES = [
                 "It's a foundational ingredient in Middle Eastern and Mediterranean "
                 "cooking, made by grinding hulled sesame seeds, sometimes lightly "
                 "toasted first, into a smooth, pourable paste, often with a touch of "
-                "oil to help it emulsify. Quality varies by roast level and grind -- "
+                "oil to help it emulsify. Quality varies by roast level and grind, "
                 "lighter tahini tastes milder, while darker, more heavily toasted "
                 "tahini has a more pronounced, slightly bitter edge."
             ),
@@ -342,7 +342,7 @@ SEED_PAGES = [
                         "Like natural peanut butter, tahini's oil naturally "
                         "separates and rises to the top during storage. Stir it "
                         "thoroughly (scraping the bottom of the jar) before each "
-                        "use -- this is normal, not a sign it's gone bad."
+                        "use, this is normal, not a sign it's gone bad."
                     ),
                 },
                 {
@@ -367,7 +367,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Cappuccino vs. latte: the real difference is the milk-to-foam "
-                "ratio. A side-by-side comparison to help you order -- or make -- "
+                "ratio. A side-by-side comparison to help you order, or make, "
                 "the right one."
             ),
             "hero_image_query": "cappuccino and latte side by side",
@@ -375,7 +375,7 @@ SEED_PAGES = [
             "item_b_name": "Latte",
             "comparison_table": [
                 {"attribute": "Espresso", "item_a": "1-2 shots", "item_b": "1-2 shots"},
-                {"attribute": "Steamed milk", "item_a": "Roughly equal part to the espresso", "item_b": "Much larger proportion -- 2-3x the espresso"},
+                {"attribute": "Steamed milk", "item_a": "Roughly equal part to the espresso", "item_b": "Much larger proportion, 2-3x the espresso"},
                 {"attribute": "Milk foam", "item_a": "Thick, deep foam layer (about a third of the drink)", "item_b": "Thin foam layer, just enough to cap the drink"},
                 {"attribute": "Typical size", "item_a": "5-6 oz", "item_b": "8-12+ oz"},
                 {"attribute": "Texture", "item_a": "Light, airy, more foam than liquid milk", "item_b": "Silky, milk-forward, less foam"},
@@ -383,7 +383,7 @@ SEED_PAGES = [
             "verdict": (
                 "Choose a cappuccino for a stronger, more concentrated coffee-forward "
                 "drink with a distinct foam texture. Choose a latte for a milkier, "
-                "smoother, more mellow drink -- and more room for flavored syrups, "
+                "smoother, more mellow drink, and more room for flavored syrups, "
                 "since there's more milk volume to carry them."
             ),
             "sections": [
@@ -399,7 +399,7 @@ SEED_PAGES = [
                     "heading": "Latte",
                     "body": (
                         "A latte is mostly steamed milk with a shot or two of espresso "
-                        "and a thin layer of foam -- the higher milk ratio is also what "
+                        "and a thin layer of foam, the higher milk ratio is also what "
                         "makes lattes the go-to canvas for latte art."
                     ),
                 },
@@ -408,7 +408,7 @@ SEED_PAGES = [
                 {
                     "question": "Which has more caffeine, a cappuccino or a latte?",
                     "answer": (
-                        "Neither -- caffeine comes entirely from the espresso shots, "
+                        "Neither - caffeine comes entirely from the espresso shots, "
                         "and both drinks typically use the same 1-2 shots. The "
                         "difference is milk volume, not caffeine content, so a "
                         "latte doesn't dilute the caffeine, it just dilutes the "
@@ -428,7 +428,7 @@ SEED_PAGES = [
                 {
                     "question": "Which one should I order if I don't like a strong coffee taste?",
                     "answer": (
-                        "A latte -- the higher milk-to-espresso ratio mellows the "
+                        "A latte - the higher milk-to-espresso ratio mellows the "
                         "coffee flavor considerably compared to a cappuccino's "
                         "thicker foam and more concentrated taste per sip."
                     ),
@@ -470,7 +470,7 @@ SEED_PAGES = [
                     "note": (
                         "Traditional in some European baking; gives extra crispness "
                         "but has a strong ammonia smell during baking that fully "
-                        "dissipates -- not ideal for thick or dense baked goods, "
+                        "dissipates, not ideal for thick or dense baked goods, "
                         "where the smell can linger if it can't escape."
                     ),
                 },
@@ -491,7 +491,7 @@ SEED_PAGES = [
                     "note": (
                         "Self-rising flour already contains both leavening and salt, "
                         "so this only works if you're replacing the recipe's plain "
-                        "flour with it -- not as a direct add-in alongside the "
+                        "flour with it, not as a direct add-in alongside the "
                         "regular flour."
                     ),
                 },
@@ -500,7 +500,7 @@ SEED_PAGES = [
                 "The substitutes above are for baking soda's leavening role in baked "
                 "goods. If a savory recipe calls for a pinch of baking soda for "
                 "browning or tenderizing (stir-fries, caramelizing onions), there "
-                "isn't a good direct substitute -- it's best to simply omit it there."
+                "isn't a good direct substitute, it's best to simply omit it there."
             ),
             "faqs": [
                 {
@@ -527,7 +527,7 @@ SEED_PAGES = [
                     "answer": (
                         "It doesn't spoil, but it does lose leavening power over "
                         "time, especially once opened. Test it by dropping a "
-                        "pinch into vinegar -- vigorous fizzing means it's still "
+                        "pinch into vinegar, vigorous fizzing means it's still "
                         "active; a weak reaction means it's time to replace it."
                     ),
                 },
@@ -543,20 +543,20 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": (
-                "Eggplant recipes organized by cooking method -- roasted, fried, "
-                "grilled, and curried -- with a real curated pick instead of an "
+                "Eggplant recipes organized by cooking method - roasted, fried, "
+                "grilled, and curried - with a real curated pick instead of an "
                 "auto-generated list."
             ),
             "intro": (
                 "Eggplant's spongy texture takes on flavor differently depending on "
-                "how it's cooked -- roasted until creamy, breaded and fried, or "
+                "how it's cooked, roasted until creamy, breaded and fried, or "
                 "simmered low and slow. These are the eggplant recipes worth having "
                 "in rotation, organized by cooking method."
             ),
             "recipe_cards": [
                 {"title": "Baba Ganoush", "slug": None, "description": "Smoky, roasted eggplant dip blended with tahini, garlic, and lemon.", "image_query": "baba ganoush"},
                 {"title": "Eggplant Parmesan", "slug": None, "description": "Breaded, fried (or baked) eggplant layered with marinara and melted cheese.", "image_query": "eggplant parmesan"},
-                {"title": "Roasted Eggplant with Garlic and Herbs", "slug": None, "description": "The simplest way to cook eggplant -- olive oil, high heat, and just enough seasoning to let it shine.", "image_query": "roasted eggplant"},
+                {"title": "Roasted Eggplant with Garlic and Herbs", "slug": None, "description": "The simplest way to cook eggplant - olive oil, high heat, and just enough seasoning to let it shine.", "image_query": "roasted eggplant"},
                 {"title": "Eggplant Curry (Baingan Bharta)", "slug": None, "description": "Charred, mashed eggplant simmered with tomatoes, onion, and warm spices.", "image_query": "baingan bharta"},
                 {"title": "Grilled Eggplant Slices", "slug": None, "description": "Salted, grilled eggplant rounds with a quick balsamic glaze.", "image_query": "grilled eggplant"},
                 {"title": "Miso-Glazed Eggplant (Nasu Dengaku)", "slug": None, "description": "Broiled eggplant halves topped with a sweet-savory miso glaze.", "image_query": "nasu dengaku"},
@@ -574,7 +574,7 @@ SEED_PAGES = [
                         "than older ones, so salting is mostly optional today. If "
                         "using a large, older, or very seedy eggplant, salt the cut "
                         "flesh, let it sit 20-30 minutes, then blot dry before "
-                        "cooking -- this also helps it absorb less oil."
+                        "cooking, this also helps it absorb less oil."
                     ),
                 },
                 {
@@ -635,23 +635,23 @@ SEED_PAGES = [
             ],
             "tips_and_variations": [
                 "Pound thicker breasts to an even ½-inch thickness first so they cook through at the same rate the crust browns.",
-                "For extra crunch, broil for the last 1-2 minutes -- watch closely, panko browns fast under a broiler.",
+                "For extra crunch, broil for the last 1-2 minutes, watch closely, panko browns fast under a broiler.",
             ],
             "storage_and_reheating": (
                 "Refrigerate leftovers up to 3 days. Reheat in a 350°F oven or air "
-                "fryer to re-crisp the topping -- microwaving works but leaves the "
+                "fryer to re-crisp the topping, microwaving works but leaves the "
                 "crust soft."
             ),
             "nutrition_note": (
                 "Approximately 380 calories, 22g fat, 8g carbohydrates, and 38g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
                 {
                     "question": "Can I use chicken thighs instead of breasts?",
                     "answer": (
-                        "Yes -- boneless, skinless thighs work well and are more "
+                        "Yes, boneless, skinless thighs work well and are more "
                         "forgiving if slightly overcooked. Cook to the same 165°F "
                         "(74°C) internal temperature; thighs may need a few extra "
                         "minutes depending on thickness."
@@ -680,13 +680,13 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "A one-dish chicken, broccoli, and rice casserole with a creamy "
-                "sauce and a melted gruyère topping -- real ingredients, no canned "
+                "sauce and a melted gruyère topping, real ingredients, no canned "
                 "soup shortcut."
             ),
             "hero_image_query": "chicken broccoli rice casserole",
             "why_it_works": (
                 "Par-cooking the rice and broccoli separately before combining "
-                "means everything finishes baking at the same rate -- no raw "
+                "means everything finishes baking at the same rate, no raw "
                 "centers or mushy broccoli from a single long bake."
             ),
             "prep_time_minutes": 20,
@@ -722,14 +722,14 @@ SEED_PAGES = [
             ),
             "nutrition_note": (
                 "Approximately 420 calories, 22g fat, 28g carbohydrates, and 28g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
                 {
                     "question": "Can I make this ahead of time?",
                     "answer": (
-                        "Yes -- assemble it fully, cover, and refrigerate up to a "
+                        "Yes, assemble it fully, cover, and refrigerate up to a "
                         "day ahead. Bake straight from the fridge, adding about 10 "
                         "extra minutes to the covered bake time."
                     ),
@@ -737,7 +737,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I use frozen broccoli?",
                     "answer": (
-                        "Yes, thaw and drain it well first -- frozen broccoli holds "
+                        "Yes, thaw and drain it well first, frozen broccoli holds "
                         "extra water that can make the casserole watery if added "
                         "straight from frozen."
                     ),
@@ -756,7 +756,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Classic Southern fried green tomatoes with a crisp cornmeal "
-                "crust -- firm, tart green tomatoes sliced, breaded, and "
+                "crust - firm, tart green tomatoes sliced, breaded, and "
                 "pan-fried until golden."
             ),
             "hero_image_query": "fried green tomatoes",
@@ -786,24 +786,24 @@ SEED_PAGES = [
                 "Drain on paper towels or a wire rack and season with a little extra salt while still hot.",
             ],
             "tips_and_variations": [
-                "Don't crowd the pan -- too many slices at once drops the oil temperature and the crust turns greasy instead of crisp.",
+                "Don't crowd the pan, too many slices at once drops the oil temperature and the crust turns greasy instead of crisp.",
                 "A wire rack over a sheet pan keeps the bottom crust from steaming and going soft the way paper towels can.",
             ],
             "storage_and_reheating": (
                 "Best eaten fresh. Leftovers keep 1-2 days refrigerated; reheat in "
-                "a dry skillet or oven to re-crisp -- microwaving makes the crust "
+                "a dry skillet or oven to re-crisp, microwaving makes the crust "
                 "soft."
             ),
             "nutrition_note": (
                 "Approximately 220 calories, 10g fat, 27g carbohydrates, and 5g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
                 {
                     "question": "Can I use ripe red tomatoes instead?",
                     "answer": (
-                        "Not well -- ripe tomatoes are too soft and juicy and will "
+                        "Not well - ripe tomatoes are too soft and juicy and will "
                         "fall apart in the breading and the pan. This recipe "
                         "specifically needs firm, unripe green tomatoes."
                     ),
@@ -830,7 +830,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "A crowd-size sushi bake with seasoned rice, a creamy baked "
-                "imitation crab topping, and nori for scooping -- all the sushi "
+                "imitation crab topping, and nori for scooping, all the sushi "
                 "flavor, none of the rolling."
             ),
             "hero_image_query": "sushi bake casserole",
@@ -838,7 +838,7 @@ SEED_PAGES = [
                 "Layering seasoned sushi rice under a baked, creamy seafood "
                 "topping delivers the same flavors as a spicy crab roll at "
                 "casserole scale, with nori sheets standing in for the seaweed "
-                "wrap -- scoop and wrap at the table instead of rolling by hand."
+                "wrap, scoop and wrap at the table instead of rolling by hand."
             ),
             "prep_time_minutes": 25,
             "cook_time_minutes": 15,
@@ -867,11 +867,11 @@ SEED_PAGES = [
             ],
             "storage_and_reheating": (
                 "Refrigerate up to 3 days. Reheat in the oven at 350°F until warmed "
-                "through -- the topping can separate slightly in the microwave."
+                "through, the topping can separate slightly in the microwave."
             ),
             "nutrition_note": (
                 "Approximately 380 calories, 18g fat, 40g carbohydrates, and 13g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
@@ -879,7 +879,7 @@ SEED_PAGES = [
                     "question": "What do I eat sushi bake with?",
                     "answer": (
                         "Scoop a portion onto a square of nori, wrap it up like a "
-                        "hand roll, and eat it immediately -- that's the whole "
+                        "hand roll, and eat it immediately, that's the whole "
                         "appeal, the nori stays crisp only briefly once filled."
                     ),
                 },
@@ -905,7 +905,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Spicy, garlicky peri peri chicken marinated in a bird's eye "
-                "chile sauce and grilled or baked until charred -- a copycat of "
+                "chile sauce and grilled or baked until charred, a copycat of "
                 "the Portuguese-African classic."
             ),
             "hero_image_query": "grilled peri peri chicken thighs",
@@ -946,7 +946,7 @@ SEED_PAGES = [
             ),
             "nutrition_note": (
                 "Approximately 340 calories, 20g fat, 3g carbohydrates, and 35g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
@@ -955,14 +955,14 @@ SEED_PAGES = [
                     "answer": (
                         "\"Peri peri\" (or piri piri) refers to the African bird's "
                         "eye chile pepper the sauce is built on, and by extension "
-                        "the sauce and dishes made with it -- a Portuguese-African "
+                        "the sauce and dishes made with it, a Portuguese-African "
                         "flavor tradition, not a specific restaurant brand."
                     ),
                 },
                 {
                     "question": "Can I use a store-bought peri peri sauce instead?",
                     "answer": (
-                        "Yes -- swap the homemade marinade for about 1 cup of a "
+                        "Yes, swap the homemade marinade for about 1 cup of a "
                         "bottled peri peri sauce and marinate the same way. Flavor "
                         "intensity varies a lot by brand, so taste and adjust with "
                         "extra lemon or chile if it's mild."
@@ -981,7 +981,7 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "A chicken version of al pastor -- marinated in dried chiles, "
+                "A chicken version of al pastor, marinated in dried chiles, "
                 "achiote, and pineapple, then seared for the same sweet, "
                 "smoky-spicy flavor as the classic pork version, no vertical spit "
                 "required."
@@ -1015,16 +1015,16 @@ SEED_PAGES = [
                 "Rest 5 minutes, then chop and serve with diced fresh pineapple, in tacos or over rice.",
             ],
             "tips_and_variations": [
-                "Achiote paste is sold in Latin grocery stores and many supermarkets' international aisle -- don't substitute plain paprika, it lacks achiote's distinct earthy flavor.",
+                "Achiote paste is sold in Latin grocery stores and many supermarkets' international aisle, don't substitute plain paprika, it lacks achiote's distinct earthy flavor.",
                 "For tacos, warm corn tortillas and top with the chopped chicken, pineapple, chopped onion, and cilantro.",
             ],
             "storage_and_reheating": (
                 "Refrigerate up to 3 days. Reheat in a hot skillet to re-crisp the "
-                "edges -- microwaving works but loses the char."
+                "edges, microwaving works but loses the char."
             ),
             "nutrition_note": (
                 "Approximately 310 calories, 14g fat, 12g carbohydrates, and 34g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
@@ -1041,7 +1041,7 @@ SEED_PAGES = [
                     "question": "Can I cook this on a vertical spit at home?",
                     "answer": (
                         "Most home kitchens don't have a trompo, so a hot skillet, "
-                        "grill, or broiler is the practical substitute -- the goal "
+                        "grill, or broiler is the practical substitute, the goal "
                         "is a hard sear with charred edges, which any of those can "
                         "achieve."
                     ),
@@ -1060,13 +1060,13 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "No-churn mango ice cream made with sweetened condensed milk and "
-                "ripe mango puree -- no ice cream maker required."
+                "ripe mango puree, no ice cream maker required."
             ),
             "hero_image_query": "mango ice cream",
             "why_it_works": (
                 "Sweetened condensed milk's sugar content lowers the freezing "
                 "point enough that the mixture stays scoopable without an ice "
-                "cream maker constantly churning air into it -- whipped cream "
+                "cream maker constantly churning air into it, whipped cream "
                 "folded in does that job instead."
             ),
             "prep_time_minutes": 15,
@@ -1098,14 +1098,14 @@ SEED_PAGES = [
             ),
             "nutrition_note": (
                 "Approximately 320 calories, 18g fat, 36g carbohydrates, and 4g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
                 {
                     "question": "Do I need an ice cream maker for this?",
                     "answer": (
-                        "No -- this is a no-churn method. The whipped cream folded "
+                        "No, this is a no-churn method. The whipped cream folded "
                         "in provides the airiness a machine would normally churn "
                         "in, so a freezer is the only equipment needed."
                     ),
@@ -1132,14 +1132,14 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "A properly balanced amaretto sour with fresh lemon juice and an "
-                "egg white for a silky foam top -- not the cloying bar-mix "
+                "egg white for a silky foam top, not the cloying bar-mix "
                 "version."
             ),
             "hero_image_query": "amaretto sour cocktail",
             "why_it_works": (
                 "Fresh lemon juice cuts amaretto's sweetness, and a dry shake "
                 "(no ice) whips the egg white into a stable foam before the wet "
-                "shake chills the drink -- skipping either step is why bar-mix "
+                "shake chills the drink, skipping either step is why bar-mix "
                 "versions turn out flat and one-note sweet."
             ),
             "prep_time_minutes": 5,
@@ -1162,7 +1162,7 @@ SEED_PAGES = [
             ],
             "tips_and_variations": [
                 "Pasteurized egg whites (or the liquid egg white product sold in cartons) work fine and remove any raw-egg concern.",
-                "No egg white on hand? The drink is still good without it -- just less foamy on top.",
+                "No egg white on hand? The drink is still good without it, just less foamy on top.",
             ],
             "storage_and_reheating": None,
             "nutrition_note": (
@@ -1201,13 +1201,13 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Pan-seared Chilean sea bass with a crisp skin and buttery, "
-                "flaky center -- a restaurant-style preparation that's simple "
+                "flaky center, a restaurant-style preparation that's simple "
                 "enough for a weeknight."
             ),
             "hero_image_query": "pan seared chilean sea bass",
             "why_it_works": (
                 "Chilean sea bass's high fat content makes it nearly impossible "
-                "to overcook into dryness the way leaner white fish can -- a hot "
+                "to overcook into dryness the way leaner white fish can, a hot "
                 "pan and a hands-off sear are all it needs for crisp skin and a "
                 "silky center."
             ),
@@ -1232,8 +1232,8 @@ SEED_PAGES = [
                 "Squeeze fresh lemon over the top and serve immediately.",
             ],
             "tips_and_variations": [
-                "Don't move the fish while the skin-side sear is happening -- it releases from the pan on its own once properly crisped.",
-                "Chilean sea bass is also sold as Patagonian toothfish -- same fish, different market name.",
+                "Don't move the fish while the skin-side sear is happening, it releases from the pan on its own once properly crisped.",
+                "Chilean sea bass is also sold as Patagonian toothfish, same fish, different market name.",
             ],
             "storage_and_reheating": (
                 "Best eaten immediately. Leftovers keep a day refrigerated; reheat "
@@ -1241,7 +1241,7 @@ SEED_PAGES = [
             ),
             "nutrition_note": (
                 "Approximately 420 calories, 34g fat, 0g carbohydrates, and 28g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
@@ -1250,7 +1250,7 @@ SEED_PAGES = [
                     "answer": (
                         "It's a slow-growing, deep-water fish with tightly "
                         "regulated catch limits, which keeps supply low relative "
-                        "to demand -- not a marketing markup on an otherwise "
+                        "to demand, not a marketing markup on an otherwise "
                         "common fish."
                     ),
                 },
@@ -1277,7 +1277,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Classic arroz con leche (Mexican rice pudding) simmered slowly "
-                "with cinnamon and milk until creamy -- a traditional recipe, "
+                "with cinnamon and milk until creamy, a traditional recipe, "
                 "not a shortcut version."
             ),
             "hero_image_query": "arroz con leche rice pudding",
@@ -1304,21 +1304,21 @@ SEED_PAGES = [
                 "Reduce heat to low, cover, and simmer for 15 minutes, until the water is absorbed.",
                 "Stir in the whole milk, sweetened condensed milk, and sugar.",
                 "Simmer uncovered over low heat, stirring often, for 20-25 minutes, until thickened and creamy.",
-                "Remove the cinnamon stick and let cool slightly -- it continues thickening as it cools.",
+                "Remove the cinnamon stick and let cool slightly, it continues thickening as it cools.",
                 "Serve warm or chilled, dusted with ground cinnamon.",
             ],
             "tips_and_variations": [
-                "Stir often once the milk goes in -- rice pudding scorches on the bottom of the pot easily if left unstirred.",
+                "Stir often once the milk goes in, rice pudding scorches on the bottom of the pot easily if left unstirred.",
                 "A strip of orange or lime zest simmered along with the cinnamon stick adds a traditional citrus note.",
             ],
             "storage_and_reheating": (
-                "Refrigerate up to 5 days. It thickens further when cold -- stir "
+                "Refrigerate up to 5 days. It thickens further when cold, stir "
                 "in a splash of milk when reheating or serving cold to loosen it "
                 "back up."
             ),
             "nutrition_note": (
                 "Approximately 280 calories, 6g fat, 48g carbohydrates, and 7g "
-                "protein per serving. An estimate only -- exact values depend on "
+                "protein per serving. An estimate only, exact values depend on "
                 "the specific ingredients used."
             ),
             "faqs": [
@@ -1360,12 +1360,12 @@ SEED_PAGES = [
                 "Oysters are bivalve mollusks harvested from coastal and "
                 "estuarine waters, eaten raw on the half shell, grilled, fried, "
                 "or baked. Flavor and texture vary significantly by region and "
-                "species -- briny and firm from cold Atlantic waters, milder and "
+                "species, briny and firm from cold Atlantic waters, milder and "
                 "creamier from warmer Gulf waters."
             ),
             "substitutes": [
                 {"name": "Clams", "ratio": "1:1 by count", "note": "Similar brine and texture raw or cooked, though generally less plump."},
-                {"name": "Mussels", "ratio": "1:1 by count", "note": "Works for cooked preparations (grilled, baked) but is a poor stand-in raw -- different texture and flavor."},
+                {"name": "Mussels", "ratio": "1:1 by count", "note": "Works for cooked preparations (grilled, baked) but is a poor stand-in raw, different texture and flavor."},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1378,13 +1378,13 @@ SEED_PAGES = [
             "uses": (
                 "Served raw on the half shell with mignonette or lemon, grilled "
                 "with garlic butter, fried for po'boys, or baked (Oysters "
-                "Rockefeller). Always cook thoroughly if not eating raw -- raw "
+                "Rockefeller). Always cook thoroughly if not eating raw, raw "
                 "oysters carry a real risk for people who are immunocompromised, "
                 "pregnant, or have liver conditions."
             ),
             "nutrition_note": (
                 "A significant source of zinc, vitamin B12, and iron, and "
-                "relatively low in calories -- roughly 50-70 calories per "
+                "relatively low in calories, roughly 50-70 calories per "
                 "half-dozen raw oysters, depending on size."
             ),
             "faqs": [
@@ -1454,7 +1454,7 @@ SEED_PAGES = [
                     "question": "Is kielbasa already cooked, or does it need to be cooked through?",
                     "answer": (
                         "Most kielbasa sold in US supermarkets is fully cooked and "
-                        "smoked -- it just needs reheating and browning, not "
+                        "smoked, it just needs reheating and browning, not "
                         "cooking to a safe internal temperature the way raw "
                         "sausage does. Check the package, since fresh, uncooked "
                         "kielbasa does exist and needs to reach 160°F (71°C)."
@@ -1463,7 +1463,7 @@ SEED_PAGES = [
                 {
                     "question": "What's the difference between kielbasa and Polish sausage?",
                     "answer": (
-                        "None -- \"kielbasa\" is simply the Polish word for "
+                        "None, \"kielbasa\" is simply the Polish word for "
                         "sausage, and in English it's come to specifically mean "
                         "the smoked Polish sausage most commonly found in stores, "
                         "so the two names refer to the same product."
@@ -1498,25 +1498,25 @@ SEED_PAGES = [
             "substitute_page_slug": "creme-fraiche-substitute",
             "storage": (
                 "Refrigerate and use within the printed date, generally 1-2 "
-                "weeks once opened. It doesn't freeze well -- the texture "
+                "weeks once opened. It doesn't freeze well, the texture "
                 "separates and turns grainy once thawed."
             ),
             "uses": (
                 "Stirred into pan sauces and soups (it won't curdle from heat "
                 "the way sour cream can), dolloped over desserts or savory "
-                "crepes, or whipped lightly to top fruit -- it whips to soft "
+                "crepes, or whipped lightly to top fruit, it whips to soft "
                 "peaks with less added sugar needed than heavy cream."
             ),
             "nutrition_note": (
                 "Higher in fat than sour cream, typically 28-45% fat depending "
-                "on the brand, so it's more calorie-dense -- roughly 50-55 "
+                "on the brand, so it's more calorie-dense, roughly 50-55 "
                 "calories per tablespoon."
             ),
             "faqs": [
                 {
                     "question": "Can I make crème fraîche at home?",
                     "answer": (
-                        "Yes -- stir 1 tablespoon of buttermilk into 1 cup of "
+                        "Yes, stir 1 tablespoon of buttermilk into 1 cup of "
                         "heavy cream, cover loosely, and let sit at room "
                         "temperature for 12-24 hours until thickened, then "
                         "refrigerate."
@@ -1581,7 +1581,7 @@ SEED_PAGES = [
                 {
                     "question": "Why is my gruyère grainy instead of smooth?",
                     "answer": (
-                        "That's usually a sign of longer aging, not a flaw -- "
+                        "That's usually a sign of longer aging, not a flaw, "
                         "aged gruyère develops small, crunchy tyrosine crystals "
                         "similar to aged cheddar or parmesan, which many people "
                         "specifically seek out."
@@ -1628,7 +1628,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "storage": (
-                "Store tightly capped in a cool, dark pantry -- it doesn't need "
+                "Store tightly capped in a cool, dark pantry, it doesn't need "
                 "refrigeration. Quality balsamic keeps well for years due to "
                 "its acidity and sugar content."
             ),
@@ -1639,7 +1639,7 @@ SEED_PAGES = [
                 "cooks off)."
             ),
             "nutrition_note": (
-                "Low in calories at typical serving sizes -- about 14 calories "
+                "Low in calories at typical serving sizes, about 14 calories "
                 "per tablespoon, mostly from natural grape sugars."
             ),
             "faqs": [
@@ -1649,7 +1649,7 @@ SEED_PAGES = [
                         "True traditional balsamic (Aceto Balsamico Tradizionale) "
                         "carries a DOP certification and is sold in small, "
                         "expensive bottles. Most supermarket balsamic is a "
-                        "commercial-grade product -- still genuinely useful for "
+                        "commercial-grade product, still genuinely useful for "
                         "everyday cooking, just not the aged traditional version."
                     ),
                 },
@@ -1658,7 +1658,7 @@ SEED_PAGES = [
                     "answer": (
                         "Simmer balsamic vinegar in a small saucepan over "
                         "medium-low heat until it reduces by about half and "
-                        "coats the back of a spoon -- roughly 10-15 minutes. It "
+                        "coats the back of a spoon, roughly 10-15 minutes. It "
                         "thickens further as it cools."
                     ),
                 },
@@ -1691,7 +1691,7 @@ SEED_PAGES = [
             "substitute_page_slug": None,
             "storage": (
                 "Keep feta submerged in its brine (or a fresh saltwater brine, "
-                "if the original was drained) in the refrigerator -- it dries "
+                "if the original was drained) in the refrigerator, it dries "
                 "out and turns crumbly-hard quickly once exposed to air. Stored "
                 "in brine, it keeps for several weeks."
             ),
@@ -1720,7 +1720,7 @@ SEED_PAGES = [
                     "question": "Can feta cheese be frozen?",
                     "answer": (
                         "It can, but the texture turns noticeably more crumbly "
-                        "and watery after thawing -- fine for cooking into baked "
+                        "and watery after thawing, fine for cooking into baked "
                         "dishes, but not ideal for serving raw or in a salad."
                     ),
                 },
@@ -1754,7 +1754,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "storage": (
-                "Keep in a sealed container in a cool, dry pantry -- it has an "
+                "Keep in a sealed container in a cool, dry pantry, it has an "
                 "essentially indefinite shelf life as long as it stays dry, "
                 "since moisture (not time) is what degrades it."
             ),
@@ -1765,7 +1765,7 @@ SEED_PAGES = [
                 "goods in small amounts for a more tender crumb."
             ),
             "nutrition_note": (
-                "Essentially pure starch -- about 30 calories per tablespoon, "
+                "Essentially pure starch, about 30 calories per tablespoon, "
                 "with negligible protein, fat, or fiber."
             ),
             "faqs": [
@@ -1782,7 +1782,7 @@ SEED_PAGES = [
                     "question": "Can I substitute cornstarch for flour in baking?",
                     "answer": (
                         "Only in small amounts, mixed with flour, not as a full "
-                        "1:1 replacement -- a spoonful swapped in for flour in "
+                        "1:1 replacement, a spoonful swapped in for flour in "
                         "cookies or cakes can make the crumb more tender, but "
                         "cornstarch has none of flour's gluten structure."
                     ),
@@ -1817,7 +1817,7 @@ SEED_PAGES = [
             "substitute_page_slug": None,
             "storage": (
                 "Store in an airtight container in a cool, dry pantry for up to "
-                "a year, or refrigerate/freeze for longer storage -- flour's "
+                "a year, or refrigerate/freeze for longer storage, flour's "
                 "natural oils can turn rancid over time, especially in warm, "
                 "humid conditions."
             ),
@@ -1828,8 +1828,8 @@ SEED_PAGES = [
                 "development makes for a tough result."
             ),
             "nutrition_note": (
-                "Similar calorie content to all-purpose flour -- about 100-110 "
-                "calories per ¼ cup -- with slightly more protein per serving "
+                "Similar calorie content to all-purpose flour, about 100-110 "
+                "calories per ¼ cup, with slightly more protein per serving "
                 "due to the higher-protein wheat it's milled from."
             ),
             "faqs": [
@@ -1837,15 +1837,15 @@ SEED_PAGES = [
                     "question": "Can I use bread flour for cookies or cakes?",
                     "answer": (
                         "You can, but the higher gluten content tends to make "
-                        "cookies and cakes chewier and denser rather than tender "
-                        "-- fine for a chewier cookie on purpose, less ideal for "
+                        "cookies and cakes chewier and denser rather than tender, "
+                        "fine for a chewier cookie on purpose, less ideal for "
                         "a light cake."
                     ),
                 },
                 {
                     "question": "Does bread flour make that much of a difference in homemade bread?",
                     "answer": (
-                        "Yes, noticeably -- the extra gluten gives the dough more "
+                        "Yes, noticeably, the extra gluten gives the dough more "
                         "strength to rise tall and hold an open, chewy crumb, "
                         "which is why most dedicated bread recipes call for it "
                         "specifically rather than all-purpose flour."
@@ -1875,7 +1875,7 @@ SEED_PAGES = [
                 "dishes like cacio e pepe and carbonara."
             ),
             "substitutes": [
-                {"name": "Parmigiano-Reggiano", "ratio": "1:1", "note": "Milder and less salty -- may want to add a bit more salt to the dish to compensate."},
+                {"name": "Parmigiano-Reggiano", "ratio": "1:1", "note": "Milder and less salty, may want to add a bit more salt to the dish to compensate."},
                 {"name": "Grana Padano", "ratio": "1:1", "note": "Similar to parmesan in flavor; a milder substitute than pecorino."},
             ],
             "substitute_page_slug": None,
@@ -1886,8 +1886,8 @@ SEED_PAGES = [
                 "within a couple of weeks for best flavor."
             ),
             "uses": (
-                "Grated into cacio e pepe, carbonara, and amatriciana -- the "
-                "traditional Roman pastas -- or shaved over salads and roasted "
+                "Grated into cacio e pepe, carbonara, and amatriciana, the "
+                "traditional Roman pastas, or shaved over salads and roasted "
                 "vegetables for a sharp, salty finish."
             ),
             "nutrition_note": (
@@ -1899,7 +1899,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I use parmesan instead of pecorino in carbonara?",
                     "answer": (
-                        "Yes, and many recipes outside Italy do -- it's milder "
+                        "Yes, and many recipes outside Italy do, it's milder "
                         "and less salty than pecorino, so the dish will taste "
                         "noticeably gentler. Purists consider pecorino essential "
                         "to a traditional Roman carbonara, but parmesan makes a "
@@ -1946,17 +1946,17 @@ SEED_PAGES = [
             "storage": (
                 "Store in a non-metal container (its moisture content can "
                 "corrode metal lids over time) in a cool, dry place. Its "
-                "natural moisture means it can clump -- this is normal, not "
+                "natural moisture means it can clump, this is normal, not "
                 "spoilage."
             ),
             "uses": (
-                "Best as a finishing salt -- sprinkled over roasted vegetables, "
-                "grilled meats, or caramel -- where its texture and mineral "
+                "Best as a finishing salt, sprinkled over roasted vegetables, "
+                "grilled meats, or caramel, where its texture and mineral "
                 "flavor are noticeable, rather than dissolved into a large pot "
                 "of cooking water where the distinction is lost."
             ),
             "nutrition_note": (
-                "Nutritionally similar to other salts -- sodium is sodium -- "
+                "Nutritionally similar to other salts, sodium is sodium, "
                 "though it contains trace minerals like magnesium and potassium "
                 "in amounts too small to be nutritionally significant."
             ),
@@ -1964,7 +1964,7 @@ SEED_PAGES = [
                 {
                     "question": "Is Celtic salt healthier than regular table salt?",
                     "answer": (
-                        "Not meaningfully -- the trace minerals it contains are "
+                        "Not meaningfully, the trace minerals it contains are "
                         "in amounts far too small to provide real nutritional "
                         "benefit. Any health difference from reducing refined "
                         "table salt intake would come from moderation, not from "
@@ -1974,7 +1974,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute Celtic salt 1:1 for table salt in a recipe?",
                     "answer": (
-                        "Not by volume -- its coarser, moister crystals are less "
+                        "Not by volume, its coarser, moister crystals are less "
                         "dense than fine table salt, so a recipe calling for "
                         "table salt will need more Celtic salt by volume (or the "
                         "same amount by weight) to taste equally salty."
@@ -2041,7 +2041,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How to wet-brine a turkey for a juicier, more evenly seasoned "
-                "roast -- ratios, timing, and food-safety notes."
+                "roast - ratios, timing, and food-safety notes."
             ),
             "hero_image_query": "turkey brining in a bucket",
             "steps": [
@@ -2062,7 +2062,7 @@ SEED_PAGES = [
                 {
                     "question": "Do I need to rinse the turkey after brining?",
                     "answer": (
-                        "Yes -- rinse off the surface brine and pat the skin very "
+                        "Yes, rinse off the surface brine and pat the skin very "
                         "dry. Leftover surface salt makes the skin taste overly "
                         "salty, and a wet surface won't crisp well in the oven."
                     ),
@@ -2089,15 +2089,15 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How to frost a layer cake with smooth, even sides using a "
-                "crumb coat -- the technique bakeries actually use."
+                "crumb coat, the technique bakeries actually use."
             ),
             "hero_image_query": "frosting a layer cake",
             "steps": [
-                "Make sure cake layers are completely cool -- frosting a warm cake melts the frosting and tears the crumb.",
+                "Make sure cake layers are completely cool, frosting a warm cake melts the frosting and tears the crumb.",
                 "Level the tops of the layers with a serrated knife if they domed while baking.",
                 "Place the first layer on a cake board or plate and spread an even layer of frosting on top.",
                 "Stack the second layer on top, pressing gently to level it.",
-                "Apply a thin \"crumb coat\" -- a very thin layer of frosting over the entire cake -- to seal in loose crumbs.",
+                "Apply a thin \"crumb coat\", a very thin layer of frosting over the entire cake, to seal in loose crumbs.",
                 "Refrigerate for 15-20 minutes until the crumb coat firms up.",
                 "Apply the final, thicker layer of frosting, smoothing with an offset spatula or bench scraper.",
             ],
@@ -2112,7 +2112,7 @@ SEED_PAGES = [
                     "question": "What is a crumb coat and is it really necessary?",
                     "answer": (
                         "A crumb coat is a thin layer of frosting applied first "
-                        "and chilled before the final coat -- it traps loose cake "
+                        "and chilled before the final coat, it traps loose cake "
                         "crumbs so they don't end up smeared through the visible "
                         "final layer. It's optional for a rustic look, but "
                         "essential for smooth, bakery-style sides."
@@ -2140,13 +2140,13 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How to steam dumplings so the wrappers stay tender without "
-                "sticking or turning gummy -- bamboo steamer or metal steamer "
+                "sticking or turning gummy, bamboo steamer or metal steamer "
                 "basket, either works."
             ),
             "hero_image_query": "steaming dumplings in a bamboo steamer",
             "steps": [
                 "Line the steamer basket with parchment paper, cabbage leaves, or a light coat of oil to prevent sticking.",
-                "Arrange dumplings with at least ½ inch of space between them -- they expand slightly and will stick together if too close.",
+                "Arrange dumplings with at least ½ inch of space between them, they expand slightly and will stick together if too close.",
                 "Bring water in the pot below to a rolling boil.",
                 "Set the steamer basket over the water, making sure the water doesn't touch the bottom of the basket.",
                 "Cover and steam for 8-10 minutes for fresh dumplings, or 12-15 minutes from frozen, without lifting the lid early.",
@@ -2162,7 +2162,7 @@ SEED_PAGES = [
                 {
                     "question": "Do I need to thaw frozen dumplings before steaming?",
                     "answer": (
-                        "No -- steam them directly from frozen, just extend the "
+                        "No, steam them directly from frozen, just extend the "
                         "steaming time by a few minutes to make sure the filling "
                         "cooks through completely."
                     ),
@@ -2171,7 +2171,7 @@ SEED_PAGES = [
                     "question": "Why do my dumplings stick to the steamer?",
                     "answer": (
                         "The steamer surface (or the parchment/cabbage liner) "
-                        "needs a barrier between it and the dumpling wrapper -- "
+                        "needs a barrier between it and the dumpling wrapper, "
                         "an unlined metal or bamboo surface will cause sticking "
                         "almost every time."
                     ),
@@ -2220,7 +2220,7 @@ SEED_PAGES = [
                     "question": "Do I need a different thermometer for grilling versus roasting?",
                     "answer": (
                         "No, the same instant-read or probe thermometer works for "
-                        "both -- what matters is insertion technique (thickest "
+                        "both, what matters is insertion technique (thickest "
                         "part, avoiding bone) more than the cooking method being "
                         "used."
                     ),
@@ -2238,11 +2238,11 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How to season a new carbon steel wok so food releases cleanly "
-                "and it resists rust -- the stovetop method, step by step."
+                "and it resists rust, the stovetop method, step by step."
             ),
             "hero_image_query": "seasoning a carbon steel wok",
             "steps": [
-                "Scrub a new wok thoroughly with soap and hot water to remove the factory coating -- this is the one time it's fine to use soap on it.",
+                "Scrub a new wok thoroughly with soap and hot water to remove the factory coating, this is the one time it's fine to use soap on it.",
                 "Dry completely, then heat the empty wok over high heat until it starts to change color slightly.",
                 "Add a small amount of high-smoke-point oil (vegetable or peanut oil) and swirl to coat the entire interior surface.",
                 "Continue heating and swirling until the oil starts to smoke, then carefully wipe out the excess with tongs and a paper towel.",
@@ -2250,7 +2250,7 @@ SEED_PAGES = [
                 "Stir-fry an inexpensive aromatic batch (ginger and scallion scraps work well) as a final seasoning pass, then wipe clean.",
             ],
             "common_mistakes": [
-                "Using soap after seasoning has started: soap strips the oil patina being built up -- only the very first factory-coating cleaning should use soap.",
+                "Using soap after seasoning has started: soap strips the oil patina being built up, only the very first factory-coating cleaning should use soap.",
                 "Using too much oil: a thick pooled layer turns sticky and gummy rather than forming a smooth patina; wipe out excess after each round.",
                 "Storing it wet: dry the wok completely and rub a very thin layer of oil on it before storing to prevent rust.",
             ],
@@ -2259,7 +2259,7 @@ SEED_PAGES = [
                 {
                     "question": "Why does food stick to my new wok even after seasoning?",
                     "answer": (
-                        "A single seasoning round isn't enough -- the nonstick "
+                        "A single seasoning round isn't enough, the nonstick "
                         "patina builds up gradually over repeated cooking "
                         "sessions. Continue cooking with oil regularly and it "
                         "will keep improving over the first several uses."
@@ -2268,7 +2268,7 @@ SEED_PAGES = [
                 {
                     "question": "How do I stop my wok from rusting?",
                     "answer": (
-                        "Never let it air-dry wet or soak in water -- dry it "
+                        "Never let it air-dry wet or soak in water, dry it "
                         "immediately over low heat after washing, then rub a "
                         "very thin layer of oil over the surface before storing."
                     ),
@@ -2285,12 +2285,12 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "How to make cold brew coffee concentrate at home -- ratio, "
+                "How to make cold brew coffee concentrate at home - ratio, "
                 "steep time, and how to dilute it for drinking."
             ),
             "hero_image_query": "cold brew coffee concentrate in a jar",
             "steps": [
-                "Coarsely grind coffee beans -- a texture like coarse sea salt, similar to French press grind.",
+                "Coarsely grind coffee beans, a texture like coarse sea salt, similar to French press grind.",
                 "Combine 1 cup of coarsely ground coffee with 4 cups of cold or room-temperature water in a large jar or pitcher.",
                 "Stir gently to make sure all the grounds are saturated.",
                 "Cover and steep at room temperature or in the refrigerator for 12-18 hours.",
@@ -2299,15 +2299,15 @@ SEED_PAGES = [
             ],
             "common_mistakes": [
                 "Using a fine grind: it passes through most strainers and leaves the concentrate gritty; a coarse grind is essential.",
-                "Steeping too briefly: cold extraction is slow -- under 12 hours typically under-extracts and tastes weak and sour once diluted.",
-                "Drinking it undiluted: cold brew concentrate is meant to be cut with water, milk, or ice -- straight concentrate is much stronger than a normal cup of coffee.",
+                "Steeping too briefly: cold extraction is slow, under 12 hours typically under-extracts and tastes weak and sour once diluted.",
+                "Drinking it undiluted: cold brew concentrate is meant to be cut with water, milk, or ice, straight concentrate is much stronger than a normal cup of coffee.",
             ],
             "equipment": ["Large jar or pitcher", "Fine-mesh sieve", "Coffee filter or cheesecloth", "Coffee grinder"],
             "faqs": [
                 {
                     "question": "How long does cold brew concentrate last in the fridge?",
                     "answer": (
-                        "About 1-2 weeks refrigerated in a sealed container -- "
+                        "About 1-2 weeks refrigerated in a sealed container, "
                         "notably longer than brewed hot coffee, since cold brew's "
                         "extraction process produces less of the compounds that "
                         "go stale or sour quickly."
@@ -2336,13 +2336,13 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How long to boil chicken breast until safely cooked but still "
-                "juicy -- timing by size, plus how to shred it afterward."
+                "juicy, timing by size, plus how to shred it afterward."
             ),
             "hero_image_query": "boiled chicken breast sliced",
             "steps": [
                 "Place boneless, skinless chicken breasts in a single layer in a pot and cover with cold water or broth by about an inch.",
-                "Add aromatics if desired -- a bay leaf, a few peppercorns, a smashed garlic clove.",
-                "Bring to a boil, then immediately reduce to a gentle simmer -- a hard boil toughens the meat.",
+                "Add aromatics if desired, a bay leaf, a few peppercorns, a smashed garlic clove.",
+                "Bring to a boil, then immediately reduce to a gentle simmer, a hard boil toughens the meat.",
                 "Simmer for 12-15 minutes for average-size breasts (about 6-8 oz each), or until the internal temperature reaches 165°F (74°C).",
                 "Remove from the liquid and let rest for 5 minutes before slicing or shredding.",
             ],
@@ -2365,7 +2365,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I use the cooking liquid afterward?",
                     "answer": (
-                        "Yes -- if you added aromatics, the poaching liquid "
+                        "Yes, if you added aromatics, the poaching liquid "
                         "becomes a light, usable chicken broth. Strain out the "
                         "solids and use it as a base for soup or to cook rice."
                     ),
@@ -2383,7 +2383,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How to bake bacon in the oven for evenly crisp strips with no "
-                "stovetop splatter -- temperature, timing, and cleanup tips."
+                "stovetop splatter - temperature, timing, and cleanup tips."
             ),
             "hero_image_query": "baking bacon on a sheet pan",
             "steps": [
@@ -2391,11 +2391,11 @@ SEED_PAGES = [
                 "Line a rimmed baking sheet with foil or parchment for easy cleanup.",
                 "Arrange bacon strips in a single layer without overlapping.",
                 "Bake for 15-20 minutes, depending on thickness and desired crispness, without flipping.",
-                "Check at the 15-minute mark -- bacon can go from perfectly crisp to burnt quickly in the last few minutes.",
+                "Check at the 15-minute mark, bacon can go from perfectly crisp to burnt quickly in the last few minutes.",
                 "Transfer to a paper-towel-lined plate to drain excess grease before serving.",
             ],
             "common_mistakes": [
-                "Starting with a hot oven and cold pan mismatch: a cold oven start (adding bacon before preheating) can also work but changes timing -- pick one method and watch closely the first time.",
+                "Starting with a hot oven and cold pan mismatch: a cold oven start (adding bacon before preheating) can also work but changes timing, pick one method and watch closely the first time.",
                 "Overlapping strips: this causes uneven cooking, with the overlapped sections staying pale and undercooked.",
                 "Not saving the rendered fat: strained bacon grease keeps refrigerated for weeks and is excellent for cooking eggs or roasting vegetables.",
             ],
@@ -2404,7 +2404,7 @@ SEED_PAGES = [
                 {
                     "question": "Do I need to flip bacon when baking it?",
                     "answer": (
-                        "No -- unlike pan-frying, the oven's heat surrounds the "
+                        "No, unlike pan-frying, the oven's heat surrounds the "
                         "bacon evenly on a sheet pan, so flipping isn't necessary "
                         "for even cooking."
                     ),
@@ -2414,7 +2414,7 @@ SEED_PAGES = [
                     "answer": (
                         "A full sheet pan cooks a dozen or more strips at once, "
                         "hands-off, versus babysitting a skillet in smaller "
-                        "batches -- and there's far less grease splatter to clean "
+                        "batches, and there's far less grease splatter to clean "
                         "up afterward."
                     ),
                 },
@@ -2431,7 +2431,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "How to make powdered sugar at home from granulated sugar using "
-                "a blender or food processor -- ready in under a minute."
+                "a blender or food processor, ready in under a minute."
             ),
             "hero_image_query": "homemade powdered sugar",
             "steps": [
@@ -2444,7 +2444,7 @@ SEED_PAGES = [
             "common_mistakes": [
                 "Skipping the cornstarch: without it, homemade powdered sugar clumps together much faster than the store-bought version.",
                 "Opening the lid immediately: the fine sugar dust needs a moment to settle, or it puffs out in a cloud.",
-                "Under-blending: stop too early and the sugar stays gritty rather than truly powdered -- give it the full 1-2 minutes.",
+                "Under-blending: stop too early and the sugar stays gritty rather than truly powdered, give it the full 1-2 minutes.",
             ],
             "equipment": ["High-speed blender or food processor", "Fine-mesh sifter (optional)"],
             "faqs": [
@@ -2460,7 +2460,7 @@ SEED_PAGES = [
                     "question": "How long does homemade powdered sugar keep?",
                     "answer": (
                         "Stored in an airtight container in a dry pantry, it "
-                        "keeps indefinitely, similar to granulated sugar -- just "
+                        "keeps indefinitely, similar to granulated sugar, just "
                         "expect it to clump somewhat over time and need a quick "
                         "whisk or re-sift before using."
                     ),
@@ -2495,7 +2495,7 @@ SEED_PAGES = [
                 "a day or two of being made."
             ),
             "usage_origin": (
-                "Most often served simply -- at room temperature, drizzled "
+                "Most often served simply, at room temperature, drizzled "
                 "with good olive oil, flaky salt, and black pepper, alongside "
                 "crusty bread or ripe tomatoes. It's a finishing or centerpiece "
                 "cheese rather than a melting or cooking cheese."
@@ -2543,7 +2543,7 @@ SEED_PAGES = [
             ),
             "expanded_explanation": (
                 "Because it's a heavily worked muscle, brisket is naturally "
-                "tough and full of connective tissue -- it needs long, slow "
+                "tough and full of connective tissue, it needs long, slow "
                 "cooking (smoking, braising) to break that collagen down into "
                 "gelatin, which is what turns it tender rather than chewy. "
                 "Cooked quickly with high heat, it stays tough no matter the "
@@ -2561,7 +2561,7 @@ SEED_PAGES = [
                 {
                     "question": "Why is my brisket tough even after cooking it a long time?",
                     "answer": (
-                        "Usually it needs more time, not less heat -- brisket "
+                        "Usually it needs more time, not less heat, brisket "
                         "often has to pass through a temperature \"stall\" where "
                         "it seems stuck for hours before the collagen finally "
                         "breaks down. Rushing it, or pulling it before it's "
@@ -2572,7 +2572,7 @@ SEED_PAGES = [
                     "question": "What's the difference between the flat and the point?",
                     "answer": (
                         "The flat is leaner and slices neatly, while the point "
-                        "is fattier, more marbled, and more forgiving to cook -- "
+                        "is fattier, more marbled, and more forgiving to cook, "
                         "it's the cut typically used for burnt ends."
                     ),
                 },
@@ -2607,11 +2607,11 @@ SEED_PAGES = [
             "usage_origin": (
                 "Traditional in Japanese New Year celebrations (mochitsuki is "
                 "often a communal event) and used in both savory dishes (grilled "
-                "mochi, added to soups) and sweet ones -- daifuku (mochi filled "
+                "mochi, added to soups) and sweet ones, daifuku (mochi filled "
                 "with sweet red bean paste) and mochi ice cream are the most "
                 "internationally familiar forms."
             ),
-            "substitute_note": "There isn't a good direct substitute -- glutinous rice flour's specific starch structure is what gives mochi its stretchy chew.",
+            "substitute_note": "There isn't a good direct substitute, glutinous rice flour's specific starch structure is what gives mochi its stretchy chew.",
             "substitute_page_slug": None,
             "faqs": [
                 {
@@ -2657,8 +2657,8 @@ SEED_PAGES = [
             "expanded_explanation": (
                 "\"Hummus\" is simply the Arabic word for chickpeas, and the "
                 "full traditional name is hummus bi tahini (chickpeas with "
-                "tahini). Texture and flavor vary widely by recipe and region "
-                "-- some versions are whipped very light and airy by blending "
+                "tahini). Texture and flavor vary widely by recipe and region, "
+                "some versions are whipped very light and airy by blending "
                 "for an extended time, while others stay coarser and more "
                 "rustic."
             ),
@@ -2675,7 +2675,7 @@ SEED_PAGES = [
                 {
                     "question": "Why is my homemade hummus grainy instead of smooth?",
                     "answer": (
-                        "Usually the chickpea skins -- removing them (rubbing "
+                        "Usually the chickpea skins, removing them (rubbing "
                         "cooked chickpeas in a towel, or simmering them briefly "
                         "with a pinch of baking soda to loosen the skins) makes a "
                         "noticeably smoother final texture."
@@ -2684,7 +2684,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I make hummus without tahini?",
                     "answer": (
-                        "Yes, though it won't taste quite the same -- tahini "
+                        "Yes, though it won't taste quite the same, tahini "
                         "provides a nutty depth that's part of hummus's "
                         "signature flavor. A tahini-free version made with just "
                         "chickpeas, lemon, garlic, and olive oil is still "
@@ -2716,8 +2716,8 @@ SEED_PAGES = [
                 "Gelato typically uses more milk and less cream than American "
                 "ice cream, and is churned at a slower speed, which traps "
                 "roughly half the air (called \"overrun\" in the industry). "
-                "It's also served notably warmer than ice cream -- around "
-                "10-15°F warmer -- which keeps it soft and scoopable rather "
+                "It's also served notably warmer than ice cream, around "
+                "10-15°F warmer, which keeps it soft and scoopable rather "
                 "than rock-hard."
             ),
             "usage_origin": (
@@ -2732,7 +2732,7 @@ SEED_PAGES = [
                     "question": "Is gelato lower in fat than ice cream?",
                     "answer": (
                         "Often, yes, since it uses more milk and less cream, but "
-                        "not always -- some gelato recipes are quite rich. Its "
+                        "not always, some gelato recipes are quite rich. Its "
                         "denser texture (less air) can also make it feel more "
                         "indulgent per bite even at a similar fat percentage."
                     ),
@@ -2742,7 +2742,7 @@ SEED_PAGES = [
                     "answer": (
                         "It's served at a warmer temperature and contains less "
                         "air, both of which mean less insulation and a head "
-                        "start toward melting once it's out of the case -- it's "
+                        "start toward melting once it's out of the case, it's "
                         "meant to be eaten promptly, not carried around slowly."
                     ),
                 },
@@ -2767,10 +2767,10 @@ SEED_PAGES = [
                 "from the Caspian and Black Sea regions."
             ),
             "expanded_explanation": (
-                "Roe from other fish -- salmon, trout, whitefish -- is often "
+                "Roe from other fish - salmon, trout, whitefish - is often "
                 "sold as \"caviar\" in a looser, more common usage, but purists "
                 "reserve the term strictly for sturgeon roe. Grading depends on "
-                "the species of sturgeon, egg size, color, and firmness -- "
+                "the species of sturgeon, egg size, color, and firmness - "
                 "beluga, osetra, and sevruga are the most well-known varieties."
             ),
             "usage_origin": (
@@ -2786,7 +2786,7 @@ SEED_PAGES = [
                 {
                     "question": "Is all fish roe technically caviar?",
                     "answer": (
-                        "Strictly speaking, no -- true caviar is sturgeon roe "
+                        "Strictly speaking, no, true caviar is sturgeon roe "
                         "specifically. Roe from salmon, trout, and other fish is "
                         "commonly labeled \"caviar\" in retail, but is more "
                         "precisely just \"roe\" under the traditional definition."
@@ -2798,7 +2798,7 @@ SEED_PAGES = [
                         "Traditionally chilled, in small portions, with a "
                         "non-metal spoon (mother-of-pearl or bone), since metal "
                         "can react with the roe and affect its flavor. Simple "
-                        "accompaniments -- blini, crème fraîche, toast points -- "
+                        "accompaniments, blini, crème fraîche, toast points, "
                         "are preferred over anything that masks its flavor."
                     ),
                 },
@@ -2823,7 +2823,7 @@ SEED_PAGES = [
             ),
             "expanded_explanation": (
                 "Different cuts of pork fat render into lard with different "
-                "qualities -- leaf lard, rendered from the fat around the "
+                "qualities, leaf lard, rendered from the fat around the "
                 "kidneys, is the mildest-tasting and most prized for baking, "
                 "while fat from other parts of the pig renders into a more "
                 "flavorful, porkier lard better suited to savory cooking."
@@ -2843,7 +2843,7 @@ SEED_PAGES = [
                     "answer": (
                         "Lard has a larger fat crystal structure and a higher "
                         "melting point than butter, which creates larger, more "
-                        "distinct layers in the dough as it bakes -- many bakers "
+                        "distinct layers in the dough as it bakes, many bakers "
                         "use a mix of both for lard's flakiness and butter's "
                         "flavor."
                     ),
@@ -2851,7 +2851,7 @@ SEED_PAGES = [
                 {
                     "question": "Is lard the same thing as shortening?",
                     "answer": (
-                        "No -- lard is rendered animal (pork) fat, while "
+                        "No, lard is rendered animal (pork) fat, while "
                         "shortening is a manufactured, typically hydrogenated "
                         "vegetable fat. They behave similarly in baking but come "
                         "from entirely different sources."
@@ -2880,12 +2880,12 @@ SEED_PAGES = [
             ),
             "expanded_explanation": (
                 "Yuzu is grown mainly for its zest and juice rather than eaten "
-                "as fresh fruit -- it's quite seedy and sour on its own. It's "
+                "as fresh fruit, it's quite seedy and sour on its own. It's "
                 "prized specifically for its intensely fragrant peel, which "
                 "carries most of its distinctive floral, citrusy aroma."
             ),
             "usage_origin": (
-                "Widely used in Japanese and Korean cooking -- yuzu kosho "
+                "Widely used in Japanese and Korean cooking, yuzu kosho "
                 "(a fermented chile-yuzu paste), ponzu sauce, yuzu tea, and as "
                 "a zested garnish over both savory dishes and desserts. It has "
                 "become popular internationally in high-end cooking and "
@@ -2898,7 +2898,7 @@ SEED_PAGES = [
                     "question": "Can I eat yuzu like a regular orange?",
                     "answer": (
                         "It's technically edible but very sour and seedy, so "
-                        "it's almost never eaten out of hand -- its juice and "
+                        "it's almost never eaten out of hand, its juice and "
                         "zest are what's used in cooking, not the whole fruit "
                         "as a snack."
                     ),
@@ -2929,8 +2929,8 @@ SEED_PAGES = [
             ),
             "hero_image_query": "vermouth bottle and glass",
             "direct_answer": (
-                "Vermouth is a fortified wine flavored with botanicals -- "
-                "herbs, spices, roots, and bark -- and typically categorized "
+                "Vermouth is a fortified wine flavored with botanicals, "
+                "herbs, spices, roots, and bark, and typically categorized "
                 "as either dry (white) or sweet (red)."
             ),
             "expanded_explanation": (
@@ -2943,8 +2943,8 @@ SEED_PAGES = [
             "usage_origin": (
                 "Developed in 18th-century Italy and France as a way to make "
                 "cheaper wine more palatable and shelf-stable, it became "
-                "essential to classic cocktails -- dry vermouth in a martini, "
-                "sweet vermouth in a Manhattan or Negroni -- once cocktail "
+                "essential to classic cocktails, dry vermouth in a martini, "
+                "sweet vermouth in a Manhattan or Negroni, once cocktail "
                 "culture took off in the 19th and 20th centuries."
             ),
             "substitute_note": "Dry sherry can stand in for dry vermouth, and a splash of port or Madeira with a dash of bitters approximates sweet vermouth in a pinch.",
@@ -2953,7 +2953,7 @@ SEED_PAGES = [
                 {
                     "question": "Does vermouth need to be refrigerated after opening?",
                     "answer": (
-                        "Yes -- unlike hard spirits, vermouth is wine-based and "
+                        "Yes, unlike hard spirits, vermouth is wine-based and "
                         "starts to oxidize and lose flavor once opened. "
                         "Refrigerate it and use within about a month for best "
                         "flavor."
@@ -2985,7 +2985,7 @@ SEED_PAGES = [
             "hero_image_query": "whey protein powder and liquid whey",
             "direct_answer": (
                 "Whey is the watery liquid left behind after milk is curdled "
-                "and strained during cheesemaking -- it's the part that "
+                "and strained during cheesemaking, it's the part that "
                 "separates from the solid curds."
             ),
             "expanded_explanation": (
@@ -3003,7 +3003,7 @@ SEED_PAGES = [
                 "Norwegian brunost (whey cheese) and ricotta, which is itself "
                 "made by cooking whey further."
             ),
-            "substitute_note": "There isn't a real substitute for whey's specific role -- in recipes that call for leftover whey (like using it as a liquid in baking), buttermilk or milk work as a reasonable stand-in.",
+            "substitute_note": "There isn't a real substitute for whey's specific role, in recipes that call for leftover whey (like using it as a liquid in baking), buttermilk or milk work as a reasonable stand-in.",
             "substitute_page_slug": None,
             "faqs": [
                 {
@@ -3011,7 +3011,7 @@ SEED_PAGES = [
                     "answer": (
                         "It starts from the same liquid, but whey protein "
                         "powder is filtered, concentrated, and dried into a "
-                        "much more protein-dense product -- not something you'd "
+                        "much more protein-dense product, not something you'd "
                         "get by just draining and drying leftover cheesemaking "
                         "whey at home."
                     ),
@@ -3019,7 +3019,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I use leftover whey from making ricotta or yogurt?",
                     "answer": (
-                        "Yes -- it works well as a liquid in bread dough, "
+                        "Yes, it works well as a liquid in bread dough, "
                         "pancake batter, or smoothies, adding a mild tang and "
                         "some extra protein rather than being wasted."
                     ),
@@ -3036,20 +3036,20 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Gelato vs. ice cream: the real differences are butterfat, "
-                "churning speed, and serving temperature -- not just the name."
+                "churning speed, and serving temperature, not just the name."
             ),
             "hero_image_query": "gelato and ice cream side by side",
             "item_a_name": "Gelato",
             "item_b_name": "Ice Cream",
             "comparison_table": [
                 {"attribute": "Milk-to-cream ratio", "item_a": "More milk, less cream", "item_b": "More cream, less milk"},
-                {"attribute": "Churning speed", "item_a": "Slow -- less air incorporated", "item_b": "Fast -- more air incorporated"},
+                {"attribute": "Churning speed", "item_a": "Slow, less air incorporated", "item_b": "Fast, more air incorporated"},
                 {"attribute": "Serving temperature", "item_a": "Warmer, around 10-15°F (-12 to -9°C)", "item_b": "Colder, around 0-5°F (-18 to -15°C)"},
                 {"attribute": "Texture", "item_a": "Dense, intensely flavored", "item_b": "Lighter, airier"},
                 {"attribute": "Typical fat content", "item_a": "Roughly 4-8%", "item_b": "Roughly 10-18%"},
             ],
             "verdict": (
-                "Neither is objectively better -- gelato delivers more "
+                "Neither is objectively better, gelato delivers more "
                 "concentrated flavor per bite and a denser texture, while ice "
                 "cream's higher fat and air content give it a lighter, richer "
                 "mouthfeel. Preference comes down to whether you want intensity "
@@ -3061,7 +3061,7 @@ SEED_PAGES = [
                     "body": (
                         "Made with more milk than cream and churned slowly at "
                         "low speed, gelato traps less air, which is why it "
-                        "tastes so much more intensely flavored -- there's "
+                        "tastes so much more intensely flavored, there's "
                         "simply less air diluting each bite."
                     ),
                 },
@@ -3080,14 +3080,14 @@ SEED_PAGES = [
                     "question": "Is gelato lower in calories than ice cream?",
                     "answer": (
                         "Often, since it typically uses less cream, but it "
-                        "varies by recipe -- always check labels rather than "
+                        "varies by recipe, always check labels rather than "
                         "assuming, since some gelato is made quite rich."
                     ),
                 },
                 {
                     "question": "Can I make gelato in a regular ice cream maker?",
                     "answer": (
-                        "Yes -- use a milk-forward base and churn at the "
+                        "Yes, use a milk-forward base and churn at the "
                         "machine's slower setting if it has one, then serve it "
                         "slightly warmer than you would ice cream for the "
                         "right texture."
@@ -3113,7 +3113,7 @@ SEED_PAGES = [
             "item_b_name": "Baking Soda",
             "comparison_table": [
                 {"attribute": "Composition", "item_a": "Baking soda + a built-in dry acid", "item_b": "Pure sodium bicarbonate"},
-                {"attribute": "Needs an acidic ingredient?", "item_a": "No -- it's self-contained", "item_b": "Yes -- needs buttermilk, lemon juice, etc."},
+                {"attribute": "Needs an acidic ingredient?", "item_a": "No, it's self-contained", "item_b": "Yes, needs buttermilk, lemon juice, etc."},
                 {"attribute": "Leavening strength", "item_a": "Weaker per volume", "item_b": "About 3-4x stronger per volume"},
                 {"attribute": "Common uses", "item_a": "Cakes, pancakes, biscuits with no acidic ingredient", "item_b": "Recipes already containing buttermilk, yogurt, cocoa, or citrus"},
             ],
@@ -3121,7 +3121,7 @@ SEED_PAGES = [
                 "Use baking soda when the recipe already has an acidic "
                 "ingredient for it to react with; use baking powder when it "
                 "doesn't. Many recipes actually use both, for different "
-                "reasons -- baking soda to neutralize acid and add browning, "
+                "reasons, baking soda to neutralize acid and add browning, "
                 "baking powder for the actual lift."
             ),
             "sections": [
@@ -3151,7 +3151,7 @@ SEED_PAGES = [
                     "answer": (
                         "Without an acidic ingredient to react with, the baking "
                         "soda mostly won't activate, and what little does react "
-                        "can leave a metallic, soapy taste -- the two aren't a "
+                        "can leave a metallic, soapy taste, the two aren't a "
                         "safe 1:1 swap."
                     ),
                 },
@@ -3160,7 +3160,7 @@ SEED_PAGES = [
                     "answer": (
                         "The baking soda neutralizes the recipe's acidic "
                         "ingredients (which also helps browning), while the "
-                        "baking powder provides the actual leavening lift -- "
+                        "baking powder provides the actual leavening lift, "
                         "they're doing two different jobs, not duplicating one."
                     ),
                 },
@@ -3186,11 +3186,11 @@ SEED_PAGES = [
                 {"attribute": "Plant family", "item_a": "Dioscoreaceae (a monocot)", "item_b": "Convolvulaceae, the morning glory family (a dicot)"},
                 {"attribute": "Skin", "item_a": "Rough, bark-like, hard to peel raw", "item_b": "Thin, smooth"},
                 {"attribute": "Flesh", "item_a": "Starchy, dry, white to purple", "item_b": "Moist, sweet, orange (most common variety)"},
-                {"attribute": "US grocery labeling", "item_a": "Rare -- true yams are uncommon in US stores", "item_b": "What's almost always sold as \"yam\" in the US"},
+                {"attribute": "US grocery labeling", "item_a": "Rare, true yams are uncommon in US stores", "item_b": "What's almost always sold as \"yam\" in the US"},
             ],
             "verdict": (
                 "If you bought it at a typical US supermarket labeled \"yam,\" "
-                "it's almost certainly a sweet potato -- true yams are a "
+                "it's almost certainly a sweet potato, true yams are a "
                 "different plant entirely and are mostly found in African, "
                 "Caribbean, and Asian specialty markets."
             ),
@@ -3208,7 +3208,7 @@ SEED_PAGES = [
                 {
                     "heading": "Sweet Potato",
                     "body": (
-                        "What most people in the US actually mean by \"yam\" -- "
+                        "What most people in the US actually mean by \"yam\", "
                         "a naturally sweet root vegetable with moist, orange "
                         "flesh (though white and purple varieties exist too), "
                         "from a completely different plant family than true yams."
@@ -3221,7 +3221,7 @@ SEED_PAGES = [
                     "answer": (
                         "When orange-fleshed sweet potatoes were introduced to "
                         "US markets, producers used \"yam\" to distinguish them "
-                        "from the paler sweet potato varieties already sold -- "
+                        "from the paler sweet potato varieties already sold, "
                         "the label stuck even though true yams are a different "
                         "plant entirely."
                     ),
@@ -3231,7 +3231,7 @@ SEED_PAGES = [
                     "answer": (
                         "In practice, most US recipes calling for \"yams\" mean "
                         "sweet potatoes and the two are used interchangeably in "
-                        "American cooking -- true yams, when available, behave "
+                        "American cooking, true yams, when available, behave "
                         "differently (starchier, less sweet) and may need "
                         "adjusted cook times."
                     ),
@@ -3257,13 +3257,13 @@ SEED_PAGES = [
             "item_b_name": "Whiskey",
             "comparison_table": [
                 {"attribute": "Category", "item_a": "A specific type of whiskey", "item_b": "The broad category bourbon belongs to"},
-                {"attribute": "Grain requirement", "item_a": "At least 51% corn", "item_b": "Varies -- rye, barley, wheat, corn, or blends"},
+                {"attribute": "Grain requirement", "item_a": "At least 51% corn", "item_b": "Varies, rye, barley, wheat, corn, or blends"},
                 {"attribute": "Where it can be made", "item_a": "Must be made in the United States", "item_b": "Made worldwide (Scotch, Irish, Japanese, etc.)"},
                 {"attribute": "Barrel requirement", "item_a": "New, charred oak barrels only", "item_b": "Varies by style and country"},
             ],
             "verdict": (
                 "Every bourbon is a whiskey, but not every whiskey is a "
-                "bourbon -- bourbon is a legally defined American style with "
+                "bourbon, bourbon is a legally defined American style with "
                 "specific requirements (corn content, new charred oak barrels, "
                 "US production) that most other whiskeys don't have to meet."
             ),
@@ -3281,7 +3281,7 @@ SEED_PAGES = [
                     "heading": "Whiskey",
                     "body": (
                         "The umbrella term for any spirit distilled from "
-                        "fermented grain mash and aged in wood -- Scotch, Irish "
+                        "fermented grain mash and aged in wood, Scotch, Irish "
                         "whiskey, rye, and bourbon are all whiskeys, each with "
                         "their own specific production rules."
                     ),
@@ -3291,7 +3291,7 @@ SEED_PAGES = [
                 {
                     "question": "Does bourbon have to be made in Kentucky?",
                     "answer": (
-                        "No, that's a common myth -- bourbon can legally be made "
+                        "No, that's a common myth, bourbon can legally be made "
                         "anywhere in the United States. Kentucky produces the "
                         "large majority of it by tradition and industry "
                         "concentration, not legal requirement."
@@ -3320,7 +3320,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Kosher salt vs. sea salt: the real differences are crystal "
-                "shape, density, and source -- and why they aren't "
+                "shape, density, and source, and why they aren't "
                 "interchangeable by volume."
             ),
             "hero_image_query": "kosher salt and sea salt side by side",
@@ -3328,9 +3328,9 @@ SEED_PAGES = [
             "item_b_name": "Sea Salt",
             "comparison_table": [
                 {"attribute": "Source", "item_a": "Mined or evaporated, processed into large flakes", "item_b": "Evaporated directly from seawater"},
-                {"attribute": "Crystal shape", "item_a": "Large, irregular flakes", "item_b": "Varies -- fine to coarse, often more uniform"},
+                {"attribute": "Crystal shape", "item_a": "Large, irregular flakes", "item_b": "Varies, fine to coarse, often more uniform"},
                 {"attribute": "Additives", "item_a": "Usually none", "item_b": "Usually none, though iodized versions exist for both"},
-                {"attribute": "Density (same volume)", "item_a": "Less dense -- less salt by weight per cup", "item_b": "More dense -- more salt by weight per cup"},
+                {"attribute": "Density (same volume)", "item_a": "Less dense, less salt by weight per cup", "item_b": "More dense, more salt by weight per cup"},
             ],
             "verdict": (
                 "For cooking, kosher salt's large, easy-to-pinch flakes make "
@@ -3365,7 +3365,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute kosher salt and sea salt 1:1?",
                     "answer": (
-                        "Not reliably by volume -- their crystal sizes differ "
+                        "Not reliably by volume, their crystal sizes differ "
                         "enough that a tablespoon of one can weigh noticeably "
                         "more or less than a tablespoon of the other. Weighing "
                         "salt, or adjusting to taste, is more reliable than a "
@@ -3394,7 +3394,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "Jam vs. jelly: the difference is what part of the fruit goes "
-                "in -- crushed fruit versus strained juice."
+                "in, crushed fruit versus strained juice."
             ),
             "hero_image_query": "jam and jelly jars side by side",
             "item_a_name": "Jam",
@@ -3415,7 +3415,7 @@ SEED_PAGES = [
                     "heading": "Jam",
                     "body": (
                         "Made by cooking crushed or chopped fruit with sugar "
-                        "(and often pectin) until thickened -- the fruit pieces "
+                        "(and often pectin) until thickened, the fruit pieces "
                         "themselves remain in the final product, giving jam its "
                         "characteristic chunky, spreadable texture."
                     ),
@@ -3469,7 +3469,7 @@ SEED_PAGES = [
             "item_b_name": "Cilantro",
             "comparison_table": [
                 {"attribute": "Leaf shape", "item_a": "Pointed, more jagged edges", "item_b": "Rounder, more scalloped edges"},
-                {"attribute": "Flavor", "item_a": "Mild, slightly peppery, grassy", "item_b": "Bright, citrusy -- or soapy to a genetic subset of people"},
+                {"attribute": "Flavor", "item_a": "Mild, slightly peppery, grassy", "item_b": "Bright, citrusy, or soapy to a genetic subset of people"},
                 {"attribute": "Common cuisines", "item_a": "Mediterranean, European", "item_b": "Mexican, Southeast Asian, Indian"},
                 {"attribute": "Stems", "item_a": "Tougher, often discarded", "item_b": "Tender, often used along with the leaves"},
             ],
@@ -3507,7 +3507,7 @@ SEED_PAGES = [
                     "answer": (
                         "A genetic variant related to olfactory receptor genes "
                         "makes some people perceive the aldehydes in cilantro as "
-                        "soapy rather than citrusy -- it's a real, documented "
+                        "soapy rather than citrusy, it's a real, documented "
                         "genetic difference, not just pickiness."
                     ),
                 },
@@ -3515,7 +3515,7 @@ SEED_PAGES = [
                     "question": "Can I substitute parsley for cilantro in a recipe?",
                     "answer": (
                         "You can for a similar visual garnish, but the flavor "
-                        "will be quite different -- parsley lacks cilantro's "
+                        "will be quite different, parsley lacks cilantro's "
                         "bright, citrusy character entirely, so it's a "
                         "substitution of convenience, not a flavor match."
                     ),
@@ -3559,7 +3559,7 @@ SEED_PAGES = [
                         "Made by blending oats with water and straining, oat "
                         "milk has a naturally creamy texture and mild sweetness "
                         "that froths and steams closer to dairy milk than most "
-                        "other plant milks -- part of why it's become popular "
+                        "other plant milks, part of why it's become popular "
                         "in coffee shops specifically."
                     ),
                 },
@@ -3586,7 +3586,7 @@ SEED_PAGES = [
                 {
                     "question": "Is either one a good source of protein like dairy milk?",
                     "answer": (
-                        "No -- both are notably lower in protein than dairy "
+                        "No, both are notably lower in protein than dairy "
                         "milk (roughly 2-3g per cup versus dairy's 8g). Soy "
                         "milk is the plant-based option closest to dairy's "
                         "protein content."
@@ -3640,7 +3640,7 @@ SEED_PAGES = [
                     "body": (
                         "The more common term in North America, used broadly "
                         "for both true shrimp and, commercially, for what would "
-                        "biologically be classified as prawns -- the culinary "
+                        "biologically be classified as prawns, the culinary "
                         "usage doesn't track the scientific distinction closely."
                     ),
                 },
@@ -3649,7 +3649,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I use prawns and shrimp interchangeably in a recipe?",
                     "answer": (
-                        "Yes, for virtually all cooking purposes -- the flavor "
+                        "Yes, for virtually all cooking purposes, the flavor "
                         "and cooking behavior are close enough that recipes "
                         "don't meaningfully distinguish between them, whichever "
                         "term the recipe or the market uses."
@@ -3659,7 +3659,7 @@ SEED_PAGES = [
                     "question": "Why does the US mostly say \"shrimp\" and other countries say \"prawn\"?",
                     "answer": (
                         "It's largely a matter of regional culinary tradition "
-                        "and marketing history rather than a strict rule -- both "
+                        "and marketing history rather than a strict rule, both "
                         "true shrimp and true prawns are sold and eaten "
                         "everywhere, but the common name that stuck varies by "
                         "region."
@@ -3678,7 +3678,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": (
                 "White pepper vs. black pepper: same plant, different "
-                "processing -- and a real difference in flavor and best uses."
+                "processing, and a real difference in flavor and best uses."
             ),
             "hero_image_query": "white pepper and black pepper side by side",
             "item_a_name": "White Pepper",
@@ -3691,7 +3691,7 @@ SEED_PAGES = [
             ],
             "verdict": (
                 "Use white pepper when you want pepper's heat without visible "
-                "black specks -- light-colored sauces, mashed potatoes, "
+                "black specks, light-colored sauces, mashed potatoes, "
                 "certain Asian soups. Use black pepper for its sharper, more "
                 "aromatic flavor everywhere else."
             ),
@@ -3720,7 +3720,7 @@ SEED_PAGES = [
                 {
                     "question": "Is white pepper spicier than black pepper?",
                     "answer": (
-                        "Not spicier overall -- it's generally described as "
+                        "Not spicier overall, it's generally described as "
                         "milder and earthier, though it does carry a slightly "
                         "different, sometimes more musty heat than black "
                         "pepper's sharper bite."
@@ -3732,7 +3732,7 @@ SEED_PAGES = [
                         "It's a traditional flavor choice in many East and "
                         "Southeast Asian dishes, and its lack of dark flecks "
                         "keeps light-colored soups, sauces, and stir-fries "
-                        "visually clean -- both a flavor and a presentation "
+                        "visually clean, both a flavor and a presentation "
                         "reason."
                     ),
                 },
@@ -3755,11 +3755,11 @@ SEED_PAGES = [
             "ranked_substitutes": [
                 {"name": "Plain Greek yogurt", "ratio": "1:1", "best_for": "Both baking and toppings", "note": "Very close in tang and thickness; the closest all-around substitute."},
                 {"name": "Crème fraîche", "ratio": "1:1", "best_for": "Cooking and sauces", "note": "Milder and richer, and won't curdle when heated the way sour cream can."},
-                {"name": "Buttermilk", "ratio": "Use ¾ the amount, thinned slightly", "best_for": "Baking only", "note": "Adds similar tang but is much thinner -- best in batters, not as a dollop-on-top topping."},
+                {"name": "Buttermilk", "ratio": "Use ¾ the amount, thinned slightly", "best_for": "Baking only", "note": "Adds similar tang but is much thinner, best in batters, not as a dollop-on-top topping."},
                 {"name": "Mayonnaise", "ratio": "1:1", "best_for": "Cold dips and dressings only", "note": "Richer and less tangy; works for dips but not for baking, where it behaves very differently under heat."},
             ],
             "baking_vs_cooking_note": (
-                "For baking, Greek yogurt or thinned buttermilk work best -- "
+                "For baking, Greek yogurt or thinned buttermilk work best, "
                 "they contribute similar moisture and acidity for leavening "
                 "reactions. For hot sauces and soups, crème fraîche is the "
                 "safest choice since it won't curdle the way sour cream and "
@@ -3769,7 +3769,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute Greek yogurt for sour cream in baking?",
                     "answer": (
-                        "Yes, 1:1 -- Greek yogurt's thickness and tang are very "
+                        "Yes, 1:1, Greek yogurt's thickness and tang are very "
                         "close to sour cream's, and it performs almost "
                         "identically in most baked goods."
                     ),
@@ -3801,9 +3801,9 @@ SEED_PAGES = [
             ),
             "hero_image_query": "buttermilk in a glass",
             "ranked_substitutes": [
-                {"name": "Milk + lemon juice or white vinegar", "ratio": "1 cup milk + 1 tbsp acid, rested 5-10 minutes", "best_for": "Both baking and cooking", "note": "The classic, near-universal substitute -- the acid curdles the milk slightly, mimicking buttermilk's tang and thinness."},
+                {"name": "Milk + lemon juice or white vinegar", "ratio": "1 cup milk + 1 tbsp acid, rested 5-10 minutes", "best_for": "Both baking and cooking", "note": "The classic, near-universal substitute, the acid curdles the milk slightly, mimicking buttermilk's tang and thinness."},
                 {"name": "Plain yogurt, thinned with milk", "ratio": "¾ cup yogurt + ¼ cup milk, whisked smooth", "best_for": "Baking", "note": "Close in tang and thickness once thinned; a very reliable substitute."},
-                {"name": "Sour cream, thinned with milk", "ratio": "¾ cup sour cream + ¼ cup milk", "best_for": "Baking", "note": "Similar to the yogurt version -- richer, but works the same way."},
+                {"name": "Sour cream, thinned with milk", "ratio": "¾ cup sour cream + ¼ cup milk", "best_for": "Baking", "note": "Similar to the yogurt version, richer, but works the same way."},
                 {"name": "Cream of tartar + milk", "ratio": "1¾ tsp cream of tartar per cup of milk", "best_for": "Baking, when no citrus or vinegar is on hand", "note": "A less common but effective acid source for the same curdling effect."},
             ],
             "baking_vs_cooking_note": (
@@ -3817,7 +3817,7 @@ SEED_PAGES = [
                 {
                     "question": "How long do I need to let the milk-and-acid mixture sit?",
                     "answer": (
-                        "About 5-10 minutes at room temperature -- it will look "
+                        "About 5-10 minutes at room temperature, it will look "
                         "slightly curdled and thickened, which is exactly the "
                         "texture you want before using it in the recipe."
                     ),
@@ -3825,7 +3825,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I use non-dairy milk to make a buttermilk substitute?",
                     "answer": (
-                        "Yes -- soy milk curdles most reliably with an acid "
+                        "Yes, soy milk curdles most reliably with an acid "
                         "added, similar to dairy milk. Almond and oat milk work "
                         "too, though the curdling reaction is less pronounced."
                     ),
@@ -3850,7 +3850,7 @@ SEED_PAGES = [
                 {"name": "Vanilla bean paste", "ratio": "1:1", "best_for": "Both baking and no-bake desserts", "note": "Nearly identical flavor to extract, with visible vanilla bean flecks as a bonus."},
                 {"name": "Scraped vanilla bean pod", "ratio": "1 whole bean per teaspoon of extract called for", "best_for": "Custards, ice cream, and other cooked applications", "note": "The most intense, purest vanilla flavor, but more expensive and requires scraping out the seeds."},
                 {"name": "Maple syrup", "ratio": "Use 2x the amount of extract called for", "best_for": "Baking where a little extra sweetness and moisture is fine", "note": "Adds a different, maple-forward flavor rather than a true vanilla stand-in."},
-                {"name": "Almond extract", "ratio": "Use half the amount of vanilla called for", "best_for": "Cookies and cakes where a flavor shift is acceptable", "note": "Much stronger than vanilla and tastes distinctly different -- not a flavor match, just a way to avoid leaving the recipe flavorless."},
+                {"name": "Almond extract", "ratio": "Use half the amount of vanilla called for", "best_for": "Cookies and cakes where a flavor shift is acceptable", "note": "Much stronger than vanilla and tastes distinctly different, not a flavor match, just a way to avoid leaving the recipe flavorless."},
             ],
             "baking_vs_cooking_note": (
                 "Vanilla bean paste is the closest substitute across the "
@@ -3864,7 +3864,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I just leave vanilla extract out of a recipe entirely?",
                     "answer": (
-                        "Usually yes without ruining the recipe -- vanilla is "
+                        "Usually yes without ruining the recipe, vanilla is "
                         "mostly a flavor enhancer rather than a structural "
                         "ingredient, so the baked good will still set and bake "
                         "properly, just taste slightly flatter."
@@ -3873,7 +3873,7 @@ SEED_PAGES = [
                 {
                     "question": "Is imitation vanilla extract a fine substitute for real vanilla extract?",
                     "answer": (
-                        "For most baked goods, yes -- imitation vanilla (made "
+                        "For most baked goods, yes, imitation vanilla (made "
                         "from synthetic vanillin) is much cheaper and tastes "
                         "close enough in most recipes, though real extract has "
                         "more complexity and holds up better in delicate, "
@@ -3914,7 +3914,7 @@ SEED_PAGES = [
                 {
                     "question": "Is there a good vegan substitute for fish sauce?",
                     "answer": (
-                        "Yes -- soy sauce with a squeeze of lime, or thinned "
+                        "Yes, soy sauce with a squeeze of lime, or thinned "
                         "miso paste, are both common vegan substitutes. Some "
                         "brands also sell a plant-based \"vegan fish sauce\" made "
                         "from fermented mushrooms or seaweed."
@@ -3925,7 +3925,7 @@ SEED_PAGES = [
                     "answer": (
                         "A quick approximation: simmer soy sauce with a piece "
                         "of dried seaweed or a splash of clam juice for a few "
-                        "minutes, then strain -- it won't fully replicate fish "
+                        "minutes, then strain, it won't fully replicate fish "
                         "sauce's fermented depth, but adds real savory "
                         "complexity beyond plain soy sauce alone."
                     ),
@@ -3947,14 +3947,14 @@ SEED_PAGES = [
             ),
             "hero_image_query": "butter and alternatives",
             "ranked_substitutes": [
-                {"name": "Neutral vegetable oil", "ratio": "Use ¾ the amount of butter called for", "best_for": "Quick breads, muffins, brownies", "note": "Adds moisture but no structure -- best in recipes that don't rely on butter for a flaky or creamed texture."},
-                {"name": "Unsweetened applesauce", "ratio": "Use half the amount, plus a little extra flour if the batter seems too wet", "best_for": "Lower-fat baking", "note": "Cuts fat and calories significantly but changes texture -- denser, moister, less rich."},
+                {"name": "Neutral vegetable oil", "ratio": "Use ¾ the amount of butter called for", "best_for": "Quick breads, muffins, brownies", "note": "Adds moisture but no structure, best in recipes that don't rely on butter for a flaky or creamed texture."},
+                {"name": "Unsweetened applesauce", "ratio": "Use half the amount, plus a little extra flour if the batter seems too wet", "best_for": "Lower-fat baking", "note": "Cuts fat and calories significantly but changes texture, denser, moister, less rich."},
                 {"name": "Coconut oil, solid", "ratio": "1:1", "best_for": "Dairy-free baking, pie crusts", "note": "Behaves similarly to butter when solid and cold, including in flaky doughs; adds a mild coconut flavor."},
                 {"name": "Vegan butter or margarine", "ratio": "1:1", "best_for": "Dairy-free baking that needs butter's exact texture", "note": "The closest 1:1 substitute across the board, since it's specifically formulated to mimic butter's behavior."},
             ],
             "baking_vs_cooking_note": (
                 "For pie crusts and laminated doughs (croissants, puff "
-                "pastry), stick with a solid fat that stays firm when cold -- "
+                "pastry), stick with a solid fat that stays firm when cold, "
                 "coconut oil or vegan butter, not liquid oil. For quick breads "
                 "and most cookies and cakes, oil or applesauce substitutes "
                 "work fine since those recipes don't depend on butter staying "
@@ -3966,7 +3966,7 @@ SEED_PAGES = [
                     "answer": (
                         "You can, but expect a flatter, denser, chewier cookie "
                         "rather than the light, slightly cakey texture creamed "
-                        "butter and sugar produces -- oil doesn't trap air the "
+                        "butter and sugar produces, oil doesn't trap air the "
                         "way solid butter does when creamed."
                     ),
                 },
@@ -4043,7 +4043,7 @@ SEED_PAGES = [
             ),
             "hero_image_query": "gruyere cheese substitute options",
             "ranked_substitutes": [
-                {"name": "Comté", "ratio": "1:1", "best_for": "Any use -- fondue, gratins, soups", "note": "The closest possible substitute; a French cousin cheese with nearly identical melting and flavor."},
+                {"name": "Comté", "ratio": "1:1", "best_for": "Any use, fondue, gratins, soups", "note": "The closest possible substitute; a French cousin cheese with nearly identical melting and flavor."},
                 {"name": "Swiss Emmental", "ratio": "1:1", "best_for": "Melted dishes and sandwiches", "note": "Milder and sweeter, with the classic large holes; melts just as smoothly."},
                 {"name": "Fontina", "ratio": "1:1", "best_for": "Gratins and casseroles", "note": "Buttery and mild rather than nutty, but melts exceptionally well as a stand-in."},
             ],
@@ -4059,7 +4059,7 @@ SEED_PAGES = [
                     "answer": (
                         "Cheddar melts differently (more likely to turn "
                         "greasy or separate at high heat) and has a sharper, "
-                        "less nutty flavor -- it works in a pinch, but Comté, "
+                        "less nutty flavor, it works in a pinch, but Comté, "
                         "Emmental, or Fontina are much closer substitutes."
                     ),
                 },
@@ -4094,7 +4094,7 @@ SEED_PAGES = [
             ],
             "baking_vs_cooking_note": (
                 "None of these substitutes truly replicate cardamom's "
-                "distinct floral-citrus flavor -- they're workable stand-ins "
+                "distinct floral-citrus flavor, they're workable stand-ins "
                 "for the general \"warm spice\" role it plays, not a flavor "
                 "match. If cardamom is the star flavor of the dish (like "
                 "cardamom buns), it's worth seeking out the real thing rather "
@@ -4104,7 +4104,7 @@ SEED_PAGES = [
                 {
                     "question": "Is there any spice that really tastes like cardamom?",
                     "answer": (
-                        "Not closely -- cardamom's floral, citrusy, slightly "
+                        "Not closely, cardamom's floral, citrusy, slightly "
                         "eucalyptus-like flavor is fairly unique among common "
                         "spices, which is why all the usual substitutes are "
                         "approximations rather than close matches."
@@ -4150,7 +4150,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I make hummus without tahini or any substitute at all?",
                     "answer": (
-                        "Yes -- a tahini-free hummus made with just chickpeas, "
+                        "Yes, a tahini-free hummus made with just chickpeas, "
                         "lemon, garlic, and olive oil is still genuinely good, "
                         "just missing tahini's nutty depth rather than tasting "
                         "unfinished."
@@ -4160,7 +4160,7 @@ SEED_PAGES = [
                     "question": "Is sunflower seed butter as thick as tahini?",
                     "answer": (
                         "Generally yes, similar pourable-paste consistency, "
-                        "though brands vary -- thin it with a small amount of "
+                        "though brands vary, thin it with a small amount of "
                         "water or oil if it's noticeably thicker than the "
                         "tahini a recipe expects."
                     ),
@@ -4185,13 +4185,13 @@ SEED_PAGES = [
                 {"name": "Flax egg (ground flaxseed + water)", "ratio": "1 tbsp ground flaxseed + 3 tbsp water, rested 5 minutes, per egg", "best_for": "Muffins, quick breads, cookies", "note": "Adds binding similar to egg; slightly denser crumb and a mild nutty flavor."},
                 {"name": "Unsweetened applesauce", "ratio": "¼ cup per egg", "best_for": "Moist baked goods (muffins, cakes)", "note": "Adds moisture but little binding or lift; best combined with a bit of extra leavening."},
                 {"name": "Mashed banana", "ratio": "¼ cup (about half a banana) per egg", "best_for": "Banana bread, muffins, pancakes", "note": "Adds noticeable banana flavor, so best where that's already welcome in the recipe."},
-                {"name": "Commercial egg replacer powder", "ratio": "Per package instructions, usually mixed with water", "best_for": "Recipes needing the closest all-around performance", "note": "Formulated specifically to mimic egg's binding and leavening -- the most reliable option across recipe types."},
+                {"name": "Commercial egg replacer powder", "ratio": "Per package instructions, usually mixed with water", "best_for": "Recipes needing the closest all-around performance", "note": "Formulated specifically to mimic egg's binding and leavening, the most reliable option across recipe types."},
             ],
             "baking_vs_cooking_note": (
                 "These substitutes work for baking, where eggs mainly provide "
                 "binding, moisture, and some lift. None of them substitute "
-                "well for eggs in dishes where the egg itself is the star -- "
-                "scrambled eggs, omelets, quiches -- since there's no "
+                "well for eggs in dishes where the egg itself is the star, "
+                "scrambled eggs, omelets, quiches, since there's no "
                 "substitute for egg's specific set and texture there."
             ),
             "faqs": [
@@ -4207,7 +4207,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute more than 2 eggs in one recipe with these?",
                     "answer": (
-                        "It gets riskier the more eggs a recipe calls for -- "
+                        "It gets riskier the more eggs a recipe calls for, "
                         "eggs provide real structure in recipes with 3+ eggs "
                         "(like a sponge cake), and substitutes can't fully "
                         "replicate that at scale. These substitutes work most "
@@ -4226,13 +4226,13 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Taco recipes organized by protein -- chicken, beef, fish, and "
-                "vegetarian -- with a real curated pick instead of an "
+                "Taco recipes organized by protein - chicken, beef, fish, and "
+                "vegetarian - with a real curated pick instead of an "
                 "auto-generated list."
             ),
             "intro": (
                 "A good taco comes down to a well-seasoned filling and a "
-                "warm, pliable tortilla -- everything else is topping "
+                "warm, pliable tortilla - everything else is topping "
                 "preference. These are the taco fillings worth putting in "
                 "regular rotation, organized by protein."
             ),
@@ -4255,7 +4255,7 @@ SEED_PAGES = [
                     "answer": (
                         "Directly over a gas flame for a few seconds per side "
                         "for a slight char, or in a dry skillet over medium "
-                        "heat -- both are better than microwaving, which leaves "
+                        "heat, both are better than microwaving, which leaves "
                         "them gummy rather than pliable."
                     ),
                 },
@@ -4263,7 +4263,7 @@ SEED_PAGES = [
                     "question": "Corn or flour tortillas for tacos?",
                     "answer": (
                         "Traditionally corn, especially for Mexican-style "
-                        "fillings like al pastor and carne asada -- flour "
+                        "fillings like al pastor and carne asada, flour "
                         "tortillas are more common for Tex-Mex-style tacos and "
                         "burritos. Either works; it's largely regional "
                         "preference."
@@ -4280,8 +4280,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Pie recipes organized by type -- fruit, custard, and "
-                "cream -- with a real curated pick instead of an "
+                "Pie recipes organized by type - fruit, custard, and "
+                "cream - with a real curated pick instead of an "
                 "auto-generated list."
             ),
             "intro": (
@@ -4316,7 +4316,7 @@ SEED_PAGES = [
                 {
                     "question": "Should I bake a pie on the bottom rack of the oven?",
                     "answer": (
-                        "For most fruit and custard pies, yes -- the bottom "
+                        "For most fruit and custard pies, yes, the bottom "
                         "rack gets more direct heat, which helps the bottom "
                         "crust cook through and stay crisp rather than turning "
                         "soggy under a wet filling."
@@ -4333,14 +4333,14 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Duck recipes organized by cut and method -- breast, confit, "
-                "and whole roast -- with a real curated pick instead of an "
+                "Duck recipes organized by cut and method - breast, confit, "
+                "and whole roast - with a real curated pick instead of an "
                 "auto-generated list."
             ),
             "intro": (
                 "Duck's high fat content makes it forgiving and flavorful, "
-                "but it rewards a slightly different technique than chicken "
-                "-- rendering the fat matters as much as the cooking "
+                "but it rewards a slightly different technique than chicken - "
+                "rendering the fat matters as much as the cooking "
                 "temperature. These are the duck preparations worth learning."
             ),
             "recipe_cards": [
@@ -4367,7 +4367,7 @@ SEED_PAGES = [
                     "question": "Should I start duck breast skin-side up or down?",
                     "answer": (
                         "Skin-side down, in a cold or barely warm pan, then "
-                        "bring the heat up gradually -- this slowly renders the "
+                        "bring the heat up gradually, this slowly renders the "
                         "fat instead of scorching the skin before the fat has "
                         "had time to melt out."
                     ),
@@ -4383,13 +4383,13 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Beet recipes organized by preparation -- roasted, pickled, and "
-                "raw -- with a real curated pick instead of an auto-generated "
+                "Beet recipes organized by preparation - roasted, pickled, and "
+                "raw - with a real curated pick instead of an auto-generated "
                 "list."
             ),
             "intro": (
                 "Beets taste completely different depending on how they're "
-                "prepared -- earthy and sweet roasted, sharp and tangy "
+                "prepared, earthy and sweet roasted, sharp and tangy "
                 "pickled, crisp and peppery raw. These are the beet dishes "
                 "worth trying, organized by preparation."
             ),
@@ -4418,7 +4418,7 @@ SEED_PAGES = [
                 {
                     "question": "Do I need to peel beets before roasting?",
                     "answer": (
-                        "No -- roast them whole with the skin on, wrapped in "
+                        "No, roast them whole with the skin on, wrapped in "
                         "foil, then the skin slips off easily by hand once "
                         "they're cooked and cooled slightly. Peeling raw beets "
                         "first is messier and unnecessary."
@@ -4435,12 +4435,12 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Fig recipes for fresh and dried figs -- savory and sweet -- "
+                "Fig recipes for fresh and dried figs, savory and sweet, "
                 "with a real curated pick instead of an auto-generated list."
             ),
             "intro": (
-                "Fresh figs have a short season, so they're best used simply "
-                "-- with cheese, honey, or a quick roast. Dried figs work "
+                "Fresh figs have a short season, so they're best used simply, "
+                "with cheese, honey, or a quick roast. Dried figs work "
                 "year-round in baking and preserves. These are the fig "
                 "recipes worth making with either."
             ),
@@ -4467,7 +4467,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute dried figs for fresh in these recipes?",
                     "answer": (
-                        "For jam and baking, yes -- rehydrate dried figs in "
+                        "For jam and baking, yes, rehydrate dried figs in "
                         "warm water for 15-20 minutes first. For recipes that "
                         "showcase fresh fig's texture (salads, roasted whole), "
                         "dried figs are a poor substitute."
@@ -4484,20 +4484,20 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Radish recipes beyond the raw salad topping -- roasted, "
-                "pickled, and sautéed -- with a real curated pick instead of "
+                "Radish recipes beyond the raw salad topping - roasted, "
+                "pickled, and sautéed - with a real curated pick instead of "
                 "an auto-generated list."
             ),
             "intro": (
                 "Radishes lose most of their sharp bite when cooked, turning "
-                "mild and almost sweet -- a very different vegetable from the "
+                "mild and almost sweet, a very different vegetable from the "
                 "raw, peppery version most people know. These recipes cover "
                 "both sides."
             ),
             "recipe_cards": [
                 {"title": "Roasted Radishes with Butter", "slug": None, "description": "Halved radishes roasted until tender and lightly caramelized, tossed with butter and herbs.", "image_query": "roasted radishes"},
                 {"title": "Quick-Pickled Radishes", "slug": None, "description": "Thinly sliced radishes pickled in a vinegar brine, ready in an hour.", "image_query": "pickled radishes"},
-                {"title": "Radishes with Butter and Salt", "slug": None, "description": "The classic French bistro snack -- crisp raw radishes, good butter, and flaky salt.", "image_query": "radishes with butter and salt"},
+                {"title": "Radishes with Butter and Salt", "slug": None, "description": "The classic French bistro snack - crisp raw radishes, good butter, and flaky salt.", "image_query": "radishes with butter and salt"},
                 {"title": "Sautéed Radish Greens", "slug": None, "description": "The often-discarded radish tops, quickly sautéed like any other leafy green.", "image_query": "sauteed radish greens"},
             ],
             "sub_categories": [
@@ -4508,7 +4508,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I eat radish greens?",
                     "answer": (
-                        "Yes -- they're edible and taste similar to other "
+                        "Yes, they're edible and taste similar to other "
                         "peppery greens like arugula or mustard greens. Wash "
                         "them well, since they can hold grit, and use them "
                         "quickly since they wilt faster than the radish root."
@@ -4517,7 +4517,7 @@ SEED_PAGES = [
                 {
                     "question": "Do roasted radishes still taste peppery like raw ones?",
                     "answer": (
-                        "No -- roasting mellows radishes considerably, turning "
+                        "No, roasting mellows radishes considerably, turning "
                         "their sharp bite mild and slightly sweet, closer to a "
                         "roasted turnip than a raw radish."
                     ),
@@ -4533,7 +4533,7 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Turnip recipes for roasting, mashing, and gratins -- with a "
+                "Turnip recipes for roasting, mashing, and gratins, with a "
                 "real curated pick instead of an auto-generated list."
             ),
             "intro": (
@@ -4580,7 +4580,7 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Venison recipes for steaks, roasts, and ground meat -- with "
+                "Venison recipes for steaks, roasts, and ground meat, with "
                 "notes on why lean game meat needs different handling than "
                 "beef."
             ),
@@ -4618,7 +4618,7 @@ SEED_PAGES = [
                         "cuts (backstrap, tenderloin) dry out and toughen "
                         "quickly past medium-rare, while tougher cuts (shoulder, "
                         "shank) still need low, slow, moist cooking to break "
-                        "down connective tissue -- the same logic as beef, just "
+                        "down connective tissue, the same logic as beef, just "
                         "less margin for error on the lean cuts."
                     ),
                 },
@@ -4633,8 +4633,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Persimmon recipes for both fuyu and hachiya varieties -- "
-                "sliced raw or baked -- with a real curated pick instead of an "
+                "Persimmon recipes for both fuyu and hachiya varieties, "
+                "sliced raw or baked, with a real curated pick instead of an "
                 "auto-generated list."
             ),
             "intro": (
@@ -4668,7 +4668,7 @@ SEED_PAGES = [
                     "question": "What happens if I eat an underripe hachiya persimmon?",
                     "answer": (
                         "It will taste unpleasantly astringent and chalky, "
-                        "coating your mouth in a dry, puckering sensation -- a "
+                        "coating your mouth in a dry, puckering sensation, a "
                         "hachiya must be fully soft, almost to the point of "
                         "looking overripe, before it's palatable."
                     ),
@@ -4684,14 +4684,14 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": (
-                "Recipes for using up a carton of buttermilk -- baking, "
-                "marinades, and dressings -- with a real curated pick instead "
+                "Recipes for using up a carton of buttermilk - baking, "
+                "marinades, and dressings - with a real curated pick instead "
                 "of an auto-generated list."
             ),
             "intro": (
-                "Buttermilk's tang and acidity do real work in a recipe -- "
+                "Buttermilk's tang and acidity do real work in a recipe, "
                 "tenderizing meat, activating baking soda, thinning a "
-                "dressing -- not just adding flavor. These are the best ways "
+                "dressing, not just adding flavor. These are the best ways "
                 "to use up a carton before it goes to waste."
             ),
             "recipe_cards": [
@@ -4708,7 +4708,7 @@ SEED_PAGES = [
                 {
                     "question": "Can I substitute regular milk for buttermilk in these recipes?",
                     "answer": (
-                        "Not without a substitute -- regular milk lacks the "
+                        "Not without a substitute, regular milk lacks the "
                         "acidity that reacts with baking soda in biscuits and "
                         "pancakes, and lacks the tenderizing effect for fried "
                         "chicken. See the buttermilk substitute guide if you're "
@@ -4719,7 +4719,7 @@ SEED_PAGES = [
                     "question": "How long does buttermilk keep in the fridge?",
                     "answer": (
                         "Typically 1-2 weeks past the printed date if kept cold "
-                        "and sealed -- it's already cultured and acidic, which "
+                        "and sealed, it's already cultured and acidic, which "
                         "gives it a longer shelf life than regular milk."
                     ),
                 },
@@ -4735,7 +4735,7 @@ SEED_PAGES = [
         "content": {
             "tool": "conversion_calculator",
             "meta_description": (
-                "Free kitchen measurement conversion calculator -- convert cups, "
+                "Free kitchen measurement conversion calculator, convert cups, "
                 "tablespoons, grams, ounces, and oven temperatures between US and "
                 "metric."
             ),
@@ -4762,7 +4762,7 @@ SEED_PAGES = [
         "content": {
             "tool": "recipe_generator",
             "meta_description": (
-                "Tell us what's in your kitchen and get a recipe idea back -- a "
+                "Tell us what's in your kitchen and get a recipe idea back, a "
                 "custom recipe generator built around the ingredients you already "
                 "have."
             ),
@@ -4796,12 +4796,12 @@ def seed(db: Session) -> int:
 def resync_ingredients(db: Session) -> int:
     """seed() never overwrites a page that already exists, which is right
     for editorial content (titles, instructions) but wrong for ingredient
-    unit/quantity definitions -- those are closer to reference data than
+    unit/quantity definitions, those are closer to reference data than
     content, and a correction (e.g. fixing a bad unit conversion) should
     reach pages that were already seeded before the fix landed, not just
     new ones. Re-syncs `ingredients` from SEED_PAGES by (page slug,
-    ingredient name); leaves the rest of the page's content -- including
-    any stock photo already fetched -- untouched. Safe to run on every
+    ingredient name); leaves the rest of the page's content, including
+    any stock photo already fetched, untouched. Safe to run on every
     startup: idempotent, no-ops once a page matches SEED_PAGES.
     """
     seed_ingredients_by_slug = {

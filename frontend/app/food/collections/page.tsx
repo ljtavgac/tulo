@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Collections";
-const DESCRIPTION = "Every curated recipe collection on Tulo -- organized by category, not an auto-generated tag archive.";
+const DESCRIPTION = "Every curated recipe collection on Tulo, organized by category, not an auto-generated tag archive.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

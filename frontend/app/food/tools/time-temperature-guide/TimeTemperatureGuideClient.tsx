@@ -23,12 +23,12 @@ const FAQS = [
   {
     question: "Do I need a meat thermometer, or can I judge doneness by time alone?",
     answer:
-      "A thermometer is far more reliable -- cook times vary with the exact size and shape of a cut, starting temperature, and your oven or grill's real accuracy. Treat the times in the table as a starting estimate and confirm with a thermometer before serving.",
+      "A thermometer is far more reliable - cook times vary with the exact size and shape of a cut, starting temperature, and your oven or grill's real accuracy. Treat the times in the table as a starting estimate and confirm with a thermometer before serving.",
   },
   {
     question: "Why do these times differ from times I've seen elsewhere?",
     answer:
-      "Cook times are inherently approximate -- they depend on the exact thickness and starting temperature of what you're cooking, and on how accurate your particular oven, air fryer, or grill actually runs. Always confirm the final internal temperature rather than relying on the clock alone.",
+      "Cook times are inherently approximate - they depend on the exact thickness and starting temperature of what you're cooking, and on how accurate your particular oven, air fryer, or grill actually runs. Always confirm the final internal temperature rather than relying on the clock alone.",
   },
 ];
 

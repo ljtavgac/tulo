@@ -19,7 +19,7 @@ const FAQS = [
   {
     question: "How does the recipe generator work?",
     answer:
-      "It matches the ingredients you list against every recipe already published on Tulo and ranks the results by how many of your ingredients each recipe actually uses -- it's a real search over real recipes, not an AI writing a new recipe from scratch.",
+      "It matches the ingredients you list against every recipe already published on Tulo and ranks the results by how many of your ingredients each recipe actually uses - it's a real search over real recipes, not an AI writing a new recipe from scratch.",
   },
   {
     question: "Why didn't it find any recipes for my ingredients?",
@@ -29,7 +29,7 @@ const FAQS = [
   {
     question: "Do I need to list every ingredient I have?",
     answer:
-      "No -- list whatever you want to build around. Results are ranked by overlap, so listing more ingredients generally surfaces recipes that use more of what you have, but a short list still works fine.",
+      "No, list whatever you want to build around. Results are ranked by overlap, so listing more ingredients generally surfaces recipes that use more of what you have, but a short list still works fine.",
   },
 ];
 

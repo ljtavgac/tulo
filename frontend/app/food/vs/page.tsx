@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Comparisons";
-const DESCRIPTION = "Every side-by-side comparison on Tulo -- so you know which one to use.";
+const DESCRIPTION = "Every side-by-side comparison on Tulo, so you know which one to use.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

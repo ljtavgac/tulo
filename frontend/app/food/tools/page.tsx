@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import ToolIcon from "@/components/ToolIcon";
 
 const TITLE = "Kitchen Tools";
-const DESCRIPTION = "Free kitchen tools on Tulo -- conversion calculator, recipe generator, and a time & temperature guide.";
+const DESCRIPTION = "Free kitchen tools on Tulo - conversion calculator, recipe generator, and a time & temperature guide.";
 
 export const metadata: Metadata = {
   title: TITLE,

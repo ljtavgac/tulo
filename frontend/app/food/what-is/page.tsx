@@ -7,7 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Definitions";
-const DESCRIPTION = "Every definition page on Tulo -- quick, direct answers to \"what is X\" questions.";
+const DESCRIPTION = "Every definition page on Tulo - quick, direct answers to \"what is X\" questions.";
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

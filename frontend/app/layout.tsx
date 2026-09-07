@@ -6,7 +6,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const DEFAULT_DESCRIPTION =
-  "Tulo is a no-clutter recipe site — ingredients and instructions up front, plus native serving-size scaling and unit conversion built into every recipe.";
+  "Tulo is a no-clutter recipe site, ingredients and instructions up front, plus native serving-size scaling and unit conversion built into every recipe.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -46,19 +46,19 @@ export function absoluteUrl(path: string): string {
 export function fallbackDescription(templateType: string, title: string): string {
   switch (templateType) {
     case "recipe_or_dish":
-      return `${title} -- ingredients, instructions, and a live serving-size scaler. No story to scroll past.`;
+      return `${title} - ingredients, instructions, and a live serving-size scaler. No story to scroll past.`;
     case "ingredient_hub":
       return `${title}: what it is, the best substitutes, storage tips, and how to use it.`;
     case "howto_technique":
-      return `${title} -- clear numbered steps and the common mistakes to avoid.`;
+      return `${title}, clear numbered steps and the common mistakes to avoid.`;
     case "definition":
       return `${title.replace(/^What Is /i, "").replace(/\?.*$/, "")} explained simply, with how it's used and what to substitute.`;
     case "comparison":
-      return `${title} -- a clear side-by-side comparison so you know which one to use.`;
+      return `${title}, a clear side-by-side comparison so you know which one to use.`;
     case "substitute":
       return `${title}, ranked, with exact ratios for each option.`;
     case "category_roundup":
-      return `${title}, curated and organized -- not an auto-generated tag archive.`;
+      return `${title}, curated and organized, not an auto-generated tag archive.`;
     default:
       return `${title} | ${SITE_NAME}`;
   }
