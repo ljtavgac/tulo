@@ -4,13 +4,33 @@ import { useState } from "react";
 import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
-import { buildBreadcrumbList, pagePath } from "@/lib/seo";
+import FaqSection from "@/components/FaqSection";
+import AdSlot from "@/components/AdSlot";
+import { absoluteUrl, buildBreadcrumbList, pagePath } from "@/lib/seo";
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Food", href: "/food" },
   { label: "Tools", href: "/food/tools" },
   { label: "Custom Recipe Generator" },
+];
+
+const FAQS = [
+  {
+    question: "How does the recipe generator work?",
+    answer:
+      "It matches the ingredients you list against every recipe already published on Tulo and ranks the results by how many of your ingredients each recipe actually uses -- it's a real search over real recipes, not an AI writing a new recipe from scratch.",
+  },
+  {
+    question: "Why didn't it find any recipes for my ingredients?",
+    answer:
+      "It can only match against recipes that already exist on Tulo, so an uncommon combination may not have a match yet. Try listing fewer or more common ingredients, or check back as more recipes get published.",
+  },
+  {
+    question: "Do I need to list every ingredient I have?",
+    answer:
+      "No -- list whatever you want to build around. Results are ranked by overlap, so listing more ingredients generally surfaces recipes that use more of what you have, but a short list still works fine.",
+  },
 ];
 
 interface Match {
@@ -53,6 +73,17 @@ export default function RecipeGeneratorClient() {
     <main className="mx-auto max-w-2xl px-4 py-8">
       <Breadcrumbs items={BREADCRUMB_ITEMS} />
       <JsonLd data={buildBreadcrumbList(BREADCRUMB_ITEMS)} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Custom Recipe Generator",
+          url: absoluteUrl("/food/tools/recipe-generator"),
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (web browser)",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }}
+      />
       <h1 className="mt-4 text-3xl font-bold">Custom Recipe Generator</h1>
       <p className="mt-3 text-ink/70">
         Tell us what you have on hand, and we&apos;ll match it against real recipes on Tulo.
@@ -110,6 +141,12 @@ export default function RecipeGeneratorClient() {
           ))}
         </ul>
       ) : null}
+
+      <div className="my-8">
+        <AdSlot variant="in-content" />
+      </div>
+
+      <FaqSection faqs={FAQS} />
     </main>
   );
 }

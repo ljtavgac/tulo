@@ -3,13 +3,33 @@
 import { useMemo, useState } from "react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
-import { buildBreadcrumbList } from "@/lib/seo";
+import FaqSection from "@/components/FaqSection";
+import AdSlot from "@/components/AdSlot";
+import { absoluteUrl, buildBreadcrumbList } from "@/lib/seo";
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Food", href: "/food" },
   { label: "Tools", href: "/food/tools" },
   { label: "Cooking Time & Temperature Guide" },
+];
+
+const FAQS = [
+  {
+    question: "What internal temperature is chicken safe to eat at?",
+    answer:
+      "165°F (74°C) at the thickest part, per USDA guidelines, for both white and dark meat. Dark meat stays tender at that temperature; white meat can dry out if taken much past it.",
+  },
+  {
+    question: "Do I need a meat thermometer, or can I judge doneness by time alone?",
+    answer:
+      "A thermometer is far more reliable -- cook times vary with the exact size and shape of a cut, starting temperature, and your oven or grill's real accuracy. Treat the times in the table as a starting estimate and confirm with a thermometer before serving.",
+  },
+  {
+    question: "Why do these times differ from times I've seen elsewhere?",
+    answer:
+      "Cook times are inherently approximate -- they depend on the exact thickness and starting temperature of what you're cooking, and on how accurate your particular oven, air fryer, or grill actually runs. Always confirm the final internal temperature rather than relying on the clock alone.",
+  },
 ];
 
 const SAFE_MINIMUM_TEMPS: { category: string; temp: string }[] = [
@@ -66,6 +86,17 @@ export default function TimeTemperatureGuideClient() {
     <main className="mx-auto max-w-3xl px-4 py-8">
       <Breadcrumbs items={BREADCRUMB_ITEMS} />
       <JsonLd data={buildBreadcrumbList(BREADCRUMB_ITEMS)} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Cooking Time & Temperature Guide",
+          url: absoluteUrl("/food/tools/time-temperature-guide"),
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (web browser)",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }}
+      />
       <h1 className="mt-4 text-3xl font-bold">Cooking Time &amp; Temperature Guide</h1>
       <p className="mt-3 text-ink/70">
         Two things at once: the food-safety minimums (how hot it needs to get) and the
@@ -83,6 +114,10 @@ export default function TimeTemperatureGuideClient() {
           ))}
         </tbody>
       </table>
+
+      <div className="my-8">
+        <AdSlot variant="in-content" />
+      </div>
 
       <h2 className="mt-8 text-xl font-bold">Cooking times by method</h2>
       <div className="mt-3 flex flex-wrap gap-3">
@@ -147,6 +182,8 @@ export default function TimeTemperatureGuideClient() {
           </tbody>
         </table>
       </div>
+
+      <FaqSection faqs={FAQS} />
     </main>
   );
 }

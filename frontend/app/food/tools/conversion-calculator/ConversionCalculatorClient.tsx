@@ -3,13 +3,33 @@
 import { useState } from "react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
-import { buildBreadcrumbList } from "@/lib/seo";
+import FaqSection from "@/components/FaqSection";
+import AdSlot from "@/components/AdSlot";
+import { absoluteUrl, buildBreadcrumbList } from "@/lib/seo";
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Food", href: "/food" },
   { label: "Tools", href: "/food/tools" },
   { label: "Kitchen Measurement Conversion Calculator" },
+];
+
+const FAQS = [
+  {
+    question: "How many grams are in a cup?",
+    answer:
+      "It depends entirely on what's in the cup -- a cup of flour, a cup of sugar, and a cup of water all weigh different amounts, since a cup measures volume, not weight. Use the weight tab above with the specific ingredient's known conversion rather than one universal number.",
+  },
+  {
+    question: "How do I convert an oven temperature for a fan (convection) oven?",
+    answer:
+      "A common rule of thumb is to lower the recipe's stated temperature by 25°F (about 15°C) when using a fan/convection oven, since the moving air cooks food faster at the same set temperature. Check times a few minutes early the first time you try it.",
+  },
+  {
+    question: "Is this calculator accurate for every ingredient?",
+    answer:
+      "The volume and weight conversions are standard, exact unit-to-unit conversions (cups to milliliters, ounces to grams). They don't account for ingredient density, so a cup-to-gram conversion for a specific ingredient (flour, sugar, butter) can differ from these generic unit conversions -- check the ingredient's own recipe page for that.",
+  },
 ];
 
 // Base unit: milliliters. Ratios are the standard US customary <-> metric
@@ -163,6 +183,17 @@ export default function ConversionCalculatorClient() {
     <main className="mx-auto max-w-3xl px-4 py-8">
       <Breadcrumbs items={BREADCRUMB_ITEMS} />
       <JsonLd data={buildBreadcrumbList(BREADCRUMB_ITEMS)} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Kitchen Measurement Conversion Calculator",
+          url: absoluteUrl("/food/tools/conversion-calculator"),
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (web browser)",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }}
+      />
       <h1 className="mt-4 text-3xl font-bold">Kitchen Measurement Conversion Calculator</h1>
       <p className="mt-3 text-ink/70">
         Convert between US customary and metric kitchen measurements. This tool is also
@@ -179,10 +210,16 @@ export default function ConversionCalculatorClient() {
         <UnitConverter units={WEIGHT_UNITS} defaultFrom="ounce" defaultTo="gram" />
       </div>
 
+      <div className="my-8">
+        <AdSlot variant="in-content" />
+      </div>
+
       <h2 className="mt-8 text-xl font-bold">Oven Temperature</h2>
       <div className="mt-3">
         <OvenTempConverter />
       </div>
+
+      <FaqSection faqs={FAQS} />
     </main>
   );
 }

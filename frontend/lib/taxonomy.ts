@@ -74,9 +74,11 @@ export function sectionForTemplate(templateType: string): Section | undefined {
 
 // The 3 tool pages are static, hand-built routes, not DB-backed content --
 // not meaningfully queryable via listPages() the way template pages are.
-// Shared by the tools index page and the footer.
-export const TOOL_PAGES: { slug: string; title: string }[] = [
-  { slug: "conversion-calculator", title: "Conversion Calculator" },
-  { slug: "recipe-generator", title: "Recipe Generator" },
-  { slug: "time-temperature-guide", title: "Time & Temperature Guide" },
+// Shared by the tools index page, the homepage's Tools carousel, and the
+// footer. `icon` names a ToolIcon variant -- tools aren't photographable
+// content, so they get a simple icon instead of a StockPhotoSlot.
+export const TOOL_PAGES: { slug: string; title: string; icon: "calculator" | "wand" | "thermometer" }[] = [
+  { slug: "conversion-calculator", title: "Conversion Calculator", icon: "calculator" },
+  { slug: "recipe-generator", title: "Recipe Generator", icon: "wand" },
+  { slug: "time-temperature-guide", title: "Time & Temperature Guide", icon: "thermometer" },
 ];

@@ -4,6 +4,7 @@ import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo
 import { sectionForTemplate, TOOL_PAGES } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
+import ToolIcon from "@/components/ToolIcon";
 
 const TITLE = "Kitchen Tools";
 const DESCRIPTION = "Free kitchen tools on Tulo -- conversion calculator, recipe generator, and a time & temperature guide.";
@@ -53,8 +54,9 @@ export default function ToolsIndexPage() {
           <li key={tool.slug}>
             <Link
               href={pagePath("tool_page", tool.slug)}
-              className="block rounded-lg border border-ink/10 p-4 text-sm font-semibold hover:border-accent hover:text-accent"
+              className="flex items-center gap-3 rounded-lg border border-ink/10 p-4 text-sm font-semibold hover:border-accent hover:text-accent"
             >
+              <ToolIcon icon={tool.icon} className="h-8 w-8 shrink-0 text-accent" />
               {tool.title}
             </Link>
           </li>

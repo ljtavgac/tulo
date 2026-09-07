@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Fragment } from "react";
 import { getPage, listPages } from "@/lib/api";
 import type { HomepageContent } from "@/lib/types";
 import JsonLd from "@/components/JsonLd";
 import PageTile from "@/components/PageTile";
 import Carousel from "@/components/Carousel";
+import ToolIcon from "@/components/ToolIcon";
+import AdSlot from "@/components/AdSlot";
 import { SITE_NAME, SITE_URL, pagePath } from "@/lib/seo";
 import { sectionForTemplate, TOOL_PAGES } from "@/lib/taxonomy";
+
+// Indices (into HOMEPAGE_SECTIONS) after which an in-content ad renders --
+// matches the "two in-content slots" placement used on Recipe pages,
+// spaced out between carousels instead of mid-article.
+const AD_AFTER_SECTION_INDEX = new Set([1, 3]);
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<HomepageContent>("homepage");
@@ -68,19 +76,26 @@ export default async function HomePage() {
         const section = sectionForTemplate(templateType)!;
 
         return (
-          <Carousel key={templateType} title={section.label} seeAllHref={section.hasIndex ? section.path : undefined}>
-            {pages.map((p) => (
-              <div key={p.slug} className="w-40 shrink-0 snap-start sm:w-48">
-                <PageTile
-                  href={pagePath(p.template_type, p.slug)}
-                  title={p.title}
-                  imageQuery={p.hero_image_query ?? p.title}
-                  imageUrl={p.image_url}
-                  imageAttribution={p.image_attribution}
-                />
+          <Fragment key={templateType}>
+            <Carousel title={section.label} seeAllHref={section.hasIndex ? section.path : undefined}>
+              {pages.map((p) => (
+                <div key={p.slug} className="w-40 shrink-0 snap-start sm:w-48">
+                  <PageTile
+                    href={pagePath(p.template_type, p.slug)}
+                    title={p.title}
+                    imageQuery={p.hero_image_query ?? p.title}
+                    imageUrl={p.image_url}
+                    imageAttribution={p.image_attribution}
+                  />
+                </div>
+              ))}
+            </Carousel>
+            {AD_AFTER_SECTION_INDEX.has(i) ? (
+              <div className="mx-auto max-w-6xl px-4">
+                <AdSlot variant="in-content" />
               </div>
-            ))}
-          </Carousel>
+            ) : null}
+          </Fragment>
         );
       })}
 
@@ -89,9 +104,10 @@ export default async function HomePage() {
           <Link
             key={tool.slug}
             href={pagePath("tool_page", tool.slug)}
-            className="block w-40 shrink-0 snap-start rounded-card border border-ink/10 p-4 text-sm font-semibold hover:border-accent hover:text-accent sm:w-48"
+            className="flex w-40 shrink-0 snap-start flex-col gap-3 rounded-card bg-cream p-4 shadow-card transition-shadow hover:shadow-lg sm:w-48"
           >
-            {tool.title}
+            <ToolIcon icon={tool.icon} className="h-8 w-8 text-accent" />
+            <span className="text-sm font-bold">{tool.title}</span>
           </Link>
         ))}
       </Carousel>
