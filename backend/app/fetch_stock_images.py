@@ -19,6 +19,7 @@ they're skipped entirely.
 """
 
 import copy
+import re
 import sys
 
 from sqlalchemy.orm import Session
@@ -54,23 +55,36 @@ def _search_query_for(template_type: str, raw_query: str) -> str:
     return raw_query
 
 
-def _apply_result(content: dict, query: str, template_type: str, used_urls: set[str]) -> bool:
-    """Looks up an image for `query` and writes image_url/image_attribution
-    into `content` in place. Returns True if it found and wrote one."""
-    search_query = _search_query_for(template_type, query)
-    result = search_image(search_query, exclude_urls=frozenset(used_urls))
-    if result is None:
-        return False
-    content["image_url"] = result.url
-    content["image_attribution"] = {
-        "photographer": result.photographer,
-        "photographer_url": result.photographer_url,
-        "source": result.source,
-    }
-    if result.source == "unsplash" and result.download_location:
-        ping_download(result.download_location)
-    used_urls.add(result.url)
-    return True
+def _category_fallback_query(page_title: str) -> str:
+    """A broader query to fall back to when a recipe card's own specific
+    dish name (e.g. "nasu dengaku") has no match on Unsplash/Pexels -- a
+    thin free-tier catalog is far more likely to have a photo for the
+    parent category (e.g. "eggplant", from the page title "Eggplant
+    Recipes") than for a niche regional dish name."""
+    return re.sub(r"\s+recipes?$", "", page_title, flags=re.IGNORECASE).strip()
+
+
+def _apply_result(content: dict, queries: list[str], template_type: str, used_urls: set[str]) -> bool:
+    """Tries each query in `queries`, in order, and writes
+    image_url/image_attribution into `content` in place from the first one
+    that finds a result. Returns True if it found and wrote one."""
+    for query in queries:
+        search_query = _search_query_for(template_type, query)
+        result = search_image(search_query, exclude_urls=frozenset(used_urls))
+        if result is None:
+            print(f"    no result for '{search_query}'")
+            continue
+        content["image_url"] = result.url
+        content["image_attribution"] = {
+            "photographer": result.photographer,
+            "photographer_url": result.photographer_url,
+            "source": result.source,
+        }
+        if result.source == "unsplash" and result.download_location:
+            ping_download(result.download_location)
+        used_urls.add(result.url)
+        return True
+    return False
 
 
 def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
@@ -96,11 +110,9 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
                 query = content[query_key]
                 print(f"  {page.slug}: searching '{query}'...")
                 try:
-                    if _apply_result(content, query, page.template_type, used_urls):
+                    if _apply_result(content, [query], page.template_type, used_urls):
                         images_written += 1
                         changed = True
-                    else:
-                        print(f"    no result for '{query}'")
                 except Exception as e:
                     print(f"    error: {e}")
 
@@ -110,13 +122,18 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
                     query = card.get("image_query")
                     if not query:
                         continue
+                    # A specific dish name (e.g. "nasu dengaku") often has no
+                    # match in a free-tier catalog -- fall back to the
+                    # page's own category (e.g. "Eggplant") so a card isn't
+                    # left permanently blank just because its exact dish is
+                    # too niche to have stock photos of its own.
+                    fallback = _category_fallback_query(page.title)
+                    queries = [query] if fallback.lower() == query.lower() else [query, fallback]
                     print(f"  {page.slug} / {card.get('title')}: searching '{query}'...")
                     try:
-                        if _apply_result(card, query, page.template_type, used_urls):
+                        if _apply_result(card, queries, page.template_type, used_urls):
                             images_written += 1
                             changed = True
-                        else:
-                            print(f"    no result for '{query}'")
                     except Exception as e:
                         print(f"    error: {e}")
 

@@ -33,6 +33,7 @@ On startup, the app creates its database tables if they don't exist and auto-see
 | `UNSPLASH_ACCESS_KEY` | Optional. Enables real stock photos -- see below.                     | unset                      |
 | `PEXELS_ACCESS_KEY`   | Optional. Enables real stock photos -- see below.                     | unset                      |
 | `ADMIN_TASK_TOKEN`    | Optional. Enables the `/admin/fetch-images` endpoint -- see below.    | unset                      |
+| `REVALIDATION_TOKEN`  | Optional. Must match the frontend's own `REVALIDATION_TOKEN` -- see below. | unset                  |
 
 When you deploy, set `FRONTEND_ORIGIN` to your real frontend URL (e.g. `https://tulo.com`).
 
@@ -54,7 +55,9 @@ Pages show a placeholder image slot until real photos are sourced. To turn that 
 2. Set `UNSPLASH_ACCESS_KEY` and/or `PEXELS_ACCESS_KEY` (both, if you want Pexels as a fallback when Unsplash has no result)
 3. Redeploy (or restart the app locally)
 
-Once a key is set, fetching is automatic: app startup calls the same `fetch_images()` function described below for any page still missing a photo. It searches each page's image query, picks the top result, and writes the image URL and photographer attribution into that page's content, so it's fetched once and stays stable rather than being re-fetched on every page load. A page that already has an image is skipped with a plain dict check -- no API call -- so a redeploy with no new content does effectively nothing here, and only genuinely new pages (the next content batch, say) trigger a real search. With no key set, this is a complete no-op, not even a page loop. Recipe, Ingredient Hub, How-To, Definition, Comparison, and Substitute pages get a single hero image; Category Roundup pages get one image per recipe card. Homepage and Tool pages don't use photos in their design.
+Once a key is set, fetching is automatic: app startup calls the same `fetch_images()` function described below for any page still missing a photo. It searches each page's image query, picks the top result, and writes the image URL and photographer attribution into that page's content, so it's fetched once and stays stable rather than being re-fetched on every page load. A page that already has an image is skipped with a plain dict check -- no API call -- so a redeploy with no new content does effectively nothing here, and only genuinely new pages (the next content batch, say) trigger a real search. With no key set, this is a complete no-op, not even a page loop. Recipe, Ingredient Hub, How-To, Definition, Comparison, and Substitute pages get a single hero image; Category Roundup pages get one image per recipe card, each searched independently -- if a card's own dish name is too niche to have a match (e.g. "nasu dengaku"), it falls back to a broader search on the page's own category (e.g. "Eggplant") rather than being left permanently blank.
+
+Pages the frontend already had cached before their photo was fetched can keep showing the old "no photo" version for up to an hour (the frontend caches each page for an hour -- see its README). Set `REVALIDATION_TOKEN` to the same value on both this service and the frontend to close that gap: whenever `fetch_images()` actually writes a new photo, this service immediately tells the frontend to drop its cache, instead of waiting on that hour to pass on its own. Optional -- fetching and writing photos works exactly the same either way.
 
 ### Triggering it manually
 

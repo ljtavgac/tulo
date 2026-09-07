@@ -3,6 +3,7 @@ import os
 import secrets
 from contextlib import asynccontextmanager, redirect_stdout
 
+import requests
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -13,6 +14,34 @@ from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY
 from .models import Page
 from .schemas import PageOut, PageSummary
 from .seed_templates import resync_ingredients, seed
+
+
+def _revalidate_frontend() -> bool:
+    """Nudges the frontend to drop its 1h page cache right after new stock
+    photos are written, instead of leaving an already-cached page (fetched
+    before the image existed) to keep showing its stale "no photo" snapshot
+    until that cache entry naturally expires on its own schedule. Hits the
+    frontend's own /admin-equivalent /api/revalidate endpoint, which is
+    itself inert unless REVALIDATION_TOKEN is set there too -- so this is a
+    freshness nudge, not something image fetching should ever depend on:
+    any failure (missing token here, network error, frontend not
+    configured) is swallowed rather than surfacing as an error to callers
+    of fetch_images().
+
+    Returns True if a request was actually sent (REVALIDATION_TOKEN is set
+    on this service) -- not whether the frontend accepted it, since that
+    would mean blocking on a cross-service network round trip that no
+    caller here needs to wait on.
+    """
+    token = os.environ.get("REVALIDATION_TOKEN")
+    if not token:
+        return False
+    frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
+    try:
+        requests.get(f"{frontend_origin}/api/revalidate", params={"token": token}, timeout=10)
+    except requests.RequestException as e:
+        print(f"Frontend revalidation request failed: {e}")
+    return True
 
 
 @asynccontextmanager
@@ -43,6 +72,7 @@ async def lifespan(app: FastAPI):
             pages_updated, images_written = fetch_images(db)
             if images_written:
                 print(f"Startup image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
+                _revalidate_frontend()
     finally:
         db.close()
     yield
@@ -192,10 +222,13 @@ def trigger_fetch_images(token: str, force: bool = False, db: Session = Depends(
     with redirect_stdout(log):
         pages_updated, images_written = fetch_images(db, force=force)
 
+    frontend_revalidated = _revalidate_frontend() if images_written else False
+
     return {
         "unsplash_configured": bool(UNSPLASH_ACCESS_KEY),
         "pexels_configured": bool(PEXELS_ACCESS_KEY),
         "pages_updated": pages_updated,
         "images_written": images_written,
+        "frontend_revalidated": frontend_revalidated,
         "log": log.getvalue().splitlines(),
     }
