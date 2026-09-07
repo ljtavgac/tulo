@@ -56,10 +56,10 @@ SEED_PAGES = [
             # free-text strings so the frontend's serving-size scaler can
             # actually recalculate them, not just relabel a fixed string.
             "ingredients": [
-                {"name": "ripe bananas, mashed", "base_qty": 3, "unit_us": "medium banana(s)", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
+                {"name": "bananas, mashed", "base_qty": 3, "unit_us": "medium ripe", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
                 {"name": "unsalted butter, melted", "base_qty": 1 / 3, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
                 {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
-                {"name": "large egg, beaten", "base_qty": 1, "unit_us": "egg(s)", "base_qty_metric": 1, "unit_metric": "egg(s)", "hub_slug": None},
+                {"name": "egg, beaten", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
                 {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
                 {"name": "baking soda", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
                 {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
@@ -80,7 +80,10 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "related_recipe_slugs": [],
-            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+            # No seeded category genuinely fits banana bread (the only
+            # roundup example is eggplant recipes) -- left null rather than
+            # linking somewhere unrelated just to fill the slot.
+            "category_link": None,
         },
     },
     {
