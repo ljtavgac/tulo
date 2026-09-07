@@ -9,9 +9,11 @@ import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
 import AdSlot from "@/components/AdSlot";
+import LinkifiedText from "@/components/LinkifiedText";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
+import { getLinkTerms } from "@/lib/linkTerms";
 
 export async function generateMetadata({
   params,
@@ -42,6 +44,7 @@ export default async function IngredientHubPage({
     { label: section.label, href: section.path },
     { label: page.title },
   ];
+  const linkTerms = await getLinkTerms(slug);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -55,7 +58,9 @@ export default async function IngredientHubPage({
         className="mt-4"
       />
 
-      <p className="mt-4 text-ink/80">{content.description}</p>
+      <p className="mt-4 text-ink/80">
+        <LinkifiedText text={content.description} terms={linkTerms} />
+      </p>
 
       <h2 className="mt-8 text-xl font-bold">Substitutes</h2>
       <ul className="mt-3 space-y-3">
@@ -78,10 +83,14 @@ export default async function IngredientHubPage({
       ) : null}
 
       <h2 className="mt-8 text-xl font-bold">Storage</h2>
-      <p className="mt-2 text-ink/80">{content.storage}</p>
+      <p className="mt-2 text-ink/80">
+        <LinkifiedText text={content.storage} terms={linkTerms} />
+      </p>
 
       <h2 className="mt-8 text-xl font-bold">How to use</h2>
-      <p className="mt-2 text-ink/80">{content.uses}</p>
+      <p className="mt-2 text-ink/80">
+        <LinkifiedText text={content.uses} terms={linkTerms} />
+      </p>
 
       <div className="my-8">
         <AdSlot variant="in-content" />

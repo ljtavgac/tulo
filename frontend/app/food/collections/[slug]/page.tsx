@@ -9,8 +9,10 @@ import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
+import LinkifiedText from "@/components/LinkifiedText";
 import { absoluteUrl, buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
+import { getLinkTerms } from "@/lib/linkTerms";
 
 export async function generateMetadata({
   params,
@@ -45,6 +47,7 @@ export default async function CategoryRoundupPage({
     { label: section.label, href: section.path },
     { label: page.title },
   ];
+  const linkTerms = await getLinkTerms();
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -64,7 +67,9 @@ export default async function CategoryRoundupPage({
         }}
       />
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>
-      <p className="mt-4 max-w-2xl text-ink/80">{content.intro}</p>
+      <p className="mt-4 max-w-2xl text-ink/80">
+        <LinkifiedText text={content.intro} terms={linkTerms} />
+      </p>
 
       {content.sub_categories.length > 0 ? (
         <div className="mt-4 flex flex-wrap gap-2">

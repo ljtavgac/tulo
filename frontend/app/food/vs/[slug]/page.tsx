@@ -9,7 +9,9 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import AdSlot from "@/components/AdSlot";
+import LinkifiedText from "@/components/LinkifiedText";
 import Link from "next/link";
+import { getLinkTerms } from "@/lib/linkTerms";
 
 export async function generateMetadata({
   params,
@@ -40,6 +42,7 @@ export default async function ComparisonPage({
     { label: section.label, href: section.hasIndex ? section.path : undefined },
     { label: page.title },
   ];
+  const linkTerms = await getLinkTerms();
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -86,7 +89,9 @@ export default async function ComparisonPage({
       {content.sections.map((section) => (
         <section key={section.heading} className="mt-8">
           <h2 className="text-xl font-bold">{section.heading}</h2>
-          <p className="mt-2 text-ink/80">{section.body}</p>
+          <p className="mt-2 text-ink/80">
+            <LinkifiedText text={section.body} terms={linkTerms} />
+          </p>
         </section>
       ))}
 

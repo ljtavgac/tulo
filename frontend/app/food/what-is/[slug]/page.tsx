@@ -8,9 +8,11 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import AdSlot from "@/components/AdSlot";
+import LinkifiedText from "@/components/LinkifiedText";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
+import { getLinkTerms } from "@/lib/linkTerms";
 
 export async function generateMetadata({
   params,
@@ -41,6 +43,7 @@ export default async function DefinitionPage({
     { label: section.label, href: section.hasIndex ? section.path : undefined },
     { label: page.title },
   ];
+  const linkTerms = await getLinkTerms();
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -68,7 +71,9 @@ export default async function DefinitionPage({
       />
 
       <h2 className="mt-8 text-xl font-bold">More detail</h2>
-      <p className="mt-2 text-ink/80">{content.expanded_explanation}</p>
+      <p className="mt-2 text-ink/80">
+        <LinkifiedText text={content.expanded_explanation} terms={linkTerms} />
+      </p>
 
       <h2 className="mt-8 text-xl font-bold">Where it's used</h2>
       <p className="mt-2 text-ink/80">{content.usage_origin}</p>

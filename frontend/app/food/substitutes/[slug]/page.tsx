@@ -9,8 +9,10 @@ import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import AdSlot from "@/components/AdSlot";
+import LinkifiedText from "@/components/LinkifiedText";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
+import { getLinkTerms } from "@/lib/linkTerms";
 
 export async function generateMetadata({
   params,
@@ -41,6 +43,7 @@ export default async function SubstitutePage({
     { label: section.label, href: section.hasIndex ? section.path : undefined },
     { label: page.title },
   ];
+  const linkTerms = await getLinkTerms();
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -77,7 +80,9 @@ export default async function SubstitutePage({
         ))}
       </ol>
 
-      <div className="mt-8 rounded-lg bg-ink/5 p-4 text-sm text-ink/80">{content.baking_vs_cooking_note}</div>
+      <div className="mt-8 rounded-lg bg-ink/5 p-4 text-sm text-ink/80">
+        <LinkifiedText text={content.baking_vs_cooking_note} terms={linkTerms} />
+      </div>
 
       <div className="my-8">
         <AdSlot variant="in-content" />

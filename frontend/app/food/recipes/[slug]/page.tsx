@@ -10,9 +10,11 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
+import LinkifiedText from "@/components/LinkifiedText";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
+import { getLinkTerms } from "@/lib/linkTerms";
 import { formatUsQuantity } from "@/lib/format";
 
 export async function generateMetadata({
@@ -44,6 +46,7 @@ export default async function RecipePage({
     { label: section.label, href: section.path },
     { label: page.title },
   ];
+  const linkTerms = await getLinkTerms(slug);
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -83,7 +86,9 @@ export default async function RecipePage({
           className="mt-4"
         />
 
-        <p className="mt-4 text-ink/80">{content.why_it_works}</p>
+        <p className="mt-4 text-ink/80">
+          <LinkifiedText text={content.why_it_works} terms={linkTerms} />
+        </p>
 
         <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg border border-ink/10 p-4 text-sm sm:grid-cols-4">
           <div>
