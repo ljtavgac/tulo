@@ -141,6 +141,9 @@ export interface ComparisonSection {
 
 export interface ComparisonContent {
   meta_description?: string;
+  hero_image_query?: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
   item_a_name: string;
   item_b_name: string;
   comparison_table: ComparisonRow[];
@@ -160,6 +163,9 @@ export interface RankedSubstitute {
 
 export interface SubstituteContent {
   meta_description?: string;
+  hero_image_query?: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
   ranked_substitutes: RankedSubstitute[];
   baking_vs_cooking_note: string;
   faqs?: Faq[];

@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
+import StockPhotoSlot from "@/components/StockPhotoSlot";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 
@@ -45,6 +46,12 @@ export default async function SubstitutePage({
       <Breadcrumbs items={breadcrumbItems} />
       <JsonLd data={buildBreadcrumbList(breadcrumbItems)} />
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>
+      <StockPhotoSlot
+        query={content.hero_image_query ?? page.title}
+        imageUrl={content.image_url}
+        attribution={content.image_attribution}
+        className="mt-4"
+      />
       {content.hub_page_slug ? (
         <Link
           href={pagePath("ingredient_hub", content.hub_page_slug)}

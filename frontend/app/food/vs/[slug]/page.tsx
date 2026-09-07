@@ -7,6 +7,7 @@ import { sectionForTemplate } from "@/lib/taxonomy";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
+import StockPhotoSlot from "@/components/StockPhotoSlot";
 import Link from "next/link";
 
 export async function generateMetadata({
@@ -44,6 +45,12 @@ export default async function ComparisonPage({
       <Breadcrumbs items={breadcrumbItems} />
       <JsonLd data={buildBreadcrumbList(breadcrumbItems)} />
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>
+      <StockPhotoSlot
+        query={content.hero_image_query ?? `${content.item_a_name} vs ${content.item_b_name}`}
+        imageUrl={content.image_url}
+        attribution={content.image_attribution}
+        className="mt-4"
+      />
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-full border-collapse overflow-hidden rounded-lg border border-ink/10 text-sm">

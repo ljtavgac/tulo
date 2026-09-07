@@ -12,9 +12,9 @@ Usage:
     python -m app.fetch_stock_images            # skip pages that already have an image
     python -m app.fetch_stock_images --force     # re-fetch and overwrite existing images
 
-Only Recipe, Ingredient Hub, How-To, Definition (single hero image) and
-Category Roundup (one image per recipe card) have an image slot in their
-template -- Comparison, Substitute, Homepage, and Tool pages don't, so
+Recipe, Ingredient Hub, How-To, Definition, Comparison, and Substitute
+(single hero image) and Category Roundup (one image per recipe card) have
+an image slot in their template -- Homepage and Tool pages don't, so
 they're skipped entirely.
 """
 
@@ -34,6 +34,8 @@ SINGLE_IMAGE_TEMPLATES = {
     "ingredient_hub": "hero_image_query",
     "howto_technique": "hero_image_query",
     "definition": "hero_image_query",
+    "comparison": "hero_image_query",
+    "substitute": "hero_image_query",
 }
 
 # Templates whose image represents a finished, plated dish rather than a raw
