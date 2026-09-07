@@ -17,7 +17,12 @@ export default function Footer() {
     <footer className="bg-ink text-cream">
       <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-1">
-          <Logo variant="dark" className="h-[62px] w-auto" />
+          {/* tulo-dark.png is now cropped tight to its wordmark (no more
+              baked-in canvas padding -- see Logo.tsx), so this renders at
+              a much larger fraction of its box than before. 28px here
+              reproduces the same on-screen wordmark size the old,
+              padded 62px box used to produce. */}
+          <Logo variant="dark" className="h-[28px] w-auto" />
           <p className="mt-4 max-w-xs text-sm text-cream/70">
             Made for you.
           </p>

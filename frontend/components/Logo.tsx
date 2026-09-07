@@ -12,9 +12,9 @@ export default function Logo({
   const src = variant === "light" ? "/brand/tulo-light.png" : "/brand/tulo-dark.png";
   // width/height only set the intrinsic ratio for CLS -- visible size comes
   // from the caller's height class + w-auto (see call sites). tulo-dark.png
-  // is cropped tight to its wordmark (561x323); tulo-light.png still has
+  // is cropped tight to its wordmark (533x295); tulo-light.png still has
   // its original canvas padding, hence the different ratio here.
-  const [width, height] = variant === "light" ? [110, 80] : [561, 323];
+  const [width, height] = variant === "light" ? [110, 80] : [533, 295];
   return (
     <Image
       src={src}
