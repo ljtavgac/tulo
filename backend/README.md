@@ -36,7 +36,15 @@ On startup, the app creates its database tables if they don't exist and auto-see
 
 When you deploy, set `FRONTEND_ORIGIN` to your real frontend URL (e.g. `https://tulo.com`).
 
-`DATABASE_URL` defaults to a local SQLite file, which is fine for local development and for this early template-review stage. Render's free-tier disk is ephemeral (it resets on every deploy), so before real batch content goes live, `DATABASE_URL` should point at a persistent database instead (e.g. a Render Postgres instance) -- otherwise published content won't survive a redeploy. The same caveat applies to stock photos below: fetching them against the current SQLite setup on Render is pointless until that's fixed, since the next deploy would wipe them.
+`DATABASE_URL` defaults to a local SQLite file, which is fine for local development but not for production: Render's free-tier disk is ephemeral (it resets on every deploy), so published content -- and fetched stock photos -- won't survive a redeploy until this points at a persistent database instead.
+
+### Setting up a persistent database on Render
+
+1. In the Render dashboard: **New +** → **PostgreSQL**. Pick the same region as the `tulo-backend` web service. Note that Render's free Postgres plan is deleted automatically after a set number of days -- check the current terms when you create it, and use a paid Starter instance instead if you want it to stay up indefinitely.
+2. Once it's created, copy its **Internal Database URL** (starts with `postgres://`) -- internal, not external, since the web service and database run in the same region and don't need to go over the public internet.
+3. On the `tulo-backend` service's Environment tab, add `DATABASE_URL` with that value, then save (triggers a redeploy).
+
+The app normalizes Render's `postgres://` scheme to the `postgresql://` SQLAlchemy expects, and `psycopg2-binary` is already a dependency -- no other code changes needed. On first boot against the new database it creates the tables and seeds the template-review pages, same as it does locally; every deploy after that leaves existing data alone (`seed()` only inserts pages that don't already exist), so anything fetched via `/admin/fetch-images` now sticks around.
 
 ## Stock photos
 
