@@ -153,7 +153,14 @@ def list_pages(
         # queries fine at the current content scale; a real search index
         # (Postgres full-text search, or an external service) is the
         # right upgrade once page count and traffic justify it.
-        query = query.filter(Page.title.ilike(f"%{q}%"))
+        #
+        # The single "Homepage" row matches a text search for "home" (and
+        # similar) the same as any other page's title, but a search result
+        # that navigates to the site's own homepage is never useful -- it's
+        # already one click away from everywhere. Excluded here rather than
+        # in each frontend caller, since both the search results page and
+        # the header's autocomplete dropdown go through this same query.
+        query = query.filter(Page.title.ilike(f"%{q}%"), Page.template_type != "homepage")
 
     if limit is not None:
         query = query.offset(offset).limit(limit)
