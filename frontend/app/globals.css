@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/*
+ * Brand tokens sampled directly from the logo files (tulo-light.png /
+ * tulo-dark.png), not approximated -- see PAGE_TEMPLATES.md's "Brand
+ * Assets" section for the source of these values.
+ */
+@theme {
+  --color-ink: #1f1e1c;
+  --color-cream: #f2f0eb;
+  --color-accent: #e8351c;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
