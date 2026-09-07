@@ -24,6 +24,11 @@ Food Network) that this template is designed to directly counter.
 - Related recipes / category roundup links
 - Clean print/PDF view button (default, not hidden)
 - Optional: longer story/background content, positioned after the recipe
+- **Depth, below the recipe card, never above it or between the user and the instructions** -- this is how to compete on content depth without reintroducing the "buried under a story" problem this template exists to counter. Structured reference content, not narrative:
+  - Tips & variations (substitutions, make-ahead notes, common adjustments specific to this recipe -- not generic ingredient info that belongs on the Ingredient Hub page)
+  - Storage & reheating instructions
+  - Nutrition note (brief, estimate-labeled -- not a certified nutrition panel)
+  - FAQ section (3-5 real questions, e.g. "can I freeze X," "why did my X turn out dense/gummy/dry") marked up with FAQPage schema -- these map directly to real "People Also Ask" search intent and are worth more for SEO than the same word count as prose
 
 ---
 
@@ -41,6 +46,7 @@ Food Network) that this template is designed to directly counter.
 - Nutrition basics (brief, not the main focus)
 - **"Recipes using this ingredient" module — this is the critical reverse-link that makes the whole site's internal linking graph work.** Every ingredient page should surface every recipe that uses it.
 - Related ingredients (e.g., other cheeses, other chiles)
+- FAQ section (2-4 real questions specific to this ingredient -- identification/lookalikes, "can I substitute X for Y," how it's grown/stored long-term), marked up with FAQPage schema. Same rationale as the Recipe page's FAQ section: real search intent, not padding.
 - For `internal_infrastructure` rows: same template, lighter content — description + substitutes + recipe links is enough; doesn't need the full depth of an `seo_target` ingredient page.
 
 ---

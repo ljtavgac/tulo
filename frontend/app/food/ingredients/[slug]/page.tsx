@@ -82,6 +82,31 @@ export default async function IngredientHubPage({
       <h2 className="mt-8 text-xl font-bold">Nutrition</h2>
       <p className="mt-2 text-ink/80">{content.nutrition_note}</p>
 
+      {content.faqs && content.faqs.length > 0 ? (
+        <>
+          <JsonLd
+            data={{
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: content.faqs.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: { "@type": "Answer", text: faq.answer },
+              })),
+            }}
+          />
+          <h2 className="mt-8 text-xl font-bold">FAQ</h2>
+          <div className="mt-3 space-y-4">
+            {content.faqs.map((faq, i) => (
+              <div key={i}>
+                <p className="font-semibold">{faq.question}</p>
+                <p className="mt-1 text-sm text-ink/80">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : null}
+
       {content.recipe_slugs.length > 0 ? (
         <>
           <h2 className="mt-8 text-xl font-bold">Recipes using {page.title.toLowerCase()}</h2>

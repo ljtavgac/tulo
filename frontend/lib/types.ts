@@ -45,6 +45,11 @@ export interface ImageAttribution {
   source: "unsplash" | "pexels";
 }
 
+export interface Faq {
+  question: string;
+  answer: string;
+}
+
 export interface RecipeContent {
   meta_description?: string;
   hero_image_query: string;
@@ -57,6 +62,15 @@ export interface RecipeContent {
   servings: number;
   ingredients: RecipeIngredient[];
   instructions: string[];
+  // Depth added for SEO without violating the "no life story" positioning
+  // (see PAGE_TEMPLATES.md): structured reference content, not narrative --
+  // FAQs, tips, storage, and nutrition are all common real search intents
+  // ("can I freeze X", "why is my X dense") that a short story wouldn't
+  // answer anyway. All optional since older/batch content may predate them.
+  tips_and_variations?: string[];
+  storage_and_reheating?: string;
+  nutrition_note?: string;
+  faqs?: Faq[];
   technique_link: LinkRef | null;
   related_recipe_slugs: string[];
   category_link: LinkRef | null;
@@ -79,6 +93,7 @@ export interface IngredientHubContent {
   storage: string;
   uses: string;
   nutrition_note: string;
+  faqs?: Faq[];
   recipe_slugs: string[];
   related_ingredient_slugs: string[];
 }

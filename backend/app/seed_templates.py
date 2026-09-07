@@ -90,6 +90,60 @@ SEED_PAGES = [
                 "Bake for 55-65 minutes, until a toothpick inserted into the center comes out clean.",
                 "Cool in the pan for 10 minutes, then turn out onto a wire rack to cool completely before slicing.",
             ],
+            "tips_and_variations": [
+                "Very ripe, heavily spotted (almost black) bananas give noticeably more flavor than yellow ones -- don't toss bananas just because they've browned.",
+                "Swap up to half the flour for whole wheat flour for a heartier crumb. Going past half makes the loaf noticeably dense.",
+                "No walnuts on hand? Pecans work as a 1:1 swap, or leave nuts out entirely -- the texture changes slightly but the recipe still holds together.",
+                "For extra moisture, add 2 tablespoons of sour cream or plain yogurt along with the wet ingredients.",
+            ],
+            "storage_and_reheating": (
+                "Store cooled bread tightly wrapped at room temperature for up to 4 "
+                "days, or in the refrigerator for up to a week. To freeze, wrap the "
+                "whole loaf or individual slices tightly in plastic wrap, then foil, "
+                "and freeze for up to 3 months. Thaw overnight at room temperature, "
+                "or microwave a single slice for 15-20 seconds."
+            ),
+            "nutrition_note": (
+                "Approximately 210 calories, 8g fat, 32g carbohydrates, and 4g "
+                "protein per slice, based on 10 slices per loaf. An estimate only "
+                "-- exact values depend on the specific ingredients used."
+            ),
+            "faqs": [
+                {
+                    "question": "Can I freeze banana nut bread?",
+                    "answer": (
+                        "Yes. Wrap the fully cooled loaf tightly in plastic wrap, "
+                        "then a layer of foil, and freeze for up to 3 months. Thaw "
+                        "overnight at room temperature before slicing."
+                    ),
+                },
+                {
+                    "question": "Why is my banana bread dense or gummy?",
+                    "answer": (
+                        "The most common cause is overmixing once the flour is "
+                        "added -- stir only until the streaks of flour disappear. "
+                        "Underbaking is the second most common cause: test with a "
+                        "toothpick in the very center of the loaf, not near the edge."
+                    ),
+                },
+                {
+                    "question": "Can I use frozen bananas?",
+                    "answer": (
+                        "Yes, and they work well. Thaw them completely first and "
+                        "drain off the excess liquid that collects before mashing, "
+                        "or the batter can end up too wet."
+                    ),
+                },
+                {
+                    "question": "Can I make this recipe without eggs?",
+                    "answer": (
+                        "Substitute one flax egg per egg: 1 tablespoon ground "
+                        "flaxseed mixed with 3 tablespoons water, rested for 5 "
+                        "minutes until it thickens. The crumb will be slightly "
+                        "denser, but the loaf still holds together well."
+                    ),
+                },
+            ],
             "technique_link": None,
             "related_recipe_slugs": [],
             # No seeded category genuinely fits banana bread (the only
@@ -144,6 +198,36 @@ SEED_PAGES = [
                 "more of a flavor accent than a significant nutrient source at "
                 "typical serving sizes."
             ),
+            "faqs": [
+                {
+                    "question": "Are chives and green onions the same thing?",
+                    "answer": (
+                        "No, though they're often confused. Chives are a distinct, "
+                        "thinner herb with a milder flavor and are never eaten "
+                        "beyond the green stem. Green onions (scallions) are a "
+                        "young onion with both a white bulb end and green top, both "
+                        "of which are eaten, and have a noticeably stronger flavor."
+                    ),
+                },
+                {
+                    "question": "Can I substitute dried chives for fresh?",
+                    "answer": (
+                        "You can, but expect a real drop in flavor and color -- "
+                        "drying mutes chives' flavor more than most herbs. Use "
+                        "about a third of the amount called for fresh, and add "
+                        "them earlier in cooking rather than as a raw garnish."
+                    ),
+                },
+                {
+                    "question": "Do chives regrow after you cut them?",
+                    "answer": (
+                        "Yes, if grown as a live plant rather than bought pre-cut. "
+                        "Snip stems about an inch above the soil, leaving the base "
+                        "intact, and a healthy plant will regrow within about two "
+                        "weeks."
+                    ),
+                },
+            ],
             "recipe_slugs": [],
             "related_ingredient_slugs": [],
         },

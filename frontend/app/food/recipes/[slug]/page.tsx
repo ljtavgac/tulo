@@ -150,6 +150,58 @@ export default async function RecipePage({
             </Link>
           ) : null}
         </div>
+
+        {/* Depth added below the recipe, never between the user and the
+            instructions -- see PAGE_TEMPLATES.md's Recipe Page spec. */}
+        {content.tips_and_variations && content.tips_and_variations.length > 0 ? (
+          <>
+            <h2 className="mt-8 text-xl font-bold">Tips &amp; variations</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-ink/80">
+              {content.tips_and_variations.map((tip, i) => (
+                <li key={i}>{tip}</li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
+        {content.storage_and_reheating ? (
+          <>
+            <h2 className="mt-8 text-xl font-bold">Storage &amp; reheating</h2>
+            <p className="mt-2 text-sm text-ink/80">{content.storage_and_reheating}</p>
+          </>
+        ) : null}
+
+        {content.nutrition_note ? (
+          <>
+            <h2 className="mt-8 text-xl font-bold">Nutrition</h2>
+            <p className="mt-2 text-sm text-ink/80">{content.nutrition_note}</p>
+          </>
+        ) : null}
+
+        {content.faqs && content.faqs.length > 0 ? (
+          <>
+            <JsonLd
+              data={{
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                mainEntity: content.faqs.map((faq) => ({
+                  "@type": "Question",
+                  name: faq.question,
+                  acceptedAnswer: { "@type": "Answer", text: faq.answer },
+                })),
+              }}
+            />
+            <h2 className="mt-8 text-xl font-bold">FAQ</h2>
+            <div className="mt-3 space-y-4">
+              {content.faqs.map((faq, i) => (
+                <div key={i}>
+                  <p className="font-semibold">{faq.question}</p>
+                  <p className="mt-1 text-sm text-ink/80">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : null}
       </article>
 
       <aside>
