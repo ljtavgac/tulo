@@ -32,6 +32,7 @@ On startup, the app creates its database tables if they don't exist and auto-see
 | `DATABASE_URL`        | Database connection string                                            | `sqlite:///./tulo.db`      |
 | `UNSPLASH_ACCESS_KEY` | Optional. Enables real stock photos -- see below.                     | unset                      |
 | `PEXELS_ACCESS_KEY`   | Optional. Enables real stock photos -- see below.                     | unset                      |
+| `ADMIN_TASK_TOKEN`    | Optional. Enables the `/admin/fetch-images` endpoint -- see below.    | unset                      |
 
 When you deploy, set `FRONTEND_ORIGIN` to your real frontend URL (e.g. `https://tulo.com`).
 
@@ -46,3 +47,13 @@ Pages show a placeholder image slot until real photos are sourced. To turn that 
 3. Run `python -m app.fetch_stock_images` (add `--force` to re-fetch pages that already have an image)
 
 This is a one-time/occasional maintenance script, not something that runs automatically -- it searches each page's image query, picks the top result, and writes the image URL and photographer attribution into that page's content so it's fetched once and stays stable rather than being re-fetched on every page load. Only Recipe, Ingredient Hub, How-To, and Definition pages (single hero image) and Category Roundup pages (one image per recipe card) have an image slot -- Comparison, Substitute, Homepage, and Tool pages don't use photos in their design.
+
+### Running it without shell access
+
+Step 3 above assumes you can open a shell on the host. Render's free tier doesn't offer one, so as an alternative, set `ADMIN_TASK_TOKEN` to any random secret string and visit:
+
+```
+https://YOUR-BACKEND-URL/admin/fetch-images?token=YOUR_ADMIN_TASK_TOKEN
+```
+
+in a browser (add `&force=true` to re-fetch pages that already have an image). It runs the same `fetch_images()` function as the script and returns a JSON summary plus the per-page log. Without `ADMIN_TASK_TOKEN` set, this endpoint always 404s -- it doesn't exist until you opt in. Treat the token like a password: anyone with it can trigger the (rate-limited, harmless-but-not-free-forever) image search, and a token in a URL can end up in server/proxy logs, so don't share the URL and rotate `ADMIN_TASK_TOKEN` if you ever suspect it leaked.
