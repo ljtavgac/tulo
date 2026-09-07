@@ -63,10 +63,22 @@ def get_page(slug: str, db: Session = Depends(get_db)):
 
 
 @app.get("/pages", response_model=list[PageSummary])
-def list_pages(template_type: str | None = Query(default=None), db: Session = Depends(get_db)):
+def list_pages(
+    template_type: str | None = Query(default=None),
+    q: str | None = Query(default=None),
+    db: Session = Depends(get_db),
+):
     query = db.query(Page)
     if template_type is not None:
         query = query.filter(Page.template_type == template_type)
+    if q:
+        # Title-only for now: ilike() is portable across SQLite/Postgres,
+        # unlike JSON-field queries (Postgres' ->> operator has no SQLite
+        # equivalent SQLAlchemy can compile the same way). Matches real
+        # queries fine at the current content scale; a real search index
+        # (Postgres full-text search, or an external service) is the
+        # right upgrade once page count and traffic justify it.
+        query = query.filter(Page.title.ilike(f"%{q}%"))
     return query.all()
 
 

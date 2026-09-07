@@ -27,3 +27,13 @@ export async function listPages(templateType?: string): Promise<PageSummary[]> {
   if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
   return res.json();
 }
+
+// Unlike listPages(), not cached -- a search is a one-off, per-query
+// request, not content that benefits from being reused across visitors.
+export async function searchPages(q: string): Promise<PageSummary[]> {
+  const url = new URL(`${API_URL}/pages`);
+  url.searchParams.set("q", q);
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to search pages: ${res.status}`);
+  return res.json();
+}

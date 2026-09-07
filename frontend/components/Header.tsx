@@ -18,10 +18,11 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Not wired to a working /search route yet -- see the homepage's
-            note on why no SearchAction structured data is emitted either. */}
+        {/* A plain GET form: submitting navigates to /food/search?q=... with
+            no client-side JS needed. See app/food/search/page.tsx. */}
         <form
           role="search"
+          action="/food/search"
           className="ml-auto flex min-w-[10rem] flex-1 items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-2 sm:flex-none sm:basis-64 focus-within:border-accent"
         >
           <svg aria-hidden viewBox="0 0 20 20" fill="none" className="h-4 w-4 shrink-0 text-ink/40">
@@ -30,6 +31,7 @@ export default function Header() {
           </svg>
           <input
             type="search"
+            name="q"
             placeholder="Search recipes…"
             className="w-full bg-transparent text-sm outline-none placeholder:text-ink/40"
           />
