@@ -41,7 +41,7 @@ export default function StockPhotoSlot({
 
   return (
     <div
-      className={`flex ${aspectClass} flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-ink/20 bg-ink/5 text-center text-ink/50 ${className}`}
+      className={`flex ${aspectClass} flex-col items-center justify-center gap-1 rounded-card border-2 border-dashed border-ink/20 bg-ink/5 text-center text-ink/50 ${className}`}
     >
       <span aria-hidden className="text-2xl">
         📷

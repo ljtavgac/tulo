@@ -1,35 +1,61 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import { FOOD_INDEX_SECTIONS, FOOD_SECTIONS, TOOL_PAGES } from "@/lib/taxonomy";
+import { pagePath } from "@/lib/seo";
 
 // The footer is a deliberately dark section -- the concrete place the
 // dark-background logo variant and cream text get used, per the brand
-// spec ("dark mode, footer if dark-themed, or any dark section").
+// spec ("dark mode, footer if dark-themed, or any dark section"). True
+// black rather than --color-ink, which is shared with body text/borders
+// on every page and can't be redefined without changing the whole site.
+const LONG_TAIL_SECTIONS = FOOD_SECTIONS.filter((s) => !s.hasIndex);
+
 export default function Footer() {
   return (
-    <footer className="bg-ink text-cream">
-      <div className="mx-auto max-w-5xl px-4 py-10">
-        <Logo variant="dark" className="h-9 w-auto" />
-        <p className="mt-4 max-w-md text-sm text-cream/70">
-          No life story before the recipe. No clutter. Just what you came here for.
-        </p>
-        <nav className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          <Link href="/" className="text-cream/80 hover:text-accent">
-            Home
-          </Link>
-          <Link href="/collections/eggplant-recipes" className="text-cream/80 hover:text-accent">
-            Eggplant Recipes
-          </Link>
-          <Link href="/tools/conversion-calculator" className="text-cream/80 hover:text-accent">
-            Conversion Calculator
-          </Link>
-          <Link href="/tools/time-temperature-guide" className="text-cream/80 hover:text-accent">
-            Time &amp; Temp Guide
-          </Link>
-          <Link href="/tools/recipe-generator" className="text-cream/80 hover:text-accent">
-            Recipe Generator
-          </Link>
-        </nav>
-        <p className="mt-8 text-xs text-cream/50">© {new Date().getFullYear()} Tulo</p>
+    <footer className="bg-black text-cream">
+      <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="sm:col-span-2 lg:col-span-1">
+          <Logo variant="dark" className="h-12 w-auto" />
+          <p className="mt-4 max-w-xs text-sm text-cream/70">
+            No life story before the recipe. No clutter. Just what you came here for.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-cream/50">Explore</h2>
+          <nav className="mt-4 flex flex-col gap-2 text-sm">
+            {FOOD_INDEX_SECTIONS.map((section) => (
+              <Link key={section.key} href={section.path} className="text-cream/80 hover:text-accent">
+                {section.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-cream/50">Guides</h2>
+          <nav className="mt-4 flex flex-col gap-2 text-sm">
+            {LONG_TAIL_SECTIONS.map((section) => (
+              <Link key={section.key} href={section.path} className="text-cream/80 hover:text-accent">
+                {section.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-cream/50">Tools</h2>
+          <nav className="mt-4 flex flex-col gap-2 text-sm">
+            {TOOL_PAGES.map((tool) => (
+              <Link key={tool.slug} href={pagePath("tool_page", tool.slug)} className="text-cream/80 hover:text-accent">
+                {tool.title}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+      <div className="border-t border-cream/10">
+        <p className="mx-auto max-w-5xl px-4 py-6 text-xs text-cream/50">© {new Date().getFullYear()} Tulo</p>
       </div>
     </footer>
   );

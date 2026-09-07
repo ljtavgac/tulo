@@ -25,10 +25,14 @@ export const TEMPLATE_ROUTES: Record<string, string> = {
   tool_page: "tools",
 };
 
+// Every route lives under /food/ -- the site's root namespace is reserved
+// for future unrelated verticals (see lib/taxonomy.ts). This is the one
+// place that prefix is defined; everything else (nav, breadcrumbs,
+// sitemap, canonical URLs) composes through this function.
 export function pagePath(templateType: string, slug: string): string {
-  if (templateType === "homepage") return "/";
+  if (templateType === "homepage") return "/food";
   const prefix = TEMPLATE_ROUTES[templateType];
-  return prefix ? `/${prefix}/${slug}` : `/${slug}`;
+  return prefix ? `/food/${prefix}/${slug}` : `/food/${slug}`;
 }
 
 export function absoluteUrl(path: string): string {
@@ -81,4 +85,25 @@ export function buildPageMetadata(
 // Minutes -> ISO 8601 duration, for Recipe schema's prepTime/cookTime/totalTime.
 export function minutesToIso8601(minutes: number): string {
   return `PT${minutes}M`;
+}
+
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+// Builds a BreadcrumbList JSON-LD block from the trail a page passes in.
+// The last item is assumed to be the current page and gets no href even if
+// one is provided, matching how breadcrumbs are conventionally marked up.
+export function buildBreadcrumbList(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.label,
+      ...(item.href && i !== items.length - 1 ? { item: absoluteUrl(item.href) } : {}),
+    })),
+  };
 }
