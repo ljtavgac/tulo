@@ -6,6 +6,8 @@ import StockPhotoSlot from "@/components/StockPhotoSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
+import RelatedLinks from "@/components/RelatedLinks";
+import ToolCallout from "@/components/ToolCallout";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -85,35 +87,19 @@ export default async function IngredientHubPage({
 
       <FaqSection faqs={content.faqs} />
 
-      {content.recipe_slugs.length > 0 ? (
-        <>
-          <h2 className="mt-8 text-xl font-bold">Recipes using {page.title.toLowerCase()}</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            {content.recipe_slugs.map((s) => (
-              <li key={s}>
-                <Link href={pagePath("recipe_or_dish", s)} className="underline hover:text-accent">
-                  {s.replace(/-/g, " ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <ToolCallout slug="recipe-generator" label={`Have ${page.title.toLowerCase()} on hand? Find recipes with our Recipe Generator`} />
 
-      {content.related_ingredient_slugs.length > 0 ? (
-        <>
-          <h2 className="mt-8 text-xl font-bold">Related ingredients</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            {content.related_ingredient_slugs.map((s) => (
-              <li key={s}>
-                <Link href={pagePath("ingredient_hub", s)} className="underline hover:text-accent">
-                  {s.replace(/-/g, " ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <RelatedLinks
+        heading={`Recipes using ${page.title.toLowerCase()}`}
+        templateType="recipe_or_dish"
+        slugs={content.recipe_slugs}
+      />
+
+      <RelatedLinks
+        heading="Related ingredients"
+        templateType="ingredient_hub"
+        slugs={content.related_ingredient_slugs}
+      />
     </main>
   );
 }

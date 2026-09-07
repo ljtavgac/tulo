@@ -8,9 +8,9 @@ import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
+import RelatedLinks from "@/components/RelatedLinks";
 import { absoluteUrl, buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
-import Link from "next/link";
 
 export async function generateMetadata({
   params,
@@ -98,20 +98,11 @@ export default async function CategoryRoundupPage({
 
       <FaqSection faqs={content.faqs} />
 
-      {content.related_collection_slugs.length > 0 ? (
-        <>
-          <h2 className="mt-8 text-xl font-bold">Related collections</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            {content.related_collection_slugs.map((s) => (
-              <li key={s}>
-                <Link href={pagePath("category_roundup", s)} className="underline hover:text-accent">
-                  {s.replace(/-/g, " ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <RelatedLinks
+        heading="Related collections"
+        templateType="category_roundup"
+        slugs={content.related_collection_slugs}
+      />
     </main>
   );
 }

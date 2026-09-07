@@ -18,18 +18,22 @@ const TEMPLATE_LABELS: Record<string, string> = {
 };
 
 // A plain GET form (action="/food/search") that still works with no JS --
-// hitting Enter navigates to the full results page exactly as before. On
-// top of that, this adds a debounced autocomplete dropdown with thumbnails
+// hitting Enter with no suggestion highlighted navigates to the full
+// results page exactly as before. On top of that, this adds a debounced
+// autocomplete dropdown with thumbnails, navigable by mouse or keyboard,
 // so a query can be resolved without ever leaving the current page.
 export default function SearchBox() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<PageSummary[]>([]);
   const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    setActiveIndex(-1);
 
     const trimmed = query.trim();
     if (!trimmed) {
@@ -55,6 +59,35 @@ export default function SearchBox() {
     };
   }, [query]);
 
+  useEffect(() => {
+    if (activeIndex >= 0) itemRefs.current[activeIndex]?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex]);
+
+  const dropdownOpen = open && query.trim() && results.length > 0;
+
+  function goTo(page: PageSummary) {
+    setOpen(false);
+    router.push(pagePath(page.template_type, page.slug));
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!dropdownOpen) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((i) => (i + 1) % results.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((i) => (i <= 0 ? results.length - 1 : i - 1));
+    } else if (e.key === "Enter" && activeIndex >= 0) {
+      e.preventDefault();
+      goTo(results[activeIndex]);
+    } else if (e.key === "Escape") {
+      setOpen(false);
+      setActiveIndex(-1);
+    }
+  }
+
   return (
     <form
       role="search"
@@ -73,19 +106,37 @@ export default function SearchBox() {
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onKeyDown={handleKeyDown}
+        role="combobox"
+        aria-expanded={Boolean(dropdownOpen)}
+        aria-controls="search-suggestions"
+        aria-activedescendant={activeIndex >= 0 ? `search-suggestion-${activeIndex}` : undefined}
         placeholder="Search recipes…"
         className="w-full bg-transparent text-sm outline-none placeholder:text-ink/40"
       />
 
-      {open && query.trim() && results.length > 0 ? (
-        <ul className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-lg border border-ink/10 bg-white shadow-lg">
-          {results.map((page) => (
-            <li key={page.slug}>
+      {dropdownOpen ? (
+        <ul
+          id="search-suggestions"
+          role="listbox"
+          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-lg border border-ink/10 bg-white shadow-lg"
+        >
+          {results.map((page, i) => (
+            <li key={page.slug} role="presentation">
               <button
+                id={`search-suggestion-${i}`}
+                role="option"
+                aria-selected={i === activeIndex}
+                ref={(el) => {
+                  itemRefs.current[i] = el;
+                }}
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => router.push(pagePath(page.template_type, page.slug))}
-                className="flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-cream"
+                onMouseEnter={() => setActiveIndex(i)}
+                onClick={() => goTo(page)}
+                className={`flex w-full items-center gap-3 px-3 py-2 text-left ${
+                  i === activeIndex ? "bg-ink/5" : "hover:bg-ink/5"
+                }`}
               >
                 <div className="h-12 w-12 shrink-0 overflow-hidden rounded">
                   <StockPhotoSlot

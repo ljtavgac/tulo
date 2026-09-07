@@ -6,8 +6,9 @@ import StockPhotoSlot from "@/components/StockPhotoSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
-import Link from "next/link";
-import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
+import RelatedLinks from "@/components/RelatedLinks";
+import ToolCallout from "@/components/ToolCallout";
+import { buildBreadcrumbList, buildPageMetadata } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 
 export async function generateMetadata({
@@ -97,35 +98,15 @@ export default async function HowToPage({
 
       <FaqSection faqs={content.faqs} />
 
-      {content.recipe_slugs.length > 0 ? (
-        <>
-          <h2 className="mt-8 text-xl font-bold">Recipes using this technique</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            {content.recipe_slugs.map((s) => (
-              <li key={s}>
-                <Link href={pagePath("recipe_or_dish", s)} className="underline hover:text-accent">
-                  {s.replace(/-/g, " ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <ToolCallout slug="time-temperature-guide" label="Need exact temperatures or timing? Check our Time & Temperature Guide" />
 
-      {content.related_technique_slugs.length > 0 ? (
-        <>
-          <h2 className="mt-8 text-xl font-bold">Related techniques</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            {content.related_technique_slugs.map((s) => (
-              <li key={s}>
-                <Link href={pagePath("howto_technique", s)} className="underline hover:text-accent">
-                  {s.replace(/-/g, " ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <RelatedLinks heading="Recipes using this technique" templateType="recipe_or_dish" slugs={content.recipe_slugs} />
+
+      <RelatedLinks
+        heading="Related techniques"
+        templateType="howto_technique"
+        slugs={content.related_technique_slugs}
+      />
     </main>
   );
 }

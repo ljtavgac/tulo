@@ -8,6 +8,8 @@ import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
+import RelatedLinks from "@/components/RelatedLinks";
+import ToolCallout from "@/components/ToolCallout";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -106,6 +108,7 @@ export default async function RecipePage({
         <div className="mt-3">
           <RecipeIngredientsPanel ingredients={content.ingredients} baseServings={content.servings} />
         </div>
+        <ToolCallout slug="conversion-calculator" label="Need different units or a different yield? Try our Conversion Calculator" />
 
         <div className="my-6">
           <AdSlot variant="in-content" />
@@ -180,6 +183,8 @@ export default async function RecipePage({
         ) : null}
 
         <FaqSection faqs={content.faqs} />
+
+        <RelatedLinks heading="More recipes" templateType="recipe_or_dish" slugs={content.related_recipe_slugs} />
       </article>
 
       <aside>

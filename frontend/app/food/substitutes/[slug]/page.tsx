@@ -6,6 +6,7 @@ import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
+import RelatedLinks from "@/components/RelatedLinks";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 
@@ -72,20 +73,11 @@ export default async function SubstitutePage({
 
       <FaqSection faqs={content.faqs} />
 
-      {content.recipe_slugs.length > 0 ? (
-        <>
-          <h2 className="mt-8 text-xl font-bold">Recipes that work well with these substitutes</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            {content.recipe_slugs.map((s) => (
-              <li key={s}>
-                <Link href={pagePath("recipe_or_dish", s)} className="underline hover:text-accent">
-                  {s.replace(/-/g, " ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <RelatedLinks
+        heading="Recipes that work well with these substitutes"
+        templateType="recipe_or_dish"
+        slugs={content.recipe_slugs}
+      />
     </main>
   );
 }
