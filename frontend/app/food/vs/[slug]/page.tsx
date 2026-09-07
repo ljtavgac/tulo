@@ -8,6 +8,7 @@ import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
+import AdSlot from "@/components/AdSlot";
 import Link from "next/link";
 
 export async function generateMetadata({
@@ -76,6 +77,10 @@ export default async function ComparisonPage({
       <div className="mt-6 rounded-lg border-l-4 border-accent bg-ink/5 p-4">
         <p className="text-sm font-semibold uppercase tracking-wide text-accent">Verdict</p>
         <p className="mt-1 text-ink/80">{content.verdict}</p>
+      </div>
+
+      <div className="my-8">
+        <AdSlot variant="in-content" />
       </div>
 
       {content.sections.map((section) => (

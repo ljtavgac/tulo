@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
+import AdSlot from "@/components/AdSlot";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -71,6 +72,10 @@ export default async function DefinitionPage({
 
       <h2 className="mt-8 text-xl font-bold">Where it's used</h2>
       <p className="mt-2 text-ink/80">{content.usage_origin}</p>
+
+      <div className="my-8">
+        <AdSlot variant="in-content" />
+      </div>
 
       <h2 className="mt-8 text-xl font-bold">Substitutes</h2>
       <p className="mt-2 text-ink/80">{content.substitute_note}</p>

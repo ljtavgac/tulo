@@ -8,6 +8,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
+import AdSlot from "@/components/AdSlot";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 
@@ -77,6 +78,10 @@ export default async function SubstitutePage({
       </ol>
 
       <div className="mt-8 rounded-lg bg-ink/5 p-4 text-sm text-ink/80">{content.baking_vs_cooking_note}</div>
+
+      <div className="my-8">
+        <AdSlot variant="in-content" />
+      </div>
 
       <FaqSection faqs={content.faqs} />
 

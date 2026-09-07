@@ -8,6 +8,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
+import AdSlot from "@/components/AdSlot";
 import { buildBreadcrumbList, buildPageMetadata } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 
@@ -77,6 +78,10 @@ export default async function HowToPage({
           </li>
         ))}
       </ol>
+
+      <div className="my-8">
+        <AdSlot variant="in-content" />
+      </div>
 
       <h2 className="mt-8 text-xl font-bold">Common mistakes</h2>
       <ul className="mt-3 space-y-2">
