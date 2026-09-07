@@ -20,6 +20,11 @@ SEED_PAGES = [
         "title": "Homepage",
         "batch_number": 0,
         "content": {
+            "meta_description": (
+                "Tulo is a no-clutter recipe site -- ingredients and instructions up "
+                "front, plus native serving-size scaling and unit conversion built "
+                "into every recipe."
+            ),
             "featured_recipe_slugs": ["banana-nut-bread"],
             "category_links": [
                 {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
@@ -42,6 +47,11 @@ SEED_PAGES = [
         "title": "Banana Nut Bread Recipe",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "A moist banana nut bread recipe using extra-ripe bananas, ready in "
+                "about an hour. Includes a live serving-size scaler and US/metric "
+                "unit toggle."
+            ),
             "hero_image_query": "banana nut bread",
             "why_it_works": (
                 "Extra-ripe, well-spotted bananas add natural sweetness and "
@@ -92,6 +102,11 @@ SEED_PAGES = [
         "title": "Chives",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "What chives are, the best substitutes with ratios, how to store "
+                "them so they don't wilt, and how to use them without losing their "
+                "flavor."
+            ),
             "hero_image_query": "fresh chives",
             "description": (
                 "Chives (Allium schoenoprasum) are the mildest member of the onion "
@@ -137,6 +152,10 @@ SEED_PAGES = [
         "title": "How to Cook Spaghetti Squash",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "How to roast spaghetti squash so it separates into tender strands, "
+                "plus the most common mistake that leaves it mushy or undercooked."
+            ),
             "hero_image_query": "roasted spaghetti squash",
             "steps": [
                 "Preheat the oven to 400°F (200°C).",
@@ -164,6 +183,10 @@ SEED_PAGES = [
         "title": "What Is Tahini? (And How to Use It)",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "Tahini is a smooth paste made from ground sesame seeds. What it is, "
+                "how it's used, and the best substitute if you're out."
+            ),
             "hero_image_query": "tahini paste jar",
             "direct_answer": (
                 "Tahini is a smooth paste made from toasted, ground sesame seeds -- "
@@ -196,6 +219,11 @@ SEED_PAGES = [
         "title": "Cappuccino vs. Latte: What's the Difference?",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "Cappuccino vs. latte: the real difference is the milk-to-foam "
+                "ratio. A side-by-side comparison to help you order -- or make -- "
+                "the right one."
+            ),
             "item_a_name": "Cappuccino",
             "item_b_name": "Latte",
             "comparison_table": [
@@ -239,6 +267,11 @@ SEED_PAGES = [
         "title": "Best Substitutes for Baking Soda",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "Out of baking soda? Here are four ranked substitutes with exact "
+                "ratios, including which ones work best for baking vs. general "
+                "cooking."
+            ),
             "ranked_substitutes": [
                 {
                     "name": "Baking powder",
@@ -301,6 +334,11 @@ SEED_PAGES = [
         "title": "Eggplant Recipes",
         "batch_number": 1,
         "content": {
+            "meta_description": (
+                "Eggplant recipes organized by cooking method -- roasted, fried, "
+                "grilled, and curried -- with a real curated pick instead of an "
+                "auto-generated list."
+            ),
             "intro": (
                 "Eggplant's spongy texture takes on flavor differently depending on "
                 "how it's cooked -- roasted until creamy, breaded and fried, or "
@@ -328,21 +366,41 @@ SEED_PAGES = [
         "template_type": "tool_page",
         "title": "Kitchen Measurement Conversion Calculator",
         "batch_number": 0,
-        "content": {"tool": "conversion_calculator"},
+        "content": {
+            "tool": "conversion_calculator",
+            "meta_description": (
+                "Free kitchen measurement conversion calculator -- convert cups, "
+                "tablespoons, grams, ounces, and oven temperatures between US and "
+                "metric."
+            ),
+        },
     },
     {
         "slug": "time-temperature-guide",
         "template_type": "tool_page",
         "title": "Cooking Time & Temperature Guide",
         "batch_number": 0,
-        "content": {"tool": "time_temperature_guide"},
+        "content": {
+            "tool": "time_temperature_guide",
+            "meta_description": (
+                "Cooking time and temperature guide by protein and method (oven, "
+                "air fryer, grill), plus USDA safe minimum internal temperatures."
+            ),
+        },
     },
     {
         "slug": "recipe-generator",
         "template_type": "tool_page",
         "title": "Custom Recipe Generator",
         "batch_number": 0,
-        "content": {"tool": "recipe_generator"},
+        "content": {
+            "tool": "recipe_generator",
+            "meta_description": (
+                "Tell us what's in your kitchen and get a recipe idea back -- a "
+                "custom recipe generator built around the ingredients you already "
+                "have."
+            ),
+        },
     },
 ]
 
