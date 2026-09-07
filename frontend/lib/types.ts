@@ -106,6 +106,7 @@ export interface HowToContent {
   steps: string[];
   common_mistakes: string[];
   equipment: string[];
+  faqs?: Faq[];
   recipe_slugs: string[];
   related_technique_slugs: string[];
 }
@@ -120,6 +121,7 @@ export interface DefinitionContent {
   usage_origin: string;
   substitute_note: string;
   substitute_page_slug: string | null;
+  faqs?: Faq[];
   related_recipe_slugs: string[];
 }
 
@@ -141,6 +143,7 @@ export interface ComparisonContent {
   comparison_table: ComparisonRow[];
   verdict: string;
   sections: ComparisonSection[];
+  faqs?: Faq[];
   item_a_link: LinkRef | null;
   item_b_link: LinkRef | null;
 }
@@ -156,6 +159,7 @@ export interface SubstituteContent {
   meta_description?: string;
   ranked_substitutes: RankedSubstitute[];
   baking_vs_cooking_note: string;
+  faqs?: Faq[];
   hub_page_slug: string | null;
   recipe_slugs: string[];
 }
@@ -179,6 +183,7 @@ export interface CategoryRoundupContent {
   intro: string;
   recipe_cards: RecipeCardData[];
   sub_categories: SubCategory[];
+  faqs?: Faq[];
   related_collection_slugs: string[];
 }
 

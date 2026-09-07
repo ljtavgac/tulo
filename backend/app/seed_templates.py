@@ -259,6 +259,36 @@ SEED_PAGES = [
                 "Not draining excess moisture: spaghetti squash holds a lot of water. If the dish will sit or be sauced, salt the strands lightly and let them sit in a colander for a few minutes to release extra liquid.",
             ],
             "equipment": ["Sharp chef's knife", "Baking sheet", "Parchment paper (optional)", "Fork"],
+            "faqs": [
+                {
+                    "question": "Can I microwave spaghetti squash instead of roasting it?",
+                    "answer": (
+                        "Yes, it's faster but the strands turn out softer and wetter. "
+                        "Halve and seed it, place cut-side down in a microwave-safe "
+                        "dish with an inch of water, and microwave 10-12 minutes for "
+                        "an average-size squash, checking for fork-tenderness."
+                    ),
+                },
+                {
+                    "question": "How do I know when spaghetti squash is done?",
+                    "answer": (
+                        "A fork should slide into the flesh with almost no "
+                        "resistance, and the skin gives slightly when pressed. If "
+                        "the fork meets resistance, the strands will be short and "
+                        "won't separate cleanly -- give it more time rather than "
+                        "pulling it early."
+                    ),
+                },
+                {
+                    "question": "Why did my spaghetti squash come out watery?",
+                    "answer": (
+                        "Spaghetti squash naturally holds a lot of water. Salt the "
+                        "scraped strands lightly and let them sit in a colander for "
+                        "5-10 minutes before saucing or serving to draw out the "
+                        "extra liquid."
+                    ),
+                },
+            ],
             "recipe_slugs": [],
             "related_technique_slugs": [],
         },
@@ -296,6 +326,36 @@ SEED_PAGES = [
             ),
             "substitute_note": "Sunflower seed butter is the closest nut-free substitute, though it lacks tahini's distinct roasted-sesame flavor.",
             "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Is tahini the same as peanut butter?",
+                    "answer": (
+                        "No. Both are smooth, pourable pastes, but tahini is made "
+                        "from sesame seeds and has a nuttier, slightly bitter flavor "
+                        "with no sweetness, while peanut butter is sweeter and made "
+                        "from peanuts, a legume rather than a seed."
+                    ),
+                },
+                {
+                    "question": "Why does tahini separate in the jar?",
+                    "answer": (
+                        "Like natural peanut butter, tahini's oil naturally "
+                        "separates and rises to the top during storage. Stir it "
+                        "thoroughly (scraping the bottom of the jar) before each "
+                        "use -- this is normal, not a sign it's gone bad."
+                    ),
+                },
+                {
+                    "question": "Does tahini need to be refrigerated?",
+                    "answer": (
+                        "An unopened jar can be stored in a cool pantry. Once "
+                        "opened, refrigerating it extends freshness and slows "
+                        "rancidity, though it will thicken and need to come to room "
+                        "temperature (or get a quick stir) before it pours easily "
+                        "again."
+                    ),
+                },
+            ],
             "related_recipe_slugs": [],
         },
     },
@@ -340,6 +400,36 @@ SEED_PAGES = [
                         "A latte is mostly steamed milk with a shot or two of espresso "
                         "and a thin layer of foam -- the higher milk ratio is also what "
                         "makes lattes the go-to canvas for latte art."
+                    ),
+                },
+            ],
+            "faqs": [
+                {
+                    "question": "Which has more caffeine, a cappuccino or a latte?",
+                    "answer": (
+                        "Neither -- caffeine comes entirely from the espresso shots, "
+                        "and both drinks typically use the same 1-2 shots. The "
+                        "difference is milk volume, not caffeine content, so a "
+                        "latte doesn't dilute the caffeine, it just dilutes the "
+                        "coffee flavor across more liquid."
+                    ),
+                },
+                {
+                    "question": "Can I make either one without an espresso machine?",
+                    "answer": (
+                        "Yes, with a moka pot for a strong coffee base and a "
+                        "handheld frother or a mason jar (shake hot milk, then "
+                        "microwave briefly) for the milk. You won't get the same "
+                        "microfoam texture as a steam wand, but the ratios still "
+                        "translate."
+                    ),
+                },
+                {
+                    "question": "Which one should I order if I don't like a strong coffee taste?",
+                    "answer": (
+                        "A latte -- the higher milk-to-espresso ratio mellows the "
+                        "coffee flavor considerably compared to a cappuccino's "
+                        "thicker foam and more concentrated taste per sip."
                     ),
                 },
             ],
@@ -410,6 +500,36 @@ SEED_PAGES = [
                 "browning or tenderizing (stir-fries, caramelizing onions), there "
                 "isn't a good direct substitute -- it's best to simply omit it there."
             ),
+            "faqs": [
+                {
+                    "question": "Can I use baking powder and baking soda interchangeably?",
+                    "answer": (
+                        "Not 1:1. Baking powder is weaker per volume and already "
+                        "contains its own acid, so use about 3x the amount of "
+                        "baking powder to replace a given amount of baking soda, "
+                        "and expect a slightly different texture and flavor."
+                    ),
+                },
+                {
+                    "question": "What happens if I leave baking soda out of a recipe entirely?",
+                    "answer": (
+                        "The baked good won't rise properly and will turn out flat "
+                        "and dense, since baking soda is what reacts with the "
+                        "recipe's acidic ingredients to produce the gas bubbles "
+                        "that create lift. It's not safe to just omit it without "
+                        "substituting something in its place."
+                    ),
+                },
+                {
+                    "question": "Does baking soda go bad?",
+                    "answer": (
+                        "It doesn't spoil, but it does lose leavening power over "
+                        "time, especially once opened. Test it by dropping a "
+                        "pinch into vinegar -- vigorous fizzing means it's still "
+                        "active; a weak reaction means it's time to replace it."
+                    ),
+                },
+            ],
             "hub_page_slug": None,
             "recipe_slugs": [],
         },
@@ -443,6 +563,27 @@ SEED_PAGES = [
                 {"label": "Mediterranean", "items": ["Baba Ganoush", "Grilled Eggplant Slices"]},
                 {"label": "Comfort Food", "items": ["Eggplant Parmesan"]},
                 {"label": "Global", "items": ["Eggplant Curry (Baingan Bharta)", "Miso-Glazed Eggplant (Nasu Dengaku)"]},
+            ],
+            "faqs": [
+                {
+                    "question": "How do I keep eggplant from tasting bitter?",
+                    "answer": (
+                        "Modern eggplant varieties are bred to be much less bitter "
+                        "than older ones, so salting is mostly optional today. If "
+                        "using a large, older, or very seedy eggplant, salt the cut "
+                        "flesh, let it sit 20-30 minutes, then blot dry before "
+                        "cooking -- this also helps it absorb less oil."
+                    ),
+                },
+                {
+                    "question": "Do I need to peel eggplant before cooking?",
+                    "answer": (
+                        "No, the skin is edible and holds the flesh together during "
+                        "cooking. Peel it only if a recipe specifically calls for a "
+                        "smoother texture (some dips, like baba ganoush, are often "
+                        "made without the skin)."
+                    ),
+                },
             ],
             "related_collection_slugs": [],
         },

@@ -7,6 +7,7 @@ import RecipeIngredientsPanel from "@/components/RecipeIngredientsPanel";
 import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -178,30 +179,7 @@ export default async function RecipePage({
           </>
         ) : null}
 
-        {content.faqs && content.faqs.length > 0 ? (
-          <>
-            <JsonLd
-              data={{
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                mainEntity: content.faqs.map((faq) => ({
-                  "@type": "Question",
-                  name: faq.question,
-                  acceptedAnswer: { "@type": "Answer", text: faq.answer },
-                })),
-              }}
-            />
-            <h2 className="mt-8 text-xl font-bold">FAQ</h2>
-            <div className="mt-3 space-y-4">
-              {content.faqs.map((faq, i) => (
-                <div key={i}>
-                  <p className="font-semibold">{faq.question}</p>
-                  <p className="mt-1 text-sm text-ink/80">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : null}
+        <FaqSection faqs={content.faqs} />
       </article>
 
       <aside>

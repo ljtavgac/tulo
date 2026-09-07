@@ -6,6 +6,7 @@ import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
 import Link from "next/link";
 
 export async function generateMetadata({
@@ -97,6 +98,8 @@ export default async function ComparisonPage({
           ) : null}
         </div>
       ) : null}
+
+      <FaqSection faqs={content.faqs} />
     </main>
   );
 }

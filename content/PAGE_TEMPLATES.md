@@ -61,6 +61,7 @@ Food Network) that this template is designed to directly counter.
 - Numbered steps (not paragraph-form)
 - Common mistakes / troubleshooting section
 - Tools/equipment needed
+- FAQ section (2-4 questions -- troubleshooting/edge cases not already covered by common mistakes, e.g. "can I do this in a microwave/air fryer instead"), marked up with FAQPage schema
 - "Recipes using this technique" module
 - Related techniques
 
@@ -76,6 +77,7 @@ Food Network) that this template is designed to directly counter.
 - Expanded explanation
 - How it's used / where it comes from
 - Substitutes (if applicable) — link to full Substitute page if one exists
+- FAQ section (2-3 questions -- common mix-ups with similar-sounding terms, buying/storage questions), marked up with FAQPage schema
 - Related recipes
 
 ---
@@ -90,6 +92,7 @@ Food Network) that this template is designed to directly counter.
 - Verdict/summary — when to use which
 - Individual sections expanding on each item
 - Links to recipes/hub pages for each item being compared
+- FAQ section (2-3 questions -- the practical decision points a table doesn't fully answer, e.g. "which has more caffeine," "can I make either at home"), marked up with FAQPage schema
 
 ---
 
@@ -103,6 +106,7 @@ Food Network) that this template is designed to directly counter.
 - Best-for-baking vs. best-for-cooking distinctions where relevant
 - Link back to the main Ingredient Hub page
 - Recipes that work well with each substitute
+- FAQ section (2-3 questions -- 1:1 swap questions, what happens if the ingredient is omitted entirely), marked up with FAQPage schema
 
 ---
 
@@ -116,6 +120,7 @@ Food Network) that this template is designed to directly counter.
 - Grid/list of recipes with photos, linking to each Recipe page
 - Sub-category filters if the roundup is large (e.g., "Italian Recipes" → appetizers/mains/desserts)
 - Link to related roundups
+- FAQ section (1-2 questions, only where genuinely useful -- ingredient prep/selection questions that apply across the whole roundup, not a forced addition on every page), marked up with FAQPage schema
 
 ---
 

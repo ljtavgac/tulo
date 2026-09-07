@@ -5,6 +5,7 @@ import type { SubstituteContent } from "@/lib/types";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 
@@ -68,6 +69,8 @@ export default async function SubstitutePage({
       </ol>
 
       <div className="mt-8 rounded-lg bg-ink/5 p-4 text-sm text-ink/80">{content.baking_vs_cooking_note}</div>
+
+      <FaqSection faqs={content.faqs} />
 
       {content.recipe_slugs.length > 0 ? (
         <>

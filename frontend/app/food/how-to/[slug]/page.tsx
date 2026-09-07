@@ -5,6 +5,7 @@ import type { HowToContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -93,6 +94,8 @@ export default async function HowToPage({
           </li>
         ))}
       </ul>
+
+      <FaqSection faqs={content.faqs} />
 
       {content.recipe_slugs.length > 0 ? (
         <>

@@ -5,6 +5,7 @@ import type { DefinitionContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -80,6 +81,8 @@ export default async function DefinitionPage({
           Full substitutes guide →
         </Link>
       ) : null}
+
+      <FaqSection faqs={content.faqs} />
 
       {content.related_recipe_slugs.length > 0 ? (
         <>

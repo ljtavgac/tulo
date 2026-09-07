@@ -7,6 +7,7 @@ import RecipeCard from "@/components/RecipeCard";
 import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
 import { absoluteUrl, buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Link from "next/link";
@@ -94,6 +95,8 @@ export default async function CategoryRoundupPage({
           </Fragment>
         ))}
       </div>
+
+      <FaqSection faqs={content.faqs} />
 
       {content.related_collection_slugs.length > 0 ? (
         <>
