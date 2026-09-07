@@ -4,7 +4,6 @@ import { getPage } from "@/lib/api";
 import type { RecipeContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import RecipeIngredientsPanel from "@/components/RecipeIngredientsPanel";
-import ShopIngredientsButton from "@/components/ShopIngredientsButton";
 import AdSlot from "@/components/AdSlot";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -101,10 +100,6 @@ export default async function RecipePage({
             <dd className="font-semibold">{content.servings}</dd>
           </div>
         </dl>
-
-        <div className="mt-6">
-          <ShopIngredientsButton />
-        </div>
 
         <h2 className="mt-6 text-xl font-bold">Ingredients</h2>
         <div className="mt-3">
