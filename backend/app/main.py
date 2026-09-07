@@ -28,6 +28,21 @@ async def lifespan(app: FastAPI):
         # docstring for why ingredient unit/quantity corrections need to
         # reach already-seeded pages, not just freshly inserted ones.
         resync_ingredients(db)
+
+        # Backfills real stock photos for any page still missing one --
+        # previously only reachable via the standalone script or the
+        # /admin/fetch-images endpoint, which meant every new batch of
+        # content needed a manual trigger to actually get photos. Safe to
+        # run on every startup: fetch_images() skips any page that already
+        # has an image with a plain dict check (no API call), so repeat
+        # deploys with no new content do effectively nothing here, and only
+        # genuinely new pages trigger a real Unsplash/Pexels search. Guarded
+        # the same way the standalone script is, so this is a complete
+        # no-op -- not even a page loop -- when no key is configured.
+        if UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY:
+            pages_updated, images_written = fetch_images(db)
+            if images_written:
+                print(f"Startup image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
     finally:
         db.close()
     yield

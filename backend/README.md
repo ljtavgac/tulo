@@ -52,16 +52,25 @@ Pages show a placeholder image slot until real photos are sourced. To turn that 
 
 1. Get free API keys: https://unsplash.com/developers and/or https://www.pexels.com/api/
 2. Set `UNSPLASH_ACCESS_KEY` and/or `PEXELS_ACCESS_KEY` (both, if you want Pexels as a fallback when Unsplash has no result)
-3. Run `python -m app.fetch_stock_images` (add `--force` to re-fetch pages that already have an image)
+3. Redeploy (or restart the app locally)
 
-This is a one-time/occasional maintenance script, not something that runs automatically -- it searches each page's image query, picks the top result, and writes the image URL and photographer attribution into that page's content so it's fetched once and stays stable rather than being re-fetched on every page load. Only Recipe, Ingredient Hub, How-To, and Definition pages (single hero image) and Category Roundup pages (one image per recipe card) have an image slot -- Comparison, Substitute, Homepage, and Tool pages don't use photos in their design.
+Once a key is set, fetching is automatic: app startup calls the same `fetch_images()` function described below for any page still missing a photo. It searches each page's image query, picks the top result, and writes the image URL and photographer attribution into that page's content, so it's fetched once and stays stable rather than being re-fetched on every page load. A page that already has an image is skipped with a plain dict check -- no API call -- so a redeploy with no new content does effectively nothing here, and only genuinely new pages (the next content batch, say) trigger a real search. With no key set, this is a complete no-op, not even a page loop. Recipe, Ingredient Hub, How-To, Definition, Comparison, and Substitute pages get a single hero image; Category Roundup pages get one image per recipe card. Homepage and Tool pages don't use photos in their design.
+
+### Triggering it manually
+
+Startup handles new content automatically, but you can also force a re-fetch (e.g. to pick up better search results, or after changing an image query) without waiting for a deploy:
+
+```bash
+python -m app.fetch_stock_images        # skip pages that already have an image
+python -m app.fetch_stock_images --force  # re-fetch every page, including ones that already have an image
+```
 
 ### Running it without shell access
 
-Step 3 above assumes you can open a shell on the host. Render's free tier doesn't offer one, so as an alternative, set `ADMIN_TASK_TOKEN` to any random secret string and visit:
+The command above assumes you can open a shell on the host. Render's free tier doesn't offer one, so as an alternative, set `ADMIN_TASK_TOKEN` to any random secret string and visit:
 
 ```
 https://YOUR-BACKEND-URL/admin/fetch-images?token=YOUR_ADMIN_TASK_TOKEN
 ```
 
-in a browser (add `&force=true` to re-fetch pages that already have an image). It runs the same `fetch_images()` function as the script and returns a JSON summary plus the per-page log. Without `ADMIN_TASK_TOKEN` set, this endpoint always 404s -- it doesn't exist until you opt in. Treat the token like a password: anyone with it can trigger the (rate-limited, harmless-but-not-free-forever) image search, and a token in a URL can end up in server/proxy logs, so don't share the URL and rotate `ADMIN_TASK_TOKEN` if you ever suspect it leaked.
+in a browser (add `&force=true` to re-fetch pages that already have an image). It runs the same `fetch_images()` function as startup and the script, and returns a JSON summary plus the per-page log. Without `ADMIN_TASK_TOKEN` set, this endpoint always 404s -- it doesn't exist until you opt in. Treat the token like a password: anyone with it can trigger the (rate-limited, harmless-but-not-free-forever) image search, and a token in a URL can end up in server/proxy logs, so don't share the URL and rotate `ADMIN_TASK_TOKEN` if you ever suspect it leaked.
