@@ -7,7 +7,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-ink/10 bg-cream/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-3 px-4 py-3">
         <Link href="/food" aria-label="Tulo home" className="shrink-0">
-          <Logo variant="light" className="h-11 w-auto" />
+          <Logo variant="light" className="h-[57px] w-auto" />
         </Link>
 
         <nav className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs font-semibold uppercase tracking-wide text-ink/70">

@@ -5,17 +5,19 @@ import { pagePath } from "@/lib/seo";
 
 // The footer is a deliberately dark section -- the concrete place the
 // dark-background logo variant and cream text get used, per the brand
-// spec ("dark mode, footer if dark-themed, or any dark section"). True
-// black rather than --color-ink, which is shared with body text/borders
-// on every page and can't be redefined without changing the whole site.
+// spec ("dark mode, footer if dark-themed, or any dark section"). bg-ink
+// (#1f1e1c) rather than pure black: the dark logo PNG has that exact color
+// baked into its background, so pure black left a visible seam around it.
+// --color-ink is shared with body text/borders elsewhere, but using the
+// *token* here (not redefining its value) doesn't touch those.
 const LONG_TAIL_SECTIONS = FOOD_SECTIONS.filter((s) => !s.hasIndex);
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-cream">
+    <footer className="bg-ink text-cream">
       <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-1">
-          <Logo variant="dark" className="h-12 w-auto" />
+          <Logo variant="dark" className="h-[62px] w-auto" />
           <p className="mt-4 max-w-xs text-sm text-cream/70">
             Made for you.
           </p>
