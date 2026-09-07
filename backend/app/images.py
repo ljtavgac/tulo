@@ -33,6 +33,15 @@ class ImageResult:
 
 SEARCH_RESULTS_PER_PAGE = 10
 
+# next.config.mjs only allowlists these two hosts for next/image -- any photo
+# URL outside them renders as a broken image on the site with no error
+# anywhere in this pipeline to catch it. Unsplash's search API in particular
+# can mix in Unsplash+ ("premium") results whose preview URLs are served
+# from plus.unsplash.com instead of images.unsplash.com, so a URL-shape
+# check (not just trusting the API response) is what actually prevents a
+# result from silently breaking on the frontend.
+_ALLOWED_IMAGE_HOSTS = ("https://images.unsplash.com/", "https://images.pexels.com/")
+
 
 def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
     r = requests.get(
@@ -44,7 +53,7 @@ def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> 
     r.raise_for_status()
     for photo in r.json().get("results", []):
         url = photo["urls"]["regular"]
-        if url in exclude_urls:
+        if url in exclude_urls or not url.startswith(_ALLOWED_IMAGE_HOSTS):
             continue
         return ImageResult(
             url=url,
@@ -66,7 +75,7 @@ def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> Im
     r.raise_for_status()
     for photo in r.json().get("photos", []):
         url = photo["src"]["large"]
-        if url in exclude_urls:
+        if url in exclude_urls or not url.startswith(_ALLOWED_IMAGE_HOSTS):
             continue
         return ImageResult(
             url=url,

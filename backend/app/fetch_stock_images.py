@@ -64,6 +64,42 @@ def _category_fallback_query(page_title: str) -> str:
     return re.sub(r"\s+recipes?$", "", page_title, flags=re.IGNORECASE).strip()
 
 
+def _definition_fallback_query(page_title: str) -> str:
+    """"What Is Tahini? (And How to Use It)" -> "Tahini" -- strips the
+    boilerplate question framing down to just the term itself, which is
+    both a plainer and broader query than whatever specific shot
+    hero_image_query asked for (e.g. "tahini paste jar")."""
+    term = re.sub(r"^what is\s+", "", page_title, flags=re.IGNORECASE)
+    return re.split(r"[?(]", term)[0].strip()
+
+
+def _howto_fallback_query(page_title: str) -> str:
+    """"How to Cut a Watermelon" -> "Watermelon" -- strips the leading "How
+    to <verb>" and any article, leaving just the food/equipment noun a
+    stock site is actually likely to have a photo of, rather than the
+    specific in-progress action shot hero_image_query asked for."""
+    rest = re.sub(r"^how to\s+\S+\s+", "", page_title, flags=re.IGNORECASE)
+    return re.sub(r"^(a|an|the)\s+", "", rest, flags=re.IGNORECASE).strip()
+
+
+def _substitute_fallback_query(page_title: str) -> str:
+    """"Best Substitutes for Baking Soda" -> "Baking Soda"."""
+    return re.sub(r"^best substitutes?\s+for\s+", "", page_title, flags=re.IGNORECASE).strip()
+
+
+# template_type -> a function deriving a broader fallback query from the
+# page's title, tried when the template's own hero_image_query (a specific
+# shot description) has no stock match. recipe_or_dish and ingredient_hub
+# aren't here: hero_image_query for those is already about as broad as a
+# useful query gets (a dish or ingredient name), so there's no meaningfully
+# broader term left to fall back to.
+SINGLE_IMAGE_FALLBACKS = {
+    "definition": _definition_fallback_query,
+    "howto_technique": _howto_fallback_query,
+    "substitute": _substitute_fallback_query,
+}
+
+
 def _apply_result(content: dict, queries: list[str], template_type: str, used_urls: set[str]) -> bool:
     """Tries each query in `queries`, in order, and writes
     image_url/image_attribution into `content` in place from the first one
@@ -87,8 +123,15 @@ def _apply_result(content: dict, queries: list[str], template_type: str, used_ur
     return False
 
 
-def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
-    """Returns (pages_updated, images_written)."""
+def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None = None) -> tuple[int, int]:
+    """Returns (pages_updated, images_written).
+
+    `only_slugs`, when given, restricts the run to exactly those pages and
+    always re-fetches them (as if `force` were true just for them) -- for
+    redoing a specific page whose photo is wrong (not missing, not broken,
+    just a bad match) without touching, and risking re-rolling, every other
+    page's already-correct photo the way a site-wide force run would.
+    """
     pages_updated = 0
     images_written = 0
     # Shared across the whole run so two different pages/cards never end up
@@ -96,6 +139,10 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
     used_urls: set[str] = set()
 
     for page in db.query(Page).all():
+        if only_slugs is not None and page.slug not in only_slugs:
+            continue
+        force_this_page = force or only_slugs is not None
+
         # A deep copy, not a reference: mutating page.content directly (or a
         # shallow copy of it, for category_roundup's nested recipe_cards)
         # would change the "before" value SQLAlchemy compares against too,
@@ -106,11 +153,26 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
 
         query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
         if query_key and query_key in content:
-            if force or not content.get("image_url"):
+            if force_this_page or not content.get("image_url"):
                 query = content[query_key]
+                queries = [query]
+                if page.template_type == "comparison":
+                    # Already has two clean, broad item names on hand --
+                    # no need to derive anything from the title.
+                    queries += [
+                        name
+                        for name in (content.get("item_a_name"), content.get("item_b_name"))
+                        if name and name.lower() != query.lower()
+                    ]
+                else:
+                    fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
+                    if fallback_fn:
+                        fallback = fallback_fn(page.title)
+                        if fallback and fallback.lower() != query.lower():
+                            queries.append(fallback)
                 print(f"  {page.slug}: searching '{query}'...")
                 try:
-                    if _apply_result(content, [query], page.template_type, used_urls):
+                    if _apply_result(content, queries, page.template_type, used_urls):
                         images_written += 1
                         changed = True
                 except Exception as e:
@@ -118,7 +180,7 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
 
         elif page.template_type == "category_roundup":
             for card in content.get("recipe_cards", []):
-                if force or not card.get("image_url"):
+                if force_this_page or not card.get("image_url"):
                     query = card.get("image_query")
                     if not query:
                         continue

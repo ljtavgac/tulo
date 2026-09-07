@@ -908,7 +908,7 @@ SEED_PAGES = [
                 "chile sauce and grilled or baked until charred -- a copycat of "
                 "the Portuguese-African classic."
             ),
-            "hero_image_query": "peri peri chicken",
+            "hero_image_query": "grilled peri peri chicken thighs",
             "why_it_works": (
                 "A long marinade of chile, garlic, lemon, and smoked paprika "
                 "penetrates the chicken rather than just coating the surface, so "

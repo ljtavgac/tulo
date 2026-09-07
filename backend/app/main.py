@@ -9,11 +9,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
-from .fetch_stock_images import fetch_images
+from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, fetch_images
 from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY
 from .models import Page
 from .schemas import PageOut, PageSummary
 from .seed_templates import resync_ingredients, seed
+
+# The only two hosts next.config.mjs allows next/image to load from -- an
+# image_url outside these renders as a broken image on the site with
+# nothing else here to ever flag it. Kept in sync with the same check
+# images.py now applies before writing a URL in the first place; this list
+# lets /admin/image-audit also surface any URL that slipped through before
+# that filter existed.
+_ALLOWED_IMAGE_HOSTS = ("https://images.unsplash.com/", "https://images.pexels.com/")
 
 
 def _revalidate_frontend() -> bool:
@@ -214,13 +222,20 @@ ADMIN_TASK_TOKEN = os.environ.get("ADMIN_TASK_TOKEN")
 
 
 @app.get("/admin/fetch-images")
-def trigger_fetch_images(token: str, force: bool = False, db: Session = Depends(get_db)):
+def trigger_fetch_images(
+    token: str,
+    force: bool = False,
+    slugs: str | None = Query(default=None, description="Comma-separated page slugs to re-fetch, ignoring every other page. Always re-fetches the given slugs regardless of `force`."),
+    db: Session = Depends(get_db),
+):
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
+    only_slugs = {s.strip() for s in slugs.split(",") if s.strip()} if slugs else None
+
     log = io.StringIO()
     with redirect_stdout(log):
-        pages_updated, images_written = fetch_images(db, force=force)
+        pages_updated, images_written = fetch_images(db, force=force, only_slugs=only_slugs)
 
     frontend_revalidated = _revalidate_frontend() if images_written else False
 
@@ -231,4 +246,53 @@ def trigger_fetch_images(token: str, force: bool = False, db: Session = Depends(
         "images_written": images_written,
         "frontend_revalidated": frontend_revalidated,
         "log": log.getvalue().splitlines(),
+    }
+
+
+@app.get("/admin/image-audit")
+def image_audit(token: str, db: Session = Depends(get_db)):
+    """A full-site image report with no external API calls -- a pure read
+    of what's already in the database, gated behind the same
+    ADMIN_TASK_TOKEN as /admin/fetch-images. Two kinds of problems this
+    surfaces that clicking through pages one at a time can't:
+
+    - `missing`: pages/cards with no image_url at all (shows as the
+      placeholder box on the site).
+    - `broken`: pages/cards whose image_url is set but points at a host
+      next.config.mjs doesn't allowlist for next/image -- these render as
+      a broken image, not a placeholder, which is easy to miss since
+      nothing else in this pipeline currently detects it. (images.py now
+      refuses to write one of these going forward, but this catches any
+      that were already written before that check existed.)
+
+    Every entry in `broken` needs `/admin/fetch-images?...&force=true` to
+    get overwritten with a working URL -- force=false skips anything that
+    already has *a* image_url, broken or not.
+    """
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    missing = []
+    broken = []
+
+    def _check(url: str | None, **identity):
+        if not url:
+            missing.append(identity)
+        elif not url.startswith(_ALLOWED_IMAGE_HOSTS):
+            broken.append({**identity, "image_url": url})
+
+    for page in db.query(Page).order_by(Page.id).all():
+        content = page.content
+        query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
+        if query_key and query_key in content:
+            _check(content.get("image_url"), slug=page.slug, template_type=page.template_type)
+        elif page.template_type == "category_roundup":
+            for card in content.get("recipe_cards", []):
+                _check(card.get("image_url"), slug=page.slug, card=card.get("title"))
+
+    return {
+        "missing_count": len(missing),
+        "missing": missing,
+        "broken_count": len(broken),
+        "broken": broken,
     }
