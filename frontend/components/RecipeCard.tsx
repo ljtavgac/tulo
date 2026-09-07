@@ -1,21 +1,31 @@
 import Link from "next/link";
 import StockPhotoSlot from "./StockPhotoSlot";
 import { pagePath } from "@/lib/seo";
+import type { ImageAttribution } from "@/lib/types";
 
 export default function RecipeCard({
   title,
   description,
   imageQuery,
+  imageUrl,
+  imageAttribution,
   slug,
 }: {
   title: string;
   description?: string;
   imageQuery: string;
+  imageUrl?: string;
+  imageAttribution?: ImageAttribution;
   slug: string | null;
 }) {
   const content = (
     <>
-      <StockPhotoSlot query={imageQuery} aspect="thumbnail" />
+      <StockPhotoSlot
+        query={imageQuery}
+        imageUrl={imageUrl}
+        attribution={imageAttribution}
+        aspect="thumbnail"
+      />
       <div className="p-3">
         <h3 className="text-sm font-bold">{title}</h3>
         {description ? <p className="mt-1 text-xs text-ink/60">{description}</p> : null}

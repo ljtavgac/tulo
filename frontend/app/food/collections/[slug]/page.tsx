@@ -82,6 +82,8 @@ export default async function CategoryRoundupPage({
               title={card.title}
               description={card.description}
               imageQuery={card.image_query}
+              imageUrl={card.image_url}
+              imageAttribution={card.image_attribution}
               slug={card.slug}
             />
             {(i + 1) % IN_FEED_INTERVAL === 0 && i !== content.recipe_cards.length - 1 ? (

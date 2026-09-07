@@ -48,15 +48,17 @@ export default async function RecipePage({
       <Breadcrumbs items={breadcrumbItems} />
       <JsonLd data={buildBreadcrumbList(breadcrumbItems)} />
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_260px]">
-      {/* No `image` field yet -- StockPhotoSlot is a placeholder, not a
-          real photo URL, and Recipe rich-result eligibility requires a
-          real, reachable image. Add it once stock photos are wired up. */}
+      {/* `image` is only included once a real photo exists (see
+          backend/app/fetch_stock_images.py) -- Recipe rich-result
+          eligibility requires a real, reachable image, so omitting it
+          entirely is more correct than pointing at the placeholder. */}
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "Recipe",
           name: page.title,
           description: content.meta_description ?? content.why_it_works,
+          image: content.image_url,
           prepTime: minutesToIso8601(content.prep_time_minutes),
           cookTime: minutesToIso8601(content.cook_time_minutes),
           totalTime: minutesToIso8601(content.total_time_minutes),
@@ -72,7 +74,12 @@ export default async function RecipePage({
       />
       <article>
         <h1 className="text-3xl font-bold">{page.title}</h1>
-        <StockPhotoSlot query={content.hero_image_query} className="mt-4" />
+        <StockPhotoSlot
+          query={content.hero_image_query}
+          imageUrl={content.image_url}
+          attribution={content.image_attribution}
+          className="mt-4"
+        />
 
         <p className="mt-4 text-ink/80">{content.why_it_works}</p>
 

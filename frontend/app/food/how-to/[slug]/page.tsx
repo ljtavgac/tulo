@@ -49,6 +49,7 @@ export default async function HowToPage({
           "@type": "HowTo",
           name: page.title,
           description: content.meta_description,
+          image: content.image_url,
           step: content.steps.map((step) => ({
             "@type": "HowToStep",
             text: step,
@@ -56,7 +57,12 @@ export default async function HowToPage({
         }}
       />
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>
-      <StockPhotoSlot query={content.hero_image_query} className="mt-4" />
+      <StockPhotoSlot
+        query={content.hero_image_query}
+        imageUrl={content.image_url}
+        attribution={content.image_attribution}
+        className="mt-4"
+      />
 
       <h2 className="mt-8 text-xl font-bold">Steps</h2>
       <ol className="mt-3 space-y-3">
