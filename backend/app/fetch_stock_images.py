@@ -18,6 +18,7 @@ template -- Comparison, Substitute, Homepage, and Tool pages don't, so
 they're skipped entirely.
 """
 
+import copy
 import sys
 
 from sqlalchemy.orm import Session
@@ -59,7 +60,12 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
     images_written = 0
 
     for page in db.query(Page).all():
-        content = page.content
+        # A deep copy, not a reference: mutating page.content directly (or a
+        # shallow copy of it, for category_roundup's nested recipe_cards)
+        # would change the "before" value SQLAlchemy compares against too,
+        # since it'd be the same object -- then the reassignment below looks
+        # like a no-op and it silently never emits the UPDATE.
+        content = copy.deepcopy(page.content)
         changed = False
 
         query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
@@ -93,7 +99,7 @@ def fetch_images(db: Session, force: bool = False) -> tuple[int, int]:
                         print(f"    error: {e}")
 
         if changed:
-            page.content = dict(content)  # reassign so SQLAlchemy detects the JSON mutation
+            page.content = content  # already an independent object -- see the deepcopy above
             pages_updated += 1
 
     db.commit()
