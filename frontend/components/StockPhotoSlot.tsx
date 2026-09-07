@@ -27,7 +27,7 @@ export default function StockPhotoSlot({
           <Image src={imageUrl} alt={query} fill sizes="(min-width: 1024px) 640px, 100vw" className="object-cover" />
         </div>
         {attribution ? (
-          <figcaption className="mt-1 text-right text-xs text-ink/40">
+          <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
             Photo by{" "}
             <a href={attribution.photographer_url} className="underline hover:text-accent">
               {attribution.photographer}
