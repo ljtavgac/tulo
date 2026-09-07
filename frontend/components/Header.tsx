@@ -11,9 +11,14 @@ export default function Header() {
           <Logo variant="light" className="h-[57px] w-auto" />
         </Link>
 
-        <nav className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs font-semibold uppercase tracking-wide text-ink/70">
+        {/* basis-full forces this onto its own line right under the logo on
+            mobile, as a single horizontally-scrollable row, rather than
+            wrapping raggedly across two lines of its own the way flex-wrap
+            alone did at narrow widths. sm+ restores the original inline,
+            wrapping layout since there's room for it there. */}
+        <nav className="flex basis-full flex-nowrap items-center gap-x-6 gap-y-1 overflow-x-auto whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-ink/70 [scrollbar-width:none] sm:basis-auto sm:flex-wrap sm:overflow-visible sm:whitespace-normal [&::-webkit-scrollbar]:hidden">
           {FOOD_INDEX_SECTIONS.map((section) => (
-            <Link key={section.key} href={section.path} className="transition-colors hover:text-accent">
+            <Link key={section.key} href={section.path} className="shrink-0 transition-colors hover:text-accent">
               {section.label}
             </Link>
           ))}
