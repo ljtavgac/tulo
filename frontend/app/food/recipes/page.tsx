@@ -50,7 +50,7 @@ export default async function RecipesIndexPage() {
       />
       <h1 className="mt-4 text-3xl font-bold">Recipes</h1>
       <p className="mt-3 max-w-2xl text-ink/70">
-        Ingredients and instructions up front, every time.
+        Full recipes with real ingredient amounts and clear steps.
       </p>
 
       <PagedPageGrid initialPages={pages} templateType="recipe_or_dish" pageSize={PAGE_SIZE} />
