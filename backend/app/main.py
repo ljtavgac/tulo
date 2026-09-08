@@ -13,7 +13,7 @@ from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, fetch_images
 from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY
 from .models import Page
 from .schemas import PageOut, PageSummary
-from .seed_templates import resync_ingredients, seed
+from .seed_templates import resync_content, seed
 
 # The only two hosts next.config.mjs allows next/image to load from -- an
 # image_url outside these renders as a broken image on the site with
@@ -62,9 +62,10 @@ async def lifespan(app: FastAPI):
     try:
         seed(db)
         # Unlike seed(), this DOES touch pages that already exist -- see its
-        # docstring for why ingredient unit/quantity corrections need to
-        # reach already-seeded pages, not just freshly inserted ones.
-        resync_ingredients(db)
+        # docstring for why a copy edit or a corrected stock-photo query
+        # needs to reach already-seeded pages, not just freshly inserted
+        # ones, without wiping out any photo already fetched for them.
+        resync_content(db)
 
         # Backfills real stock photos for any page still missing one --
         # previously only reachable via the standalone script or the

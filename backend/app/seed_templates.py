@@ -4793,38 +4793,66 @@ def seed(db: Session) -> int:
     return inserted
 
 
-def resync_ingredients(db: Session) -> int:
-    """seed() never overwrites a page that already exists, which is right
-    for editorial content (titles, instructions) but wrong for ingredient
-    unit/quantity definitions, those are closer to reference data than
-    content, and a correction (e.g. fixing a bad unit conversion) should
-    reach pages that were already seeded before the fix landed, not just
-    new ones. Re-syncs `ingredients` from SEED_PAGES by (page slug,
-    ingredient name); leaves the rest of the page's content, including
-    any stock photo already fetched, untouched. Safe to run on every
-    startup: idempotent, no-ops once a page matches SEED_PAGES.
+
+# Fields that live inside a page's content but are populated by
+# fetch_stock_images.py at runtime, not defined in SEED_PAGES at all -- a
+# resync must never touch these, or every already-fetched real photo would
+# get silently wiped out the next time an unrelated content edit ships.
+_RUNTIME_IMAGE_KEYS = ("image_url", "image_attribution")
+
+
+def _merge_recipe_cards(existing_cards: list[dict], seed_cards: list[dict]) -> list[dict]:
+    """recipe_cards is a list, not a flat set of keys, so it needs its own
+    merge: take each card's fields from SEED_PAGES (title, description,
+    image_query, ...) but keep whatever image fields that specific card
+    (matched by title) already has, since those came from fetch_images(),
+    not from SEED_PAGES."""
+    existing_by_title = {c.get("title"): c for c in existing_cards}
+    merged = []
+    for seed_card in seed_cards:
+        existing_card = existing_by_title.get(seed_card.get("title"), {})
+        merged_card = dict(seed_card)
+        for key in _RUNTIME_IMAGE_KEYS:
+            if key in existing_card:
+                merged_card[key] = existing_card[key]
+        merged.append(merged_card)
+    return merged
+
+
+def resync_content(db: Session) -> int:
+    """seed() never overwrites a page that already exists, which protects
+    real runtime state (a fetched stock photo, most of all) but also means
+    any later edit to a page's copy in SEED_PAGES, fixing a typo, sharpening
+    an awkward sentence, correcting a stock-photo query, never reaches a
+    page once it's already been seeded once. Only genuinely new pages
+    (a new slug) pick up SEED_PAGES edits without this.
+
+    Re-syncs every field of a page's content from SEED_PAGES except the
+    runtime image fields (see _RUNTIME_IMAGE_KEYS) and recipe_cards' own
+    per-card image fields (see _merge_recipe_cards), which don't exist in
+    SEED_PAGES at all and would otherwise be wiped out by a naive
+    overwrite. Safe to run on every startup: idempotent, a no-op once a
+    page's non-image content already matches SEED_PAGES.
     """
-    seed_ingredients_by_slug = {
-        p["slug"]: {ing["name"]: ing for ing in p["content"]["ingredients"]}
-        for p in SEED_PAGES
-        if "ingredients" in p["content"]
-    }
+    seed_by_slug = {p["slug"]: p["content"] for p in SEED_PAGES}
     updated = 0
-    for page in db.query(Page).filter(Page.slug.in_(seed_ingredients_by_slug.keys())).all():
-        seed_ingredients = seed_ingredients_by_slug[page.slug]
+    for page in db.query(Page).filter(Page.slug.in_(seed_by_slug.keys())).all():
+        seed_content = seed_by_slug[page.slug]
         # A deep copy, not a reference -- see fetch_stock_images.py's
         # fetch_images() for why mutating page.content directly would
         # silently fail to persist.
         content = copy.deepcopy(page.content)
         changed = False
-        for ing in content.get("ingredients", []):
-            seed_ing = seed_ingredients.get(ing.get("name"))
-            if seed_ing and (
-                ing.get("base_qty_metric") != seed_ing["base_qty_metric"]
-                or ing.get("unit_metric") != seed_ing["unit_metric"]
-            ):
-                ing["base_qty_metric"] = seed_ing["base_qty_metric"]
-                ing["unit_metric"] = seed_ing["unit_metric"]
+        for key, seed_value in seed_content.items():
+            if key in _RUNTIME_IMAGE_KEYS:
+                continue
+            if key == "recipe_cards":
+                merged = _merge_recipe_cards(content.get(key, []), seed_value)
+                if merged != content.get(key):
+                    content[key] = merged
+                    changed = True
+            elif content.get(key) != seed_value:
+                content[key] = seed_value
                 changed = True
         if changed:
             page.content = content
