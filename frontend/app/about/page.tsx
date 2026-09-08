@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { getPage } from "@/lib/api";
+import type { StaticPageContent } from "@/lib/types";
+import StockPhotoSlot from "@/components/StockPhotoSlot";
 
 const TITLE = "About";
 const DESCRIPTION = "What Tulo is and why it's built the way it is.";
@@ -10,10 +13,21 @@ export const metadata: Metadata = {
   openGraph: { title: TITLE, description: DESCRIPTION, url: "/about" },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const page = await getPage<StaticPageContent>("about");
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="text-3xl font-bold">About Tulo</h1>
+
+      {page ? (
+        <StockPhotoSlot
+          query={page.content.hero_image_query}
+          imageUrl={page.content.image_url}
+          attribution={page.content.image_attribution}
+          className="mt-6"
+        />
+      ) : null}
 
       <div className="mt-6 space-y-4 text-ink/80">
         <p>
@@ -38,9 +52,9 @@ export default function AboutPage() {
           get published.
         </p>
         <p>
-          Tulo is an independent site, still early and actively growing its library of
-          recipes and guides. If something looks wrong, missing, or could be better, we&apos;d
-          genuinely like to hear about it &mdash; see the{" "}
+          We&apos;re actively growing Tulo&apos;s library of recipes and guides. If something
+          looks wrong, missing, or could be better, we&apos;d genuinely like to hear about it
+          &mdash; see the{" "}
           <a href="/contact" className="underline hover:text-accent">
             Contact page
           </a>{" "}

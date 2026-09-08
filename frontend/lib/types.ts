@@ -293,3 +293,15 @@ export interface HomepageContent {
   tool_links: LinkRef[];
   positioning_statement: string;
 }
+
+// Backs a hand-coded static route (About, Contact, ...), not a
+// content-driven [slug] template -- the Page record exists purely so that
+// route can pull a real, correctly attributed photo through the same
+// fetch_images() pipeline every other page's photo goes through. See
+// pagePath()'s "static_page" case in lib/seo.ts and the matching
+// SEED_PAGES entries in backend/app/seed_templates.py.
+export interface StaticPageContent {
+  hero_image_query: string;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
+}

@@ -31,6 +31,13 @@ export const TEMPLATE_ROUTES: Record<string, string> = {
 // sitemap, canonical URLs) composes through this function.
 export function pagePath(templateType: string, slug: string): string {
   if (templateType === "homepage") return "/food";
+  // static_page (About, Contact, ...) lives at the site root, not under
+  // /food/ -- these are hand-coded routes (frontend/app/about,
+  // frontend/app/contact), not content-driven [slug] templates, and their
+  // Page record exists only so they can pull a real photo through the
+  // usual fetch_images() pipeline (see seed_templates.py). The slug is
+  // already the real route.
+  if (templateType === "static_page") return `/${slug}`;
   const prefix = TEMPLATE_ROUTES[templateType];
   return prefix ? `/food/${prefix}/${slug}` : `/food/${slug}`;
 }

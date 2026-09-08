@@ -15,6 +15,7 @@ const TEMPLATE_LABELS: Record<string, string> = {
   substitute: "Substitute",
   category_roundup: "Collection",
   tool_page: "Tool",
+  static_page: "Page",
 };
 
 // A plain GET form (action="/food/search") that still works with no JS --

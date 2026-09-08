@@ -6293,6 +6293,31 @@ SEED_PAGES = [
             ),
         },
     },
+    # About and Contact are plain static routes (frontend/app/about,
+    # frontend/app/contact), not template-rendered [slug] pages -- these
+    # entries exist purely so those two pages can pull a real, correctly
+    # attributed photo through the same fetch_images() pipeline every other
+    # page's photo goes through (see SINGLE_IMAGE_TEMPLATES in
+    # fetch_stock_images.py), rather than a hand-picked image with
+    # attribution that can't be verified. No other content lives here.
+    {
+        "slug": "about",
+        "template_type": "static_page",
+        "title": "About",
+        "batch_number": 0,
+        "content": {
+            "hero_image_query": "cozy home kitchen with fresh ingredients",
+        },
+    },
+    {
+        "slug": "contact",
+        "template_type": "static_page",
+        "title": "Contact",
+        "batch_number": 0,
+        "content": {
+            "hero_image_query": "kitchen counter with fresh produce",
+        },
+    },
     # Real recipe pages for dishes that were named on a category_roundup card
     # (recipe_cards) with slug: None -- an aspirational placeholder, not
     # clickable, per that field's own convention (see category_roundup

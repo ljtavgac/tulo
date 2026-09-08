@@ -37,6 +37,7 @@ SINGLE_IMAGE_TEMPLATES = {
     "definition": "hero_image_query",
     "comparison": "hero_image_query",
     "substitute": "hero_image_query",
+    "static_page": "hero_image_query",
 }
 
 # Templates whose image represents a finished, plated dish rather than a raw
