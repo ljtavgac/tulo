@@ -1790,6 +1790,7 @@ SEED_PAGES = [
                 {"name": "Comté", "ratio": "1:1", "note": "Very close in flavor and melting behavior; the classic French cousin to Swiss gruyère.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 440, "protein_g": 30.0, "carbs_g": 1.0, "fat_g": 34.0}},
                 {"name": "Swiss Emmental", "ratio": "1:1", "note": "Milder and sweeter, with the characteristic large holes; melts similarly well.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 397, "protein_g": 28.0, "carbs_g": 3.4, "fat_g": 30.0}},
                 {"name": "Fontina", "ratio": "1:1", "note": "Softer and buttery rather than nutty, but melts just as smoothly.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 397, "protein_g": 26.0, "carbs_g": 1.5, "fat_g": 31.0}},
+                {"name": "Sharp Cheddar", "ratio": "1:1", "note": "Sharper and more pungent than nutty, but melts smoothly and works well in baked, casserole-style dishes.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 455, "protein_g": 28.0, "carbs_g": 1.4, "fat_g": 37.0}},
             ],
             "substitute_page_slug": "gruyere-cheese-substitute",
             "storage": (

@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { RecipeIngredient } from "@/lib/types";
+import type { NutritionPerUnit, RecipeIngredient } from "@/lib/types";
 import { formatUsQuantity, formatMetricQuantity } from "@/lib/format";
 import { pagePath } from "@/lib/seo";
 import ServingsScaler from "./ServingsScaler";
 import UnitToggle, { type Unit } from "./UnitToggle";
 import IngredientUnitConversion from "./IngredientUnitConversion";
+
+type Goal = "" | "lower_calorie" | "higher_protein" | "lower_fat";
+
+const GOAL_OPTIONS: { value: Exclude<Goal, "">; label: string; field: keyof NutritionPerUnit; direction: "min" | "max" }[] = [
+  { value: "lower_calorie", label: "Lower calorie", field: "calories", direction: "min" },
+  { value: "higher_protein", label: "Higher protein", field: "protein_g", direction: "max" },
+  { value: "lower_fat", label: "Lower fat", field: "fat_g", direction: "min" },
+];
 
 export default function RecipeIngredientsPanel({
   ingredients,
@@ -22,10 +30,49 @@ export default function RecipeIngredientsPanel({
   // if any. A plain lookup against substitute data already embedded in the
   // page (see main.py's available_substitutes), recomputed on every
   // render -- no network call, no instruction-text rewriting, just the
-  // displayed name/quantity for that one row.
+  // displayed name/quantity for that one row. Also what a "goal" (below)
+  // writes into in bulk -- both mechanisms share one flat map, so picking
+  // a goal and then hand-tweaking one ingredient afterward both just work.
   const [swaps, setSwaps] = useState<Record<string, string>>({});
+  const [goal, setGoal] = useState<Goal>("");
 
   const scale = servings / baseServings;
+
+  // Ingredients a "goal" can actually act on: the ingredient needs its own
+  // nutrition_per_unit (something to compare against) and at least one
+  // substitute with both a ratio_multiplier and its own nutrition_per_unit
+  // (both needed to compare options apples-to-apples). This is currently a
+  // short list -- real substitute data only exists for a pilot ingredient
+  // or two -- so the goal picker is deliberately honest about how many
+  // ingredients it actually touches rather than implying it reworks the
+  // whole recipe.
+  const goalAdjustableIngredients = ingredients.filter(
+    (ing) => ing.nutrition_per_unit && ing.available_substitutes?.some((sub) => sub.ratio_multiplier != null && sub.nutrition_per_unit)
+  );
+
+  function applyGoal(nextGoal: Goal) {
+    setGoal(nextGoal);
+    if (!nextGoal) {
+      setSwaps({});
+      return;
+    }
+    const { field, direction } = GOAL_OPTIONS.find((g) => g.value === nextGoal)!;
+    const nextSwaps: Record<string, string> = {};
+    for (const ing of goalAdjustableIngredients) {
+      const options: { name: string | null; value: number }[] = [
+        { name: null, value: ing.nutrition_per_unit![field] },
+        ...ing
+          .available_substitutes!.filter((sub) => sub.ratio_multiplier != null && sub.nutrition_per_unit)
+          .map((sub) => ({ name: sub.name, value: sub.nutrition_per_unit![field] * sub.ratio_multiplier! })),
+      ];
+      const best = options.reduce((a, b) => {
+        const bIsBetter = direction === "min" ? b.value < a.value : b.value > a.value;
+        return bIsBetter ? b : a;
+      });
+      if (best.name) nextSwaps[ing.name] = best.name;
+    }
+    setSwaps(nextSwaps);
+  }
 
   // Live nutrition PER SERVING, using the same swaps state as the
   // ingredient list above -- but deliberately NOT the servings scale.
@@ -63,6 +110,36 @@ export default function RecipeIngredientsPanel({
         <ServingsScaler servings={servings} onChange={setServings} />
         <UnitToggle unit={unit} onChange={setUnit} />
       </div>
+
+      {goalAdjustableIngredients.length > 0 ? (
+        <div className="border-b border-ink/10 py-3 text-sm">
+          <label className="flex flex-wrap items-center gap-2">
+            <span className="text-ink/60">Adjust for:</span>
+            <select
+              value={goal}
+              onChange={(e) => applyGoal(e.target.value as Goal)}
+              className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-1 text-xs text-ink/70"
+            >
+              <option value="">No goal</option>
+              {GOAL_OPTIONS.map((g) => (
+                <option key={g.value} value={g.value}>
+                  {g.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          {goal ? (
+            <p className="mt-1 text-xs text-ink/40">
+              Swapped {Object.keys(swaps).length} of {goalAdjustableIngredients.length} ingredient
+              {goalAdjustableIngredients.length === 1 ? "" : "s"} with substitute data for this goal
+              {ingredients.length > goalAdjustableIngredients.length
+                ? `; the rest of this recipe's ingredients don't have substitute data to adjust`
+                : ""}
+              .
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       <ul className="mt-4 space-y-2">
         {ingredients.map((ing) => {
