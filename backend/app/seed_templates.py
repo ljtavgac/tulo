@@ -6306,7 +6306,7 @@ SEED_PAGES = [
         "title": "About",
         "batch_number": 0,
         "content": {
-            "hero_image_query": "cozy home kitchen with fresh ingredients",
+            "hero_image_query": "friends cooking together in a bright modern kitchen",
         },
     },
     {
@@ -6315,7 +6315,7 @@ SEED_PAGES = [
         "title": "Contact",
         "batch_number": 0,
         "content": {
-            "hero_image_query": "kitchen counter with fresh produce",
+            "hero_image_query": "colorful overhead flat lay of fresh vegetables and herbs",
         },
     },
     # Real recipe pages for dishes that were named on a category_roundup card
