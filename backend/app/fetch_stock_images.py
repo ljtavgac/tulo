@@ -173,6 +173,29 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
                         for name in (content.get("item_a_name"), content.get("item_b_name"))
                         if name and name.lower() != query.lower()
                     ]
+                elif page.template_type == "recipe_or_dish":
+                    # No SINGLE_IMAGE_FALLBACKS entry for recipe_or_dish
+                    # (see that dict's comment: a dish name is already about
+                    # as broad a query as makes sense) -- but that leaves a
+                    # recipe page with a single query and nothing to fall
+                    # back on if that exact search comes up empty. In
+                    # practice it usually isn't empty: a matching
+                    # category_roundup card (e.g. taco-recipes' "Carne Asada
+                    # Tacos") searches this exact same query text and, being
+                    # defined earlier in SEED_PAGES, gets processed first in
+                    # this loop -- so if only one good match exists for a
+                    # niche dish name, the card claims it via used_urls and
+                    # this page's own identical search comes up with nothing
+                    # left. The category name from category_link (e.g.
+                    # "Taco") is the same broadening the card itself already
+                    # falls back to, so this recipe gets a real second shot
+                    # instead of ending up bare just because a card
+                    # elsewhere on the site happened to search first.
+                    category_title = (content.get("category_link") or {}).get("title")
+                    if category_title:
+                        fallback = _category_fallback_query(category_title)
+                        if fallback and fallback.lower() != query.lower():
+                            queries.append(fallback)
                 else:
                     fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
                     if fallback_fn:
