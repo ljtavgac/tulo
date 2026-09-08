@@ -4,25 +4,24 @@ import type { PageRecord, PageSummary } from "./types";
 // backend's HTTPS URL in production (see the root README for details).
 const API_URL = process.env.API_URL || "http://localhost:8000";
 
-// A deploy does NOT bust this on its own (Vercel's fetch-level Data Cache
-// persists across deployments, keyed per URL, independent of the
-// page/build cache, see the root README's caching note), and
-// /api/revalidate only helps when someone remembers to call it right after
-// a fix goes out. Neither has proven reliable in practice, so this stays
-// short enough that any backend content or image fix shows up within a few
-// minutes on its own, with no manual step required. The backend also
-// pings /api/revalidate immediately after writing a new image (see
-// backend/app/main.py's _revalidate_frontend), which still helps for that
-// one case, but everything else, a wording fix, a corrected query, now
-// just waits out this window instead of needing that same treatment.
-const REVALIDATE_SECONDS = 120;
-
+// This used to cache for 120 seconds (next: { revalidate: 120 }) rather
+// than fetch fresh every time, on the theory that a short TTL would still
+// self-heal any staleness within a few minutes even if a deploy or
+// /api/revalidate call didn't bust it -- see backend/app/main.py's
+// _revalidate_frontend. In practice that didn't hold: specific pages were
+// confirmed, directly against the backend's own /pages/<slug> response, to
+// have fully correct and current content while the deployed frontend kept
+// serving stale HTML for those same pages across multiple days and
+// several backend deploys -- proving the staleness was living in this
+// cache layer, not the data. Rather than debug Vercel's Data Cache/ISR
+// behavior blind (there's no way to inspect it directly), this fetches
+// fresh on every request instead. At this site's current scale that's a
+// negligible cost against the backend, and it makes an entire class of
+// "the fix shipped but isn't showing up" bug impossible by construction.
 export async function getPage<T = Record<string, unknown>>(
   slug: string
 ): Promise<PageRecord<T> | null> {
-  const res = await fetch(`${API_URL}/pages/${slug}`, {
-    next: { revalidate: REVALIDATE_SECONDS },
-  });
+  const res = await fetch(`${API_URL}/pages/${slug}`, { cache: "no-store" });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Failed to fetch page "${slug}": ${res.status}`);
   return res.json();
@@ -36,13 +35,12 @@ export async function listPages(
   if (templateType) url.searchParams.set("template_type", templateType);
   if (options?.limit != null) url.searchParams.set("limit", String(options.limit));
   if (options?.offset != null) url.searchParams.set("offset", String(options.offset));
-  const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
   return res.json();
 }
 
-// Unlike listPages(), not cached -- a search is a one-off, per-query
-// request, not content that benefits from being reused across visitors.
+// Same reasoning as getPage/listPages above -- always fetch fresh.
 export async function searchPages(q: string): Promise<PageSummary[]> {
   const url = new URL(`${API_URL}/pages`);
   url.searchParams.set("q", q);
