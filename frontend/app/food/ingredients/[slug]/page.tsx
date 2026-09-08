@@ -101,7 +101,11 @@ export default async function IngredientHubPage({
 
       <FaqSection faqs={content.faqs} />
 
-      <ToolCallout slug="recipe-generator" label={`Have ${page.title.toLowerCase()} on hand? Find recipes with our Recipe Generator`} />
+      <ToolCallout
+        slug="recipe-generator"
+        label={`Have ${page.title.toLowerCase()} on hand? Find recipes with our Recipe Generator`}
+        queryParams={{ ingredients: page.title.toLowerCase() }}
+      />
 
       <RelatedLinks
         heading={`Recipes using ${page.title.toLowerCase()}`}

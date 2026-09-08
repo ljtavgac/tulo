@@ -203,6 +203,7 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
             term for term in terms if any(term in name or name in term for name in recipe_ingredients)
         ]
         if matched_terms:
+            image_url, image_attribution, hero_image_query = _summary_image(page.content)
             matches.append(
                 {
                     "slug": page.slug,
@@ -210,6 +211,9 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
                     "matched_count": len(matched_terms),
                     "requested_count": len(terms),
                     "total_ingredients": len(recipe_ingredients),
+                    "image_url": image_url,
+                    "image_attribution": image_attribution,
+                    "hero_image_query": hero_image_query,
                 }
             )
 

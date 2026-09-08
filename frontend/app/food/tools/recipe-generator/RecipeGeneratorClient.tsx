@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
 import AdSlot from "@/components/AdSlot";
-import { absoluteUrl, buildBreadcrumbList, pagePath } from "@/lib/seo";
+import RecipeCard from "@/components/RecipeCard";
+import { absoluteUrl, buildBreadcrumbList } from "@/lib/seo";
+import type { ImageAttribution } from "@/lib/types";
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
@@ -39,6 +41,9 @@ interface Match {
   matched_count: number;
   requested_count: number;
   total_ingredients: number;
+  image_url?: string;
+  image_attribution?: ImageAttribution;
+  hero_image_query?: string;
 }
 
 // There's no LLM wired into this stack to generate a brand-new recipe from
@@ -47,7 +52,11 @@ interface Match {
 // Tulo ranked by how many of the given ingredients they use -- an honest,
 // working recommendation that gets better as more recipes get published.
 export default function RecipeGeneratorClient() {
-  const [ingredients, setIngredients] = useState("");
+  // Lets a content page (e.g. an Ingredient Hub's "Find recipes with our
+  // Recipe Generator" callout) link here with the ingredient already
+  // filled in, via ?ingredients=..., instead of landing on an empty form.
+  const searchParams = useSearchParams();
+  const [ingredients, setIngredients] = useState(() => searchParams.get("ingredients") ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [matches, setMatches] = useState<Match[]>([]);
 
@@ -124,19 +133,17 @@ export default function RecipeGeneratorClient() {
       ) : null}
 
       {matches.length > 0 ? (
-        <ul className="mt-6 space-y-3">
+        <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {matches.map((match) => (
             <li key={match.slug}>
-              <Link
-                href={pagePath("recipe_or_dish", match.slug)}
-                className="block rounded-lg border border-ink/10 p-4 hover:border-accent"
-              >
-                <p className="font-semibold">{match.title}</p>
-                <p className="mt-1 text-sm text-ink/60">
-                  Uses {match.matched_count} of your {match.requested_count} ingredient
-                  {match.requested_count === 1 ? "" : "s"} ({match.total_ingredients} total in the recipe)
-                </p>
-              </Link>
+              <RecipeCard
+                title={match.title}
+                description={`Uses ${match.matched_count} of your ${match.requested_count} ingredient${match.requested_count === 1 ? "" : "s"} (${match.total_ingredients} total)`}
+                imageQuery={match.hero_image_query ?? match.title}
+                imageUrl={match.image_url}
+                imageAttribution={match.image_attribution}
+                slug={match.slug}
+              />
             </li>
           ))}
         </ul>
