@@ -29,6 +29,20 @@ export interface RecipeIngredient {
   // backs the "I don't have this" swap tool. Only substitutes with a
   // ratio_multiplier are swappable by pure math; others aren't included.
   available_substitutes?: IngredientSubstitute[];
+  // Macro content for one unit of base_qty as authored (e.g. per 1 cup, if
+  // unit_us is "cup") -- lets the live nutrition block recompute as pure
+  // client math (base_qty * scale * nutrition_per_unit, summed across
+  // ingredients) rather than a separately-authored total that could drift
+  // out of sync with the ingredient list. Optional and only populated for
+  // a pilot batch of recipes for now; absent elsewhere.
+  nutrition_per_unit?: NutritionPerUnit;
+}
+
+export interface NutritionPerUnit {
+  calories: number;
+  protein_g: number;
+  carbs_g: number;
+  fat_g: number;
 }
 
 // For a discrete count of items (eggs, bananas, cloves of garlic) rather
@@ -95,6 +109,11 @@ export interface IngredientSubstitute {
   // ratio ("slightly more") can't be swapped in by pure math, so the
   // ingredient swap tool only offers substitutes where this is set.
   ratio_multiplier?: number | null;
+  // Same shape and same "per one unit of the recipe ingredient's base_qty"
+  // meaning as RecipeIngredient.nutrition_per_unit, so swapping this
+  // substitute in also swaps which macro numbers feed the live nutrition
+  // block.
+  nutrition_per_unit?: NutritionPerUnit;
 }
 
 export interface IngredientHubContent {

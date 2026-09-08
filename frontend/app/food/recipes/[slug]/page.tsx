@@ -52,6 +52,25 @@ export default async function RecipePage({
   const linkTerms = await getLinkTerms(slug);
   const tempReference = detectFoodCategory(content.ingredients.map((ing) => ing.name).join(" "));
 
+  // Base (unswapped, unscaled) per-serving nutrition for the JSON-LD, which
+  // is a static snapshot rather than the live client-side recalculation --
+  // search engines read this once at crawl time, so there's no "current
+  // swap state" to reflect. Only present once nutrition_per_unit data
+  // exists on at least one ingredient (a pilot batch of recipes for now).
+  const baseNutrition = content.ingredients.reduce(
+    (totals, ing) => {
+      if (!ing.nutrition_per_unit) return totals;
+      return {
+        calories: totals.calories + ing.base_qty * ing.nutrition_per_unit.calories,
+        protein_g: totals.protein_g + ing.base_qty * ing.nutrition_per_unit.protein_g,
+        carbs_g: totals.carbs_g + ing.base_qty * ing.nutrition_per_unit.carbs_g,
+        fat_g: totals.fat_g + ing.base_qty * ing.nutrition_per_unit.fat_g,
+        hasData: true,
+      };
+    },
+    { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0, hasData: false }
+  );
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
       <Breadcrumbs items={breadcrumbItems} />
@@ -79,6 +98,17 @@ export default async function RecipePage({
             "@type": "HowToStep",
             text: step,
           })),
+          ...(baseNutrition.hasData
+            ? {
+                nutrition: {
+                  "@type": "NutritionInformation",
+                  calories: `${Math.round(baseNutrition.calories / content.servings)} calories`,
+                  proteinContent: `${Math.round(baseNutrition.protein_g / content.servings)}g`,
+                  carbohydrateContent: `${Math.round(baseNutrition.carbs_g / content.servings)}g`,
+                  fatContent: `${Math.round(baseNutrition.fat_g / content.servings)}g`,
+                },
+              }
+            : {}),
         }}
       />
       <article>

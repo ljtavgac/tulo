@@ -640,12 +640,18 @@ SEED_PAGES = [
             "cook_time_minutes": 25,
             "total_time_minutes": 40,
             "servings": 4,
+            # nutrition_per_unit values below are per 1 unit_us as written
+            # (e.g. per medium breast, per cup) -- standard USDA-comparable
+            # figures for the named ingredient, same "estimate, not lab
+            # analysis" precision as the site's existing nutrition_note
+            # prose. Salt/pepper are left without one, same as the prose
+            # estimate already excluded their negligible calories.
             "ingredients": [
-                {"name": "boneless, skinless chicken breasts", "base_qty": 4, "unit_us": "medium", "base_qty_metric": 4, "unit_metric": "medium", "hub_slug": None},
-                {"name": "mayonnaise", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
-                {"name": "grated parmesan", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 50, "unit_metric": "g", "hub_slug": None},
-                {"name": "panko breadcrumbs", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 45, "unit_metric": "g", "hub_slug": None},
-                {"name": "garlic powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "boneless, skinless chicken breasts", "base_qty": 4, "unit_us": "medium", "base_qty_metric": 4, "unit_metric": "medium", "hub_slug": None, "nutrition_per_unit": {"calories": 215, "protein_g": 40.0, "carbs_g": 0, "fat_g": 5.0}},
+                {"name": "mayonnaise", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1500, "protein_g": 2.0, "carbs_g": 2.0, "fat_g": 165.0}},
+                {"name": "grated parmesan", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 50, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 431, "protein_g": 38.5, "carbs_g": 3.6, "fat_g": 28.6}},
+                {"name": "panko breadcrumbs", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 45, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 190, "protein_g": 6.0, "carbs_g": 36.0, "fat_g": 1.0}},
+                {"name": "garlic powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 9, "protein_g": 0.5, "carbs_g": 2.0, "fat_g": 0}},
                 {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
                 {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
             ],
@@ -667,11 +673,10 @@ SEED_PAGES = [
                 "fryer to re-crisp the topping, microwaving works but leaves the "
                 "crust soft."
             ),
-            "nutrition_note": (
-                "Approximately 380 calories, 22g fat, 8g carbohydrates, and 38g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted here -- the live nutrition
+            # block computed from each ingredient's nutrition_per_unit above
+            # supersedes it (see RecipeIngredientsPanel), and showing both
+            # would risk two different-looking numbers on the same page.
             "faqs": [
                 {
                     "question": "Can I use chicken thighs instead of breasts?",
@@ -718,14 +723,21 @@ SEED_PAGES = [
             "cook_time_minutes": 35,
             "total_time_minutes": 55,
             "servings": 6,
+            # See parmesan-crusted-chicken above for the nutrition_per_unit
+            # convention (per 1 unit_us, USDA-comparable estimate). This
+            # recipe is also the Phase B swap pilot (gruyère -> Comté/Swiss
+            # Emmental/Fontina, each with its own nutrition_per_unit on the
+            # gruyere-cheese hub page) specifically so the live nutrition
+            # block can be verified updating from a serving change and an
+            # ingredient swap at the same time, not just one or the other.
             "ingredients": [
-                {"name": "cooked, shredded chicken", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 420, "unit_metric": "g", "hub_slug": None},
-                {"name": "cooked white rice", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 555, "unit_metric": "g", "hub_slug": None},
-                {"name": "broccoli florets, blanched", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 270, "unit_metric": "g", "hub_slug": None},
-                {"name": "chicken broth", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
-                {"name": "heavy cream", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
-                {"name": "grated gruyère cheese", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": "gruyere-cheese"},
-                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "cooked, shredded chicken", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 420, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 231, "protein_g": 43.4, "carbs_g": 0, "fat_g": 5.0}},
+                {"name": "cooked white rice", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 555, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 206, "protein_g": 4.3, "carbs_g": 45.0, "fat_g": 0.4}},
+                {"name": "broccoli florets, blanched", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 270, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 31, "protein_g": 2.5, "carbs_g": 6.0, "fat_g": 0.3}},
+                {"name": "chicken broth", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 15, "protein_g": 1.0, "carbs_g": 1.0, "fat_g": 0.5}},
+                {"name": "heavy cream", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 821, "protein_g": 4.9, "carbs_g": 6.6, "fat_g": 88.0}},
+                {"name": "grated gruyère cheese", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": "gruyere-cheese", "nutrition_per_unit": {"calories": 445, "protein_g": 32.1, "carbs_g": 0.4, "fat_g": 34.9}},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.2, "carbs_g": 1.0, "fat_g": 0}},
                 {"name": "salt and pepper", "base_qty": 1, "unit_us": "to taste", "base_qty_metric": 1, "unit_metric": "to taste", "hub_slug": None},
             ],
             "instructions": [
@@ -745,11 +757,8 @@ SEED_PAGES = [
                 "the rice from drying out, or microwave individual portions with a "
                 "splash of broth stirred in."
             ),
-            "nutrition_note": (
-                "Approximately 420 calories, 22g fat, 28g carbohydrates, and 28g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- see the comment above
+            # this recipe's ingredients list.
             "faqs": [
                 {
                     "question": "Can I make this ahead of time?",
@@ -1633,10 +1642,15 @@ SEED_PAGES = [
                 "savory. It melts exceptionally smoothly, which is why it's the "
                 "classic choice for fondue and French onion soup."
             ),
+            # nutrition_per_unit here uses the same "per 1 cup, USDA-comparable
+            # estimate" convention as the gruyère ingredient it substitutes for
+            # (see chicken-broccoli-rice-casserole) -- swapping to one of these
+            # on that recipe's page should visibly shift the live nutrition
+            # block, not just the ingredient name and quantity.
             "substitutes": [
-                {"name": "Comté", "ratio": "1:1", "note": "Very close in flavor and melting behavior; the classic French cousin to Swiss gruyère.", "ratio_multiplier": 1.0},
-                {"name": "Swiss Emmental", "ratio": "1:1", "note": "Milder and sweeter, with the characteristic large holes; melts similarly well.", "ratio_multiplier": 1.0},
-                {"name": "Fontina", "ratio": "1:1", "note": "Softer and buttery rather than nutty, but melts just as smoothly.", "ratio_multiplier": 1.0},
+                {"name": "Comté", "ratio": "1:1", "note": "Very close in flavor and melting behavior; the classic French cousin to Swiss gruyère.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 440, "protein_g": 30.0, "carbs_g": 1.0, "fat_g": 34.0}},
+                {"name": "Swiss Emmental", "ratio": "1:1", "note": "Milder and sweeter, with the characteristic large holes; melts similarly well.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 397, "protein_g": 28.0, "carbs_g": 3.4, "fat_g": 30.0}},
+                {"name": "Fontina", "ratio": "1:1", "note": "Softer and buttery rather than nutty, but melts just as smoothly.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 397, "protein_g": 26.0, "carbs_g": 1.5, "fat_g": 31.0}},
             ],
             "substitute_page_slug": "gruyere-cheese-substitute",
             "storage": (

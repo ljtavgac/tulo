@@ -27,6 +27,30 @@ export default function RecipeIngredientsPanel({
 
   const scale = servings / baseServings;
 
+  // Live nutrition for the batch as currently configured -- same scale and
+  // swaps state as the ingredient list above, so it's derived from the same
+  // numbers on screen rather than a separately-authored total that could
+  // drift out of sync with them. Only ingredients with nutrition_per_unit
+  // data contribute (currently a pilot batch of recipes, not all of them);
+  // if none do, `hasData` stays false and no block is shown.
+  const nutritionTotals = ingredients.reduce(
+    (totals, ing) => {
+      const activeSubstitute = ing.available_substitutes?.find((sub) => sub.name === swaps[ing.name]);
+      const perUnit = activeSubstitute?.nutrition_per_unit ?? ing.nutrition_per_unit;
+      if (!perUnit) return totals;
+      const multiplier = activeSubstitute?.ratio_multiplier ?? 1;
+      const amount = ing.base_qty * scale * multiplier;
+      return {
+        calories: totals.calories + amount * perUnit.calories,
+        protein_g: totals.protein_g + amount * perUnit.protein_g,
+        carbs_g: totals.carbs_g + amount * perUnit.carbs_g,
+        fat_g: totals.fat_g + amount * perUnit.fat_g,
+        hasData: true,
+      };
+    },
+    { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0, hasData: false }
+  );
+
   return (
     <div className="rounded-lg border border-ink/10 p-4">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-3">
@@ -97,6 +121,35 @@ export default function RecipeIngredientsPanel({
           );
         })}
       </ul>
+
+      {nutritionTotals.hasData ? (
+        <div className="mt-4 rounded border border-ink/10 bg-ink/[0.02] p-3 text-sm">
+          <p className="font-medium">
+            Nutrition for this batch <span className="font-normal text-ink/60">(serves {servings})</span>
+          </p>
+          <dl className="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-ink/70 sm:grid-cols-4">
+            <div className="flex justify-between gap-2 sm:block">
+              <dt className="text-ink/50">Calories</dt>
+              <dd>{Math.round(nutritionTotals.calories)}</dd>
+            </div>
+            <div className="flex justify-between gap-2 sm:block">
+              <dt className="text-ink/50">Protein</dt>
+              <dd>{Math.round(nutritionTotals.protein_g)}g</dd>
+            </div>
+            <div className="flex justify-between gap-2 sm:block">
+              <dt className="text-ink/50">Carbs</dt>
+              <dd>{Math.round(nutritionTotals.carbs_g)}g</dd>
+            </div>
+            <div className="flex justify-between gap-2 sm:block">
+              <dt className="text-ink/50">Fat</dt>
+              <dd>{Math.round(nutritionTotals.fat_g)}g</dd>
+            </div>
+          </dl>
+          <p className="mt-1 text-xs text-ink/40">
+            Recalculates with servings and any ingredient swaps above. An estimate only, exact values depend on the specific ingredients used.
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
