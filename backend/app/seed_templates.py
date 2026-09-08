@@ -5269,11 +5269,11 @@ SEED_PAGES = [
             ),
             "recipe_cards": [
                 {"title": "Chicken Al Pastor Tacos", "slug": "chicken-al-pastor", "description": "Achiote-and-pineapple marinated chicken, seared hard and chopped for tacos.", "image_query": "chicken al pastor tacos"},
-                {"title": "Carne Asada Tacos", "slug": None, "description": "Grilled, citrus-marinated skirt steak, sliced thin against the grain.", "image_query": "carne asada tacos"},
-                {"title": "Baja Fish Tacos", "slug": None, "description": "Crispy beer-battered fish with cabbage slaw and a creamy chipotle sauce.", "image_query": "baja fish tacos"},
-                {"title": "Birria Tacos", "slug": None, "description": "Slow-braised, chile-spiced beef tacos, dipped and served with their own consommé.", "image_query": "birria tacos"},
-                {"title": "Black Bean and Sweet Potato Tacos", "slug": None, "description": "A hearty vegetarian filling with roasted sweet potato and smoky black beans.", "image_query": "black bean sweet potato tacos"},
-                {"title": "Shrimp Tacos", "slug": None, "description": "Quick-seared, chili-lime shrimp with a bright cabbage and cilantro slaw.", "image_query": "shrimp tacos"},
+                {"title": "Carne Asada Tacos", "slug": "carne-asada-tacos", "description": "Grilled, citrus-marinated skirt steak, sliced thin against the grain.", "image_query": "carne asada tacos"},
+                {"title": "Baja Fish Tacos", "slug": "baja-fish-tacos", "description": "Crispy beer-battered fish with cabbage slaw and a creamy chipotle sauce.", "image_query": "baja fish tacos"},
+                {"title": "Birria Tacos", "slug": "birria-tacos", "description": "Slow-braised, chile-spiced beef tacos, dipped and served with their own consommé.", "image_query": "birria tacos"},
+                {"title": "Black Bean and Sweet Potato Tacos", "slug": "black-bean-sweet-potato-tacos", "description": "A hearty vegetarian filling with roasted sweet potato and smoky black beans.", "image_query": "black bean sweet potato tacos"},
+                {"title": "Shrimp Tacos", "slug": "shrimp-tacos", "description": "Quick-seared, chili-lime shrimp with a bright cabbage and cilantro slaw.", "image_query": "shrimp tacos"},
             ],
             "sub_categories": [
                 {"label": "Meat", "items": ["Chicken Al Pastor Tacos", "Carne Asada Tacos", "Birria Tacos"]},
@@ -5321,12 +5321,12 @@ SEED_PAGES = [
                 "the pies worth mastering, organized by type."
             ),
             "recipe_cards": [
-                {"title": "Classic Apple Pie", "slug": None, "description": "A double-crust pie with cinnamon-spiced apples, baked until the filling bubbles through the vents.", "image_query": "apple pie"},
-                {"title": "Pumpkin Pie", "slug": None, "description": "A silky custard pie spiced with cinnamon, ginger, and clove in a single crust.", "image_query": "pumpkin pie"},
-                {"title": "Key Lime Pie", "slug": None, "description": "A tart, creamy custard pie in a graham cracker crust, no baking required for the filling.", "image_query": "key lime pie"},
-                {"title": "Chocolate Cream Pie", "slug": None, "description": "A rich chocolate pudding filling topped with whipped cream in a baked crust.", "image_query": "chocolate cream pie"},
-                {"title": "Pecan Pie", "slug": None, "description": "A gooey, deeply sweet filling packed with toasted pecans in a single crust.", "image_query": "pecan pie"},
-                {"title": "Cherry Pie", "slug": None, "description": "A double-crust pie with a tart-sweet cherry filling, best made with fresh or frozen sour cherries.", "image_query": "cherry pie"},
+                {"title": "Classic Apple Pie", "slug": "classic-apple-pie", "description": "A double-crust pie with cinnamon-spiced apples, baked until the filling bubbles through the vents.", "image_query": "apple pie"},
+                {"title": "Pumpkin Pie", "slug": "pumpkin-pie", "description": "A silky custard pie spiced with cinnamon, ginger, and clove in a single crust.", "image_query": "pumpkin pie"},
+                {"title": "Key Lime Pie", "slug": "key-lime-pie", "description": "A tart, creamy custard pie in a graham cracker crust, no baking required for the filling.", "image_query": "key lime pie"},
+                {"title": "Chocolate Cream Pie", "slug": "chocolate-cream-pie", "description": "A rich chocolate pudding filling topped with whipped cream in a baked crust.", "image_query": "chocolate cream pie"},
+                {"title": "Pecan Pie", "slug": "pecan-pie", "description": "A gooey, deeply sweet filling packed with toasted pecans in a single crust.", "image_query": "pecan pie"},
+                {"title": "Cherry Pie", "slug": "cherry-pie", "description": "A double-crust pie with a tart-sweet cherry filling, best made with fresh or frozen sour cherries.", "image_query": "cherry pie"},
             ],
             "sub_categories": [
                 {"label": "Fruit", "items": ["Classic Apple Pie", "Cherry Pie"]},
@@ -6273,6 +6273,781 @@ SEED_PAGES = [
                 "custom recipe generator built around the ingredients you already "
                 "have."
             ),
+        },
+    },
+    # Real recipe pages for dishes that were named on a category_roundup card
+    # (recipe_cards) with slug: None -- an aspirational placeholder, not
+    # clickable, per that field's own convention (see category_roundup
+    # entries below). Each one here also gets its parent card's slug
+    # hand-set to match, the same way every other already-linked card in
+    # this file works (e.g. parmesan-crusted-chicken, chicken-al-pastor) --
+    # not the live title-matching fallback in main.py's get_page(), since
+    # these pages' own titles follow the site's "X Recipe" SEO convention
+    # and don't literally match their card's shorter display title.
+    {
+        "slug": "carne-asada-tacos",
+        "template_type": "recipe_or_dish",
+        "title": "Carne Asada Tacos Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "Grilled, citrus-marinated skirt steak tacos, sliced thin "
+                "against the grain and served simply with onion, cilantro, "
+                "and lime."
+            ),
+            "hero_image_query": "carne asada tacos",
+            "why_it_works": (
+                "A short, acidic marinade tenderizes the outer layer of the "
+                "skirt steak without turning it mushy, and cooking it hot and "
+                "fast over high heat keeps the char intense without "
+                "overcooking the thin cut past medium."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "skirt steak", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "orange juice", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "lime juice", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cumin", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 12, "unit_us": "tortillas", "base_qty_metric": 12, "unit_metric": "tortillas", "hub_slug": None},
+                {"name": "white onion, diced", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None},
+                {"name": "cilantro, chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime wedges, for serving", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the orange juice, lime juice, garlic, olive oil, salt, and cumin in a shallow dish.",
+                "Add the skirt steak, turning to coat, and marinate at room temperature for 20-30 minutes (or refrigerated up to 4 hours).",
+                "Heat a grill or heavy skillet over high heat until very hot.",
+                "Remove the steak from the marinade, pat off excess liquid, and cook 3-4 minutes per side for medium-rare, until well charred.",
+                "Let the steak rest for 5 minutes, then slice thin against the grain.",
+                "Warm the tortillas and fill with sliced steak, onion, and cilantro. Serve with lime wedges.",
+            ],
+            "tips_and_variations": [
+                "Slicing against the grain is what keeps skirt steak tender, cutting with the grain makes every bite noticeably chewier.",
+                "A screaming-hot pan or grill matters more than exact timing here, the goal is a hard char in the time it takes the thin steak to hit medium-rare.",
+            ],
+            "faqs": [
+                {
+                    "question": "What cut of beef is traditional for carne asada?",
+                    "answer": (
+                        "Skirt steak or flank steak are the traditional choices, "
+                        "both are thin, well-marbled cuts that take well to a "
+                        "quick, hot sear and slice cleanly against the grain."
+                    ),
+                },
+                {
+                    "question": "Can I make carne asada without a grill?",
+                    "answer": (
+                        "Yes, a cast iron or heavy stainless skillet gets hot "
+                        "enough to char the steak well. Cook in batches if "
+                        "needed rather than crowding the pan, which steams the "
+                        "meat instead of searing it."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Taco Recipes", "slug": "taco-recipes"},
+        },
+    },
+    {
+        "slug": "baja-fish-tacos",
+        "template_type": "recipe_or_dish",
+        "title": "Baja Fish Tacos Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "Crispy beer-battered fish tacos with a crunchy cabbage slaw "
+                "and a creamy chipotle sauce, the Baja California original."
+            ),
+            "hero_image_query": "baja fish tacos",
+            "why_it_works": (
+                "Cold beer batter fries up thin and shatteringly crisp rather "
+                "than doughy, and the acidic, crunchy slaw cuts through the "
+                "fried fish's richness so the whole taco doesn't taste one-note."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 35,
+            "servings": 4,
+            "ingredients": [
+                {"name": "white fish fillets (cod or mahi mahi)", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+                {"name": "cold beer (Mexican lager)", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "baking powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil, for frying", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 700, "unit_metric": "ml", "hub_slug": None},
+                {"name": "green cabbage, shredded", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None},
+                {"name": "mayonnaise", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "chipotle peppers in adobo, minced", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 12, "unit_us": "tortillas", "base_qty_metric": 12, "unit_metric": "tortillas", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the mayonnaise, minced chipotle, and 1 tablespoon of the lime juice for the chipotle sauce; set aside.",
+                "Toss the shredded cabbage with the remaining lime juice; set aside.",
+                "Cut the fish into 1-inch-wide strips and pat dry.",
+                "Whisk the flour, baking powder, and salt, then whisk in the cold beer until just combined (a few lumps are fine).",
+                "Heat the oil in a deep pot to 375°F (190°C).",
+                "Dip each fish strip in the batter, let excess drip off, and fry in batches for 3-4 minutes until golden and crisp. Drain on a wire rack.",
+                "Warm the tortillas and assemble with fried fish, cabbage slaw, and a drizzle of chipotle sauce.",
+            ],
+            "tips_and_variations": [
+                "Keep the batter cold right up until it hits the oil, a cold batter against hot oil is what makes the crust shatter instead of turning gummy.",
+                "Fry in small batches, too much fish at once drops the oil temperature and the batter absorbs oil instead of crisping.",
+            ],
+            "faqs": [
+                {
+                    "question": "What's the best fish for fish tacos?",
+                    "answer": (
+                        "A mild, firm white fish like cod, mahi mahi, or "
+                        "halibut holds up best to frying without falling "
+                        "apart. Avoid delicate, flaky fish like tilapia for "
+                        "the fried version."
+                    ),
+                },
+                {
+                    "question": "Can I bake instead of fry the fish?",
+                    "answer": (
+                        "Beer batter specifically needs frying to set and "
+                        "crisp properly, it won't crisp the same way in an "
+                        "oven. For a baked version, use a panko breadcrumb "
+                        "coating instead and bake at 425°F (220°C) until "
+                        "golden."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Taco Recipes", "slug": "taco-recipes"},
+        },
+    },
+    {
+        "slug": "birria-tacos",
+        "template_type": "recipe_or_dish",
+        "title": "Birria Tacos Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "Slow-braised, chile-spiced beef birria tacos, pan-fried until "
+                "crisp and served with their own rich consommé for dipping."
+            ),
+            "hero_image_query": "birria tacos consomme",
+            "why_it_works": (
+                "A long braise in a dried-chile broth breaks down a tough, "
+                "well-marbled cut into meat that shreds effortlessly, and "
+                "frying the assembled tacos in the braise's own rendered fat "
+                "before dipping is what gives them their crisp, deep-red crust."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 180,
+            "total_time_minutes": 210,
+            "servings": 6,
+            "ingredients": [
+                {"name": "beef chuck roast", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None},
+                {"name": "dried guajillo chiles, stemmed and seeded", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 4, "unit_metric": "whole", "hub_slug": None},
+                {"name": "dried ancho chiles, stemmed and seeded", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+                {"name": "white onion, quartered", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "garlic", "base_qty": 6, "unit_us": "cloves", "base_qty_metric": 6, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "tomatoes", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+                {"name": "beef broth", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None},
+                {"name": "bay leaves", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+                {"name": "dried oregano", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 18, "unit_us": "tortillas", "base_qty_metric": 18, "unit_metric": "tortillas", "hub_slug": None},
+                {"name": "shredded Oaxaca or mozzarella cheese", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "white onion, diced, for serving", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None},
+                {"name": "cilantro, chopped, for serving", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Toast the guajillo and ancho chiles in a dry skillet for 30 seconds per side, then soak in hot water for 15 minutes until softened.",
+                "Blend the softened chiles with the onion, garlic, tomatoes, and 1 cup of the beef broth until smooth.",
+                "Season the chuck roast with salt and sear on all sides in a large pot over high heat.",
+                "Pour the chile blend over the meat, add the remaining broth, bay leaves, and oregano.",
+                "Cover and simmer over low heat (or braise at 325°F/163°C in the oven) for 3 hours, until the meat shreds easily with a fork.",
+                "Remove the meat and shred it, skimming the fat that rises to the top of the broth into a separate bowl. Strain the remaining broth into a pot to serve as consommé.",
+                "Dip tortillas in the reserved fat, fill with shredded meat and cheese, fold, and pan-fry on a griddle until crisp and golden on both sides.",
+                "Serve the tacos with the hot consommé for dipping, topped with diced onion and cilantro.",
+            ],
+            "tips_and_variations": [
+                "Don't skip skimming the fat, it's what makes the tortillas fry up crisp and deep red instead of just steaming in the broth.",
+                "The meat and consommé both improve overnight in the fridge, this is genuinely a good make-ahead recipe.",
+            ],
+            "faqs": [
+                {
+                    "question": "What is birria traditionally made with?",
+                    "answer": (
+                        "Traditional birria is usually goat, though beef "
+                        "(especially chuck or short rib) has become the "
+                        "common version outside of its home region and is "
+                        "what most birria tacos in the US are made from today."
+                    ),
+                },
+                {
+                    "question": "Why do you dip the tacos in consommé?",
+                    "answer": (
+                        "The consommé is the braising liquid itself, dipping "
+                        "the crisp-fried taco in it before eating (or serving "
+                        "it alongside for dipping bite by bite) adds back the "
+                        "rich, chile-spiced flavor the meat was cooked in."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Taco Recipes", "slug": "taco-recipes"},
+        },
+    },
+    {
+        "slug": "black-bean-sweet-potato-tacos",
+        "template_type": "recipe_or_dish",
+        "title": "Black Bean and Sweet Potato Tacos Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A hearty vegetarian taco filling of roasted sweet potato and "
+                "smoky black beans, no meat substitute needed."
+            ),
+            "hero_image_query": "black bean sweet potato tacos",
+            "why_it_works": (
+                "Roasting the sweet potato at high heat concentrates its "
+                "natural sugars into real caramelization instead of steaming "
+                "it soft, giving the filling a texture and depth that doesn't "
+                "read as a meat substitute standing in for something missing."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 25,
+            "total_time_minutes": 40,
+            "servings": 4,
+            "ingredients": [
+                {"name": "sweet potatoes, diced small", "base_qty": 2, "unit_us": "large", "base_qty_metric": 600, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ground cumin", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "smoked paprika", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "chili powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black beans, drained and rinsed", "base_qty": 1, "unit_us": "can (15 oz)", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 8, "unit_us": "tortillas", "base_qty_metric": 8, "unit_metric": "tortillas", "hub_slug": None},
+                {"name": "avocado, sliced", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "cilantro, chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C).",
+                "Toss the diced sweet potato with olive oil, cumin, smoked paprika, chili powder, and salt.",
+                "Spread in a single layer on a baking sheet and roast for 20-25 minutes, stirring once, until caramelized and tender.",
+                "Warm the black beans in a small pot with a splash of water, then stir in the lime juice.",
+                "Warm the tortillas and fill with roasted sweet potato, black beans, avocado, and cilantro.",
+            ],
+            "tips_and_variations": [
+                "Spread the sweet potato in a genuinely single layer, crowding the pan traps steam and the pieces soften instead of caramelizing.",
+                "A squeeze of lime and a spoonful of plain yogurt or crema balance the sweetness of the potato nicely if serving with something creamy.",
+            ],
+            "faqs": [
+                {
+                    "question": "Can I make this ahead of time?",
+                    "answer": (
+                        "Yes, the roasted sweet potato and seasoned beans "
+                        "both keep well refrigerated for up to 4 days, "
+                        "reheat before assembling the tacos."
+                    ),
+                },
+                {
+                    "question": "What can I use instead of sweet potato?",
+                    "answer": (
+                        "Butternut squash or regular roasted potatoes both "
+                        "work with the same spice blend, though sweet "
+                        "potato's natural sugars caramelize the most readily "
+                        "at high heat."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Taco Recipes", "slug": "taco-recipes"},
+        },
+    },
+    {
+        "slug": "shrimp-tacos",
+        "template_type": "recipe_or_dish",
+        "title": "Shrimp Tacos Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "Quick-seared chili-lime shrimp tacos with a bright cabbage "
+                "and cilantro slaw, ready in about 20 minutes."
+            ),
+            "hero_image_query": "shrimp tacos",
+            "why_it_works": (
+                "Shrimp cook in only a few minutes, so a hard sear over high "
+                "heat browns the outside before the inside has a chance to "
+                "overcook and turn rubbery, the single most common shrimp "
+                "mistake."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 8,
+            "total_time_minutes": 18,
+            "servings": 4,
+            "ingredients": [
+                {"name": "large shrimp, peeled and deveined", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "chili powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cumin", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "green cabbage, shredded", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None},
+                {"name": "cilantro, chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 8, "unit_us": "tortillas", "base_qty_metric": 8, "unit_metric": "tortillas", "hub_slug": None},
+            ],
+            "instructions": [
+                "Toss the shrimp with chili powder, cumin, garlic powder, and salt.",
+                "Toss the shredded cabbage with half the lime juice and the chopped cilantro; set aside as the slaw.",
+                "Heat the olive oil in a skillet over high heat until shimmering.",
+                "Add the shrimp in a single layer and sear for 1-2 minutes per side, until pink and just cooked through.",
+                "Remove from heat and toss with the remaining lime juice.",
+                "Warm the tortillas and fill with shrimp and slaw.",
+            ],
+            "tips_and_variations": [
+                "Don't crowd the pan, shrimp packed too close together steam instead of sear and won't brown properly.",
+                "Pull the shrimp the moment they turn opaque and curl into a loose C shape, a tight O shape means they've already gone slightly past done.",
+            ],
+            "faqs": [
+                {
+                    "question": "How do I know when shrimp are done cooking?",
+                    "answer": (
+                        "Properly cooked shrimp turn pink and opaque and curl "
+                        "into a loose C shape. A tight, curled-up O shape is "
+                        "a sign they've overcooked and gone rubbery."
+                    ),
+                },
+                {
+                    "question": "Can I use frozen shrimp?",
+                    "answer": (
+                        "Yes, just thaw completely and pat very dry first, "
+                        "excess moisture on the shrimp steams in the pan "
+                        "instead of searing and browning."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Taco Recipes", "slug": "taco-recipes"},
+        },
+    },
+    {
+        "slug": "classic-apple-pie",
+        "template_type": "recipe_or_dish",
+        "title": "Classic Apple Pie Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A double-crust apple pie with cinnamon-spiced filling, baked "
+                "until the crust is golden and the filling bubbles through "
+                "the vents."
+            ),
+            "hero_image_query": "apple pie",
+            "why_it_works": (
+                "Tossing the sliced apples with sugar and letting them sit "
+                "draws out excess liquid before baking, so the filling "
+                "thickens properly instead of leaving the bottom crust soggy."
+            ),
+            "prep_time_minutes": 40,
+            "cook_time_minutes": 55,
+            "total_time_minutes": 95,
+            "servings": 8,
+            "ingredients": [
+                {"name": "double pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "package", "base_qty_metric": 1, "unit_metric": "package", "hub_slug": None},
+                {"name": "apples (Granny Smith or Honeycrisp), peeled and sliced", "base_qty": 6, "unit_us": "large", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 24, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cinnamon", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "lemon juice", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "unsalted butter, cubed", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "egg, beaten (for egg wash)", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C) and fit one pie crust into a 9-inch pie dish.",
+                "Toss the sliced apples with sugar, flour, cinnamon, and lemon juice; let sit for 15 minutes.",
+                "Pour the apple mixture into the crust and dot with the cubed butter.",
+                "Cover with the second crust, seal and crimp the edges, and cut several vents in the top.",
+                "Brush the top crust with egg wash.",
+                "Bake for 20 minutes, then reduce the oven to 375°F (190°C) and bake for 35-40 minutes more, until the crust is deep golden and filling bubbles through the vents.",
+                "Cool at least 2 hours before slicing, so the filling has time to set.",
+            ],
+            "tips_and_variations": [
+                "Letting the apples sit with the sugar for 15 minutes draws out juice you can drain off, keeping the bottom crust from turning soggy.",
+                "Cooling the pie fully before slicing isn't optional if you want clean slices, a warm pie's filling is still loose.",
+            ],
+            "faqs": [
+                {
+                    "question": "Why is my apple pie filling watery?",
+                    "answer": (
+                        "Usually the pie was sliced before it fully cooled, "
+                        "the filling needs at least 2 hours to set as it "
+                        "cools. Not draining excess juice from the macerated "
+                        "apples before filling the crust is the other common "
+                        "cause."
+                    ),
+                },
+                {
+                    "question": "What apples are best for apple pie?",
+                    "answer": (
+                        "A firm, tart variety like Granny Smith holds its "
+                        "shape well during baking; Honeycrisp is a sweeter "
+                        "option that also holds up. Soft varieties like "
+                        "Red Delicious break down into mush."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
+        },
+    },
+    {
+        "slug": "pumpkin-pie",
+        "template_type": "recipe_or_dish",
+        "title": "Pumpkin Pie Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A silky pumpkin custard pie spiced with cinnamon, ginger, "
+                "and clove, baked in a single crust."
+            ),
+            "hero_image_query": "pumpkin pie",
+            "why_it_works": (
+                "Baking the custard at a moderate, steady temperature sets it "
+                "gently all the way through, a too-hot oven cooks the edges "
+                "before the center sets and cracks the surface."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 55,
+            "total_time_minutes": 70,
+            "servings": 8,
+            "ingredients": [
+                {"name": "single pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None},
+                {"name": "pumpkin puree", "base_qty": 15, "unit_us": "oz can", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None},
+                {"name": "sweetened condensed milk", "base_qty": 14, "unit_us": "oz can", "base_qty_metric": 396, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "ground cinnamon", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground ginger", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground clove", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C) and fit the crust into a 9-inch pie dish, crimping the edges.",
+                "Whisk together the pumpkin puree, condensed milk, eggs, cinnamon, ginger, clove, and salt until smooth.",
+                "Pour the filling into the crust.",
+                "Bake for 15 minutes, then reduce the oven to 350°F (175°C) and bake for 40-45 minutes more, until the center is just set but still slightly jiggly.",
+                "Cool completely on a wire rack before slicing, at least 2 hours.",
+            ],
+            "tips_and_variations": [
+                "A slight jiggle in the very center when you take it out is correct, it firms up fully as it cools; a fully-set center at pull time means it's overbaked.",
+                "Make sure to use plain pumpkin puree, not pumpkin pie filling, which is already sweetened and spiced differently than this recipe accounts for.",
+            ],
+            "faqs": [
+                {
+                    "question": "Why did my pumpkin pie crack?",
+                    "answer": (
+                        "Cracking is almost always from overbaking or too "
+                        "high an oven temperature, both cook the egg custard "
+                        "too fast and it contracts as it cools. Pull it while "
+                        "the center still jiggles slightly."
+                    ),
+                },
+                {
+                    "question": "Can I make pumpkin pie ahead of time?",
+                    "answer": (
+                        "Yes, it keeps well refrigerated for up to 4 days and "
+                        "is traditionally made a day ahead, the flavor and "
+                        "texture are just as good, if not better, once fully "
+                        "chilled."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
+        },
+    },
+    {
+        "slug": "key-lime-pie",
+        "template_type": "recipe_or_dish",
+        "title": "Key Lime Pie Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A tart, creamy key lime pie in a graham cracker crust, no "
+                "baking required for the filling itself."
+            ),
+            "hero_image_query": "key lime pie",
+            "why_it_works": (
+                "The acid in the lime juice reacts with the sweetened "
+                "condensed milk to thicken the filling on its own, a brief "
+                "bake just sets it fully rather than doing the thickening "
+                "work itself."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 210,
+            "servings": 8,
+            "ingredients": [
+                {"name": "graham cracker crumbs", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 6, "unit_us": "tbsp", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 38, "unit_metric": "g", "hub_slug": None},
+                {"name": "sweetened condensed milk", "base_qty": 14, "unit_us": "oz can", "base_qty_metric": 396, "unit_metric": "g", "hub_slug": None},
+                {"name": "egg yolks", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
+                {"name": "key lime juice (or regular lime juice)", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "heavy cream, whipped, for topping", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 350°F (175°C).",
+                "Mix the graham cracker crumbs, melted butter, and sugar, then press firmly into a 9-inch pie dish.",
+                "Bake the crust for 8-10 minutes, until lightly golden, then let cool.",
+                "Whisk together the condensed milk, egg yolks, and lime juice until smooth.",
+                "Pour the filling into the cooled crust and bake for 15 minutes, until just set at the edges with a slight jiggle in the center.",
+                "Cool to room temperature, then refrigerate at least 3 hours before serving.",
+                "Top with whipped cream just before serving.",
+            ],
+            "tips_and_variations": [
+                "Real key limes are more tart and floral than standard limes but much more work to juice, bottled key lime juice is a genuinely good shortcut here.",
+                "Pressing the crust firmly and evenly, especially into the corners, is what keeps it from crumbling apart when sliced.",
+            ],
+            "faqs": [
+                {
+                    "question": "What's the difference between key limes and regular limes?",
+                    "answer": (
+                        "Key limes are smaller, more tart, and slightly more "
+                        "floral than the common Persian lime found in most "
+                        "grocery stores. Regular lime juice makes a very "
+                        "similar pie and is what most home bakers actually use."
+                    ),
+                },
+                {
+                    "question": "Why is my key lime pie filling runny?",
+                    "answer": (
+                        "It needs a full 3 hours (or overnight) chilled to "
+                        "fully set after baking, slicing it too soon is the "
+                        "most common cause of a runny filling."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
+        },
+    },
+    {
+        "slug": "chocolate-cream-pie",
+        "template_type": "recipe_or_dish",
+        "title": "Chocolate Cream Pie Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A rich chocolate pudding filling topped with whipped cream "
+                "in a baked pie crust, made from scratch on the stovetop."
+            ),
+            "hero_image_query": "chocolate cream pie",
+            "why_it_works": (
+                "Cooking the custard slowly over medium heat while whisking "
+                "constantly lets the cornstarch thicken it evenly, rushing "
+                "the heat scrambles the eggs before the starch has time to "
+                "set the filling."
+            ),
+            "prep_time_minutes": 25,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 280,
+            "servings": 8,
+            "ingredients": [
+                {"name": "single pie crust, baked and cooled", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "cornstarch", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 40, "unit_metric": "g", "hub_slug": "corn-starch"},
+                {"name": "unsweetened cocoa powder", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 720, "unit_metric": "ml", "hub_slug": None},
+                {"name": "egg yolks", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "heavy cream, whipped, for topping", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the sugar, cornstarch, cocoa powder, and salt in a saucepan.",
+                "Whisk in the milk and egg yolks until smooth.",
+                "Cook over medium heat, whisking constantly, for 8-10 minutes, until thickened to a pudding consistency.",
+                "Remove from heat and stir in the butter and vanilla.",
+                "Pour the filling into the baked pie crust and press plastic wrap directly onto the surface to prevent a skin from forming.",
+                "Refrigerate at least 4 hours, or until fully set.",
+                "Top with whipped cream just before serving.",
+            ],
+            "tips_and_variations": [
+                "Pressing plastic wrap directly onto the filling's surface before chilling is what keeps a thick skin from forming on top.",
+                "Whisk constantly while the custard cooks, walking away even briefly is how it scrambles or scorches on the bottom.",
+            ],
+            "faqs": [
+                {
+                    "question": "Why is my chocolate cream pie filling runny?",
+                    "answer": (
+                        "Either it wasn't cooked long enough on the stovetop "
+                        "to fully activate the cornstarch (it should visibly "
+                        "thicken to a pudding texture before coming off the "
+                        "heat), or it hasn't chilled the full 4 hours needed "
+                        "to set completely."
+                    ),
+                },
+                {
+                    "question": "Can I use a store-bought crust?",
+                    "answer": (
+                        "Yes, a pre-baked store-bought crust works fine here, "
+                        "since the filling itself is entirely stovetop-made "
+                        "and the crust just needs to already be baked and "
+                        "cooled before filling."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
+        },
+    },
+    {
+        "slug": "pecan-pie",
+        "template_type": "recipe_or_dish",
+        "title": "Pecan Pie Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A classic pecan pie with a gooey, deeply sweet filling "
+                "packed with toasted pecans in a single crust."
+            ),
+            "hero_image_query": "pecan pie",
+            "why_it_works": (
+                "Toasting the pecans before baking wakes up their natural "
+                "oils, so their flavor still comes through clearly after "
+                "another 45 minutes baking submerged in a very sweet filling."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 50,
+            "total_time_minutes": 65,
+            "servings": 8,
+            "ingredients": [
+                {"name": "single pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None},
+                {"name": "pecan halves", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None},
+                {"name": "corn syrup", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "brown sugar, packed", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 350°F (175°C) and toast the pecans on a baking sheet for 6-8 minutes, until fragrant.",
+                "Fit the pie crust into a 9-inch pie dish and crimp the edges.",
+                "Whisk together the corn syrup, brown sugar, eggs, melted butter, vanilla, and salt.",
+                "Scatter the toasted pecans in the crust and pour the filling over them.",
+                "Bake for 45-50 minutes, until the edges are set and the center has a slight jiggle.",
+                "Cool completely on a wire rack, at least 2 hours, before slicing.",
+            ],
+            "tips_and_variations": [
+                "Toasting the pecans first, even briefly, makes a real difference, their flavor otherwise gets muted sitting in the sweet filling for the full bake.",
+                "Tent the edges of the crust with foil partway through baking if they're browning faster than the filling sets.",
+            ],
+            "faqs": [
+                {
+                    "question": "How do I know when pecan pie is done?",
+                    "answer": (
+                        "The edges should look set while the center still "
+                        "has a slight jiggle, similar to pumpkin pie, it "
+                        "firms up fully as it cools. A fully-still center at "
+                        "pull time usually means it's overbaked."
+                    ),
+                },
+                {
+                    "question": "Can I use light corn syrup instead of dark?",
+                    "answer": (
+                        "Yes, light corn syrup gives a milder, sweeter "
+                        "result; dark corn syrup adds a slightly deeper, "
+                        "more molasses-like flavor. Either works in this "
+                        "recipe."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
+        },
+    },
+    {
+        "slug": "cherry-pie",
+        "template_type": "recipe_or_dish",
+        "title": "Cherry Pie Recipe",
+        "batch_number": 4,
+        "content": {
+            "meta_description": (
+                "A double-crust cherry pie with a tart-sweet filling, best "
+                "made with fresh or frozen sour cherries."
+            ),
+            "hero_image_query": "cherry pie",
+            "why_it_works": (
+                "Sour (tart) cherries hold their shape and balance the "
+                "amount of sugar the filling needs, sweet cherries alone can "
+                "push the whole pie cloying without enough acidity to "
+                "counter it."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 50,
+            "total_time_minutes": 200,
+            "servings": 8,
+            "ingredients": [
+                {"name": "double pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "package", "base_qty_metric": 1, "unit_metric": "package", "hub_slug": None},
+                {"name": "sour cherries, pitted (fresh or frozen)", "base_qty": 5, "unit_us": "cups", "base_qty_metric": 700, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "cornstarch", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": "corn-starch"},
+                {"name": "almond extract", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "ml", "hub_slug": None},
+                {"name": "unsalted butter, cubed", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None},
+                {"name": "egg, beaten (for egg wash)", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C) and fit one crust into a 9-inch pie dish.",
+                "If using frozen cherries, thaw and drain well, reserving 1/4 cup of the juice.",
+                "Toss the cherries with sugar, cornstarch, almond extract, and the reserved cherry juice (if using).",
+                "Pour the filling into the crust and dot with the cubed butter.",
+                "Cover with the second crust, seal and crimp the edges, and cut vents in the top.",
+                "Brush with egg wash.",
+                "Bake for 20 minutes, then reduce the oven to 375°F (190°C) and bake 30 minutes more, until deep golden and bubbling through the vents.",
+                "Cool at least 3 hours before slicing to let the filling fully set.",
+            ],
+            "tips_and_variations": [
+                "Sour (tart) cherries, sold frozen year-round if not in fresh season, make a noticeably better pie than sweet cherries here, don't substitute without adjusting the sugar down.",
+                "A splash of almond extract is a classic pairing with cherry, it doesn't taste like almond so much as it deepens the cherry flavor itself.",
+            ],
+            "faqs": [
+                {
+                    "question": "Can I use sweet cherries instead of sour cherries?",
+                    "answer": (
+                        "You can, but reduce the sugar by about half and add "
+                        "a tablespoon of lemon juice, sweet cherries alone "
+                        "make a filling that reads as one-note without that "
+                        "extra acidity."
+                    ),
+                },
+                {
+                    "question": "Do I need to thaw frozen cherries first?",
+                    "answer": (
+                        "Yes, thaw and drain them well before using, "
+                        "otherwise the extra liquid can make the filling too "
+                        "loose even with the cornstarch."
+                    ),
+                },
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
         },
     },
 ]
