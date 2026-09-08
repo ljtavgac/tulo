@@ -109,26 +109,77 @@ def health_check():
     return {"status": "ok"}
 
 
+def _ingredient_hub_slugs_by_title(db: Session) -> dict[str, str]:
+    """Lowercased ingredient hub title -> that hub's slug. Lets a recipe
+    ingredient resolve to its hub page by plain name matching when nobody's
+    hand-tagged it with hub_slug yet, so a brand new ingredient hub page
+    lights up links from every recipe that already mentions it -- past and
+    future -- without a backfill step. Deliberately exact-match only (plus a
+    trailing-s strip for the common singular/plural case, e.g. "eggs" ->
+    "egg"): a looser substring/fuzzy match was tried by hand during content
+    backfill and produced real false positives ("cream cheese" matching
+    "feta cheese", "rice vinegar" matching "balsamic vinegar"), so this
+    stays conservative and only ever creates a link a reader would recognize
+    as obviously correct.
+    """
+    return {
+        page.title.strip().lower(): page.slug
+        for page in db.query(Page).filter(Page.template_type == "ingredient_hub").all()
+    }
+
+
+def _resolve_hub_slug(name: str, explicit: str | None, hub_titles: dict[str, str]) -> str | None:
+    """An ingredient's effective hub_slug: whatever's hand-set on it wins
+    (an author can always override or deliberately leave one unmatched),
+    otherwise an exact name match against a known hub title, see
+    _ingredient_hub_slugs_by_title."""
+    if explicit:
+        return explicit
+    key = name.strip().lower()
+    if key in hub_titles:
+        return hub_titles[key]
+    if key.endswith("s") and key[:-1] in hub_titles:
+        return hub_titles[key[:-1]]
+    return None
+
+
 def _recipe_slugs_using_ingredient(db: Session, hub_slug: str) -> list[str]:
-    """Every recipe_or_dish page with an ingredient whose hub_slug matches
-    this ingredient hub, computed live rather than hand-curated. The
-    hand-curated version of this (a plain content field an author fills in)
-    is exactly what went stale on 10 of 11 hub pages -- new recipes kept
-    shipping without anyone remembering to go back and add themselves to
-    every relevant hub's list. Deriving it from the same hub_slug each
-    recipe ingredient already carries (used today for the forward link,
-    ingredient name -> hub page) means a new recipe lights up here the
-    moment its ingredients are tagged, with nothing left to forget.
+    """Every recipe_or_dish page with an ingredient whose (explicit or
+    name-matched, see _resolve_hub_slug) hub_slug matches this ingredient
+    hub, computed live rather than hand-curated. The hand-curated version of
+    this (a plain content field an author fills in) is exactly what went
+    stale on 10 of 11 hub pages -- new recipes kept shipping without anyone
+    remembering to go back and add themselves to every relevant hub's list.
+    Deriving it means a new recipe lights up here the moment it's published,
+    with nothing left to forget, and a brand new hub page immediately picks
+    up every recipe that already mentions that ingredient by name.
 
     A plain full-table scan is fine at today's page count (dozens to low
     hundreds); a real join/index is the right upgrade if the site reaches
     thousands of recipes.
     """
+    hub_titles = _ingredient_hub_slugs_by_title(db)
     slugs = []
     for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
-        if any(ing.get("hub_slug") == hub_slug for ing in page.content.get("ingredients", [])):
-            slugs.append(page.slug)
+        for ing in page.content.get("ingredients", []):
+            if _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles) == hub_slug:
+                slugs.append(page.slug)
+                break
     return slugs
+
+
+def _recipes_linking_to(db: Session, field: str, target_slug: str) -> list[Page]:
+    """recipe_or_dish pages whose content[field] (a singular LinkRef, e.g.
+    category_link or technique_link) points at target_slug -- the reverse of
+    a recipe's own forward link, computed live so a collection or a how-to
+    guide always reflects every recipe that already points at it rather
+    than needing a second, hand-maintained copy of the same fact."""
+    matches = []
+    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+        link = page.content.get(field)
+        if link and link.get("slug") == target_slug:
+            matches.append(page)
+    return matches
 
 
 def _swappable_substitutes_for(db: Session, hub_slug: str) -> list[dict]:
@@ -144,48 +195,106 @@ def _swappable_substitutes_for(db: Session, hub_slug: str) -> list[dict]:
     return [sub for sub in hub.content.get("substitutes", []) if sub.get("ratio_multiplier") is not None]
 
 
+def _page_out(page: Page, content: dict) -> PageOut:
+    """A PageOut built from an enriched content dict -- a copy, not a
+    mutation of page.content itself, since every enrichment below is
+    response-only and must never get persisted back onto the stored row."""
+    return PageOut(
+        slug=page.slug,
+        template_type=page.template_type,
+        title=page.title,
+        status=page.status,
+        batch_number=page.batch_number,
+        content=content,
+        created_at=page.created_at,
+    )
+
+
 @app.get("/pages/{slug}", response_model=PageOut)
 def get_page(slug: str, db: Session = Depends(get_db)):
     page = db.query(Page).filter(Page.slug == slug).first()
     if page is None:
         raise HTTPException(status_code=404, detail="Page not found")
+
     if page.template_type == "ingredient_hub":
-        # A copy, not a mutation of page.content itself -- this is a
-        # response-only override, never persisted, so the stored (still
-        # hand-curated, now unused for display) field is left alone.
         content = copy.deepcopy(page.content)
         content["recipe_slugs"] = _recipe_slugs_using_ingredient(db, page.slug)
-        return PageOut(
-            slug=page.slug,
-            template_type=page.template_type,
-            title=page.title,
-            status=page.status,
-            batch_number=page.batch_number,
-            content=content,
-            created_at=page.created_at,
-        )
+        return _page_out(page, content)
+
     if page.template_type == "recipe_or_dish":
-        # Same pattern as above: a response-only enrichment, embedding each
+        # Same live-derivation pattern as ingredient_hub above: embed each
         # swappable ingredient's own hub's substitute data directly into the
         # recipe payload so the frontend's swap tool needs no second fetch
         # (still just a data lookup, not a generation step, per the "no LLM
-        # in the personalization path" constraint).
+        # in the personalization path" constraint), and resolve hub_slug by
+        # name match (see _resolve_hub_slug) for any ingredient nobody's
+        # hand-tagged yet, so the ingredient-hub link and swap tool both
+        # light up the moment a matching hub page exists -- not only after
+        # someone remembers to go back and tag this recipe.
         content = copy.deepcopy(page.content)
+        hub_titles = _ingredient_hub_slugs_by_title(db)
         for ing in content.get("ingredients", []):
-            hub_slug = ing.get("hub_slug")
+            hub_slug = _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles)
             if hub_slug:
+                ing["hub_slug"] = hub_slug
                 substitutes = _swappable_substitutes_for(db, hub_slug)
                 if substitutes:
                     ing["available_substitutes"] = substitutes
-        return PageOut(
-            slug=page.slug,
-            template_type=page.template_type,
-            title=page.title,
-            status=page.status,
-            batch_number=page.batch_number,
-            content=content,
-            created_at=page.created_at,
-        )
+        return _page_out(page, content)
+
+    if page.template_type == "category_roundup":
+        # recipe_cards is hand-curated editorial content -- it deliberately
+        # includes aspirational cards for dishes the site hasn't written yet
+        # (slug: None), which a purely computed list would wipe out. So this
+        # only ever adds: any real recipe whose own category_link already
+        # points here but isn't in the curated list yet (an editor forgot,
+        # or simply hasn't caught up to a recipe published after this page
+        # was last hand-edited) gets appended, never removed or reordered.
+        content = copy.deepcopy(page.content)
+        cards = content.setdefault("recipe_cards", [])
+        existing_slugs = {c.get("slug") for c in cards if c.get("slug")}
+        for recipe in _recipes_linking_to(db, "category_link", page.slug):
+            if recipe.slug in existing_slugs:
+                continue
+            rc = recipe.content
+            why = (rc.get("why_it_works") or "").strip()
+            description = why.split(". ")[0].rstrip(".") + "." if why else ""
+            cards.append(
+                {
+                    "title": recipe.title,
+                    "slug": recipe.slug,
+                    "description": description,
+                    "image_query": rc.get("hero_image_query", recipe.title),
+                    "image_url": rc.get("image_url"),
+                    "image_attribution": rc.get("image_attribution"),
+                }
+            )
+        return _page_out(page, content)
+
+    if page.template_type == "howto_technique":
+        # recipe_slugs is a bare slug list (no aspirational placeholders to
+        # preserve, unlike category_roundup's recipe_cards), so any recipe
+        # whose technique_link already points here is simply unioned in --
+        # a hand-curated pick stays first, a newly-published recipe that
+        # links here shows up without anyone having to remember to add it.
+        content = copy.deepcopy(page.content)
+        linked = [r.slug for r in _recipes_linking_to(db, "technique_link", page.slug)]
+        content["recipe_slugs"] = list(dict.fromkeys(content.get("recipe_slugs", []) + linked))
+        return _page_out(page, content)
+
+    if page.template_type == "substitute":
+        # A substitute guide's "recipes using this ingredient" is the same
+        # fact as its ingredient hub's recipe_slugs (see
+        # _recipe_slugs_using_ingredient) -- hub_page_slug already says
+        # which hub this substitute page corresponds to, so this reuses that
+        # derivation instead of hand-maintaining a second copy of it.
+        content = copy.deepcopy(page.content)
+        hub_page_slug = content.get("hub_page_slug")
+        if hub_page_slug:
+            derived = _recipe_slugs_using_ingredient(db, hub_page_slug)
+            content["recipe_slugs"] = list(dict.fromkeys(content.get("recipe_slugs", []) + derived))
+        return _page_out(page, content)
+
     return page
 
 
