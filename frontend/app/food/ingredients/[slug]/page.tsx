@@ -10,6 +10,7 @@ import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
 import AdSlot from "@/components/AdSlot";
 import LinkifiedText from "@/components/LinkifiedText";
+import InSeasonBadge from "@/components/InSeasonBadge";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -51,6 +52,7 @@ export default async function IngredientHubPage({
       <Breadcrumbs items={breadcrumbItems} />
       <JsonLd data={buildBreadcrumbList(breadcrumbItems)} />
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>
+      <InSeasonBadge slug={slug} />
       <StockPhotoSlot
         query={content.hero_image_query}
         imageUrl={content.image_url}
