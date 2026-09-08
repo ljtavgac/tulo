@@ -14,6 +14,7 @@ import ToolCallout from "@/components/ToolCallout";
 import LinkifiedText from "@/components/LinkifiedText";
 import StepTempReference from "@/components/StepTempReference";
 import StepWhyNote from "@/components/StepWhyNote";
+import PanSizeGuide from "@/components/PanSizeGuide";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -143,6 +144,8 @@ export default async function RecipePage({
             <dd className="font-semibold">{content.servings}</dd>
           </div>
         </dl>
+
+        {content.pan_size ? <PanSizeGuide panSize={content.pan_size} cookTimeMinutes={content.cook_time_minutes} /> : null}
 
         <h2 className="mt-6 text-xl font-bold">Ingredients</h2>
         <div className="mt-3">

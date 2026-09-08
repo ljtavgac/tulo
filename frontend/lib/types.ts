@@ -72,6 +72,23 @@ export interface Faq {
   answer: string;
 }
 
+// Baking-surface area, not volume -- the standard basis professional
+// baking references use for pan substitution (scale the recipe by the
+// ratio of areas to keep the same batter depth in a different footprint).
+// It only holds for pans playing the same role as the original (a
+// same-shape-of-bake swap, e.g. loaf-for-loaf or dish-for-dish); it
+// deliberately isn't used for something like a muffin tin, where "more
+// surface area" doesn't actually mean "bakes faster" the same way.
+export interface PanSizeOption {
+  label: string;
+  area_sq_in: number;
+}
+
+export interface PanSize {
+  current: PanSizeOption;
+  alternatives: PanSizeOption[];
+}
+
 export interface RecipeContent {
   meta_description?: string;
   hero_image_query: string;
@@ -110,6 +127,11 @@ export interface RecipeContent {
   // project once there's real traffic worth moderating -- so rendered as
   // a small distinct module, not comment-thread styling.
   reader_tips?: string[];
+  // Only present for recipes actually baked in a shaped pan/dish where a
+  // reader would realistically ask "I only have a different size, how do I
+  // adjust?" (a loaf, a casserole dish) -- not every recipe has this
+  // concept (a skillet sear or a cocktail doesn't), so it's optional.
+  pan_size?: PanSize;
   faqs?: Faq[];
   technique_link: LinkRef | null;
   related_recipe_slugs: string[];

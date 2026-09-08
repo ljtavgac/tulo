@@ -64,6 +64,18 @@ SEED_PAGES = [
             "cook_time_minutes": 60,
             "total_time_minutes": 75,
             "servings": 10,
+            # Areas are baking-surface area (length x width, or pi*r^2),
+            # the standard basis for pan substitution -- alternatives are
+            # limited to other single-vessel loaf/round pans playing the
+            # same role as the original, not something like a muffin tin
+            # where the area-ratio time math doesn't actually apply.
+            "pan_size": {
+                "current": {"label": "9x5-inch loaf pan", "area_sq_in": 45},
+                "alternatives": [
+                    {"label": "8x4-inch loaf pan", "area_sq_in": 32},
+                    {"label": "9-inch round cake pan", "area_sq_in": 64},
+                ],
+            },
             # Quantities are numeric (base_qty / base_qty_metric) rather than
             # free-text strings so the frontend's serving-size scaler can
             # actually recalculate them, not just relabel a fixed string.
@@ -741,6 +753,13 @@ SEED_PAGES = [
             "cook_time_minutes": 35,
             "total_time_minutes": 55,
             "servings": 6,
+            "pan_size": {
+                "current": {"label": "9x13-inch baking dish", "area_sq_in": 117},
+                "alternatives": [
+                    {"label": "8x8-inch square dish", "area_sq_in": 64},
+                    {"label": "9x9-inch square dish", "area_sq_in": 81},
+                ],
+            },
             # See parmesan-crusted-chicken above for the nutrition_per_unit
             # convention (per 1 unit_us, USDA-comparable estimate). This
             # recipe is also the Phase B swap pilot (gruyère -> Comté/Swiss
@@ -919,6 +938,13 @@ SEED_PAGES = [
             "cook_time_minutes": 15,
             "total_time_minutes": 40,
             "servings": 6,
+            "pan_size": {
+                "current": {"label": "9x13-inch baking dish", "area_sq_in": 117},
+                "alternatives": [
+                    {"label": "8x8-inch square dish", "area_sq_in": 64},
+                    {"label": "9x9-inch square dish", "area_sq_in": 81},
+                ],
+            },
             # "nori sheets, for serving" has no nutrition_per_unit -- a "pack"
             # varies too much by brand (10 vs. 50 sheets) to give a real
             # per-unit figure, and nori itself is calorie-negligible either
