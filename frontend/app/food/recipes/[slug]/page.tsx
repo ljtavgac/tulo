@@ -13,6 +13,7 @@ import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
 import LinkifiedText from "@/components/LinkifiedText";
 import StepTempReference from "@/components/StepTempReference";
+import StepWhyNote from "@/components/StepWhyNote";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -163,6 +164,7 @@ export default async function RecipePage({
               <span className="pt-0.5">
                 {step}
                 <StepTempReference step={step} reference={tempReference} />
+                {content.step_notes?.[i] ? <StepWhyNote note={content.step_notes[i]} /> : null}
               </span>
             </li>
           ))}

@@ -664,6 +664,15 @@ SEED_PAGES = [
                 "Bake for 22-25 minutes, until the crust is golden and the internal temperature reaches 165°F (74°C).",
                 "Let rest for 5 minutes before slicing.",
             ],
+            # Indexes match the instructions list above (0-based). Only
+            # steps with a real, non-obvious technique reason get one -- not
+            # every step, which would just be restating what the step
+            # already says.
+            "step_notes": {
+                1: "A dry surface helps the mayonnaise layer adhere instead of sliding off as it bakes.",
+                3: "Mayonnaise is already an emulsified fat, so it bastes the chicken as it bakes and gives the panko something to grip, doing double duty a plain egg wash wouldn't.",
+                6: "Resting lets the juices redistribute through the meat instead of running out onto the cutting board the moment it's sliced.",
+            },
             "tips_and_variations": [
                 "Pound thicker breasts to an even ½-inch thickness first so they cook through at the same rate the crust browns.",
                 "For extra crunch, broil for the last 1-2 minutes, watch closely, panko browns fast under a broiler.",
@@ -748,6 +757,13 @@ SEED_PAGES = [
                 "Top with the remaining gruyère.",
                 "Bake for 25-30 minutes, until bubbling and golden on top.",
             ],
+            # See parmesan-crusted-chicken above for the step_notes convention
+            # (0-based index into instructions, only non-obvious steps).
+            "step_notes": {
+                1: "A brief simmer lets the cream reduce slightly so the sauce clings to the rice and chicken instead of pooling thin at the bottom of the dish.",
+                2: "Melting only half the gruyère into the sauce, not all of it, keeps the other half free for a browned, bubbling top layer instead of using it all up in a sauce no one sees.",
+                5: "Every component going in is already cooked, so this bake is only about melting, coloring, and building flavor, not also cooking raw rice and chicken through, which is why it comes together in half the time of a from-scratch casserole.",
+            },
             "tips_and_variations": [
                 "Rotisserie chicken makes this a genuine 20-minute-prep weeknight dish.",
                 "No gruyère on hand? Sharp cheddar or Swiss both melt similarly well here.",

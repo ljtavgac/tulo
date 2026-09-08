@@ -84,6 +84,14 @@ export interface RecipeContent {
   servings: number;
   ingredients: RecipeIngredient[];
   instructions: string[];
+  // Optional per-step technique explanation, keyed by the step's index in
+  // `instructions`. A parallel map rather than changing instructions'
+  // element shape to a union -- JSON-LD's recipeInstructions mapping (and
+  // every other consumer of `instructions`) needs plain step text either
+  // way, so this keeps them all untouched and the "why" purely additive.
+  // Collapsed by default in the UI; only populated for a pilot batch of
+  // recipes for now.
+  step_notes?: Record<number, string>;
   // Depth added for SEO without violating the "no life story" positioning
   // (see PAGE_TEMPLATES.md): structured reference content, not narrative --
   // FAQs, tips, storage, and nutrition are all common real search intents
