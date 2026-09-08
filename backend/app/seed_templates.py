@@ -729,7 +729,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "related_recipe_slugs": ["chicken-broccoli-rice-casserole", "chicken-al-pastor"],
-            "category_link": None,
+            "category_link": {"title": "Italian Recipes", "slug": "italian-recipes"},
         },
     },
     {
@@ -1005,7 +1005,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "related_recipe_slugs": [],
-            "category_link": None,
+            "category_link": {"title": "Japanese Recipes", "slug": "japanese-recipes"},
         },
     },
     {
@@ -1522,7 +1522,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "related_recipe_slugs": [],
-            "category_link": None,
+            "category_link": {"title": "Mexican Recipes", "slug": "mexican-recipes"},
         },
     },
     {
@@ -5751,6 +5751,482 @@ SEED_PAGES = [
                         "Typically 1-2 weeks past the printed date if kept cold "
                         "and sealed, it's already cultured and acidic, which "
                         "gives it a longer shelf life than regular milk."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    # Cuisine collections. Where the site already has a genuinely matching
+    # recipe (per that recipe's own content, not a stretch), it's included
+    # with its real slug; every other card is an aspirational slug: None
+    # placeholder, same pattern the other category_roundup pages already
+    # use (e.g. duck-recipes, radish-recipes). Not every cuisine collection
+    # links back to itself from a recipe's own category_link -- that field
+    # only holds one value, and several of these recipes already point
+    # elsewhere (chicken-al-pastor -> taco-recipes), which stays as-is.
+    {
+        "slug": "italian-recipes",
+        "template_type": "category_roundup",
+        "title": "Italian Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Italian recipes from weeknight pasta to slow braises - with "
+                "a real curated pick instead of an auto-generated list."
+            ),
+            "intro": (
+                "Italian cooking leans on a small set of excellent "
+                "ingredients treated simply rather than a long list of "
+                "components, good olive oil, real parmesan, tomatoes at "
+                "their peak. These are the dishes worth learning properly, "
+                "from quick weeknight pasta to the kind of braise that "
+                "takes all afternoon."
+            ),
+            "recipe_cards": [
+                {
+                    "title": "Parmesan Crusted Chicken",
+                    "slug": "parmesan-crusted-chicken",
+                    "description": "A mayonnaise-and-parmesan crust that bakes deeply golden without deep-frying.",
+                    "image_query": "parmesan crusted chicken",
+                },
+                {"title": "Classic Margherita Pizza", "slug": None, "description": "San Marzano tomatoes, fresh mozzarella, and basil on a properly stretched dough.", "image_query": "margherita pizza"},
+                {"title": "Creamy Mushroom Risotto", "slug": None, "description": "Arborio rice slowly coaxed into a creamy texture with ladle after ladle of warm stock.", "image_query": "mushroom risotto"},
+                {"title": "Homemade Fettuccine Alfredo", "slug": None, "description": "Butter, parmesan, and pasta water emulsified into a real sauce, no cream needed.", "image_query": "fettuccine alfredo"},
+                {"title": "Eggplant Parmesan", "slug": None, "description": "Breaded, fried eggplant layered with marinara and melted cheese, baked until bubbling.", "image_query": "eggplant parmesan"},
+                {"title": "Tiramisu", "slug": None, "description": "Espresso-soaked ladyfingers layered with a mascarpone cream, no baking required.", "image_query": "tiramisu"},
+            ],
+            "sub_categories": [
+                {"label": "Pasta & Risotto", "items": ["Creamy Mushroom Risotto", "Homemade Fettuccine Alfredo"]},
+                {"label": "Mains", "items": ["Parmesan Crusted Chicken", "Classic Margherita Pizza", "Eggplant Parmesan"]},
+                {"label": "Dessert", "items": ["Tiramisu"]},
+            ],
+            "faqs": [
+                {
+                    "question": "What's the one ingredient worth splurging on for Italian cooking?",
+                    "answer": (
+                        "A good extra-virgin olive oil, it's used raw far more "
+                        "often in Italian cooking than in most cuisines, "
+                        "finishing dishes and dressing salads, where a "
+                        "cheap, flavorless oil is much more noticeable than "
+                        "it would be buried in a long-cooked sauce."
+                    ),
+                },
+                {
+                    "question": "Is Italian-American food (like this parmesan crusted chicken) the same as Italian food?",
+                    "answer": (
+                        "Not exactly, dishes like chicken parmesan and this "
+                        "parmesan-crusted version are Italian-inspired "
+                        "adaptations that developed in the US, using Italian "
+                        "ingredients and technique but not found in the same "
+                        "form in Italy itself."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    {
+        "slug": "mexican-recipes",
+        "template_type": "category_roundup",
+        "title": "Mexican Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Mexican recipes from tacos to rice pudding - with a real "
+                "curated pick instead of an auto-generated list."
+            ),
+            "intro": (
+                "Mexican cooking varies enormously by region, but dried "
+                "chiles, lime, and fresh herbs show up again and again as "
+                "the backbone of real flavor, not the bottled taco seasoning "
+                "shortcut. These are real, traditional-leaning picks, not "
+                "Tex-Mex approximations."
+            ),
+            "recipe_cards": [
+                {
+                    "title": "Chicken Al Pastor",
+                    "slug": "chicken-al-pastor",
+                    "description": "Achiote-and-pineapple marinated chicken, seared hard for a charred, sweet-spicy crust.",
+                    "image_query": "chicken al pastor tacos",
+                },
+                {
+                    "title": "Arroz con Leche",
+                    "slug": "arroz-con-leche",
+                    "description": "Traditional cinnamon rice pudding, simmered low and slow until creamy.",
+                    "image_query": "arroz con leche rice pudding",
+                },
+                {"title": "Chiles Rellenos", "slug": None, "description": "Roasted poblano chiles stuffed with cheese, battered, and fried until golden.", "image_query": "chiles rellenos"},
+                {"title": "Pozole Rojo", "slug": None, "description": "A deep red, chile-based hominy soup, traditionally slow-simmered with pork.", "image_query": "pozole rojo"},
+                {"title": "Elote (Mexican Street Corn)", "slug": None, "description": "Grilled corn slathered with crema, cotija, chile powder, and lime.", "image_query": "elote mexican street corn"},
+                {"title": "Tres Leches Cake", "slug": None, "description": "A light sponge cake soaked in three kinds of milk until soft and custardy.", "image_query": "tres leches cake"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Chicken Al Pastor", "Chiles Rellenos", "Pozole Rojo"]},
+                {"label": "Sides", "items": ["Elote (Mexican Street Corn)"]},
+                {"label": "Dessert", "items": ["Arroz con Leche", "Tres Leches Cake"]},
+            ],
+            "faqs": [
+                {
+                    "question": "What's the difference between real Mexican food and Tex-Mex?",
+                    "answer": (
+                        "Tex-Mex developed in the US and leans heavily on "
+                        "shredded cheese, flour tortillas, and cumin-forward "
+                        "seasoning blends. Traditional Mexican cooking varies "
+                        "by region but relies more on fresh and dried chiles, "
+                        "corn, and herbs like epazote and cilantro for its "
+                        "flavor base."
+                    ),
+                },
+                {
+                    "question": "Do I need a lot of specialty ingredients to cook Mexican food at home?",
+                    "answer": (
+                        "A handful go a long way, dried chiles (guajillo, "
+                        "ancho, pasilla), achiote paste, and good corn "
+                        "tortillas cover most of what these recipes need, "
+                        "and all are increasingly common in regular "
+                        "supermarkets, not just Latin grocery stores."
+                    ),
+                },
+            ],
+            "related_collection_slugs": ["taco-recipes"],
+        },
+    },
+    {
+        "slug": "polish-recipes",
+        "template_type": "category_roundup",
+        "title": "Polish Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Polish recipes - hearty, comforting classics from pierogi "
+                "to kielbasa - with a real curated pick instead of an "
+                "auto-generated list."
+            ),
+            "intro": (
+                "Polish cooking is built for cold weather, hearty, "
+                "slow-cooked, and rarely fussy about presentation. These are "
+                "the dishes that show up at a real Polish table again and "
+                "again, not a tourist-menu sampler."
+            ),
+            "recipe_cards": [
+                {"title": "Potato and Cheese Pierogi", "slug": None, "description": "Hand-folded dumplings filled with mashed potato and farmer's cheese, pan-fried in butter.", "image_query": "potato pierogi"},
+                {"title": "Bigos (Hunter's Stew)", "slug": None, "description": "A slow-simmered stew of sauerkraut, fresh cabbage, and mixed meats, better the next day.", "image_query": "bigos hunters stew"},
+                {"title": "Kielbasa and Sauerkraut", "slug": None, "description": "Smoked kielbasa simmered with tangy sauerkraut, onion, and a touch of caraway.", "image_query": "kielbasa and sauerkraut"},
+                {"title": "Zurek (Sour Rye Soup)", "slug": None, "description": "A tangy, fermented rye-based soup, traditionally served with a hard-boiled egg and sausage.", "image_query": "zurek sour rye soup"},
+                {"title": "Placki Ziemniaczane (Potato Pancakes)", "slug": None, "description": "Crisp, pan-fried shredded potato pancakes, served with sour cream or applesauce.", "image_query": "polish potato pancakes"},
+                {"title": "Paczki (Polish Doughnuts)", "slug": None, "description": "Rich, yeasted doughnuts filled with fruit preserves and dusted with powdered sugar.", "image_query": "paczki polish doughnuts"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Bigos (Hunter's Stew)", "Kielbasa and Sauerkraut"]},
+                {"label": "Soup & Sides", "items": ["Zurek (Sour Rye Soup)", "Potato and Cheese Pierogi", "Placki Ziemniaczane (Potato Pancakes)"]},
+                {"label": "Dessert", "items": ["Paczki (Polish Doughnuts)"]},
+            ],
+            "faqs": [
+                {
+                    "question": "What's the difference between Polish kielbasa and other sausages?",
+                    "answer": (
+                        "\"Kielbasa\" is actually just the Polish word for "
+                        "sausage in general, but in the US it usually refers "
+                        "specifically to wiejska-style smoked pork sausage, "
+                        "seasoned with garlic and marjoram, denser and more "
+                        "coarsely ground than a hot dog."
+                    ),
+                },
+                {
+                    "question": "Are pierogi always potato-filled?",
+                    "answer": (
+                        "No, potato and cheese is the most common filling "
+                        "outside Poland, but traditional fillings also "
+                        "include sauerkraut and mushroom, ground meat, and "
+                        "sweet versions filled with fruit like blueberries "
+                        "or farmer's cheese and sugar."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    {
+        "slug": "indian-recipes",
+        "template_type": "category_roundup",
+        "title": "Indian Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Indian recipes built on real spice technique, not a jar of "
+                "pre-mixed curry powder - with a real curated pick instead "
+                "of an auto-generated list."
+            ),
+            "intro": (
+                "Indian cooking is regionally enormous, what's typical in "
+                "Punjab looks nothing like what's typical in Kerala, but "
+                "whole and ground spices bloomed in hot oil are the common "
+                "thread across nearly all of it. These are dishes worth "
+                "learning the real technique for, not a shortcut version."
+            ),
+            "recipe_cards": [
+                {"title": "Butter Chicken (Murgh Makhani)", "slug": None, "description": "Tandoori-charred chicken simmered in a rich, tomato-and-cream sauce.", "image_query": "butter chicken murgh makhani"},
+                {"title": "Chana Masala", "slug": None, "description": "Chickpeas simmered in a tangy, spiced tomato gravy, a staple vegetarian main.", "image_query": "chana masala"},
+                {"title": "Chicken Biryani", "slug": None, "description": "Layered, fragrant basmati rice and marinated chicken, cooked together under a sealed lid.", "image_query": "chicken biryani"},
+                {"title": "Saag Paneer", "slug": None, "description": "Firm paneer cheese simmered in a pureed, spiced spinach sauce.", "image_query": "saag paneer"},
+                {"title": "Homemade Naan", "slug": None, "description": "Pillowy, blistered flatbread, traditionally cooked against the wall of a tandoor.", "image_query": "homemade naan bread"},
+                {"title": "Gulab Jamun", "slug": None, "description": "Fried milk-solid dumplings soaked in a cardamom-and-rosewater syrup.", "image_query": "gulab jamun"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Butter Chicken (Murgh Makhani)", "Chana Masala", "Chicken Biryani", "Saag Paneer"]},
+                {"label": "Bread", "items": ["Homemade Naan"]},
+                {"label": "Dessert", "items": ["Gulab Jamun"]},
+            ],
+            "faqs": [
+                {
+                    "question": "What's the difference between curry powder and how Indian food is actually spiced?",
+                    "answer": (
+                        "Pre-mixed \"curry powder\" is largely a British "
+                        "colonial invention, not how most Indian cooking "
+                        "actually works. Traditional cooking usually builds "
+                        "a spice blend fresh for each dish, often blooming "
+                        "whole spices in hot oil first, rather than reaching "
+                        "for one all-purpose jar."
+                    ),
+                },
+                {
+                    "question": "Do I need a tandoor to make tandoori or naan recipes at home?",
+                    "answer": (
+                        "No, a very hot home oven (with a pizza stone or "
+                        "cast iron pan preheated inside) or a hot skillet "
+                        "gets a reasonable approximation for naan. It won't "
+                        "have the exact smoky char of a real clay tandoor, "
+                        "but it's a workable substitute."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    {
+        "slug": "chinese-recipes",
+        "template_type": "category_roundup",
+        "title": "Chinese Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Chinese recipes built on real wok technique - with a real "
+                "curated pick instead of an auto-generated list."
+            ),
+            "intro": (
+                "Chinese cooking spans wildly different regional styles, "
+                "from Sichuan's numbing chile heat to Cantonese's lighter, "
+                "steamed and stir-fried dishes, but a properly hot wok and "
+                "prepped ingredients (everything cut and ready before the "
+                "heat goes on) matter across nearly all of it."
+            ),
+            "recipe_cards": [
+                {"title": "Kung Pao Chicken", "slug": None, "description": "Stir-fried chicken, peanuts, and dried chiles in a tangy, savory-sweet sauce.", "image_query": "kung pao chicken"},
+                {"title": "Pork and Chive Dumplings", "slug": None, "description": "Hand-folded dumplings, pan-fried until crisp on the bottom and steamed through.", "image_query": "pork chive dumplings"},
+                {"title": "Mapo Tofu", "slug": None, "description": "Silken tofu simmered in a numbing, chile-and-fermented-bean sauce with ground pork.", "image_query": "mapo tofu"},
+                {"title": "Char Siu (Chinese BBQ Pork)", "slug": None, "description": "Pork shoulder marinated in a sweet, five-spice glaze and roasted until sticky.", "image_query": "char siu bbq pork"},
+                {"title": "Egg Fried Rice", "slug": None, "description": "Day-old rice, cold and dry enough to fry separately rather than clump into mush.", "image_query": "egg fried rice"},
+                {"title": "Scallion Pancakes", "slug": None, "description": "Flaky, layered flatbread laminated with scallion and oil, pan-fried until crisp.", "image_query": "scallion pancakes"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Kung Pao Chicken", "Mapo Tofu", "Char Siu (Chinese BBQ Pork)"]},
+                {"label": "Dumplings & Bread", "items": ["Pork and Chive Dumplings", "Scallion Pancakes"]},
+                {"label": "Rice", "items": ["Egg Fried Rice"]},
+            ],
+            "faqs": [
+                {
+                    "question": "Do I really need a wok, or does a regular skillet work?",
+                    "answer": (
+                        "A wok's shape helps food move and cook more evenly "
+                        "over very high heat, but a large, heavy skillet "
+                        "works reasonably well at home, where most stovetops "
+                        "can't get a wok as hot as a restaurant burner "
+                        "anyway."
+                    ),
+                },
+                {
+                    "question": "Why does restaurant fried rice taste different from homemade?",
+                    "answer": (
+                        "Mostly heat and rice moisture, restaurant burners "
+                        "run much hotter than home stoves, and day-old, "
+                        "refrigerated rice fries drier and separates better "
+                        "than fresh rice, which tends to clump and steam "
+                        "instead of frying."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    {
+        "slug": "japanese-recipes",
+        "template_type": "category_roundup",
+        "title": "Japanese Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Japanese recipes from traditional classics to modern "
+                "fusion favorites - with a real curated pick instead of an "
+                "auto-generated list."
+            ),
+            "intro": (
+                "Japanese cooking prizes letting a few good ingredients "
+                "speak clearly, whether that's a precisely seasoned bowl of "
+                "rice or a quick, modern crowd-pleaser built on the same "
+                "flavors. These cover both the traditional and the "
+                "newer, casserole-scale takes on sushi flavors."
+            ),
+            "recipe_cards": [
+                {
+                    "title": "Sushi Bake",
+                    "slug": "sushi-bake",
+                    "description": "Seasoned sushi rice under a baked, creamy seafood topping, all the flavor, none of the rolling.",
+                    "image_query": "sushi bake casserole",
+                },
+                {"title": "Chicken Katsu", "slug": None, "description": "Panko-breaded, fried chicken cutlet, sliced and served with a tangy tonkatsu sauce.", "image_query": "chicken katsu"},
+                {"title": "Miso Soup", "slug": None, "description": "A simple, savory soup built on dashi and fermented miso paste.", "image_query": "miso soup"},
+                {"title": "Teriyaki Salmon", "slug": None, "description": "Pan-glazed salmon in a sweet-savory soy, mirin, and sugar reduction.", "image_query": "teriyaki salmon"},
+                {"title": "Yaki Onigiri (Grilled Rice Balls)", "slug": None, "description": "Pan-seared rice balls brushed with soy sauce until the outside turns crisp and toasty.", "image_query": "yaki onigiri grilled rice balls"},
+                {"title": "Matcha Cheesecake", "slug": None, "description": "A Japanese-style light, jiggly cheesecake with earthy matcha folded through it.", "image_query": "matcha cheesecake"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Sushi Bake", "Chicken Katsu", "Teriyaki Salmon"]},
+                {"label": "Soup & Rice", "items": ["Miso Soup", "Yaki Onigiri (Grilled Rice Balls)"]},
+                {"label": "Dessert", "items": ["Matcha Cheesecake"]},
+            ],
+            "faqs": [
+                {
+                    "question": "Is sushi bake a traditional Japanese dish?",
+                    "answer": (
+                        "No, it's a modern Filipino-American fusion dish, "
+                        "built on Japanese sushi flavors (seasoned rice, "
+                        "nori, a creamy seafood topping) but served "
+                        "casserole-style rather than rolled, it's not "
+                        "something you'd find as a traditional dish in Japan "
+                        "itself."
+                    ),
+                },
+                {
+                    "question": "What's the difference between short-grain and long-grain rice for these recipes?",
+                    "answer": (
+                        "Short-grain (sushi) rice is stickier and clumps "
+                        "together once seasoned, which is what makes it "
+                        "work for sushi, onigiri, and similar dishes. "
+                        "Long-grain rice stays too separate and won't hold "
+                        "together the same way."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    {
+        "slug": "french-recipes",
+        "template_type": "category_roundup",
+        "title": "French Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "French recipes from weeknight classics to real technique-driven "
+                "cooking - with a real curated pick instead of an "
+                "auto-generated list."
+            ),
+            "intro": (
+                "French cooking's reputation for being fussy mostly comes "
+                "from restaurant tasting menus, most of the actual home "
+                "repertoire is rustic and forgiving, built on a handful of "
+                "real techniques (a good stock, a proper sear, patience with "
+                "onions) rather than a long list of specialty ingredients."
+            ),
+            "recipe_cards": [
+                {"title": "Coq au Vin", "slug": None, "description": "Chicken braised slowly in red wine with mushrooms, pearl onions, and bacon.", "image_query": "coq au vin"},
+                {"title": "French Onion Soup", "slug": None, "description": "Deeply caramelized onions in a rich beef broth, topped with broiled cheese and bread.", "image_query": "french onion soup"},
+                {"title": "Ratatouille", "slug": None, "description": "A slow-cooked medley of summer vegetables, each cooked separately before combining.", "image_query": "ratatouille"},
+                {"title": "Quiche Lorraine", "slug": None, "description": "A custard tart filled with bacon and gruyère in a buttery, blind-baked crust.", "image_query": "quiche lorraine"},
+                {"title": "Beef Bourguignon", "slug": None, "description": "Beef chuck braised for hours in red wine until fall-apart tender.", "image_query": "beef bourguignon"},
+                {"title": "Crème Brûlée", "slug": None, "description": "A silky vanilla custard with a torched, crackling sugar shell on top.", "image_query": "creme brulee"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Coq au Vin", "Beef Bourguignon", "Quiche Lorraine"]},
+                {"label": "Soup & Sides", "items": ["French Onion Soup", "Ratatouille"]},
+                {"label": "Dessert", "items": ["Crème Brûlée"]},
+            ],
+            "faqs": [
+                {
+                    "question": "Do I need special French wine for recipes like coq au vin or beef bourguignon?",
+                    "answer": (
+                        "No, an inexpensive, drinkable red you'd actually "
+                        "want to sip works fine, the classic guidance is to "
+                        "cook with a wine you wouldn't mind drinking, not a "
+                        "specific expensive bottle."
+                    ),
+                },
+                {
+                    "question": "Why do French recipes so often call for cooking onions low and slow?",
+                    "answer": (
+                        "Real caramelization (as opposed to just browning) "
+                        "takes time, 30-45 minutes of low, patient heat "
+                        "breaks onions down into a deeply sweet, jammy "
+                        "texture that rushing over higher heat can't "
+                        "replicate, it just browns and burns the surface "
+                        "instead."
+                    ),
+                },
+            ],
+            "related_collection_slugs": [],
+        },
+    },
+    {
+        "slug": "thai-recipes",
+        "template_type": "category_roundup",
+        "title": "Thai Recipes",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Thai recipes built on real balance between sweet, sour, "
+                "salty, and spicy - with a real curated pick instead of an "
+                "auto-generated list."
+            ),
+            "intro": (
+                "Thai cooking is built around balancing four flavors at "
+                "once, sweet, sour, salty, and spicy, rather than any one "
+                "of them dominating. These lean on real, fresh aromatics "
+                "(lemongrass, galangal, fresh chiles) rather than a "
+                "shortcut jarred paste."
+            ),
+            "recipe_cards": [
+                {"title": "Pad Thai", "slug": None, "description": "Stir-fried rice noodles in a tamarind-based sauce with shrimp, egg, and peanuts.", "image_query": "pad thai"},
+                {"title": "Green Curry Chicken", "slug": None, "description": "Chicken simmered in a fragrant, coconut-milk-based curry with Thai basil.", "image_query": "green curry chicken"},
+                {"title": "Tom Yum Soup", "slug": None, "description": "A hot and sour shrimp soup built on lemongrass, galangal, and lime leaf.", "image_query": "tom yum soup"},
+                {"title": "Som Tum (Green Papaya Salad)", "slug": None, "description": "Shredded unripe papaya pounded with chile, lime, and fish sauce in a mortar and pestle.", "image_query": "som tum green papaya salad"},
+                {"title": "Mango Sticky Rice", "slug": None, "description": "Sweetened coconut sticky rice served alongside ripe mango slices.", "image_query": "mango sticky rice"},
+                {"title": "Thai Basil Chicken (Pad Kra Pao)", "slug": None, "description": "Quickly stir-fried ground chicken with garlic, chile, and Thai holy basil.", "image_query": "thai basil chicken pad kra pao"},
+            ],
+            "sub_categories": [
+                {"label": "Mains", "items": ["Pad Thai", "Green Curry Chicken", "Thai Basil Chicken (Pad Kra Pao)"]},
+                {"label": "Soup & Salad", "items": ["Tom Yum Soup", "Som Tum (Green Papaya Salad)"]},
+                {"label": "Dessert", "items": ["Mango Sticky Rice"]},
+            ],
+            "faqs": [
+                {
+                    "question": "Can I make Thai curry pastes from scratch, or is store-bought fine?",
+                    "answer": (
+                        "Store-bought paste is a genuinely fine shortcut, "
+                        "even many Thai home cooks use it, homemade paste is "
+                        "more work (pounding fresh aromatics in a mortar and "
+                        "pestle) but does taste noticeably fresher and more "
+                        "vibrant if you have the time."
+                    ),
+                },
+                {
+                    "question": "What's the difference between Thai basil and regular basil?",
+                    "answer": (
+                        "Thai basil has a more anise-like, slightly spicy "
+                        "flavor and holds up better to high heat than sweet "
+                        "Italian basil, which wilts and loses flavor faster "
+                        "in a hot stir-fry. They're not a clean 1:1 swap for "
+                        "each other."
                     ),
                 },
             ],
