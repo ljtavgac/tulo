@@ -29,6 +29,7 @@ export default function RecipeCard({
         attribution={imageAttribution}
         aspect="thumbnail"
         reserveSpace
+        showAttribution={false}
       />
       <div className="p-3">
         <h3 className="line-clamp-2 min-h-10 text-sm font-bold">{title}</h3>

@@ -40,6 +40,7 @@ export default function StockPhotoSlot({
   aspect = "hero",
   className = "",
   reserveSpace = false,
+  showAttribution = true,
 }: {
   query: string;
   // Real, specific caption text (e.g. a recipe's own meta_description),
@@ -61,6 +62,22 @@ export default function StockPhotoSlot({
   // on its own page has no row to stay aligned with, so it keeps the
   // original "nothing at all" behavior by default.
   reserveSpace?: boolean;
+  // The attribution figcaption below renders a real <a> link to the
+  // photographer's profile. PageTile and RecipeCard are themselves always
+  // (or conditionally) wrapped in their own outer <Link> to the page --
+  // an <a> nested inside another <a> is invalid HTML, and browsers
+  // "repair" it during parsing by closing the outer anchor early, which
+  // makes the actual DOM diverge from what React rendered and throws a
+  // hydration error (React error #418) on every tile that has a real
+  // fetched photo -- confirmed by reproducing it locally with a real
+  // image_url set on a homepage tile (no error with no photo, reliably
+  // reproduced with one). A failed hydration discards and re-renders that
+  // whole subtree client-side, which is what was actually behind
+  // carousel tiles rendering inconsistently -- not a caching issue. A
+  // single hero image on its own page (not wrapped in an outer Link) has
+  // no such conflict and keeps showing attribution, as required by
+  // Unsplash's API terms.
+  showAttribution?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -84,7 +101,7 @@ export default function StockPhotoSlot({
           onError={() => setFailed(true)}
         />
       </div>
-      {attribution ? (
+      {attribution && showAttribution ? (
         <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
           Photo by{" "}
           <a href={attribution.photographer_url} className="underline hover:text-accent">
