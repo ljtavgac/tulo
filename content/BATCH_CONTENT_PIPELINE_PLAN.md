@@ -9,6 +9,33 @@ and QA. See the cost/timeline discussion earlier in this project's session
 history for the numbers behind this plan; this doc is the "how," not the
 "how much."
 
+**Plan owner is on a Claude Max 5x subscription.** This changes where the
+two phases' cost actually lands, without changing the phases themselves:
+
+- **Phase 1 (Batch API drafting)** is unaffected by any Claude.ai plan --
+  it's billed separately through the Developer Platform regardless.
+  Estimated ~$40-60, ~1 day turnaround (see cost safeguards section below).
+- **Phase 2 (integration, cross-linking, verification, fixing gaps)** is
+  real agentic Claude Code work -- exactly what a Max subscription's usage
+  allowance covers. At Max 5x specifically (the lower of the two Max
+  tiers), this phase realistically fits inside the existing subscription
+  at no additional API spend, but likely needs to be paced across
+  **1.5-2+ weeks** of usage rather than done in one continuous push, since
+  5x's ceiling -- higher than Pro's, but not as high as 20x -- is still a
+  rolling-window quota, not unlimited, and Phase 2's own work can't be
+  meaningfully parallelized around it the same way Phase 1's batch
+  generation can.
+- **Net new cash cost for the full 1,947-page pass: ~$40-60** (Batch API
+  only), assuming Phase 2 fits inside the existing Max 5x subscription.
+  Total elapsed time: roughly 2-3 weeks (Phase 1's ~1 day, plus Phase 2
+  paced across Max 5x's rolling usage windows).
+- If Phase 2 turns out to need more throughput than Max 5x comfortably
+  provides once real work starts (e.g. the "needs fix" list from a batch
+  is larger than expected), the fallback is either pacing it out longer
+  under the existing plan, or supplementing that phase with API/token
+  credits for just the overflow -- not a full re-plan, since Phase 1
+  doesn't change either way.
+
 ## Why hybrid (recap)
 
 Batch API is cheap and fast for raw text generation but has no tool access,
