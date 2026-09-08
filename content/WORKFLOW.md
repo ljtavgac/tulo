@@ -56,3 +56,34 @@ reintroduces the error risk this system is designed to avoid.
 That's 11 pages total, covering every template type. Review and align on all of them — layout, brand assets applied correctly, stock photo sourcing working, Instacart module placeholder in place, ad units positioned per spec — **before** running Batch 0 or Batch 1 from `CONTENT_QUEUE.csv`. Once the templates are approved, THEN proceed into the queue as described above.
 
 This exists specifically to avoid burning content-generation credits on 2,000 pages built from a template that needs revision.
+
+## What actually happened, and the fix (keep this section updated)
+
+The pilot phase above ran long: by the time this note was added, the site
+had 99 published pages (not 11) built through iterative feature work and
+direct requests, and none of it had been checked against
+`CONTENT_QUEUE.csv` before publishing — 35 of those 99 pages (mostly the
+technique/ingredient glossary and the 8 cuisine collection pages) have no
+matching title in the queue at all, and the queue's own `status` column
+had drifted to only reflecting 4 of the 99 as `published`. Both are now
+reconciled: every already-published page's matching queue row (by exact
+`title`/`proposed_article_title` + `template_type`) is marked
+`published`; the 35 with no match were appended as new rows with
+`batch_number: off_queue` and `page_purpose: off_queue_addition` so the
+CSV is a complete, accurate record of everything actually live, not just
+what came from the queue.
+
+**Going forward, this is a hard rule, not a suggestion:** before creating
+any new page whose purpose is SEO/keyword targeting, check its title
+against `CONTENT_QUEUE.csv` first (`title` and `proposed_article_title`
+columns). If a close match exists, use the queue's row (its title,
+template, and priority) instead of inventing a new one. If a page is
+needed for a reason that isn't keyword targeting (e.g. a definitional
+page purely to support a linking feature someone asked for), that's a
+legitimate reason to go off-queue — but say so explicitly and add the row
+with `page_purpose: off_queue_addition`, `batch_number: off_queue`, the
+same way this reconciliation did, rather than letting the queue silently
+stop being the full picture again. And per step 4 of the weekly process
+above: the moment a queue-sourced page actually goes live, flip its
+`status` to `published` in the same change — don't let this drift a
+second time.
