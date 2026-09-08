@@ -63,6 +63,35 @@ def is_allowed_image_url(url: str | None) -> bool:
     return url is not None and url.startswith(ALLOWED_IMAGE_HOSTS)
 
 
+def _is_reachable(url: str) -> bool:
+    """A search API returning a photo doesn't guarantee that photo's actual
+    image URL is servable -- confirmed for real against a live Pexels
+    result: the search API returned a "large" variant URL that Pexels'
+    own image CDN then rejected with a 422 (Cloudflare passed it straight
+    through to origin uncached, so this wasn't a caching issue on our end
+    -- Pexels itself refused this specific asset, most likely taken down
+    or made otherwise unservable after being indexed by search but before
+    anyone actually requested the file). is_allowed_image_url() only
+    checks that a URL's host looks right, so a URL like that got written
+    to the database and stayed there forever: nothing ever re-checked it
+    once it "looked" valid, and the browser silently hid the failure (see
+    StockPhotoSlot's onError) with no signal anywhere that it needed a
+    re-fetch. A live request here, before accepting a candidate, catches
+    a dead asset before it ever reaches the database -- only run for
+    photos not already ruled out by the exclude/host checks above it in
+    each caller's loop, and cheap even then (see below)."""
+    # A streamed GET, not HEAD: some image CDNs handle HEAD inconsistently
+    # (405s even though the same URL's GET works fine), while GET is
+    # universally supported -- stream=True plus closing right after
+    # reading the status/headers avoids actually downloading the image
+    # body, so this stays cheap.
+    try:
+        with requests.get(url, timeout=5, stream=True) as r:
+            return r.status_code == 200
+    except requests.RequestException:
+        return False
+
+
 def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
     r = requests.get(
         "https://api.unsplash.com/search/photos",
@@ -73,7 +102,7 @@ def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> 
     r.raise_for_status()
     for photo in r.json().get("results", []):
         url = photo["urls"]["regular"]
-        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS):
+        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS) or not _is_reachable(url):
             continue
         return ImageResult(
             url=url,
@@ -95,7 +124,7 @@ def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> Im
     r.raise_for_status()
     for photo in r.json().get("photos", []):
         url = photo["src"]["large"]
-        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS):
+        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS) or not _is_reachable(url):
             continue
         return ImageResult(
             url=url,
