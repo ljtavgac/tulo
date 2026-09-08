@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { NutritionPerUnit, RecipeIngredient } from "@/lib/types";
+import type { NutritionPerUnit, PanSize, RecipeIngredient } from "@/lib/types";
 import { formatUsQuantity, formatMetricQuantity } from "@/lib/format";
 import { pagePath } from "@/lib/seo";
 import ServingsScaler from "./ServingsScaler";
@@ -20,9 +20,16 @@ const GOAL_OPTIONS: { value: Exclude<Goal, "">; label: string; field: keyof Nutr
 export default function RecipeIngredientsPanel({
   ingredients,
   baseServings,
+  panSize,
+  baseCookTimeMinutes,
 }: {
   ingredients: RecipeIngredient[];
   baseServings: number;
+  // Both optional: only recipes actually baked in a shaped pan carry this
+  // (see PanSize's own doc comment) -- a cocktail or a skillet sear has
+  // neither, and the pan-size control below simply doesn't render.
+  panSize?: PanSize;
+  baseCookTimeMinutes?: number;
 }) {
   const [servings, setServings] = useState(baseServings);
   const [unit, setUnit] = useState<Unit>("us");
@@ -35,8 +42,25 @@ export default function RecipeIngredientsPanel({
   // a goal and then hand-tweaking one ingredient afterward both just work.
   const [swaps, setSwaps] = useState<Record<string, string>>({});
   const [goal, setGoal] = useState<Goal>("");
+  // Which alternative pan (by label) the reader picked, if any -- "" means
+  // "as written." Baking-surface-area ratio math: the standard baking
+  // reference technique for pan substitution (scale by the ratio of areas
+  // to keep the same batter depth in a different footprint), holds only for
+  // a same-shape-of-bake swap (loaf-for-loaf, dish-for-dish), which is why
+  // PanSize.alternatives is curated per recipe rather than computed from
+  // any two pan sizes. Scaling by servings and scaling by pan size are the
+  // same underlying operation, "make more or less of this recipe," so they
+  // share the one `scale` factor below rather than compounding. Picking a
+  // pan takes over from the servings stepper, and moving the stepper hands
+  // control back.
+  const [panLabel, setPanLabel] = useState("");
+  const selectedPan = panSize?.alternatives.find((alt) => alt.label === panLabel);
+  const panScale = selectedPan ? selectedPan.area_sq_in / panSize!.current.area_sq_in : null;
 
-  const scale = servings / baseServings;
+  const scale = panScale ?? servings / baseServings;
+
+  const estimatedCookTimeMinutes =
+    panScale != null && baseCookTimeMinutes != null ? Math.round((baseCookTimeMinutes / panScale) / 5) * 5 : null;
 
   // Ingredients a "goal" can actually act on: the ingredient needs its own
   // nutrition_per_unit (something to compare against) and at least one
@@ -107,9 +131,52 @@ export default function RecipeIngredientsPanel({
   return (
     <div className="rounded-lg border border-ink/10 p-4">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-3">
-        <ServingsScaler servings={servings} onChange={setServings} />
+        <ServingsScaler
+          servings={panScale != null ? Math.max(1, Math.round(baseServings * panScale)) : servings}
+          onChange={(next) => {
+            setPanLabel("");
+            setServings(next);
+          }}
+        />
         <UnitToggle unit={unit} onChange={setUnit} />
       </div>
+
+      {panSize ? (
+        <div className="border-b border-ink/10 py-3 text-sm">
+          <label className="flex flex-wrap items-center gap-2">
+            <span className="font-medium">Using a different pan?</span>
+            <select
+              value={panLabel}
+              onChange={(e) => setPanLabel(e.target.value)}
+              className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-1 text-xs text-ink/70"
+            >
+              <option value="">As written ({panSize.current.label})</option>
+              {panSize.alternatives.map((alt) => (
+                <option key={alt.label} value={alt.label}>
+                  {alt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          {selectedPan ? (
+            <p className="mt-1 text-xs text-ink/40">
+              Ingredients below and the servings count above are now scaled to fill a {selectedPan.label} at roughly the same depth as
+              written.
+              {estimatedCookTimeMinutes != null ? (
+                <>
+                  {" "}
+                  Estimated bake time: <span className="font-semibold text-ink/60">~{estimatedCookTimeMinutes} min</span> (
+                  {estimatedCookTimeMinutes > baseCookTimeMinutes!
+                    ? `about ${estimatedCookTimeMinutes - baseCookTimeMinutes!} min more`
+                    : `about ${baseCookTimeMinutes! - estimatedCookTimeMinutes} min less`}{" "}
+                  than the original {baseCookTimeMinutes} min). A starting point based on pan area, not a guarantee -- start checking a
+                  few minutes early and test for doneness rather than trusting the clock alone.
+                </>
+              ) : null}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       {goalAdjustableIngredients.length > 0 ? (
         <div className="border-b border-ink/10 py-3 text-sm">

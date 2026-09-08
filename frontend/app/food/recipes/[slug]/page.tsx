@@ -14,7 +14,6 @@ import ToolCallout from "@/components/ToolCallout";
 import LinkifiedText from "@/components/LinkifiedText";
 import StepTempReference from "@/components/StepTempReference";
 import StepWhyNote from "@/components/StepWhyNote";
-import PanSizeGuide from "@/components/PanSizeGuide";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
@@ -145,11 +144,14 @@ export default async function RecipePage({
           </div>
         </dl>
 
-        {content.pan_size ? <PanSizeGuide panSize={content.pan_size} cookTimeMinutes={content.cook_time_minutes} /> : null}
-
         <h2 className="mt-6 text-xl font-bold">Ingredients</h2>
         <div className="mt-3">
-          <RecipeIngredientsPanel ingredients={content.ingredients} baseServings={content.servings} />
+          <RecipeIngredientsPanel
+            ingredients={content.ingredients}
+            baseServings={content.servings}
+            panSize={content.pan_size}
+            baseCookTimeMinutes={content.cook_time_minutes}
+          />
         </div>
         <ToolCallout slug="conversion-calculator" label="Need different units or a different yield? Try our Conversion Calculator" />
 
