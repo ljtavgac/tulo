@@ -87,3 +87,53 @@ stop being the full picture again. And per step 4 of the weekly process
 above: the moment a queue-sourced page actually goes live, flip its
 `status` to `published` in the same change — don't let this drift a
 second time.
+
+## Ongoing content QA — prevent future depth gaps, don't just fix past ones
+
+A content-depth gap must not become a recurring problem as the weekly
+queue scales to hundreds, then thousands, of pages. This is a standing
+part of the weekly process, not a one-time cleanup:
+
+1. Before marking any page's `status` as `published` in
+   `CONTENT_QUEUE.csv`, verify it against the required-sections checklist
+   for its `template_type` (per `PAGE_TEMPLATES.md`): Recipe pages need
+   variations, storage/reheating, nutrition (note or per-ingredient data
+   for live recalculation), FAQ, reader tips, and step notes; Ingredient
+   Hub pages need buying tips, pairing suggestions, and FAQ; How-To pages
+   need the intro paragraph, common mistakes, equipment, and FAQ; and so
+   on for each type (Definition, Comparison, Substitute, Category
+   Roundup) per its own template spec.
+2. This check is per-page, not per-batch — a batch isn't done because
+   500 pages exist, it's done because 500 pages each pass their
+   checklist.
+3. **This is mechanically enforced, not just a manual step.**
+   `backend/app/seed_templates.py`'s `_REQUIRED_CONTENT_FIELDS` dict and
+   `_check_content_depth()` function run automatically at import time —
+   the same module `resync_content()` uses to push every edit to
+   production on the next deploy — and hard-fail (`raise ValueError`,
+   listing every gap found) if any page of a checked template type is
+   missing one of its required fields. A page that fails this check
+   cannot ship; there's no way for a required-field gap to reach
+   production silently. Extend `_REQUIRED_CONTENT_FIELDS` whenever
+   `PAGE_TEMPLATES.md`'s spec for a template type changes, so the two
+   stay in sync.
+4. Some modules are legitimately data-dependent, not template fields —
+   an Ingredient Hub's "recipes using this ingredient" list and a
+   Recipe's ingredient-swap tool are both computed live from which
+   recipes' ingredients happen to set `hub_slug` to that ingredient's
+   page, not authored per-page. These can be correctly empty (no recipe
+   on the site yet uses that ingredient, or none of a recipe's
+   ingredients happen to match an existing Ingredient Hub) without being
+   a bug. That's fine, but treat it as a deliberate, logged exception,
+   not a silent gap indistinguishable from a missed section: note which
+   ingredients/recipes were deliberately left unlinked and why (e.g. "no
+   recipe uses this ingredient yet" or "this hub is a specialty variety,
+   not what a generic mention of the same pantry ingredient means")
+   rather than just leaving it unexplained.
+5. Report status honestly. Don't report a batch as complete without
+   stating which pages, if any, have logged exceptions per point 4 above
+   — "the depth check passed" and "every module has real content" are
+   different claims; make the one that's actually true.
+
+This applies starting with the very next batch generated from
+`CONTENT_QUEUE.csv`, not just historical backfill work.
