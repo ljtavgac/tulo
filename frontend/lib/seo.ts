@@ -1,12 +1,25 @@
 import type { Metadata } from "next";
 import type { PageRecord } from "./types";
 
-// The production URL isn't finalized yet (no custom domain connected as of
-// this writing -- see root README). Set NEXT_PUBLIC_SITE_URL once one is,
-// so canonical URLs, the sitemap, and Open Graph tags point at the real
-// domain instead of a Vercel preview URL.
+// tulo.io is the intended production domain, not yet connected in Vercel as
+// of this writing -- see root README. Falling back straight to localhost
+// whenever NEXT_PUBLIC_SITE_URL isn't set meant every canonical URL,
+// og:url, and sitemap entry silently pointed at http://localhost:3000 in
+// production too, since nothing had ever set that env var on Vercel.
+// VERCEL_PROJECT_PRODUCTION_URL is set automatically by Vercel on every
+// build to whatever domain is currently assigned as the project's
+// production domain (Vercel's own *.vercel.app one today, tulo.io once
+// that's connected and marked primary -- no code change needed when that
+// happens, just a redeploy) -- so this only actually falls back to
+// localhost in local dev, where neither env var is set. Set
+// NEXT_PUBLIC_SITE_URL explicitly to override this (e.g. to force a
+// specific domain, or so a preview deployment still canonicalizes to the
+// real production URL instead of self-canonicalizing to its own preview
+// URL and risking duplicate-content indexing).
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
+  "http://localhost:3000"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "Tulo";

@@ -63,6 +63,14 @@ export default async function HowToPage({
             "@type": "HowToStep",
             text: step,
           })),
+          // No separate consumables/"supply" field exists in the content
+          // model (e.g. brine ingredients) -- equipment items are the ones
+          // this site actually has real data for, so only `tool` (HowToTool)
+          // is included. Adding a fabricated `supply` list would be worse
+          // than omitting it.
+          ...(content.equipment.length > 0
+            ? { tool: content.equipment.map((item) => ({ "@type": "HowToTool", name: item })) }
+            : {}),
         }}
       />
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>

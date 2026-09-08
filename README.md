@@ -27,10 +27,11 @@ See `frontend/app/food/page.tsx` for the example that fetches the backend's heal
 
 Neither app has secrets in it yet, but both read a couple of environment variables that you'll need to set in whatever hosting platform you use:
 
-| App      | Variable          | Set it to                                                      |
-| -------- | ----------------- | ---------------------------------------------------------------- |
-| backend  | `FRONTEND_ORIGIN` | Your deployed frontend's URL, e.g. `https://tulo.com`             |
-| frontend | `API_URL`         | Your deployed backend's HTTPS URL, e.g. `https://api.tulo.com`    |
+| App      | Variable              | Set it to                                                                                                |
+| -------- | --------------------- | --------------------------------------------------------------------------------------------------------- |
+| backend  | `FRONTEND_ORIGIN`     | Your deployed frontend's URL, e.g. `https://tulo.com`                                                     |
+| frontend | `API_URL`             | Your deployed backend's HTTPS URL, e.g. `https://api.tulo.com`                                            |
+| frontend | `NEXT_PUBLIC_SITE_URL`| Optional. The canonical production domain (e.g. `https://tulo.io`) used in canonical URLs, `og:url`, and the sitemap. Without it, `frontend/lib/seo.ts` falls back to Vercel's own `VERCEL_PROJECT_PRODUCTION_URL` (correct automatically once tulo.io is connected and set as the project's production domain in Vercel, no code change needed) — only local dev falls back further, to `http://localhost:3000`. Still worth setting explicitly once tulo.io is live, so a preview deployment canonicalizes to the real domain instead of to its own preview URL. |
 
 Each app also has a `.env.example` (backend) / `.env.local.example` (frontend) file showing the local defaults — copy those to `.env` / `.env.local` for local development.
 

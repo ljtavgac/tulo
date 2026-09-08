@@ -15,7 +15,7 @@ import LinkifiedText from "@/components/LinkifiedText";
 import StepTempReference from "@/components/StepTempReference";
 import StepWhyNote from "@/components/StepWhyNote";
 import Link from "next/link";
-import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
+import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import { getLinkTerms } from "@/lib/linkTerms";
 import { formatUsQuantity } from "@/lib/format";
@@ -88,6 +88,7 @@ export default async function RecipePage({
           name: page.title,
           description: content.meta_description ?? content.why_it_works,
           image: content.image_url,
+          author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
           prepTime: minutesToIso8601(content.prep_time_minutes),
           cookTime: minutesToIso8601(content.cook_time_minutes),
           totalTime: minutesToIso8601(content.total_time_minutes),
