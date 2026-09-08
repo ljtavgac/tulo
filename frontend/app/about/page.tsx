@@ -17,10 +17,11 @@ export default function AboutPage() {
 
       <div className="mt-6 space-y-4 text-ink/80">
         <p>
-          Tulo is a recipe and food-content site built around one idea: the recipe should be
-          the first thing you see, not the last thing you scroll to. No life story before the
-          ingredients list, no unrelated content mixed in, just the recipe, real information
-          about the ingredients in it, and tools that are actually useful while you cook.
+          Tulo is built for the way you actually cook, not the way a recipe site assumes you
+          do. You already know what you&apos;re making when you land here; you just want it to
+          fit your kitchen &mdash; the servings you actually need, the units you actually use,
+          a swap for the one ingredient you don&apos;t have on hand. Tulo adjusts to you
+          instead of asking you to do the math yourself.
         </p>
         <p>
           Every recipe on Tulo comes with live serving-size scaling and US/metric unit

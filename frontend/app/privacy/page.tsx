@@ -10,8 +10,7 @@ export const metadata: Metadata = {
   openGraph: { title: TITLE, description: DESCRIPTION, url: "/privacy" },
 };
 
-// hello@tulo.com is a placeholder -- see the same note in app/contact/page.tsx.
-const CONTACT_EMAIL = "hello@tulo.com";
+const CONTACT_EMAIL = "info@tulo.io";
 const LAST_UPDATED = "September 2026";
 
 export default function PrivacyPolicyPage() {

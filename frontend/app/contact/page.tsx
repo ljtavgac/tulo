@@ -10,10 +10,7 @@ export const metadata: Metadata = {
   openGraph: { title: TITLE, description: DESCRIPTION, url: "/contact" },
 };
 
-// hello@tulo.com is a placeholder -- swap it for a real, monitored inbox
-// before relying on this page (no domain is connected yet, see the root
-// README's note on NEXT_PUBLIC_SITE_URL).
-const CONTACT_EMAIL = "hello@tulo.com";
+const CONTACT_EMAIL = "info@tulo.io";
 
 export default function ContactPage() {
   return (
