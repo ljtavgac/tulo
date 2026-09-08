@@ -4,10 +4,18 @@ import type { PageRecord, PageSummary } from "./types";
 // backend's HTTPS URL in production (see the root README for details).
 const API_URL = process.env.API_URL || "http://localhost:8000";
 
-// One hour: content here is generated ahead of time (not live-edited), so
-// there's no need for anything shorter -- new batches trigger a fresh
-// deploy anyway, which busts this automatically.
-const REVALIDATE_SECONDS = 3600;
+// A deploy does NOT bust this on its own (Vercel's fetch-level Data Cache
+// persists across deployments, keyed per URL, independent of the
+// page/build cache, see the root README's caching note), and
+// /api/revalidate only helps when someone remembers to call it right after
+// a fix goes out. Neither has proven reliable in practice, so this stays
+// short enough that any backend content or image fix shows up within a few
+// minutes on its own, with no manual step required. The backend also
+// pings /api/revalidate immediately after writing a new image (see
+// backend/app/main.py's _revalidate_frontend), which still helps for that
+// one case, but everything else, a wording fix, a corrected query, now
+// just waits out this window instead of needing that same treatment.
+const REVALIDATE_SECONDS = 120;
 
 export async function getPage<T = Record<string, unknown>>(
   slug: string
