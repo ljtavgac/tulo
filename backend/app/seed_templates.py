@@ -3414,6 +3414,650 @@ SEED_PAGES = [
             "related_recipe_slugs": [],
         },
     },
+    # Technique glossary: definitions for the recipe-instruction jargon a
+    # novice reader wouldn't know (fold, sear, dredge, ...), so LinkifiedText
+    # can link the first mention inside a recipe's own instructions straight
+    # to a real explanation instead of assuming the reader already knows it.
+    # related_recipe_slugs point back to the actual recipes that use each
+    # technique in their instructions, not every recipe that plausibly could.
+    {
+        "slug": "what-is-folding",
+        "template_type": "definition",
+        "title": "What Is Folding?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Folding is a gentle mixing technique that combines a light, "
+                "whipped ingredient into a heavier one without knocking the "
+                "air back out. How and when to use it."
+            ),
+            "hero_image_query": "folding whipped cream into batter",
+            "link_terms": ["fold", "folds", "folded", "folding"],
+            "direct_answer": (
+                "Folding is a gentle mixing technique that combines a light, "
+                "airy mixture, like whipped cream or beaten egg whites, into "
+                "a heavier one without deflating the air already whipped "
+                "into it."
+            ),
+            "expanded_explanation": (
+                "Instead of stirring in circles, folding uses a rubber "
+                "spatula to cut down through the center of the bowl, scrape "
+                "along the bottom, and turn the mixture up and over itself, "
+                "rotating the bowl a quarter turn between passes. The goal "
+                "is combining the two mixtures in as few strokes as "
+                "possible, since every extra stroke knocks more air back out."
+            ),
+            "usage_origin": (
+                "Used any time a recipe needs to protect a whipped "
+                "component's volume, folding whipped cream into a mousse or "
+                "no-churn ice cream base, or folding whipped egg whites into "
+                "a soufflé or cake batter."
+            ),
+            "substitute_note": (
+                "No substitute for the technique itself, but if you don't "
+                "have a rubber spatula, a large metal spoon works almost as "
+                "well, just use the same gentle scoop-and-turn motion "
+                "instead of a flat blade that cuts straight through."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "What's the difference between folding and stirring?",
+                    "answer": (
+                        "Stirring uses a circular motion that's efficient at "
+                        "combining ingredients but knocks air out of "
+                        "anything whipped. Folding uses a scoop-and-turn "
+                        "motion specifically to combine two mixtures while "
+                        "keeping most of that air intact."
+                    ),
+                },
+                {
+                    "question": "How do I know when I've folded enough?",
+                    "answer": (
+                        "Stop as soon as no large streaks of the unmixed "
+                        "ingredient remain. A few small streaks are better "
+                        "than overmixing, once it looks fully uniform, "
+                        "you've likely folded a few strokes too many and "
+                        "lost some volume."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["banana-nut-bread", "mango-ice-cream"],
+        },
+    },
+    {
+        "slug": "what-is-pureeing",
+        "template_type": "definition",
+        "title": "What Is Pureeing?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Pureeing means blending a food until completely smooth, "
+                "with no visible chunks. What it means and how it's done."
+            ),
+            "hero_image_query": "pureeing mango in a blender",
+            "link_terms": ["puree", "purees", "pureed", "pureeing"],
+            "direct_answer": (
+                "Pureeing means blending a food until it's completely "
+                "smooth, with no visible chunks, pieces, or fibers left, "
+                "usually in a blender, food processor, or with an immersion "
+                "blender."
+            ),
+            "expanded_explanation": (
+                "The goal is a uniform consistency, pourable to thick "
+                "depending on the ingredient's water content, a pureed "
+                "mango is roughly the texture of a thick smoothie, while a "
+                "pureed vegetable soup base can be closer to a paste before "
+                "liquid is added back. Fibrous ingredients sometimes benefit "
+                "from straining the puree afterward to remove any stringy "
+                "bits a blender didn't fully break down."
+            ),
+            "usage_origin": (
+                "Used for smoothie and ice cream bases (like mango puree), "
+                "soups, sauces, and baby food, anywhere a recipe wants a "
+                "uniform, chunk-free texture rather than distinct pieces."
+            ),
+            "substitute_note": (
+                "A blender or food processor both work; for a small amount, "
+                "a fine-mesh sieve and the back of a spoon can push a soft "
+                "ingredient through by hand, though it takes longer."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Do I need a special blender to puree food?",
+                    "answer": (
+                        "No, a standard countertop blender, food processor, "
+                        "or handheld immersion blender all work. An "
+                        "immersion blender is convenient for pureeing "
+                        "directly in a pot of soup without transferring hot "
+                        "liquid to a separate blender."
+                    ),
+                },
+                {
+                    "question": "Why is my puree still a little chunky?",
+                    "answer": (
+                        "Usually the pieces going in were too large or too "
+                        "firm to begin with. Cutting ingredients smaller "
+                        "first, or cooking them until fully tender before "
+                        "blending, gives the blender less work to do."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["mango-ice-cream"],
+        },
+    },
+    {
+        "slug": "what-is-dredging",
+        "template_type": "definition",
+        "title": "What Is Dredging?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Dredging means coating food lightly in a dry ingredient, "
+                "usually the first step in a multi-step breading. How it "
+                "works and why it matters."
+            ),
+            "hero_image_query": "dredging tomato slices in flour",
+            "link_terms": ["dredge", "dredges", "dredged", "dredging"],
+            "direct_answer": (
+                "Dredging means coating food lightly in a dry ingredient, "
+                "usually flour, cornmeal, or breadcrumbs, before cooking, "
+                "most often as the first layer in a multi-step breading "
+                "process."
+            ),
+            "expanded_explanation": (
+                "In a classic three-step breading (flour, then egg, then a "
+                "coarser coating like cornmeal or breadcrumbs), dredging "
+                "refers specifically to that first flour layer. The thin, "
+                "dry coating gives the wet egg wash something to cling to, "
+                "which in turn gives the final coarse layer something to "
+                "bind to, each layer depends on the one before it."
+            ),
+            "usage_origin": (
+                "Common for fried foods like fried green tomatoes, fried "
+                "chicken, and schnitzel, and for lightly flouring meat or "
+                "fish before pan-searing to help it brown evenly."
+            ),
+            "substitute_note": (
+                "No real substitute if a recipe calls for it specifically, "
+                "the coating is what gives the fried food its crust. In a "
+                "pinch, a shaker bag (the dry ingredient and flour, shaken "
+                "together in a bag) works instead of a shallow dish."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Do I have to dredge in a separate dish?",
+                    "answer": (
+                        "It's easiest with a shallow dish or plate so you "
+                        "can press each piece into an even, thin layer, a "
+                        "deep bowl makes it harder to coat evenly and easier "
+                        "to clump the flour."
+                    ),
+                },
+                {
+                    "question": "What happens if I skip the dredging step in a breading?",
+                    "answer": (
+                        "The egg wash won't have anything to grip, and the "
+                        "final coarse coating tends to slide off or clump "
+                        "unevenly instead of forming a solid, even crust."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["fried-green-tomatoes"],
+        },
+    },
+    {
+        "slug": "what-is-basting",
+        "template_type": "definition",
+        "title": "What Is Basting?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Basting means spooning or brushing liquid over food as it "
+                "cooks, to add flavor and moisture to the surface. How and "
+                "when to do it safely."
+            ),
+            "hero_image_query": "basting chicken with a spoon",
+            "link_terms": ["baste", "bastes", "basted", "basting"],
+            "direct_answer": (
+                "Basting means spooning, brushing, or squeezing liquid, "
+                "usually pan juices, melted butter, or a marinade, over "
+                "food as it cooks, to add flavor and moisture to the "
+                "surface."
+            ),
+            "expanded_explanation": (
+                "Basting doesn't cook food from the inside out the way "
+                "marinating does, it works on the exposed surface, building "
+                "flavor and a glossy finish as the liquid partially reduces "
+                "and caramelizes with each pass. It's typically done a few "
+                "times near the end of cooking rather than continuously, "
+                "since opening an oven or lifting food off a hot pan too "
+                "often can slow cooking or dry out the surface between "
+                "bastes."
+            ),
+            "usage_origin": (
+                "Common for roasted or grilled meats (turkey, chicken, "
+                "ribs) and pan-seared fish or steak finished with butter, "
+                "where a spoon repeatedly pools melted butter over the food "
+                "as it cooks."
+            ),
+            "substitute_note": (
+                "A spoon works fine if you don't have a basting brush or "
+                "bulb baster, just tilt the pan slightly to pool the liquid "
+                "and spoon it over."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Is it safe to baste with a marinade the raw meat sat in?",
+                    "answer": (
+                        "Only if it's brought to a full boil first, to kill "
+                        "any bacteria transferred from the raw meat. Using a "
+                        "separate, reserved portion of marinade set aside "
+                        "before the raw meat went in avoids the issue "
+                        "entirely."
+                    ),
+                },
+                {
+                    "question": "Do I need a basting brush?",
+                    "answer": (
+                        "No, a large spoon works fine, tilt the pan slightly "
+                        "so the liquid pools on one side, then spoon it over "
+                        "the food repeatedly."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["peri-peri-chicken", "chilean-sea-bass"],
+        },
+    },
+    {
+        "slug": "what-is-searing",
+        "template_type": "definition",
+        "title": "What Is Searing?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Searing means cooking a food's surface over high heat "
+                "until it browns deeply, without necessarily cooking it "
+                "through. Why it works and how to get it right."
+            ),
+            "hero_image_query": "searing a steak in a hot pan",
+            "link_terms": ["sear", "sears", "seared", "searing"],
+            "direct_answer": (
+                "Searing means cooking food's surface, usually meat or "
+                "fish, over high heat until it develops a deep brown, "
+                "flavorful crust, without necessarily cooking it all the "
+                "way through."
+            ),
+            "expanded_explanation": (
+                "The browning comes from the Maillard reaction, a chemical "
+                "reaction between proteins and sugars that only happens at "
+                "high temperatures, which is why a hot, dry pan matters "
+                "more than cook time. A wet surface, a crowded pan, or "
+                "moving the food too soon all lower the pan's effective "
+                "temperature and prevent a real sear from forming, food "
+                "ends up steaming and graying instead of browning."
+            ),
+            "usage_origin": (
+                "Used at the start of a braise (searing meat before it "
+                "simmers for hours) or as the entire cooking method for a "
+                "quick-cooking cut like a thin steak or fish fillet, where "
+                "the sear itself is most of the cooking."
+            ),
+            "substitute_note": (
+                "There isn't a real substitute for a hot, dry pan, a "
+                "nonstick pan can be used but won't develop as deep a crust "
+                "as stainless steel or cast iron."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Why isn't my food browning even though the pan is hot?",
+                    "answer": (
+                        "Usually surface moisture, pat food very dry before "
+                        "it goes in the pan, since any water on the surface "
+                        "has to evaporate first before browning can start, "
+                        "which wastes the pan's heat and buys time for the "
+                        "food to steam instead."
+                    ),
+                },
+                {
+                    "question": "Do I need to sear food all the way through?",
+                    "answer": (
+                        "No, searing is about the surface. Thicker cuts "
+                        "usually need to finish cooking through some other "
+                        "way, in the oven, at a lower stovetop heat, or by "
+                        "resting after a hard sear, depending on the cut."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["chicken-al-pastor", "chilean-sea-bass"],
+        },
+    },
+    {
+        "slug": "what-is-whisking",
+        "template_type": "definition",
+        "title": "What Is Whisking?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Whisking means rapidly beating ingredients to combine them "
+                "smoothly and incorporate air. How it differs from stirring "
+                "and whipping."
+            ),
+            "hero_image_query": "whisking eggs in a bowl",
+            "link_terms": ["whisk", "whisks", "whisked", "whisking"],
+            "direct_answer": (
+                "Whisking means rapidly beating ingredients with a whisk "
+                "(or fork) to combine them smoothly and incorporate air, "
+                "more vigorous than stirring but lighter than whipping to "
+                "full volume."
+            ),
+            "expanded_explanation": (
+                "A whisk's thin wires move quickly through a mixture, "
+                "breaking up lumps and blending ingredients, like eggs, or "
+                "dry ingredients into wet, far more evenly than a spoon "
+                "would. It also incorporates some air, useful for a lighter "
+                "texture in things like beaten eggs or a smooth, lump-free "
+                "sauce, without necessarily building the mixture to the "
+                "full volume that whipping does."
+            ),
+            "usage_origin": (
+                "Used for beating eggs, combining dry ingredients evenly "
+                "before adding them to a batter, and smoothing out sauces, "
+                "gravies, and dressings so no lumps remain."
+            ),
+            "substitute_note": (
+                "A fork works for light mixing in a pinch, though it takes "
+                "longer and won't incorporate air as effectively as a real "
+                "whisk for tasks like beating eggs or whipping cream."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "What's the difference between whisking and whipping?",
+                    "answer": (
+                        "Whisking generally means combining and lightening a "
+                        "mixture; whipping specifically means beating a "
+                        "mixture like cream or egg whites until it holds a "
+                        "defined shape, like soft or stiff peaks. Both use "
+                        "the same tool, but whipping goes further and takes "
+                        "longer."
+                    ),
+                },
+                {
+                    "question": "Can I whisk by hand instead of using an electric mixer?",
+                    "answer": (
+                        "For light tasks like beating eggs or smoothing a "
+                        "sauce, yes, easily. For building real volume, like "
+                        "whipping cream to stiff peaks, it's possible by "
+                        "hand but takes several minutes of steady, vigorous "
+                        "effort."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": [],
+        },
+    },
+    {
+        "slug": "what-is-whipping",
+        "template_type": "definition",
+        "title": "What Is Whipping?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Whipping means beating cream or egg whites until they trap "
+                "enough air to hold a shape, like soft or stiff peaks. How "
+                "it works and common mistakes."
+            ),
+            "hero_image_query": "whipping cream to stiff peaks",
+            "link_terms": ["whip", "whips", "whipped", "whipping"],
+            "direct_answer": (
+                "Whipping means beating an ingredient, most often cream or "
+                "egg whites, vigorously and continuously until it traps "
+                "enough air to hold a defined shape, like soft or stiff "
+                "peaks."
+            ),
+            "expanded_explanation": (
+                "As a whisk or mixer repeatedly moves through cream or egg "
+                "whites, it traps tiny air bubbles that get stabilized by "
+                "the fat (in cream) or proteins (in egg whites), gradually "
+                "building volume and structure. Soft peaks droop over when "
+                "the whisk is lifted; stiff peaks hold their shape upright. "
+                "Whipping past stiff peaks turns cream grainy and eventually "
+                "into butter, and turns egg whites dry and clumpy, so most "
+                "recipes specify exactly how far to take it."
+            ),
+            "usage_origin": (
+                "Used for whipped cream (as a topping or folded into a "
+                "mousse or no-churn ice cream base) and beaten egg whites "
+                "(for meringues, soufflés, and some cake batters)."
+            ),
+            "substitute_note": (
+                "A hand mixer or stand mixer speeds this up considerably; "
+                "by hand with a whisk it's possible but takes several "
+                "minutes of steady effort to reach stiff peaks."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Why won't my cream whip up?",
+                    "answer": (
+                        "It's almost always temperature, cream whips "
+                        "fastest and holds its structure best when it's "
+                        "cold, along with the bowl and beaters. Warm cream "
+                        "takes much longer and can go straight to grainy or "
+                        "buttery without ever holding a clean peak."
+                    ),
+                },
+                {
+                    "question": "What happens if I overwhip cream?",
+                    "answer": (
+                        "It turns grainy and separated, and if it goes "
+                        "further, into butter and buttermilk. There's no way "
+                        "to bring it back to smooth whipped cream once that "
+                        "happens, only to stop and start over with fresh "
+                        "cream."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["mango-ice-cream"],
+        },
+    },
+    {
+        "slug": "what-is-zesting",
+        "template_type": "definition",
+        "title": "What Is Zesting?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Zesting means removing just the thin, colorful outer peel "
+                "of a citrus fruit, without the bitter white pith "
+                "underneath. How and why to do it."
+            ),
+            "hero_image_query": "zesting a lemon with a microplane",
+            "link_terms": ["zest", "zests", "zested", "zesting"],
+            "direct_answer": (
+                "Zesting means removing just the thin, colorful outer layer "
+                "of a citrus fruit's peel, the part packed with aromatic "
+                "oils, without digging into the bitter white pith "
+                "underneath."
+            ),
+            "expanded_explanation": (
+                "Citrus zest carries a concentrated version of the fruit's "
+                "flavor and aroma, far more intense than the juice alone, "
+                "because that's where the fruit's aromatic oils are stored. "
+                "The white pith just beneath the zest is bitter and best "
+                "avoided, which is why zesting tools (a fine grater or a "
+                "citrus zester) are designed to shave off only that thin "
+                "colored layer."
+            ),
+            "usage_origin": (
+                "Used to add bright citrus flavor to baked goods, rice "
+                "puddings, marinades, and cocktails, either grated directly "
+                "into a mixture or as a garnish, and often alongside the "
+                "fruit's juice for a fuller citrus flavor than juice "
+                "provides alone."
+            ),
+            "substitute_note": (
+                "A fine grater like a Microplane gives the finest, most "
+                "even zest. A vegetable peeler works too, remove the peel "
+                "in strips, then mince it finely, though the texture is "
+                "coarser."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Do I need a special tool to zest citrus?",
+                    "answer": (
+                        "A fine grater like a Microplane gives the finest, "
+                        "most even zest. A vegetable peeler works too, "
+                        "remove the peel in strips, then mince it finely, "
+                        "though the texture is coarser."
+                    ),
+                },
+                {
+                    "question": "Can I zest a fruit and juice it too?",
+                    "answer": (
+                        "Yes, and it's the efficient order to do both, zest "
+                        "the fruit first while it's whole and easier to "
+                        "grip, then juice it."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["arroz-con-leche"],
+        },
+    },
+    {
+        "slug": "what-is-a-dry-shake",
+        "template_type": "definition",
+        "title": "What Is a Dry Shake?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "A dry shake is a cocktail technique that shakes egg white "
+                "or aquafaba without ice first, to build a stable foam. "
+                "Why it matters and how it works."
+            ),
+            "hero_image_query": "cocktail shaker with egg white foam",
+            "link_terms": ["dry shake"],
+            "direct_answer": (
+                "A dry shake is a cocktail technique where ingredients, "
+                "especially egg white or aquafaba, are shaken vigorously in "
+                "a cocktail shaker without ice, to whip the egg white into "
+                "a stable foam before the drink is chilled."
+            ),
+            "expanded_explanation": (
+                "Shaking with ice at the same time as the egg white dilutes "
+                "and chills the mixture before the egg white has a chance "
+                "to whip up properly, so the foam never fully forms. A dry "
+                "shake solves this by whipping the egg white first, "
+                "undiluted, then a second wet shake with ice follows to "
+                "chill and dilute the drink to a proper strength once the "
+                "foam is already built."
+            ),
+            "usage_origin": (
+                "Standard for egg-white cocktails like an amaretto sour or "
+                "whiskey sour, and their vegan aquafaba-based versions, "
+                "anywhere a recipe wants a stable, silky foam on top of the "
+                "drink."
+            ),
+            "substitute_note": (
+                "There's no real substitute if a recipe specifically calls "
+                "for it, the technique is what builds an egg-white or "
+                "aquafaba foam before the drink is chilled and diluted with "
+                "ice."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Can I skip the dry shake and just shake with ice?",
+                    "answer": (
+                        "You can, but the drink usually comes out thinner "
+                        "and less foamy, the ice dilutes and chills the "
+                        "mixture before the egg white gets fully whipped, so "
+                        "the foam that does form tends to be thin and "
+                        "short-lived."
+                    ),
+                },
+                {
+                    "question": "How long should a dry shake take?",
+                    "answer": (
+                        "About 15-20 seconds of vigorous shaking, longer "
+                        "than a normal wet shake, since building real foam "
+                        "from raw egg white or aquafaba takes more agitation "
+                        "than just chilling a drink does."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["amaretto-sour"],
+        },
+    },
+    {
+        "slug": "what-is-rehydrating",
+        "template_type": "definition",
+        "title": "What Is Rehydrating?",
+        "batch_number": 3,
+        "content": {
+            "meta_description": (
+                "Rehydrating means soaking a dried ingredient, like dried "
+                "chiles or mushrooms, until it softens back toward its "
+                "original texture. How and why it's done."
+            ),
+            "hero_image_query": "dried chiles soaking in hot water",
+            "link_terms": ["rehydrate", "rehydrates", "rehydrated", "rehydrating"],
+            "direct_answer": (
+                "Rehydrating means soaking a dried ingredient, most often "
+                "dried chiles, mushrooms, or fruit, in a liquid, usually "
+                "hot water, until it softens back toward its original "
+                "texture before cooking with it."
+            ),
+            "expanded_explanation": (
+                "Drying removes most of an ingredient's water content, "
+                "which concentrates its flavor but leaves it tough, "
+                "brittle, or leathery. Soaking it in hot water, or another "
+                "liquid like broth, lets it reabsorb moisture and soften "
+                "enough to blend smoothly or chew comfortably, hot liquid "
+                "works faster than cold since heat speeds up how quickly "
+                "the dried tissue reabsorbs water."
+            ),
+            "usage_origin": (
+                "Common for dried chiles before blending into a marinade or "
+                "sauce (like guajillo chiles in an al pastor marinade), "
+                "dried mushrooms before adding to a broth or filling, and "
+                "dried fruit before baking with it."
+            ),
+            "substitute_note": (
+                "Hot water works faster than cold; for chiles specifically, "
+                "toasting them briefly in a dry pan first, until fragrant, "
+                "not burnt, deepens their flavor before soaking."
+            ),
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "How long does rehydrating usually take?",
+                    "answer": (
+                        "For dried chiles, about 10-15 minutes in hot water "
+                        "is typical. Tougher or larger dried ingredients, "
+                        "like whole dried mushrooms, can take 20-30 minutes "
+                        "or longer to fully soften."
+                    ),
+                },
+                {
+                    "question": "Can I use the soaking liquid afterward?",
+                    "answer": (
+                        "Often yes, and it's worth saving, it picks up "
+                        "flavor from whatever was soaking in it and can be "
+                        "strained and used as a base for a sauce or broth "
+                        "instead of being poured out."
+                    ),
+                },
+            ],
+            "related_recipe_slugs": ["chicken-al-pastor"],
+        },
+    },
     {
         "slug": "gelato-vs-ice-cream",
         "template_type": "comparison",

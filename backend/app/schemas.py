@@ -40,3 +40,9 @@ class PageSummary(BaseModel):
     image_url: str | None = None
     image_attribution: ImageAttribution | None = None
     hero_image_query: str | None = None
+    # Only populated for definition ("What Is X?") pages that have it --
+    # literal word forms (verb, gerund, ...) other prose should auto-link
+    # to this page with, since the page's own title reads as a question and
+    # (for a technique like "searing") doesn't share a spelling with the
+    # base verb a recipe step actually uses ("Sear the chicken").
+    link_terms: list[str] | None = None

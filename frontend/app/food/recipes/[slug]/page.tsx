@@ -165,7 +165,7 @@ export default async function RecipePage({
                 {i + 1}
               </span>
               <span className="pt-0.5">
-                {step}
+                <LinkifiedText text={step} terms={linkTerms} />
                 <StepTempReference step={step} reference={tempReference} />
                 {content.step_notes?.[i] ? <StepWhyNote note={content.step_notes[i]} /> : null}
               </span>

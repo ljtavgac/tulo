@@ -5,6 +5,10 @@ export interface PageSummary {
   image_url?: string;
   image_attribution?: ImageAttribution;
   hero_image_query?: string;
+  // Only present for definition pages that have it (see DefinitionContent's
+  // link_terms) -- the literal word forms other prose should auto-link to
+  // this page with, distinct from its own question-style title.
+  link_terms?: string[] | null;
 }
 
 export interface PageRecord<T = Record<string, unknown>> {
@@ -199,6 +203,16 @@ export interface DefinitionContent {
   usage_origin: string;
   substitute_note: string;
   substitute_page_slug: string | null;
+  // Literal word forms (verb, gerund, past tense, ...) that should
+  // auto-link to this page from other prose, in addition to the bare term
+  // derived from the title. Only needed for technique pages: an
+  // ingredient's title already reduces to the one noun people actually
+  // write ("Burrata"), but "What Is Searing?" doesn't literally appear in
+  // a recipe step that says "Sear the chicken" -- English's gerund/base-verb
+  // spelling changes (dredge -> dredging, baste -> basting, whip -> whipping)
+  // aren't reliably derivable by stripping a suffix, so they're spelled out
+  // explicitly here instead of guessed at.
+  link_terms?: string[];
   faqs?: Faq[];
   related_recipe_slugs: string[];
 }

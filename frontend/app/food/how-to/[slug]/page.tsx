@@ -10,9 +10,11 @@ import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
 import AdSlot from "@/components/AdSlot";
 import StepTempReference from "@/components/StepTempReference";
+import LinkifiedText from "@/components/LinkifiedText";
 import { buildBreadcrumbList, buildPageMetadata } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import { detectFoodCategory } from "@/lib/timeTemps";
+import { getLinkTerms } from "@/lib/linkTerms";
 
 export async function generateMetadata({
   params,
@@ -44,6 +46,7 @@ export default async function HowToPage({
     { label: page.title },
   ];
   const tempReference = detectFoodCategory([page.title, content.intro, ...content.steps].join(" "));
+  const linkTerms = await getLinkTerms(slug);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -70,7 +73,9 @@ export default async function HowToPage({
         className="mt-4"
       />
 
-      <p className="mt-4 text-ink/80">{content.intro}</p>
+      <p className="mt-4 text-ink/80">
+        <LinkifiedText text={content.intro} terms={linkTerms} />
+      </p>
 
       <h2 className="mt-8 text-xl font-bold">Steps</h2>
       <ol className="mt-3 space-y-3">
@@ -80,7 +85,7 @@ export default async function HowToPage({
               {i + 1}
             </span>
             <span className="pt-0.5">
-              {step}
+              <LinkifiedText text={step} terms={linkTerms} />
               <StepTempReference step={step} reference={tempReference} />
             </span>
           </li>

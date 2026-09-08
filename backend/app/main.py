@@ -250,6 +250,7 @@ def list_pages(
                 image_url=image_url,
                 image_attribution=image_attribution,
                 hero_image_query=hero_image_query,
+                link_terms=page.content.get("link_terms") if page.template_type == "definition" else None,
             )
         )
     return summaries
