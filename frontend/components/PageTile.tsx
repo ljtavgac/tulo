@@ -33,7 +33,7 @@ export default function PageTile({
         reserveSpace
       />
       <div className="p-3">
-        <h3 className="line-clamp-2 text-sm font-bold">{title}</h3>
+        <h3 className="line-clamp-2 min-h-10 text-sm font-bold">{title}</h3>
       </div>
     </Link>
   );
