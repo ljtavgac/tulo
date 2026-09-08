@@ -4771,6 +4771,57 @@ SEED_PAGES = [
 ]
 
 
+def _find_double_dashes(pages: list[dict]) -> list[tuple[str, str]]:
+    """Walks every string value in `pages`' content and returns
+    (location, offending value) pairs for anything containing a "--"
+    construction. Used to guard against that pattern silently creeping
+    back into new content batches, see _check_no_double_dashes below for
+    why this needs to be more than a one-time cleanup."""
+    hits: list[tuple[str, str]] = []
+
+    def walk(value, location: str) -> None:
+        if isinstance(value, str):
+            if "--" in value:
+                hits.append((location, value))
+        elif isinstance(value, dict):
+            for key, sub_value in value.items():
+                walk(sub_value, f"{location}.{key}")
+        elif isinstance(value, list):
+            for i, sub_value in enumerate(value):
+                walk(sub_value, f"{location}[{i}]")
+
+    for page in pages:
+        walk(page["content"], page["slug"])
+    return hits
+
+
+def _check_no_double_dashes() -> None:
+    """The "word, dash, dash, word" construction reads as an obvious
+    AI-writing tell, per direct user feedback, and every occurrence of it
+    was deliberately stripped from this file's content once already.
+    Because resync_content() (see below) now pushes every edit here
+    straight into production on the next deploy, a new content batch that
+    reintroduces this pattern would reach the live site just as reliably
+    as a real fix would, so this raises immediately at import time rather
+    than relying on whoever adds the next batch to remember and catch it
+    themselves. Fix an offender with a comma, or a single hyphen when it's
+    introducing a list right after the word describing it, never another
+    double dash.
+    """
+    hits = _find_double_dashes(SEED_PAGES)
+    if not hits:
+        return
+    shown = "\n".join(f"  {location}: {text!r}" for location, text in hits[:15])
+    more = f"\n  ...and {len(hits) - 15} more" if len(hits) > 15 else ""
+    raise ValueError(
+        f"Found {len(hits)} double dash construction(s) in SEED_PAGES "
+        f"content, fix each with a comma or a single hyphen:\n{shown}{more}"
+    )
+
+
+_check_no_double_dashes()
+
+
 def seed(db: Session) -> int:
     """Insert the seed pages if they don't already exist. Returns the number inserted."""
     inserted = 0
