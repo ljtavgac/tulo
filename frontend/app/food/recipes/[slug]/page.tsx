@@ -137,7 +137,7 @@ export default async function RecipePage({
 
         <AdSlot variant="in-content" />
 
-        <h2 className="text-xl font-bold">Instructions</h2>
+        <h2 className="mt-8 text-xl font-bold">Instructions</h2>
         <ol className="mt-3 space-y-3">
           {content.instructions.map((step, i) => (
             <li key={i} className="flex gap-3 text-sm">
@@ -155,16 +155,8 @@ export default async function RecipePage({
 
         <AdSlot variant="in-content" />
 
-        <div className="flex flex-wrap gap-3 print:hidden">
+        <div className="mt-8 flex flex-wrap gap-3 print:hidden">
           <PrintButton />
-          {content.category_link ? (
-            <Link
-              href={pagePath("category_roundup", content.category_link.slug)}
-              className="rounded-full border border-ink/20 px-4 py-2 text-sm font-medium hover:border-accent hover:text-accent"
-            >
-              More {content.category_link.title}
-            </Link>
-          ) : null}
           {content.technique_link ? (
             <Link
               href={pagePath("howto_technique", content.technique_link.slug)}

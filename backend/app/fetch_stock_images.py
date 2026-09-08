@@ -139,7 +139,24 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
     # with the literally same photo -- see search_image()'s exclude_urls.
     used_urls: set[str] = set()
 
-    for page in db.query(Page).all():
+    # A standalone recipe_or_dish page and its parent category_roundup's
+    # card for that same dish (e.g. carne-asada-tacos and taco-recipes'
+    # "Carne Asada Tacos" card) search the exact same query text. Whichever
+    # is processed first claims the one available match via used_urls and
+    # leaves the other to fall back to a broader term -- and a thin
+    # free-tier catalog for a niche dish name can easily have exactly one
+    # good match, or exhaust even the broader category fallback once
+    # several cards in the same collection have already tried it. The
+    # recipe page is the primary content people land on and share and
+    # needs a real hero photo; a card missing one just renders without an
+    # image (see StockPhotoSlot) -- not a broken page. So single-hero-image
+    # pages are processed, and get first claim on scarce matches, before
+    # category_roundup pages, regardless of each one's position in
+    # SEED_PAGES / insertion order.
+    pages = db.query(Page).all()
+    pages.sort(key=lambda p: p.template_type == "category_roundup")
+
+    for page in pages:
         if only_slugs is not None and page.slug not in only_slugs:
             continue
         force_this_page = force or only_slugs is not None

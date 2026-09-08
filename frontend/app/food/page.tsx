@@ -107,7 +107,7 @@ export default async function HomePage() {
             className="flex w-40 shrink-0 snap-start flex-col gap-3 rounded-card bg-cream p-4 shadow-card transition-shadow hover:shadow-lg sm:w-48"
           >
             <ToolIcon icon={tool.icon} className="h-8 w-8 text-accent" />
-            <span className="text-sm font-bold">{tool.title}</span>
+            <span className="line-clamp-2 min-h-10 text-sm font-bold">{tool.title}</span>
           </Link>
         ))}
       </Carousel>

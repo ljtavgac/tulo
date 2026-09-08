@@ -25,9 +25,15 @@ export default function PageTile({
       href={href}
       className="block overflow-hidden rounded-card bg-cream shadow-card transition-shadow hover:shadow-lg"
     >
-      <StockPhotoSlot query={imageQuery} imageUrl={imageUrl} attribution={imageAttribution} aspect="thumbnail" />
+      <StockPhotoSlot
+        query={imageQuery}
+        imageUrl={imageUrl}
+        attribution={imageAttribution}
+        aspect="thumbnail"
+        reserveSpace
+      />
       <div className="p-3">
-        <h3 className="text-sm font-bold">{title}</h3>
+        <h3 className="line-clamp-2 text-sm font-bold">{title}</h3>
       </div>
     </Link>
   );

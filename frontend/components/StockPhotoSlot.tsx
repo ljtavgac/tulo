@@ -38,18 +38,29 @@ export default function StockPhotoSlot({
   attribution,
   aspect = "hero",
   className = "",
+  reserveSpace = false,
 }: {
   query: string;
   imageUrl?: string;
   attribution?: ImageAttribution;
   aspect?: "hero" | "thumbnail";
   className?: string;
+  // Grid contexts (PageTile, RecipeCard) need every card the same height
+  // whether or not its photo ever got fetched -- collapsing straight to
+  // the title text otherwise makes a missing-photo card visibly shorter
+  // than its photographed neighbors in the same row. A single hero image
+  // on its own page has no row to stay aligned with, so it keeps the
+  // original "nothing at all" behavior by default.
+  reserveSpace?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
 
-  if (!imageUrl || failed) return null;
-
   const aspectClass = aspect === "hero" ? "aspect-[16/9]" : "aspect-square";
+
+  if (!imageUrl || failed) {
+    if (!reserveSpace) return null;
+    return <div className={`${aspectClass} rounded-lg bg-ink/5 ${className}`} />;
+  }
 
   return (
     <figure className={className}>
