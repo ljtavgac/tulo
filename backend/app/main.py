@@ -131,6 +131,19 @@ def _recipe_slugs_using_ingredient(db: Session, hub_slug: str) -> list[str]:
     return slugs
 
 
+def _swappable_substitutes_for(db: Session, hub_slug: str) -> list[dict]:
+    """The ingredient swap tool on a recipe page needs `hub_slug`'s own
+    substitutes -- name, display ratio, and the numeric ratio_multiplier
+    that lets the swap be pure client-side math. Only substitutes with a
+    ratio_multiplier are returned: an additive combo or a deliberately
+    vague ratio ("slightly more") can't be swapped in by a multiply, so
+    offering it as a one-click option would just be wrong."""
+    hub = db.query(Page).filter(Page.slug == hub_slug, Page.template_type == "ingredient_hub").first()
+    if hub is None:
+        return []
+    return [sub for sub in hub.content.get("substitutes", []) if sub.get("ratio_multiplier") is not None]
+
+
 @app.get("/pages/{slug}", response_model=PageOut)
 def get_page(slug: str, db: Session = Depends(get_db)):
     page = db.query(Page).filter(Page.slug == slug).first()
@@ -142,6 +155,28 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         # hand-curated, now unused for display) field is left alone.
         content = copy.deepcopy(page.content)
         content["recipe_slugs"] = _recipe_slugs_using_ingredient(db, page.slug)
+        return PageOut(
+            slug=page.slug,
+            template_type=page.template_type,
+            title=page.title,
+            status=page.status,
+            batch_number=page.batch_number,
+            content=content,
+            created_at=page.created_at,
+        )
+    if page.template_type == "recipe_or_dish":
+        # Same pattern as above: a response-only enrichment, embedding each
+        # swappable ingredient's own hub's substitute data directly into the
+        # recipe payload so the frontend's swap tool needs no second fetch
+        # (still just a data lookup, not a generation step, per the "no LLM
+        # in the personalization path" constraint).
+        content = copy.deepcopy(page.content)
+        for ing in content.get("ingredients", []):
+            hub_slug = ing.get("hub_slug")
+            if hub_slug:
+                substitutes = _swappable_substitutes_for(db, hub_slug)
+                if substitutes:
+                    ing["available_substitutes"] = substitutes
         return PageOut(
             slug=page.slug,
             template_type=page.template_type,

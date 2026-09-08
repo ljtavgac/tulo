@@ -172,10 +172,10 @@ SEED_PAGES = [
                 "than a base cooking ingredient."
             ),
             "substitutes": [
-                {"name": "Scallion greens (green onion tops)", "ratio": "1:1", "note": "Slightly stronger onion flavor, but the closest visual and flavor match."},
-                {"name": "Green onion, whole", "ratio": "1:1", "note": "Similar flavor profile to scallion greens, a bit more oniony overall."},
-                {"name": "Parsley + a pinch of onion powder", "ratio": "1:1 (as parsley)", "note": "Use for the color/garnish effect without onion flavor; add onion powder separately to taste."},
-                {"name": "Leek greens, finely minced", "ratio": "1:1", "note": "Milder and slightly sweeter; mince very finely since leek greens are more fibrous."},
+                {"name": "Scallion greens (green onion tops)", "ratio": "1:1", "note": "Slightly stronger onion flavor, but the closest visual and flavor match.", "ratio_multiplier": 1.0},
+                {"name": "Green onion, whole", "ratio": "1:1", "note": "Similar flavor profile to scallion greens, a bit more oniony overall.", "ratio_multiplier": 1.0},
+                {"name": "Parsley + a pinch of onion powder", "ratio": "1:1 (as parsley)", "note": "Use for the color/garnish effect without onion flavor; add onion powder separately to taste.", "ratio_multiplier": 1.0},
+                {"name": "Leek greens, finely minced", "ratio": "1:1", "note": "Milder and slightly sweeter; mince very finely since leek greens are more fibrous.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1396,8 +1396,8 @@ SEED_PAGES = [
                 "creamier from warmer Gulf waters."
             ),
             "substitutes": [
-                {"name": "Clams", "ratio": "1:1 by count", "note": "Similar brine and texture raw or cooked, though generally less plump."},
-                {"name": "Mussels", "ratio": "1:1 by count", "note": "Works for cooked preparations (grilled, baked) but is a poor stand-in raw, different texture and flavor."},
+                {"name": "Clams", "ratio": "1:1 by count", "note": "Similar brine and texture raw or cooked, though generally less plump.", "ratio_multiplier": 1.0},
+                {"name": "Mussels", "ratio": "1:1 by count", "note": "Works for cooked preparations (grilled, baked) but is a poor stand-in raw, different texture and flavor.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1481,8 +1481,8 @@ SEED_PAGES = [
                 "casseroles."
             ),
             "substitutes": [
-                {"name": "Smoked andouille sausage", "ratio": "1:1", "note": "Spicier and more heavily smoked, but a close textural match."},
-                {"name": "Smoked bratwurst", "ratio": "1:1", "note": "Milder flavor than kielbasa; works well in soups and skillet dishes."},
+                {"name": "Smoked andouille sausage", "ratio": "1:1", "note": "Spicier and more heavily smoked, but a close textural match.", "ratio_multiplier": 1.0},
+                {"name": "Smoked bratwurst", "ratio": "1:1", "note": "Milder flavor than kielbasa; works well in soups and skillet dishes.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1561,8 +1561,8 @@ SEED_PAGES = [
                 "simmered, unlike sour cream, which makes it useful in hot sauces."
             ),
             "substitutes": [
-                {"name": "Sour cream", "ratio": "1:1", "note": "Tangier and lower-fat; fine cold or as a finishing swirl, but can split if boiled."},
-                {"name": "Mascarpone thinned with a little cream", "ratio": "1:1", "note": "Milder and richer, closer to crème fraîche's fat content."},
+                {"name": "Sour cream", "ratio": "1:1", "note": "Tangier and lower-fat; fine cold or as a finishing swirl, but can split if boiled.", "ratio_multiplier": 1.0},
+                {"name": "Mascarpone thinned with a little cream", "ratio": "1:1", "note": "Milder and richer, closer to crème fraîche's fat content.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": "creme-fraiche-substitute",
             "storage": (
@@ -1634,9 +1634,9 @@ SEED_PAGES = [
                 "classic choice for fondue and French onion soup."
             ),
             "substitutes": [
-                {"name": "Comté", "ratio": "1:1", "note": "Very close in flavor and melting behavior; the classic French cousin to Swiss gruyère."},
-                {"name": "Swiss Emmental", "ratio": "1:1", "note": "Milder and sweeter, with the characteristic large holes; melts similarly well."},
-                {"name": "Fontina", "ratio": "1:1", "note": "Softer and buttery rather than nutty, but melts just as smoothly."},
+                {"name": "Comté", "ratio": "1:1", "note": "Very close in flavor and melting behavior; the classic French cousin to Swiss gruyère.", "ratio_multiplier": 1.0},
+                {"name": "Swiss Emmental", "ratio": "1:1", "note": "Milder and sweeter, with the characteristic large holes; melts similarly well.", "ratio_multiplier": 1.0},
+                {"name": "Fontina", "ratio": "1:1", "note": "Softer and buttery rather than nutty, but melts just as smoothly.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": "gruyere-cheese-substitute",
             "storage": (
@@ -1713,8 +1713,8 @@ SEED_PAGES = [
                 "version, often with added caramel color and thickeners."
             ),
             "substitutes": [
-                {"name": "Red wine vinegar + a little sugar or honey", "ratio": "1:1, plus sweetener to taste", "note": "Approximates the sweet-tart balance without balsamic's specific depth."},
-                {"name": "Sherry vinegar", "ratio": "1:1", "note": "Different flavor profile (nuttier, less sweet) but works in most savory applications."},
+                {"name": "Red wine vinegar + a little sugar or honey", "ratio": "1:1, plus sweetener to taste", "note": "Approximates the sweet-tart balance without balsamic's specific depth.", "ratio_multiplier": 1.0},
+                {"name": "Sherry vinegar", "ratio": "1:1", "note": "Different flavor profile (nuttier, less sweet) but works in most savory applications.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1795,8 +1795,8 @@ SEED_PAGES = [
                 "melt smoothly."
             ),
             "substitutes": [
-                {"name": "Cotija cheese", "ratio": "1:1", "note": "Saltier and drier, doesn't crumble quite as creamily, but a close flavor match."},
-                {"name": "Goat cheese", "ratio": "1:1", "note": "Softer and tangier in a different way; works well in salads."},
+                {"name": "Cotija cheese", "ratio": "1:1", "note": "Saltier and drier, doesn't crumble quite as creamily, but a close flavor match.", "ratio_multiplier": 1.0},
+                {"name": "Goat cheese", "ratio": "1:1", "note": "Softer and tangier in a different way; works well in salads.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1877,9 +1877,9 @@ SEED_PAGES = [
                 "cloudier, more opaque thickening."
             ),
             "substitutes": [
-                {"name": "All-purpose flour", "ratio": "Use 2x the amount of cornstarch called for", "note": "Thickens cloudier and needs longer cooking to lose a raw-flour taste."},
-                {"name": "Arrowroot powder", "ratio": "1:1", "note": "Similar clear, glossy thickening; holds up better than cornstarch in acidic or frozen dishes."},
-                {"name": "Potato starch", "ratio": "1:1", "note": "Similar thickening power; add near the end of cooking since it breaks down if boiled too long."},
+                {"name": "All-purpose flour", "ratio": "Use 2x the amount of cornstarch called for", "note": "Thickens cloudier and needs longer cooking to lose a raw-flour taste.", "ratio_multiplier": 2.0},
+                {"name": "Arrowroot powder", "ratio": "1:1", "note": "Similar clear, glossy thickening; holds up better than cornstarch in acidic or frozen dishes.", "ratio_multiplier": 1.0},
+                {"name": "Potato starch", "ratio": "1:1", "note": "Similar thickening power; add near the end of cooking since it breaks down if boiled too long.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1945,8 +1945,8 @@ SEED_PAGES = [
                 "during rising."
             ),
             "substitutes": [
-                {"name": "All-purpose flour + vital wheat gluten", "ratio": "1 cup flour + 1 tsp vital wheat gluten per cup of bread flour called for", "note": "Approximates bread flour's protein content reasonably closely."},
-                {"name": "Plain all-purpose flour", "ratio": "1:1", "note": "Works fine for most home baking; the loaf will be slightly softer and less chewy."},
+                {"name": "All-purpose flour + vital wheat gluten", "ratio": "1 cup flour + 1 tsp vital wheat gluten per cup of bread flour called for", "note": "Approximates bread flour's protein content reasonably closely.", "ratio_multiplier": None},
+                {"name": "Plain all-purpose flour", "ratio": "1:1", "note": "Works fine for most home baking; the loaf will be slightly softer and less chewy.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -2014,8 +2014,8 @@ SEED_PAGES = [
                 "dishes like cacio e pepe and carbonara."
             ),
             "substitutes": [
-                {"name": "Parmigiano-Reggiano", "ratio": "1:1", "note": "Milder and less salty, may want to add a bit more salt to the dish to compensate."},
-                {"name": "Grana Padano", "ratio": "1:1", "note": "Similar to parmesan in flavor; a milder substitute than pecorino."},
+                {"name": "Parmigiano-Reggiano", "ratio": "1:1", "note": "Milder and less salty, may want to add a bit more salt to the dish to compensate.", "ratio_multiplier": 1.0},
+                {"name": "Grana Padano", "ratio": "1:1", "note": "Similar to parmesan in flavor; a milder substitute than pecorino.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -2094,8 +2094,8 @@ SEED_PAGES = [
                 "more rounded flavor than refined table salt."
             ),
             "substitutes": [
-                {"name": "Kosher salt", "ratio": "Use slightly more by volume", "note": "Kosher salt's larger, drier flakes are less dense, so measure by weight if precision matters."},
-                {"name": "Other coarse sea salt", "ratio": "1:1 by volume", "note": "A reasonable stand-in, though it won't carry Celtic salt's specific mineral content."},
+                {"name": "Kosher salt", "ratio": "Use slightly more by volume", "note": "Kosher salt's larger, drier flakes are less dense, so measure by weight if precision matters.", "ratio_multiplier": None},
+                {"name": "Other coarse sea salt", "ratio": "1:1 by volume", "note": "A reasonable stand-in, though it won't carry Celtic salt's specific mineral content.", "ratio_multiplier": 1.0},
             ],
             "substitute_page_slug": None,
             "storage": (

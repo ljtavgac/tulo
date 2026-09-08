@@ -24,6 +24,11 @@ export interface RecipeIngredient {
   base_qty_metric: number;
   unit_metric: string;
   hub_slug: string | null;
+  // Populated server-side (not stored in the recipe's own content) from
+  // hub_slug's ingredient hub page, for ingredients that have one --
+  // backs the "I don't have this" swap tool. Only substitutes with a
+  // ratio_multiplier are swappable by pure math; others aren't included.
+  available_substitutes?: IngredientSubstitute[];
 }
 
 // For a discrete count of items (eggs, bananas, cloves of garlic) rather
@@ -83,6 +88,13 @@ export interface IngredientSubstitute {
   name: string;
   ratio: string;
   note: string;
+  // A precise "amount of substitute per 1 unit of the original" multiplier,
+  // for substitutes that actually reduce to one (most are 1, e.g.
+  // cornstarch -> flour is 2). null for substitutes that don't -- an
+  // additive combo (flour + a second ingredient) or a deliberately vague
+  // ratio ("slightly more") can't be swapped in by pure math, so the
+  // ingredient swap tool only offers substitutes where this is set.
+  ratio_multiplier?: number | null;
 }
 
 export interface IngredientHubContent {
@@ -163,6 +175,7 @@ export interface RankedSubstitute {
   ratio: string;
   best_for: string;
   note: string;
+  ratio_multiplier?: number | null;
 }
 
 export interface SubstituteContent {
