@@ -68,15 +68,15 @@ SEED_PAGES = [
             # free-text strings so the frontend's serving-size scaler can
             # actually recalculate them, not just relabel a fixed string.
             "ingredients": [
-                {"name": "bananas, mashed", "base_qty": 3, "unit_us": "medium ripe", "base_qty_metric": 3, "unit_metric": "medium ripe", "hub_slug": None},
-                {"name": "unsalted butter, melted", "base_qty": 1 / 3, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
-                {"name": "egg, beaten", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
-                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "bananas, mashed", "base_qty": 3, "unit_us": "medium ripe", "base_qty_metric": 3, "unit_metric": "medium ripe", "hub_slug": None, "nutrition_per_unit": {"calories": 105, "protein_g": 1.3, "carbs_g": 27.0, "fat_g": 0.4}},
+                {"name": "unsalted butter, melted", "base_qty": 1 / 3, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1628, "protein_g": 1.9, "carbs_g": 0.1, "fat_g": 184.0}},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 774, "protein_g": 0, "carbs_g": 200.0, "fat_g": 0}},
+                {"name": "egg, beaten", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 72, "protein_g": 6.3, "carbs_g": 0.4, "fat_g": 4.8}},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 12, "protein_g": 0, "carbs_g": 0.5, "fat_g": 0}},
                 {"name": "baking soda", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
                 {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
-                {"name": "all-purpose flour", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 190, "unit_metric": "g", "hub_slug": None},
-                {"name": "walnuts, chopped", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 190, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 455, "protein_g": 13.0, "carbs_g": 95.0, "fat_g": 1.2}},
+                {"name": "walnuts, chopped", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 765, "protein_g": 18.0, "carbs_g": 16.0, "fat_g": 76.0}},
             ],
             "instructions": [
                 "Preheat the oven to 350°F (175°C). Grease a 9x5-inch loaf pan.",
@@ -90,6 +90,10 @@ SEED_PAGES = [
                 "Bake for 55-65 minutes, until a toothpick inserted into the center comes out clean.",
                 "Cool in the pan for 10 minutes, then turn out onto a wire rack to cool completely before slicing.",
             ],
+            "step_notes": {
+                4: "Baking soda needs to be distributed evenly through the wet mixture before the flour goes in, so the leavening reaction happens uniformly through the batter instead of in pockets.",
+                9: "Cooling in the pan first lets the loaf firm up enough to hold its shape when unmolded; moving it to a wire rack after that stops the bottom from steaming against the pan and turning soggy.",
+            },
             "tips_and_variations": [
                 "Very ripe, heavily spotted (almost black) bananas give noticeably more flavor than yellow ones, don't toss bananas just because they've browned.",
                 "Swap up to half the flour for whole wheat flour for a heartier crumb. Going past half makes the loaf noticeably dense.",
@@ -107,11 +111,8 @@ SEED_PAGES = [
                 "and freeze for up to 3 months. Thaw overnight at room temperature, "
                 "or microwave a single slice for 15-20 seconds."
             ),
-            "nutrition_note": (
-                "Approximately 210 calories, 8g fat, 32g carbohydrates, and 4g "
-                "protein per slice, based on 10 slices per loaf. An estimate only, "
-                "exact values depend on the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Can I freeze banana nut bread?",
@@ -831,13 +832,19 @@ SEED_PAGES = [
             "cook_time_minutes": 15,
             "total_time_minutes": 30,
             "servings": 4,
+            # "vegetable oil, for frying" is genuinely approximate: the 0.5 cup
+            # listed is what's in the pan, not what ends up in the food. Its
+            # nutrition_per_unit below is already adjusted to roughly 20%
+            # absorption (a standard shallow-pan-frying estimate), not the
+            # full poured amount, so it can multiply by the same base_qty
+            # everything else uses.
             "ingredients": [
-                {"name": "large green tomatoes, sliced ¼-inch thick", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
-                {"name": "all-purpose flour", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
-                {"name": "eggs, beaten", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
-                {"name": "cornmeal", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 140, "unit_metric": "g", "hub_slug": None},
+                {"name": "large green tomatoes, sliced ¼-inch thick", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 33, "protein_g": 1.6, "carbs_g": 7.0, "fat_g": 0.4}},
+                {"name": "all-purpose flour", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 455, "protein_g": 13.0, "carbs_g": 95.0, "fat_g": 1.2}},
+                {"name": "eggs, beaten", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 72, "protein_g": 6.3, "carbs_g": 0.4, "fat_g": 4.8}},
+                {"name": "cornmeal", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 140, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 442, "protein_g": 9.9, "carbs_g": 94.0, "fat_g": 4.4}},
                 {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
-                {"name": "vegetable oil, for frying", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "vegetable oil, for frying", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 385, "protein_g": 0, "carbs_g": 0, "fat_g": 43.6}},
             ],
             "instructions": [
                 "Set up a breading station: flour in one shallow dish, beaten eggs in a second, cornmeal mixed with salt in a third.",
@@ -847,6 +854,11 @@ SEED_PAGES = [
                 "Fry the tomatoes in batches, 3-4 minutes per side, until deeply golden.",
                 "Drain on paper towels or a wire rack and season with a little extra salt while still hot.",
             ],
+            "step_notes": {
+                1: "Drying the tomato slices first keeps the wet surface from turning the flour coating gummy before the egg and cornmeal layers go on.",
+                2: "Each layer needs the one before it to stick: flour gives the egg wash something to cling to, and the egg gives the cornmeal something to bind to, skipping straight to cornmeal on a bare slice would mostly fall off in the pan.",
+                5: "Salt sticks to the hot, slightly oily crust right out of the pan far better than it does once the tomatoes cool and the surface stops being tacky.",
+            },
             "tips_and_variations": [
                 "Don't crowd the pan, too many slices at once drops the oil temperature and the crust turns greasy instead of crisp.",
                 "A wire rack over a sheet pan keeps the bottom crust from steaming and going soft the way paper towels can.",
@@ -860,11 +872,8 @@ SEED_PAGES = [
                 "a dry skillet or oven to re-crisp, microwaving makes the crust "
                 "soft."
             ),
-            "nutrition_note": (
-                "Approximately 220 calories, 10g fat, 27g carbohydrates, and 5g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Can I use ripe red tomatoes instead?",
@@ -910,13 +919,22 @@ SEED_PAGES = [
             "cook_time_minutes": 15,
             "total_time_minutes": 40,
             "servings": 6,
+            # "nori sheets, for serving" has no nutrition_per_unit -- a "pack"
+            # varies too much by brand (10 vs. 50 sheets) to give a real
+            # per-unit figure, and nori itself is calorie-negligible either
+            # way. No step_notes on this recipe either: its instructions are
+            # mostly plain assembly, and the two real technique insights
+            # (press the rice firmly, save some furikake for after baking)
+            # already live in reader_tips above -- duplicating them as
+            # step_notes wouldn't add anything, and inventing a third,
+            # weaker one just to hit a quota isn't worth it.
             "ingredients": [
-                {"name": "sushi rice, cooked and seasoned with rice vinegar", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 555, "unit_metric": "g", "hub_slug": None},
-                {"name": "imitation crab, chopped", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 454, "unit_metric": "g", "hub_slug": None},
-                {"name": "mayonnaise", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
-                {"name": "cream cheese, softened", "base_qty": 4, "unit_us": "oz", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
-                {"name": "sriracha", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
-                {"name": "furikake seasoning", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "sushi rice, cooked and seasoned with rice vinegar", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 555, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 210, "protein_g": 4.0, "carbs_g": 46.0, "fat_g": 0.3}},
+                {"name": "imitation crab, chopped", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 454, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 410, "protein_g": 36.0, "carbs_g": 55.0, "fat_g": 2.5}},
+                {"name": "mayonnaise", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1500, "protein_g": 2.0, "carbs_g": 2.0, "fat_g": 165.0}},
+                {"name": "cream cheese, softened", "base_qty": 4, "unit_us": "oz", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 100, "protein_g": 1.7, "carbs_g": 1.6, "fat_g": 10.0}},
+                {"name": "sriracha", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 15, "protein_g": 0.2, "carbs_g": 3.0, "fat_g": 0}},
+                {"name": "furikake seasoning", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 20, "protein_g": 1.0, "carbs_g": 2.0, "fat_g": 1.0}},
                 {"name": "nori sheets, for serving", "base_qty": 1, "unit_us": "pack", "base_qty_metric": 1, "unit_metric": "pack", "hub_slug": None},
             ],
             "instructions": [
@@ -939,11 +957,8 @@ SEED_PAGES = [
                 "Refrigerate up to 3 days. Reheat in the oven at 350°F until warmed "
                 "through, the topping can separate slightly in the microwave."
             ),
-            "nutrition_note": (
-                "Approximately 380 calories, 18g fat, 40g carbohydrates, and 13g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "What do I eat sushi bake with?",
@@ -989,13 +1004,21 @@ SEED_PAGES = [
             "cook_time_minutes": 35,
             "total_time_minutes": 55,
             "servings": 4,
+            # "chicken thighs and drumsticks, bone-in" is priced/weighed with
+            # the bone in, which isn't edible, so its nutrition_per_unit
+            # below is a rough as-purchased-weight approximation rather
+            # than a precise edible-portion figure -- less exact than a
+            # boneless cut like the pilot recipes use. The chiles, smoked
+            # paprika, and lemon juice are left without one: each
+            # contributes well under 1% of the dish's total calories, the
+            # same "genuinely negligible" treatment as salt.
             "ingredients": [
-                {"name": "chicken thighs and drumsticks, bone-in", "base_qty": 2.5, "unit_us": "lb", "base_qty_metric": 1130, "unit_metric": "g", "hub_slug": None},
+                {"name": "chicken thighs and drumsticks, bone-in", "base_qty": 2.5, "unit_us": "lb", "base_qty_metric": 1130, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 800, "protein_g": 68.0, "carbs_g": 0, "fat_g": 54.0}},
                 {"name": "red bird's eye chiles, chopped", "base_qty": 3, "unit_us": "whole", "base_qty_metric": 3, "unit_metric": "whole", "hub_slug": None},
-                {"name": "garlic cloves", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "garlic cloves", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.2, "carbs_g": 1.0, "fat_g": 0}},
                 {"name": "smoked paprika", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
                 {"name": "lemon juice", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
-                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 119, "protein_g": 0, "carbs_g": 0, "fat_g": 13.5}},
                 {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
             ],
             "instructions": [
@@ -1006,6 +1029,10 @@ SEED_PAGES = [
                 "Baste with any remaining marinade during the last 10 minutes of cooking.",
                 "Rest for 5 minutes before serving.",
             ],
+            "step_notes": {
+                4: "Basting only in the last 10 minutes, not throughout, keeps the marinade's sugars from burning over the full cook time while still building a glossy, charred glaze at the end.",
+                5: "The chicken keeps cooking slightly from residual heat during this rest, and the juices settle back through the meat instead of pooling out the moment it's cut.",
+            },
             "tips_and_variations": [
                 "Adjust the heat by seeding the chiles for a milder version, or adding an extra chile for more fire.",
                 "Spatchcocking a whole chicken instead of using pieces cooks more evenly and gets more skin surface charred.",
@@ -1018,11 +1045,8 @@ SEED_PAGES = [
                 "Refrigerate up to 3 days. Reheat in a 350°F oven to keep the skin "
                 "from turning soggy; the microwave works but softens the char."
             ),
-            "nutrition_note": (
-                "Approximately 340 calories, 20g fat, 3g carbohydrates, and 35g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "What does peri peri mean?",
@@ -1071,14 +1095,23 @@ SEED_PAGES = [
             "cook_time_minutes": 15,
             "total_time_minutes": 35,
             "servings": 4,
+            # Dried guajillo chiles and white vinegar are left without a
+            # nutrition_per_unit -- dried chiles don't have an easily
+            # sourced standard per-whole-chile figure, and both contribute
+            # well under 1% of the dish's total calories either way, the
+            # same negligible treatment as salt. Achiote paste's value below
+            # is a rough estimate (it's mostly ground annatto seed and
+            # spices, not a standard packaged food with a nutrition label),
+            # kept in because it's the dish's defining ingredient rather
+            # than a minor seasoning.
             "ingredients": [
-                {"name": "boneless, skinless chicken thighs", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "boneless, skinless chicken thighs", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 540, "protein_g": 92.0, "carbs_g": 0, "fat_g": 21.0}},
                 {"name": "dried guajillo chiles, stemmed and seeded", "base_qty": 3, "unit_us": "whole", "base_qty_metric": 3, "unit_metric": "whole", "hub_slug": None},
-                {"name": "achiote (annatto) paste", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
-                {"name": "pineapple juice", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "achiote (annatto) paste", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 35, "protein_g": 0.5, "carbs_g": 5.0, "fat_g": 1.0}},
+                {"name": "pineapple juice", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 132, "protein_g": 0.9, "carbs_g": 32.5, "fat_g": 0.3}},
                 {"name": "white vinegar", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
-                {"name": "garlic cloves", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None},
-                {"name": "fresh pineapple, diced, for serving", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic cloves", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.2, "carbs_g": 1.0, "fat_g": 0}},
+                {"name": "fresh pineapple, diced, for serving", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 83, "protein_g": 0.9, "carbs_g": 21.6, "fat_g": 0.2}},
             ],
             "instructions": [
                 "Rehydrate the guajillo chiles in hot water for 10 minutes, then drain.",
@@ -1088,6 +1121,10 @@ SEED_PAGES = [
                 "Sear the chicken 5-6 minutes per side until charred at the edges and cooked through (165°F / 74°C internal).",
                 "Rest 5 minutes, then chop and serve with diced fresh pineapple, in tacos or over rice.",
             ],
+            "step_notes": {
+                0: "Dried chiles need rehydrating before blending or they stay tough and gritty in the finished marinade instead of pureeing smooth.",
+                5: "Resting before chopping keeps the juices in the meat rather than letting them spill out onto the cutting board the moment it's cut into.",
+            },
             "tips_and_variations": [
                 "Achiote paste is sold in Latin grocery stores and many supermarkets' international aisle, don't substitute plain paprika, it lacks achiote's distinct earthy flavor.",
                 "For tacos, warm corn tortillas and top with the chopped chicken, pineapple, chopped onion, and cilantro.",
@@ -1100,11 +1137,8 @@ SEED_PAGES = [
                 "Refrigerate up to 3 days. Reheat in a hot skillet to re-crisp the "
                 "edges, microwaving works but loses the char."
             ),
-            "nutrition_note": (
-                "Approximately 310 calories, 14g fat, 12g carbohydrates, and 34g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Is chicken al pastor traditional, or is pork the only real version?",
@@ -1152,10 +1186,10 @@ SEED_PAGES = [
             "total_time_minutes": 375,
             "servings": 8,
             "ingredients": [
-                {"name": "ripe mangoes, peeled and pureed", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 490, "unit_metric": "g", "hub_slug": None},
-                {"name": "sweetened condensed milk", "base_qty": 1, "unit_us": "can (14 oz)", "base_qty_metric": 397, "unit_metric": "g", "hub_slug": None},
-                {"name": "heavy cream, cold", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None},
-                {"name": "lime juice", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ripe mangoes, peeled and pureed", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 490, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 110, "protein_g": 1.5, "carbs_g": 28.0, "fat_g": 0.7}},
+                {"name": "sweetened condensed milk", "base_qty": 1, "unit_us": "can (14 oz)", "base_qty_metric": 397, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1274, "protein_g": 31.4, "carbs_g": 216.0, "fat_g": 34.5}},
+                {"name": "heavy cream, cold", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 821, "protein_g": 4.9, "carbs_g": 6.6, "fat_g": 88.0}},
+                {"name": "lime juice", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.1, "carbs_g": 1.4, "fat_g": 0}},
             ],
             "instructions": [
                 "Puree the mango with the lime juice until smooth.",
@@ -1165,6 +1199,14 @@ SEED_PAGES = [
                 "Pour into a loaf pan or freezer-safe container and smooth the top.",
                 "Freeze at least 6 hours, ideally overnight, before scooping.",
             ],
+            # Only one step_note here, not the usual 2-3 -- most of this
+            # recipe's real technique insight is already in reader_tips
+            # above (chilling the bowl, the plastic-wrap trick), and
+            # inventing a second, weaker note on top of that just to hit a
+            # round number isn't worth it.
+            "step_notes": {
+                3: "Folding rather than stirring keeps the whipped air in the cream intact, which is what makes this scoopable without a machine constantly churning it, stirring would deflate it back to dense and icy.",
+            },
             "tips_and_variations": [
                 "Frozen mango chunks, thawed, work fine when ripe fresh mango isn't in season.",
                 "A splash of coconut cream folded in alongside the whipped cream adds a tropical note.",
@@ -1178,11 +1220,8 @@ SEED_PAGES = [
                 "at room temperature 5-10 minutes before scooping if it's been "
                 "frozen solid."
             ),
-            "nutrition_note": (
-                "Approximately 320 calories, 18g fat, 36g carbohydrates, and 4g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Do I need an ice cream maker for this?",
@@ -1229,10 +1268,10 @@ SEED_PAGES = [
             "total_time_minutes": 5,
             "servings": 1,
             "ingredients": [
-                {"name": "amaretto", "base_qty": 2, "unit_us": "oz", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
-                {"name": "fresh lemon juice", "base_qty": 0.75, "unit_us": "oz", "base_qty_metric": 22, "unit_metric": "ml", "hub_slug": None},
-                {"name": "simple syrup", "base_qty": 0.5, "unit_us": "oz", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
-                {"name": "egg white", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "amaretto", "base_qty": 2, "unit_us": "oz", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 110, "protein_g": 0, "carbs_g": 12.0, "fat_g": 0}},
+                {"name": "fresh lemon juice", "base_qty": 0.75, "unit_us": "oz", "base_qty_metric": 22, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 7, "protein_g": 0.1, "carbs_g": 2.6, "fat_g": 0}},
+                {"name": "simple syrup", "base_qty": 0.5, "unit_us": "oz", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 48, "protein_g": 0, "carbs_g": 12.5, "fat_g": 0}},
+                {"name": "egg white", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None, "nutrition_per_unit": {"calories": 17, "protein_g": 3.6, "carbs_g": 0.2, "fat_g": 0}},
                 {"name": "angostura bitters, for garnish", "base_qty": 2, "unit_us": "dashes", "base_qty_metric": 2, "unit_metric": "dashes", "hub_slug": None},
             ],
             "instructions": [
@@ -1242,6 +1281,13 @@ SEED_PAGES = [
                 "Strain into a rocks glass over fresh ice, or up into a coupe.",
                 "Dot the foam with angostura bitters for garnish.",
             ],
+            # Only one step_note -- reader_tips above already covers the dry
+            # shake's foam-building role and letting the shaker rest before
+            # straining, so this covers the remaining distinct point: why
+            # there's a second shake at all.
+            "step_notes": {
+                2: "The second, wet shake is what chills and dilutes the drink to a drinkable strength; the foam is already built from the dry shake, but skipping this step leaves the cocktail warm and overly boozy-tasting.",
+            },
             "tips_and_variations": [
                 "Pasteurized egg whites (or the liquid egg white product sold in cartons) work fine and remove any raw-egg concern.",
                 "No egg white on hand? The drink is still good without it, just less foamy on top.",
@@ -1258,10 +1304,8 @@ SEED_PAGES = [
                 "refrigerate up to a day, then add egg white and shake to "
                 "order per drink."
             ),
-            "nutrition_note": (
-                "Approximately 170 calories per serving, almost entirely from "
-                "sugar and alcohol. An estimate only."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Is it safe to drink raw egg white in a cocktail?",
@@ -1308,12 +1352,15 @@ SEED_PAGES = [
             "cook_time_minutes": 10,
             "total_time_minutes": 20,
             "servings": 2,
+            # The lemon is squeezed over as a finishing garnish, not eaten
+            # whole, so it's left without a nutrition_per_unit -- the actual
+            # calories transferred are negligible either way.
             "ingredients": [
-                {"name": "Chilean sea bass fillets, skin on", "base_qty": 2, "unit_us": "fillets (6 oz each)", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
+                {"name": "Chilean sea bass fillets, skin on", "base_qty": 2, "unit_us": "fillets (6 oz each)", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 357, "protein_g": 30.6, "carbs_g": 0, "fat_g": 25.5}},
                 {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
                 {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
-                {"name": "neutral oil (avocado or grapeseed)", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
-                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil (avocado or grapeseed)", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 120, "protein_g": 0, "carbs_g": 0, "fat_g": 14.0}},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5}},
                 {"name": "lemon, halved", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
             ],
             "instructions": [
@@ -1324,6 +1371,11 @@ SEED_PAGES = [
                 "Flip, add the butter to the pan, and baste the fillets for 2-3 minutes until the fish flakes easily and reaches 130-135°F (54-57°C) internally.",
                 "Squeeze fresh lemon over the top and serve immediately.",
             ],
+            "step_notes": {
+                0: "Drying the fillets thoroughly means the skin contacts hot oil right away instead of first steaming off surface moisture before it can start crisping.",
+                2: "Pressing the fillet flat for the first moments keeps the whole skin surface in contact with the pan while it firms up; skip this and the edges curl away from the heat before the skin has set.",
+                4: "Basting with butter cooks the delicate flesh through gently rather than continuing a hard sear, without drying out the side that's no longer directly on the hot pan.",
+            },
             "tips_and_variations": [
                 "Don't move the fish while the skin-side sear is happening, it releases from the pan on its own once properly crisped.",
                 "Chilean sea bass is also sold as Patagonian toothfish, same fish, different market name.",
@@ -1336,11 +1388,8 @@ SEED_PAGES = [
                 "Best eaten immediately. Leftovers keep a day refrigerated; reheat "
                 "gently to avoid drying out the delicate flesh."
             ),
-            "nutrition_note": (
-                "Approximately 420 calories, 34g fat, 0g carbohydrates, and 28g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Why is Chilean sea bass so expensive?",
@@ -1388,12 +1437,12 @@ SEED_PAGES = [
             "total_time_minutes": 45,
             "servings": 6,
             "ingredients": [
-                {"name": "white rice", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 185, "unit_metric": "g", "hub_slug": None},
+                {"name": "white rice", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 185, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 675, "protein_g": 12.5, "carbs_g": 148.0, "fat_g": 1.0}},
                 {"name": "water", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None},
                 {"name": "cinnamon stick", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
-                {"name": "whole milk", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 960, "unit_metric": "ml", "hub_slug": None},
-                {"name": "sweetened condensed milk", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 50, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 960, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 149, "protein_g": 7.7, "carbs_g": 11.7, "fat_g": 8.0}},
+                {"name": "sweetened condensed milk", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 982, "protein_g": 24.2, "carbs_g": 166.5, "fat_g": 26.6}},
+                {"name": "granulated sugar", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 50, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 774, "protein_g": 0, "carbs_g": 200.0, "fat_g": 0}},
                 {"name": "ground cinnamon, for serving", "base_qty": 1, "unit_us": "to taste", "base_qty_metric": 1, "unit_metric": "to taste", "hub_slug": None},
             ],
             "instructions": [
@@ -1404,6 +1453,13 @@ SEED_PAGES = [
                 "Remove the cinnamon stick and let cool slightly, it continues thickening as it cools.",
                 "Serve warm or chilled, dusted with ground cinnamon.",
             ],
+            # Steps 4/5's own insight (it keeps thickening off the heat) is
+            # already reader_tips above, so these two cover different ground:
+            # the choice of liquid at each stage.
+            "step_notes": {
+                1: "Cooking the rice in water first, not milk, lets it fully hydrate and soften without milk's proteins and sugars slowing that down or scorching before the rice is tender.",
+                3: "Simmering uncovered once the milk goes in lets excess liquid evaporate off, which is what actually thickens the pudding, covering it here would trap the steam and keep it thin.",
+            },
             "tips_and_variations": [
                 "Stir often once the milk goes in, rice pudding scorches on the bottom of the pot easily if left unstirred.",
                 "A strip of orange or lime zest simmered along with the cinnamon stick adds a traditional citrus note.",
@@ -1417,11 +1473,8 @@ SEED_PAGES = [
                 "in a splash of milk when reheating or serving cold to loosen it "
                 "back up."
             ),
-            "nutrition_note": (
-                "Approximately 280 calories, 6g fat, 48g carbohydrates, and 7g "
-                "protein per serving. An estimate only, exact values depend on "
-                "the specific ingredients used."
-            ),
+            # nutrition_note intentionally omitted -- superseded by the live
+            # nutrition block computed from nutrition_per_unit above.
             "faqs": [
                 {
                     "question": "Can I make arroz con leche ahead of time?",
