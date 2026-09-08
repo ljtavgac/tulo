@@ -1049,7 +1049,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "related_recipe_slugs": ["parmesan-crusted-chicken"],
-            "category_link": "taco-recipes",
+            "category_link": {"title": "Taco Recipes", "slug": "taco-recipes"},
         },
     },
     {

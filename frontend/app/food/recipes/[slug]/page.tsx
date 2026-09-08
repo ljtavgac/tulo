@@ -5,6 +5,7 @@ import type { RecipeContent } from "@/lib/types";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import RecipeIngredientsPanel from "@/components/RecipeIngredientsPanel";
 import AdSlot from "@/components/AdSlot";
+import PrintButton from "@/components/PrintButton";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FaqSection from "@/components/FaqSection";
@@ -115,7 +116,7 @@ export default async function RecipePage({
         </div>
         <ToolCallout slug="conversion-calculator" label="Need different units or a different yield? Try our Conversion Calculator" />
 
-        <div className="my-6">
+        <div className="my-6 print:hidden">
           <AdSlot variant="in-content" />
         </div>
 
@@ -131,17 +132,12 @@ export default async function RecipePage({
           ))}
         </ol>
 
-        <div className="my-6">
+        <div className="my-6 print:hidden">
           <AdSlot variant="in-content" />
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            className="rounded-full border border-ink/20 px-4 py-2 text-sm font-medium hover:border-accent hover:text-accent"
-          >
-            🖨️ Print / PDF
-          </button>
+        <div className="flex flex-wrap gap-3 print:hidden">
+          <PrintButton />
           {content.category_link ? (
             <Link
               href={pagePath("category_roundup", content.category_link.slug)}
@@ -192,7 +188,7 @@ export default async function RecipePage({
         <RelatedLinks heading="More recipes" templateType="recipe_or_dish" slugs={content.related_recipe_slugs} />
       </article>
 
-      <aside>
+      <aside className="print:hidden">
         <div className="sticky top-4">
           <AdSlot variant="sidebar" />
         </div>
