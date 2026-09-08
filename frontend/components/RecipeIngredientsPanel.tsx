@@ -21,15 +21,19 @@ export default function RecipeIngredientsPanel({
   ingredients,
   baseServings,
   panSize,
+  prepTimeMinutes,
   baseCookTimeMinutes,
+  baseTotalTimeMinutes,
 }: {
   ingredients: RecipeIngredient[];
   baseServings: number;
-  // Both optional: only recipes actually baked in a shaped pan carry this
-  // (see PanSize's own doc comment) -- a cocktail or a skillet sear has
-  // neither, and the pan-size control below simply doesn't render.
+  // Optional: only recipes actually baked in a shaped pan carry this (see
+  // PanSize's own doc comment) -- a cocktail or a skillet sear has none,
+  // and the pan-size control below simply doesn't render.
   panSize?: PanSize;
-  baseCookTimeMinutes?: number;
+  prepTimeMinutes: number;
+  baseCookTimeMinutes: number;
+  baseTotalTimeMinutes: number;
 }) {
   const [servings, setServings] = useState(baseServings);
   const [unit, setUnit] = useState<Unit>("us");
@@ -59,8 +63,17 @@ export default function RecipeIngredientsPanel({
 
   const scale = panScale ?? servings / baseServings;
 
-  const estimatedCookTimeMinutes =
-    panScale != null && baseCookTimeMinutes != null ? Math.round((baseCookTimeMinutes / panScale) / 5) * 5 : null;
+  const estimatedCookTimeMinutes = panScale != null ? Math.round((baseCookTimeMinutes / panScale) / 5) * 5 : null;
+  // Prep effort (chopping, mixing) doesn't scale with batch size the way
+  // bake time does -- there's no equivalent of the area-ratio rule for it,
+  // so it's shown as authored regardless of pan or servings. Total moves by
+  // the same amount cook time did rather than being recomputed as
+  // prep+cook, since a recipe's total can include time neither figure
+  // covers (mango-ice-cream's freezer time, for one) that should carry
+  // through unscaled too.
+  const displayedCookTimeMinutes = estimatedCookTimeMinutes ?? baseCookTimeMinutes;
+  const displayedTotalTimeMinutes = baseTotalTimeMinutes + (displayedCookTimeMinutes - baseCookTimeMinutes);
+  const displayedServings = panScale != null ? Math.max(1, Math.round(baseServings * panScale)) : servings;
 
   // Ingredients a "goal" can actually act on: the ingredient needs its own
   // nutrition_per_unit (something to compare against) and at least one
@@ -129,175 +142,191 @@ export default function RecipeIngredientsPanel({
   );
 
   return (
-    <div className="rounded-lg border border-ink/10 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-3">
-        <ServingsScaler
-          servings={panScale != null ? Math.max(1, Math.round(baseServings * panScale)) : servings}
-          onChange={(next) => {
-            setPanLabel("");
-            setServings(next);
-          }}
-        />
-        <UnitToggle unit={unit} onChange={setUnit} />
-      </div>
-
-      {panSize ? (
-        <div className="border-b border-ink/10 py-3 text-sm">
-          <label className="flex flex-wrap items-center gap-2">
-            <span className="font-medium">Using a different pan?</span>
-            <select
-              value={panLabel}
-              onChange={(e) => setPanLabel(e.target.value)}
-              className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-1 text-xs text-ink/70"
-            >
-              <option value="">As written ({panSize.current.label})</option>
-              {panSize.alternatives.map((alt) => (
-                <option key={alt.label} value={alt.label}>
-                  {alt.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          {selectedPan ? (
-            <p className="mt-1 text-xs text-ink/40">
-              Ingredients below and the servings count above are now scaled to fill a {selectedPan.label} at roughly the same depth as
-              written.
-              {estimatedCookTimeMinutes != null ? (
-                <>
-                  {" "}
-                  Estimated bake time: <span className="font-semibold text-ink/60">~{estimatedCookTimeMinutes} min</span> (
-                  {estimatedCookTimeMinutes > baseCookTimeMinutes!
-                    ? `about ${estimatedCookTimeMinutes - baseCookTimeMinutes!} min more`
-                    : `about ${baseCookTimeMinutes! - estimatedCookTimeMinutes} min less`}{" "}
-                  than the original {baseCookTimeMinutes} min). A starting point based on pan area, not a guarantee -- start checking a
-                  few minutes early and test for doneness rather than trusting the clock alone.
-                </>
-              ) : null}
-            </p>
-          ) : null}
+    <>
+      {/* Mirrors the ingredients box's own scale state, not the recipe's
+          authored figures, so this never shows a Cook/Total/Servings that
+          contradicts what the panel below is actually displaying. */}
+      <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg border border-ink/10 p-4 text-sm sm:grid-cols-4">
+        <div>
+          <dt className="text-ink/50">Prep</dt>
+          <dd className="font-semibold">{prepTimeMinutes} min</dd>
         </div>
-      ) : null}
-
-      {goalAdjustableIngredients.length > 0 ? (
-        <div className="border-b border-ink/10 py-3 text-sm">
-          <label className="flex flex-wrap items-center gap-2">
-            <span className="text-ink/60">Adjust for:</span>
-            <select
-              value={goal}
-              onChange={(e) => applyGoal(e.target.value as Goal)}
-              className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-1 text-xs text-ink/70"
-            >
-              <option value="">No goal</option>
-              {GOAL_OPTIONS.map((g) => (
-                <option key={g.value} value={g.value}>
-                  {g.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          {goal ? (
-            <p className="mt-1 text-xs text-ink/40">
-              Swapped {Object.keys(swaps).length} of {goalAdjustableIngredients.length} ingredient
-              {goalAdjustableIngredients.length === 1 ? "" : "s"} with substitute data for this goal
-              {ingredients.length > goalAdjustableIngredients.length
-                ? `; the rest of this recipe's ingredients don't have substitute data to adjust`
-                : ""}
-              .
-            </p>
-          ) : null}
+        <div>
+          <dt className="text-ink/50">Cook</dt>
+          <dd className="font-semibold">{displayedCookTimeMinutes} min</dd>
         </div>
-      ) : null}
+        <div>
+          <dt className="text-ink/50">Total</dt>
+          <dd className="font-semibold">{displayedTotalTimeMinutes} min</dd>
+        </div>
+        <div>
+          <dt className="text-ink/50">Servings</dt>
+          <dd className="font-semibold">{displayedServings}</dd>
+        </div>
+      </dl>
 
-      <ul className="mt-4 space-y-2">
-        {ingredients.map((ing) => {
-          const activeSubstitute = ing.available_substitutes?.find((sub) => sub.name === swaps[ing.name]);
-          // Defaults to 1 (no change) when nothing's swapped in -- the
-          // substitute's ratio_multiplier is "amount of substitute per 1
-          // unit of the original," so it multiplies the same base_qty the
-          // serving scaler already scales, rather than replacing it.
-          const multiplier = activeSubstitute?.ratio_multiplier ?? 1;
+      <h2 className="mt-6 text-xl font-bold">Ingredients</h2>
+      <div className="mt-3 rounded-lg border border-ink/10 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-3">
+          <ServingsScaler
+            servings={displayedServings}
+            onChange={(next) => {
+              setPanLabel("");
+              setServings(next);
+            }}
+          />
+          <UnitToggle unit={unit} onChange={setUnit} />
+        </div>
 
-          // unit_metric === unit_us marks a count of discrete items (eggs,
-          // bananas, cloves of garlic) rather than a real unit conversion --
-          // there's no meaningful weight/volume equivalent for "1 banana",
-          // so both views show the same fraction-formatted count instead of
-          // one side rounding to whole grams (which could round a small
-          // fractional count down to a nonsensical "0").
-          const isCount = ing.unit_metric === ing.unit_us;
-          const rawQty = unit === "us" || isCount ? ing.base_qty * scale * multiplier : ing.base_qty_metric * scale * multiplier;
-          const qty = unit === "us" || isCount ? formatUsQuantity(rawQty) : formatMetricQuantity(rawQty);
-          const unitLabel = unit === "us" || isCount ? ing.unit_us : ing.unit_metric;
-          const displayName = activeSubstitute ? activeSubstitute.name : ing.name;
+        {panSize ? (
+          <div className="border-b border-ink/10 py-3 text-sm">
+            <label className="flex flex-wrap items-center gap-2">
+              <span className="font-medium">Using a different pan?</span>
+              <select
+                value={panLabel}
+                onChange={(e) => setPanLabel(e.target.value)}
+                className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-1 text-xs text-ink/70"
+              >
+                <option value="">As written ({panSize.current.label})</option>
+                {panSize.alternatives.map((alt) => (
+                  <option key={alt.label} value={alt.label}>
+                    {alt.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {selectedPan ? (
+              <p className="mt-1 text-xs text-ink/40">
+                Ingredients and the Prep/Cook/Total/Servings figures above are now scaled to fill a {selectedPan.label} at roughly the
+                same depth as written. The adjusted cook time is a starting point based on pan area, not a guarantee -- start checking a
+                few minutes early and test for doneness rather than trusting the clock alone.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
-          return (
-            <li key={ing.name} className="text-sm">
-              <div>
-                <span className="font-medium">
-                  {qty} {unitLabel}
-                </span>
-                <IngredientUnitConversion amount={rawQty} unit={unitLabel} />{" "}
-                {!activeSubstitute && ing.hub_slug ? (
-                  <Link href={pagePath("ingredient_hub", ing.hub_slug)} className="underline hover:text-accent">
-                    {displayName}
-                  </Link>
-                ) : (
-                  displayName
-                )}
+        {goalAdjustableIngredients.length > 0 ? (
+          <div className="border-b border-ink/10 py-3 text-sm">
+            <label className="flex flex-wrap items-center gap-2">
+              <span className="text-ink/60">Adjust for:</span>
+              <select
+                value={goal}
+                onChange={(e) => applyGoal(e.target.value as Goal)}
+                className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-1 text-xs text-ink/70"
+              >
+                <option value="">No goal</option>
+                {GOAL_OPTIONS.map((g) => (
+                  <option key={g.value} value={g.value}>
+                    {g.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {goal ? (
+              <p className="mt-1 text-xs text-ink/40">
+                Swapped {Object.keys(swaps).length} of {goalAdjustableIngredients.length} ingredient
+                {goalAdjustableIngredients.length === 1 ? "" : "s"} with substitute data for this goal
+                {ingredients.length > goalAdjustableIngredients.length
+                  ? `; the rest of this recipe's ingredients don't have substitute data to adjust`
+                  : ""}
+                .
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+
+        <ul className="mt-4 space-y-2">
+          {ingredients.map((ing) => {
+            const activeSubstitute = ing.available_substitutes?.find((sub) => sub.name === swaps[ing.name]);
+            // Defaults to 1 (no change) when nothing's swapped in -- the
+            // substitute's ratio_multiplier is "amount of substitute per 1
+            // unit of the original," so it multiplies the same base_qty the
+            // serving scaler already scales, rather than replacing it.
+            const multiplier = activeSubstitute?.ratio_multiplier ?? 1;
+
+            // unit_metric === unit_us marks a count of discrete items (eggs,
+            // bananas, cloves of garlic) rather than a real unit conversion --
+            // there's no meaningful weight/volume equivalent for "1 banana",
+            // so both views show the same fraction-formatted count instead of
+            // one side rounding to whole grams (which could round a small
+            // fractional count down to a nonsensical "0").
+            const isCount = ing.unit_metric === ing.unit_us;
+            const rawQty = unit === "us" || isCount ? ing.base_qty * scale * multiplier : ing.base_qty_metric * scale * multiplier;
+            const qty = unit === "us" || isCount ? formatUsQuantity(rawQty) : formatMetricQuantity(rawQty);
+            const unitLabel = unit === "us" || isCount ? ing.unit_us : ing.unit_metric;
+            const displayName = activeSubstitute ? activeSubstitute.name : ing.name;
+
+            return (
+              <li key={ing.name} className="text-sm">
+                <div>
+                  <span className="font-medium">
+                    {qty} {unitLabel}
+                  </span>
+                  <IngredientUnitConversion amount={rawQty} unit={unitLabel} />{" "}
+                  {!activeSubstitute && ing.hub_slug ? (
+                    <Link href={pagePath("ingredient_hub", ing.hub_slug)} className="underline hover:text-accent">
+                      {displayName}
+                    </Link>
+                  ) : (
+                    displayName
+                  )}
+                </div>
+
+                {ing.available_substitutes && ing.available_substitutes.length > 0 ? (
+                  <select
+                    value={swaps[ing.name] ?? ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSwaps((prev) => {
+                        const next = { ...prev };
+                        if (value) next[ing.name] = value;
+                        else delete next[ing.name];
+                        return next;
+                      });
+                    }}
+                    className="mt-1 rounded border border-ink/15 bg-ink/[0.02] px-2 py-0.5 text-xs text-ink/60"
+                  >
+                    <option value="">I don&apos;t have {ing.name}?</option>
+                    {ing.available_substitutes.map((sub) => (
+                      <option key={sub.name} value={sub.name}>
+                        Use {sub.name} instead
+                      </option>
+                    ))}
+                  </select>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+
+        {nutritionTotals.hasData ? (
+          <div className="mt-4 rounded border border-ink/10 bg-ink/[0.02] p-3 text-sm">
+            <p className="font-medium">Nutrition per serving</p>
+            <dl className="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-ink/70 sm:grid-cols-4">
+              <div className="flex justify-between gap-2 sm:block">
+                <dt className="text-ink/50">Calories</dt>
+                <dd>{Math.round(nutritionTotals.calories)}</dd>
               </div>
-
-              {ing.available_substitutes && ing.available_substitutes.length > 0 ? (
-                <select
-                  value={swaps[ing.name] ?? ""}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSwaps((prev) => {
-                      const next = { ...prev };
-                      if (value) next[ing.name] = value;
-                      else delete next[ing.name];
-                      return next;
-                    });
-                  }}
-                  className="mt-1 rounded border border-ink/15 bg-ink/[0.02] px-2 py-0.5 text-xs text-ink/60"
-                >
-                  <option value="">I don&apos;t have {ing.name}?</option>
-                  {ing.available_substitutes.map((sub) => (
-                    <option key={sub.name} value={sub.name}>
-                      Use {sub.name} instead
-                    </option>
-                  ))}
-                </select>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
-
-      {nutritionTotals.hasData ? (
-        <div className="mt-4 rounded border border-ink/10 bg-ink/[0.02] p-3 text-sm">
-          <p className="font-medium">Nutrition per serving</p>
-          <dl className="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-ink/70 sm:grid-cols-4">
-            <div className="flex justify-between gap-2 sm:block">
-              <dt className="text-ink/50">Calories</dt>
-              <dd>{Math.round(nutritionTotals.calories)}</dd>
-            </div>
-            <div className="flex justify-between gap-2 sm:block">
-              <dt className="text-ink/50">Protein</dt>
-              <dd>{Math.round(nutritionTotals.protein_g)}g</dd>
-            </div>
-            <div className="flex justify-between gap-2 sm:block">
-              <dt className="text-ink/50">Carbs</dt>
-              <dd>{Math.round(nutritionTotals.carbs_g)}g</dd>
-            </div>
-            <div className="flex justify-between gap-2 sm:block">
-              <dt className="text-ink/50">Fat</dt>
-              <dd>{Math.round(nutritionTotals.fat_g)}g</dd>
-            </div>
-          </dl>
-          <p className="mt-1 text-xs text-ink/40">
-            Based on the recipe as written, one serving. Recalculates if you swap an ingredient above. An estimate only, exact values depend on the specific ingredients used.
-          </p>
-        </div>
-      ) : null}
-    </div>
+              <div className="flex justify-between gap-2 sm:block">
+                <dt className="text-ink/50">Protein</dt>
+                <dd>{Math.round(nutritionTotals.protein_g)}g</dd>
+              </div>
+              <div className="flex justify-between gap-2 sm:block">
+                <dt className="text-ink/50">Carbs</dt>
+                <dd>{Math.round(nutritionTotals.carbs_g)}g</dd>
+              </div>
+              <div className="flex justify-between gap-2 sm:block">
+                <dt className="text-ink/50">Fat</dt>
+                <dd>{Math.round(nutritionTotals.fat_g)}g</dd>
+              </div>
+            </dl>
+            <p className="mt-1 text-xs text-ink/40">
+              Based on the recipe as written, one serving. Recalculates if you swap an ingredient above. An estimate only, exact values
+              depend on the specific ingredients used.
+            </p>
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }

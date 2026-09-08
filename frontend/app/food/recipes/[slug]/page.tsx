@@ -125,34 +125,14 @@ export default async function RecipePage({
           <LinkifiedText text={content.why_it_works} terms={linkTerms} />
         </p>
 
-        <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg border border-ink/10 p-4 text-sm sm:grid-cols-4">
-          <div>
-            <dt className="text-ink/50">Prep</dt>
-            <dd className="font-semibold">{content.prep_time_minutes} min</dd>
-          </div>
-          <div>
-            <dt className="text-ink/50">Cook</dt>
-            <dd className="font-semibold">{content.cook_time_minutes} min</dd>
-          </div>
-          <div>
-            <dt className="text-ink/50">Total</dt>
-            <dd className="font-semibold">{content.total_time_minutes} min</dd>
-          </div>
-          <div>
-            <dt className="text-ink/50">Servings</dt>
-            <dd className="font-semibold">{content.servings}</dd>
-          </div>
-        </dl>
-
-        <h2 className="mt-6 text-xl font-bold">Ingredients</h2>
-        <div className="mt-3">
-          <RecipeIngredientsPanel
-            ingredients={content.ingredients}
-            baseServings={content.servings}
-            panSize={content.pan_size}
-            baseCookTimeMinutes={content.cook_time_minutes}
-          />
-        </div>
+        <RecipeIngredientsPanel
+          ingredients={content.ingredients}
+          baseServings={content.servings}
+          panSize={content.pan_size}
+          prepTimeMinutes={content.prep_time_minutes}
+          baseCookTimeMinutes={content.cook_time_minutes}
+          baseTotalTimeMinutes={content.total_time_minutes}
+        />
         <ToolCallout slug="conversion-calculator" label="Need different units or a different yield? Try our Conversion Calculator" />
 
         <div className="my-6 print:hidden">
