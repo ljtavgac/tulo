@@ -596,12 +596,12 @@ SEED_PAGES = [
                 "in rotation, organized by cooking method."
             ),
             "recipe_cards": [
-                {"title": "Baba Ganoush", "slug": None, "description": "Smoky, roasted eggplant dip blended with tahini, garlic, and lemon.", "image_query": "baba ganoush"},
-                {"title": "Eggplant Parmesan", "slug": None, "description": "Breaded, fried (or baked) eggplant layered with marinara and melted cheese.", "image_query": "eggplant parmesan"},
-                {"title": "Roasted Eggplant with Garlic and Herbs", "slug": None, "description": "The simplest way to cook eggplant - olive oil, high heat, and just enough seasoning to let it shine.", "image_query": "roasted eggplant"},
-                {"title": "Eggplant Curry (Baingan Bharta)", "slug": None, "description": "Charred, mashed eggplant simmered with tomatoes, onion, and warm spices.", "image_query": "baingan bharta"},
-                {"title": "Grilled Eggplant Slices", "slug": None, "description": "Salted, grilled eggplant rounds with a quick balsamic glaze.", "image_query": "grilled eggplant"},
-                {"title": "Miso-Glazed Eggplant (Nasu Dengaku)", "slug": None, "description": "Broiled eggplant halves topped with a sweet-savory miso glaze.", "image_query": "nasu dengaku"},
+                {"title": "Baba Ganoush", "slug": "baba-ganoush", "description": "Smoky, roasted eggplant dip blended with tahini, garlic, and lemon.", "image_query": "baba ganoush"},
+                {"title": "Eggplant Parmesan", "slug": "eggplant-parmesan", "description": "Breaded, fried (or baked) eggplant layered with marinara and melted cheese.", "image_query": "eggplant parmesan"},
+                {"title": "Roasted Eggplant with Garlic and Herbs", "slug": "roasted-eggplant-with-garlic-and-herbs", "description": "The simplest way to cook eggplant - olive oil, high heat, and just enough seasoning to let it shine.", "image_query": "roasted eggplant"},
+                {"title": "Eggplant Curry (Baingan Bharta)", "slug": "baingan-bharta", "description": "Charred, mashed eggplant simmered with tomatoes, onion, and warm spices.", "image_query": "baingan bharta"},
+                {"title": "Grilled Eggplant Slices", "slug": "grilled-eggplant-slices", "description": "Salted, grilled eggplant rounds with a quick balsamic glaze.", "image_query": "grilled eggplant"},
+                {"title": "Miso-Glazed Eggplant (Nasu Dengaku)", "slug": "miso-glazed-eggplant", "description": "Broiled eggplant halves topped with a sweet-savory miso glaze.", "image_query": "nasu dengaku"},
             ],
             "sub_categories": [
                 {"label": "Mediterranean", "items": ["Baba Ganoush", "Grilled Eggplant Slices"]},
@@ -5393,10 +5393,10 @@ SEED_PAGES = [
                 "temperature. These are the duck preparations worth learning."
             ),
             "recipe_cards": [
-                {"title": "Pan-Seared Duck Breast", "slug": None, "description": "Scored, slowly rendered duck breast with crackling-crisp skin and a rosy center.", "image_query": "pan seared duck breast"},
-                {"title": "Duck Confit", "slug": None, "description": "Duck legs slow-cooked and preserved in their own rendered fat until fall-apart tender.", "image_query": "duck confit"},
-                {"title": "Whole Roast Duck", "slug": None, "description": "A whole roasted duck with crisp skin, basted and pricked to release excess fat as it cooks.", "image_query": "whole roast duck"},
-                {"title": "Duck Fat Roasted Potatoes", "slug": None, "description": "Potatoes roasted in reserved duck fat for an especially crisp, savory crust.", "image_query": "duck fat potatoes"},
+                {"title": "Pan-Seared Duck Breast", "slug": "pan-seared-duck-breast", "description": "Scored, slowly rendered duck breast with crackling-crisp skin and a rosy center.", "image_query": "pan seared duck breast"},
+                {"title": "Duck Confit", "slug": "duck-confit", "description": "Duck legs slow-cooked and preserved in their own rendered fat until fall-apart tender.", "image_query": "duck confit"},
+                {"title": "Whole Roast Duck", "slug": "whole-roast-duck", "description": "A whole roasted duck with crisp skin, basted and pricked to release excess fat as it cooks.", "image_query": "whole roast duck"},
+                {"title": "Duck Fat Roasted Potatoes", "slug": "duck-fat-roasted-potatoes", "description": "Potatoes roasted in reserved duck fat for an especially crisp, savory crust.", "image_query": "duck fat potatoes"},
             ],
             "sub_categories": [
                 {"label": "Breast", "items": ["Pan-Seared Duck Breast"]},
@@ -5443,10 +5443,10 @@ SEED_PAGES = [
                 "worth trying, organized by preparation."
             ),
             "recipe_cards": [
-                {"title": "Roasted Beet Salad with Goat Cheese", "slug": None, "description": "Sweet roasted beets with tangy goat cheese and toasted walnuts.", "image_query": "roasted beet salad goat cheese"},
-                {"title": "Pickled Beets", "slug": None, "description": "Classic sweet-and-sour pickled beets, ready to can or refrigerate.", "image_query": "pickled beets"},
-                {"title": "Shaved Raw Beet Salad", "slug": None, "description": "Thinly shaved raw beets with a bright citrus vinaigrette.", "image_query": "raw beet salad"},
-                {"title": "Beet and Feta Hummus", "slug": None, "description": "A vibrant pink hummus made by blending roasted beets into the base.", "image_query": "beet hummus"},
+                {"title": "Roasted Beet Salad with Goat Cheese", "slug": "roasted-beet-salad-with-goat-cheese", "description": "Sweet roasted beets with tangy goat cheese and toasted walnuts.", "image_query": "roasted beet salad goat cheese"},
+                {"title": "Pickled Beets", "slug": "pickled-beets", "description": "Classic sweet-and-sour pickled beets, ready to can or refrigerate.", "image_query": "pickled beets"},
+                {"title": "Shaved Raw Beet Salad", "slug": "shaved-raw-beet-salad", "description": "Thinly shaved raw beets with a bright citrus vinaigrette.", "image_query": "raw beet salad"},
+                {"title": "Beet and Feta Hummus", "slug": "beet-and-feta-hummus", "description": "A vibrant pink hummus made by blending roasted beets into the base.", "image_query": "beet hummus"},
             ],
             "sub_categories": [
                 {"label": "Roasted", "items": ["Roasted Beet Salad with Goat Cheese"]},
@@ -5494,10 +5494,10 @@ SEED_PAGES = [
                 "recipes worth making with either."
             ),
             "recipe_cards": [
-                {"title": "Fig and Prosciutto Flatbread", "slug": None, "description": "Fresh figs, salty prosciutto, and melted gorgonzola over a crisp flatbread.", "image_query": "fig prosciutto flatbread"},
-                {"title": "Honey-Roasted Figs", "slug": None, "description": "Fresh figs halved and roasted with honey until caramelized, served with yogurt or ice cream.", "image_query": "honey roasted figs"},
-                {"title": "Fig Jam", "slug": None, "description": "A simple preserve made from fresh or dried figs, sugar, and lemon.", "image_query": "fig jam"},
-                {"title": "Fig and Goat Cheese Salad", "slug": None, "description": "Fresh figs, creamy goat cheese, and arugula with a balsamic drizzle.", "image_query": "fig goat cheese salad"},
+                {"title": "Fig and Prosciutto Flatbread", "slug": "fig-and-prosciutto-flatbread", "description": "Fresh figs, salty prosciutto, and melted gorgonzola over a crisp flatbread.", "image_query": "fig prosciutto flatbread"},
+                {"title": "Honey-Roasted Figs", "slug": "honey-roasted-figs", "description": "Fresh figs halved and roasted with honey until caramelized, served with yogurt or ice cream.", "image_query": "honey roasted figs"},
+                {"title": "Fig Jam", "slug": "fig-jam", "description": "A simple preserve made from fresh or dried figs, sugar, and lemon.", "image_query": "fig jam"},
+                {"title": "Fig and Goat Cheese Salad", "slug": "fig-and-goat-cheese-salad", "description": "Fresh figs, creamy goat cheese, and arugula with a balsamic drizzle.", "image_query": "fig goat cheese salad"},
             ],
             "sub_categories": [
                 {"label": "Savory", "items": ["Fig and Prosciutto Flatbread", "Fig and Goat Cheese Salad"]},
@@ -5544,10 +5544,10 @@ SEED_PAGES = [
                 "both sides."
             ),
             "recipe_cards": [
-                {"title": "Roasted Radishes with Butter", "slug": None, "description": "Halved radishes roasted until tender and lightly caramelized, tossed with butter and herbs.", "image_query": "roasted radishes"},
-                {"title": "Quick-Pickled Radishes", "slug": None, "description": "Thinly sliced radishes pickled in a vinegar brine, ready in an hour.", "image_query": "pickled radishes"},
-                {"title": "Radishes with Butter and Salt", "slug": None, "description": "The classic French bistro snack - crisp raw radishes, good butter, and flaky salt.", "image_query": "radishes with butter and salt"},
-                {"title": "Sautéed Radish Greens", "slug": None, "description": "The often-discarded radish tops, quickly sautéed like any other leafy green.", "image_query": "sauteed radish greens"},
+                {"title": "Roasted Radishes with Butter", "slug": "roasted-radishes-with-butter", "description": "Halved radishes roasted until tender and lightly caramelized, tossed with butter and herbs.", "image_query": "roasted radishes"},
+                {"title": "Quick-Pickled Radishes", "slug": "quick-pickled-radishes", "description": "Thinly sliced radishes pickled in a vinegar brine, ready in an hour.", "image_query": "pickled radishes"},
+                {"title": "Radishes with Butter and Salt", "slug": "radishes-with-butter-and-salt", "description": "The classic French bistro snack - crisp raw radishes, good butter, and flaky salt.", "image_query": "radishes with butter and salt"},
+                {"title": "Sautéed Radish Greens", "slug": "sauteed-radish-greens", "description": "The often-discarded radish tops, quickly sautéed like any other leafy green.", "image_query": "sauteed radish greens"},
             ],
             "sub_categories": [
                 {"label": "Cooked", "items": ["Roasted Radishes with Butter", "Sautéed Radish Greens"]},
@@ -5591,10 +5591,10 @@ SEED_PAGES = [
                 "These recipes make the case for keeping them in rotation."
             ),
             "recipe_cards": [
-                {"title": "Roasted Turnips", "slug": None, "description": "Cubed turnips roasted until caramelized at the edges and tender inside.", "image_query": "roasted turnips"},
-                {"title": "Mashed Turnips", "slug": None, "description": "A lighter, slightly peppery alternative to mashed potatoes.", "image_query": "mashed turnips"},
-                {"title": "Turnip and Potato Gratin", "slug": None, "description": "Thinly sliced turnips layered with potatoes in a creamy baked gratin.", "image_query": "turnip potato gratin"},
-                {"title": "Turnip Soup", "slug": None, "description": "A simple, creamy pureed soup built on turnips and a light broth base.", "image_query": "turnip soup"},
+                {"title": "Roasted Turnips", "slug": "roasted-turnips", "description": "Cubed turnips roasted until caramelized at the edges and tender inside.", "image_query": "roasted turnips"},
+                {"title": "Mashed Turnips", "slug": "mashed-turnips", "description": "A lighter, slightly peppery alternative to mashed potatoes.", "image_query": "mashed turnips"},
+                {"title": "Turnip and Potato Gratin", "slug": "turnip-and-potato-gratin", "description": "Thinly sliced turnips layered with potatoes in a creamy baked gratin.", "image_query": "turnip potato gratin"},
+                {"title": "Turnip Soup", "slug": "turnip-soup", "description": "A simple, creamy pureed soup built on turnips and a light broth base.", "image_query": "turnip soup"},
             ],
             "sub_categories": [
                 {"label": "Roasted & Mashed", "items": ["Roasted Turnips", "Mashed Turnips"]},
@@ -5640,10 +5640,10 @@ SEED_PAGES = [
                 "ignoring it."
             ),
             "recipe_cards": [
-                {"title": "Pan-Seared Venison Backstrap", "slug": None, "description": "Quick-seared venison loin, cooked no further than medium-rare to stay tender.", "image_query": "seared venison backstrap"},
-                {"title": "Venison Chili", "slug": None, "description": "Ground venison chili, simmered long enough to stay tender despite its low fat content.", "image_query": "venison chili"},
-                {"title": "Braised Venison Shoulder", "slug": None, "description": "A tougher cut slow-braised in red wine and stock until fall-apart tender.", "image_query": "braised venison"},
-                {"title": "Venison Burgers", "slug": None, "description": "Ground venison mixed with a little added fat (bacon or butter) to keep the patties juicy.", "image_query": "venison burger"},
+                {"title": "Pan-Seared Venison Backstrap", "slug": "pan-seared-venison-backstrap", "description": "Quick-seared venison loin, cooked no further than medium-rare to stay tender.", "image_query": "seared venison backstrap"},
+                {"title": "Venison Chili", "slug": "venison-chili", "description": "Ground venison chili, simmered long enough to stay tender despite its low fat content.", "image_query": "venison chili"},
+                {"title": "Braised Venison Shoulder", "slug": "braised-venison-shoulder", "description": "A tougher cut slow-braised in red wine and stock until fall-apart tender.", "image_query": "braised venison"},
+                {"title": "Venison Burgers", "slug": "venison-burgers", "description": "Ground venison mixed with a little added fat (bacon or butter) to keep the patties juicy.", "image_query": "venison burger"},
             ],
             "sub_categories": [
                 {"label": "Quick-Cooked", "items": ["Pan-Seared Venison Backstrap", "Venison Burgers"]},
@@ -5693,10 +5693,10 @@ SEED_PAGES = [
                 "or blended, never eaten firm. These recipes cover both."
             ),
             "recipe_cards": [
-                {"title": "Sliced Fuyu Persimmon Salad", "slug": None, "description": "Crisp, raw fuyu persimmon slices with arugula, pomegranate, and a light vinaigrette.", "image_query": "fuyu persimmon salad"},
-                {"title": "Persimmon Bread", "slug": None, "description": "A moist quick bread made from soft, fully ripe hachiya persimmon pulp.", "image_query": "persimmon bread"},
-                {"title": "Roasted Fuyu Persimmons", "slug": None, "description": "Fuyu persimmon wedges roasted until caramelized at the edges.", "image_query": "roasted persimmons"},
-                {"title": "Persimmon Pudding", "slug": None, "description": "A traditional steamed or baked pudding made from hachiya persimmon pulp and warm spices.", "image_query": "persimmon pudding"},
+                {"title": "Sliced Fuyu Persimmon Salad", "slug": "sliced-fuyu-persimmon-salad", "description": "Crisp, raw fuyu persimmon slices with arugula, pomegranate, and a light vinaigrette.", "image_query": "fuyu persimmon salad"},
+                {"title": "Persimmon Bread", "slug": "persimmon-bread", "description": "A moist quick bread made from soft, fully ripe hachiya persimmon pulp.", "image_query": "persimmon bread"},
+                {"title": "Roasted Fuyu Persimmons", "slug": "roasted-fuyu-persimmons", "description": "Fuyu persimmon wedges roasted until caramelized at the edges.", "image_query": "roasted persimmons"},
+                {"title": "Persimmon Pudding", "slug": "persimmon-pudding", "description": "A traditional steamed or baked pudding made from hachiya persimmon pulp and warm spices.", "image_query": "persimmon pudding"},
             ],
             "sub_categories": [
                 {"label": "Raw (Fuyu)", "items": ["Sliced Fuyu Persimmon Salad", "Roasted Fuyu Persimmons"]},
@@ -5744,10 +5744,10 @@ SEED_PAGES = [
                 "to use up a carton before it goes to waste."
             ),
             "recipe_cards": [
-                {"title": "Buttermilk Biscuits", "slug": None, "description": "Flaky, tender biscuits leavened partly by buttermilk's acidity reacting with baking soda.", "image_query": "buttermilk biscuits"},
-                {"title": "Buttermilk Fried Chicken", "slug": None, "description": "Chicken marinated in buttermilk overnight for extra tenderness before frying.", "image_query": "buttermilk fried chicken"},
-                {"title": "Buttermilk Pancakes", "slug": None, "description": "Fluffier, tangier pancakes than the standard milk-based version.", "image_query": "buttermilk pancakes"},
-                {"title": "Buttermilk Ranch Dressing", "slug": None, "description": "A classic tangy, herby ranch dressing built on a buttermilk base.", "image_query": "buttermilk ranch dressing"},
+                {"title": "Buttermilk Biscuits", "slug": "buttermilk-biscuits", "description": "Flaky, tender biscuits leavened partly by buttermilk's acidity reacting with baking soda.", "image_query": "buttermilk biscuits"},
+                {"title": "Buttermilk Fried Chicken", "slug": "buttermilk-fried-chicken", "description": "Chicken marinated in buttermilk overnight for extra tenderness before frying.", "image_query": "buttermilk fried chicken"},
+                {"title": "Buttermilk Pancakes", "slug": "buttermilk-pancakes", "description": "Fluffier, tangier pancakes than the standard milk-based version.", "image_query": "buttermilk pancakes"},
+                {"title": "Buttermilk Ranch Dressing", "slug": "buttermilk-ranch-dressing", "description": "A classic tangy, herby ranch dressing built on a buttermilk base.", "image_query": "buttermilk ranch dressing"},
             ],
             "sub_categories": [
                 {"label": "Baking", "items": ["Buttermilk Biscuits", "Buttermilk Pancakes"]},
@@ -5809,11 +5809,11 @@ SEED_PAGES = [
                     "description": "A mayonnaise-and-parmesan crust that bakes deeply golden without deep-frying.",
                     "image_query": "parmesan crusted chicken",
                 },
-                {"title": "Classic Margherita Pizza", "slug": None, "description": "San Marzano tomatoes, fresh mozzarella, and basil on a properly stretched dough.", "image_query": "margherita pizza"},
-                {"title": "Creamy Mushroom Risotto", "slug": None, "description": "Arborio rice slowly coaxed into a creamy texture with ladle after ladle of warm stock.", "image_query": "mushroom risotto"},
-                {"title": "Homemade Fettuccine Alfredo", "slug": None, "description": "Butter, parmesan, and pasta water emulsified into a real sauce, no cream needed.", "image_query": "fettuccine alfredo"},
-                {"title": "Eggplant Parmesan", "slug": None, "description": "Breaded, fried eggplant layered with marinara and melted cheese, baked until bubbling.", "image_query": "eggplant parmesan"},
-                {"title": "Tiramisu", "slug": None, "description": "Espresso-soaked ladyfingers layered with a mascarpone cream, no baking required.", "image_query": "tiramisu"},
+                {"title": "Classic Margherita Pizza", "slug": "margherita-pizza", "description": "San Marzano tomatoes, fresh mozzarella, and basil on a properly stretched dough.", "image_query": "margherita pizza"},
+                {"title": "Creamy Mushroom Risotto", "slug": "mushroom-risotto", "description": "Arborio rice slowly coaxed into a creamy texture with ladle after ladle of warm stock.", "image_query": "mushroom risotto"},
+                {"title": "Homemade Fettuccine Alfredo", "slug": "fettuccine-alfredo", "description": "Butter, parmesan, and pasta water emulsified into a real sauce, no cream needed.", "image_query": "fettuccine alfredo"},
+                {"title": "Eggplant Parmesan", "slug": "eggplant-parmesan", "description": "Breaded, fried eggplant layered with marinara and melted cheese, baked until bubbling.", "image_query": "eggplant parmesan"},
+                {"title": "Tiramisu", "slug": "tiramisu", "description": "Espresso-soaked ladyfingers layered with a mascarpone cream, no baking required.", "image_query": "tiramisu"},
             ],
             "sub_categories": [
                 {"label": "Pasta & Risotto", "items": ["Creamy Mushroom Risotto", "Homemade Fettuccine Alfredo"]},
@@ -5875,10 +5875,10 @@ SEED_PAGES = [
                     "description": "Traditional cinnamon rice pudding, simmered low and slow until creamy.",
                     "image_query": "arroz con leche rice pudding",
                 },
-                {"title": "Chiles Rellenos", "slug": None, "description": "Roasted poblano chiles stuffed with cheese, battered, and fried until golden.", "image_query": "chiles rellenos"},
-                {"title": "Pozole Rojo", "slug": None, "description": "A deep red, chile-based hominy soup, traditionally slow-simmered with pork.", "image_query": "pozole rojo"},
-                {"title": "Elote (Mexican Street Corn)", "slug": None, "description": "Grilled corn slathered with crema, cotija, chile powder, and lime.", "image_query": "elote mexican street corn"},
-                {"title": "Tres Leches Cake", "slug": None, "description": "A light sponge cake soaked in three kinds of milk until soft and custardy.", "image_query": "tres leches cake"},
+                {"title": "Chiles Rellenos", "slug": "chiles-rellenos", "description": "Roasted poblano chiles stuffed with cheese, battered, and fried until golden.", "image_query": "chiles rellenos"},
+                {"title": "Pozole Rojo", "slug": "pozole-rojo", "description": "A deep red, chile-based hominy soup, traditionally slow-simmered with pork.", "image_query": "pozole rojo"},
+                {"title": "Elote (Mexican Street Corn)", "slug": "elote", "description": "Grilled corn slathered with crema, cotija, chile powder, and lime.", "image_query": "elote mexican street corn"},
+                {"title": "Tres Leches Cake", "slug": "tres-leches-cake", "description": "A light sponge cake soaked in three kinds of milk until soft and custardy.", "image_query": "tres leches cake"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Chicken Al Pastor", "Chiles Rellenos", "Pozole Rojo"]},
@@ -5929,12 +5929,12 @@ SEED_PAGES = [
                 "again, not a tourist-menu sampler."
             ),
             "recipe_cards": [
-                {"title": "Potato and Cheese Pierogi", "slug": None, "description": "Hand-folded dumplings filled with mashed potato and farmer's cheese, pan-fried in butter.", "image_query": "potato pierogi"},
-                {"title": "Bigos (Hunter's Stew)", "slug": None, "description": "A slow-simmered stew of sauerkraut, fresh cabbage, and mixed meats, better the next day.", "image_query": "bigos hunters stew"},
-                {"title": "Kielbasa and Sauerkraut", "slug": None, "description": "Smoked kielbasa simmered with tangy sauerkraut, onion, and a touch of caraway.", "image_query": "kielbasa and sauerkraut"},
-                {"title": "Zurek (Sour Rye Soup)", "slug": None, "description": "A tangy, fermented rye-based soup, traditionally served with a hard-boiled egg and sausage.", "image_query": "zurek sour rye soup"},
-                {"title": "Placki Ziemniaczane (Potato Pancakes)", "slug": None, "description": "Crisp, pan-fried shredded potato pancakes, served with sour cream or applesauce.", "image_query": "polish potato pancakes"},
-                {"title": "Paczki (Polish Doughnuts)", "slug": None, "description": "Rich, yeasted doughnuts filled with fruit preserves and dusted with powdered sugar.", "image_query": "paczki polish doughnuts"},
+                {"title": "Potato and Cheese Pierogi", "slug": "potato-cheese-pierogi", "description": "Hand-folded dumplings filled with mashed potato and farmer's cheese, pan-fried in butter.", "image_query": "potato pierogi"},
+                {"title": "Bigos (Hunter's Stew)", "slug": "bigos-hunters-stew", "description": "A slow-simmered stew of sauerkraut, fresh cabbage, and mixed meats, better the next day.", "image_query": "bigos hunters stew"},
+                {"title": "Kielbasa and Sauerkraut", "slug": "kielbasa-and-sauerkraut", "description": "Smoked kielbasa simmered with tangy sauerkraut, onion, and a touch of caraway.", "image_query": "kielbasa and sauerkraut"},
+                {"title": "Zurek (Sour Rye Soup)", "slug": "zurek-sour-rye-soup", "description": "A tangy, fermented rye-based soup, traditionally served with a hard-boiled egg and sausage.", "image_query": "zurek sour rye soup"},
+                {"title": "Placki Ziemniaczane (Potato Pancakes)", "slug": "placki-ziemniaczane-potato-pancakes", "description": "Crisp, pan-fried shredded potato pancakes, served with sour cream or applesauce.", "image_query": "polish potato pancakes"},
+                {"title": "Paczki (Polish Doughnuts)", "slug": "paczki-polish-doughnuts", "description": "Rich, yeasted doughnuts filled with fruit preserves and dusted with powdered sugar.", "image_query": "paczki polish doughnuts"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Bigos (Hunter's Stew)", "Kielbasa and Sauerkraut"]},
@@ -5985,12 +5985,12 @@ SEED_PAGES = [
                 "learning the real technique for, not a shortcut version."
             ),
             "recipe_cards": [
-                {"title": "Butter Chicken (Murgh Makhani)", "slug": None, "description": "Tandoori-charred chicken simmered in a rich, tomato-and-cream sauce.", "image_query": "butter chicken murgh makhani"},
-                {"title": "Chana Masala", "slug": None, "description": "Chickpeas simmered in a tangy, spiced tomato gravy, a staple vegetarian main.", "image_query": "chana masala"},
-                {"title": "Chicken Biryani", "slug": None, "description": "Layered, fragrant basmati rice and marinated chicken, cooked together under a sealed lid.", "image_query": "chicken biryani"},
-                {"title": "Saag Paneer", "slug": None, "description": "Firm paneer cheese simmered in a pureed, spiced spinach sauce.", "image_query": "saag paneer"},
-                {"title": "Homemade Naan", "slug": None, "description": "Pillowy, blistered flatbread, traditionally cooked against the wall of a tandoor.", "image_query": "homemade naan bread"},
-                {"title": "Gulab Jamun", "slug": None, "description": "Fried milk-solid dumplings soaked in a cardamom-and-rosewater syrup.", "image_query": "gulab jamun"},
+                {"title": "Butter Chicken (Murgh Makhani)", "slug": "butter-chicken-murgh-makhani", "description": "Tandoori-charred chicken simmered in a rich, tomato-and-cream sauce.", "image_query": "butter chicken murgh makhani"},
+                {"title": "Chana Masala", "slug": "chana-masala", "description": "Chickpeas simmered in a tangy, spiced tomato gravy, a staple vegetarian main.", "image_query": "chana masala"},
+                {"title": "Chicken Biryani", "slug": "chicken-biryani", "description": "Layered, fragrant basmati rice and marinated chicken, cooked together under a sealed lid.", "image_query": "chicken biryani"},
+                {"title": "Saag Paneer", "slug": "saag-paneer", "description": "Firm paneer cheese simmered in a pureed, spiced spinach sauce.", "image_query": "saag paneer"},
+                {"title": "Homemade Naan", "slug": "homemade-naan", "description": "Pillowy, blistered flatbread, traditionally cooked against the wall of a tandoor.", "image_query": "homemade naan bread"},
+                {"title": "Gulab Jamun", "slug": "gulab-jamun", "description": "Fried milk-solid dumplings soaked in a cardamom-and-rosewater syrup.", "image_query": "gulab jamun"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Butter Chicken (Murgh Makhani)", "Chana Masala", "Chicken Biryani", "Saag Paneer"]},
@@ -6041,12 +6041,12 @@ SEED_PAGES = [
                 "heat goes on) matter across nearly all of it."
             ),
             "recipe_cards": [
-                {"title": "Kung Pao Chicken", "slug": None, "description": "Stir-fried chicken, peanuts, and dried chiles in a tangy, savory-sweet sauce.", "image_query": "kung pao chicken"},
-                {"title": "Pork and Chive Dumplings", "slug": None, "description": "Hand-folded dumplings, pan-fried until crisp on the bottom and steamed through.", "image_query": "pork chive dumplings"},
-                {"title": "Mapo Tofu", "slug": None, "description": "Silken tofu simmered in a numbing, chile-and-fermented-bean sauce with ground pork.", "image_query": "mapo tofu"},
-                {"title": "Char Siu (Chinese BBQ Pork)", "slug": None, "description": "Pork shoulder marinated in a sweet, five-spice glaze and roasted until sticky.", "image_query": "char siu bbq pork"},
-                {"title": "Egg Fried Rice", "slug": None, "description": "Day-old rice, cold and dry enough to fry separately rather than clump into mush.", "image_query": "egg fried rice"},
-                {"title": "Scallion Pancakes", "slug": None, "description": "Flaky, layered flatbread laminated with scallion and oil, pan-fried until crisp.", "image_query": "scallion pancakes"},
+                {"title": "Kung Pao Chicken", "slug": "kung-pao-chicken", "description": "Stir-fried chicken, peanuts, and dried chiles in a tangy, savory-sweet sauce.", "image_query": "kung pao chicken"},
+                {"title": "Pork and Chive Dumplings", "slug": "pork-and-chive-dumplings", "description": "Hand-folded dumplings, pan-fried until crisp on the bottom and steamed through.", "image_query": "pork chive dumplings"},
+                {"title": "Mapo Tofu", "slug": "mapo-tofu", "description": "Silken tofu simmered in a numbing, chile-and-fermented-bean sauce with ground pork.", "image_query": "mapo tofu"},
+                {"title": "Char Siu (Chinese BBQ Pork)", "slug": "char-siu", "description": "Pork shoulder marinated in a sweet, five-spice glaze and roasted until sticky.", "image_query": "char siu bbq pork"},
+                {"title": "Egg Fried Rice", "slug": "egg-fried-rice", "description": "Day-old rice, cold and dry enough to fry separately rather than clump into mush.", "image_query": "egg fried rice"},
+                {"title": "Scallion Pancakes", "slug": "scallion-pancakes", "description": "Flaky, layered flatbread laminated with scallion and oil, pan-fried until crisp.", "image_query": "scallion pancakes"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Kung Pao Chicken", "Mapo Tofu", "Char Siu (Chinese BBQ Pork)"]},
@@ -6103,11 +6103,11 @@ SEED_PAGES = [
                     "description": "Seasoned sushi rice under a baked, creamy seafood topping, all the flavor, none of the rolling.",
                     "image_query": "sushi bake casserole",
                 },
-                {"title": "Chicken Katsu", "slug": None, "description": "Panko-breaded, fried chicken cutlet, sliced and served with a tangy tonkatsu sauce.", "image_query": "chicken katsu"},
-                {"title": "Miso Soup", "slug": None, "description": "A simple, savory soup built on dashi and fermented miso paste.", "image_query": "miso soup"},
-                {"title": "Teriyaki Salmon", "slug": None, "description": "Pan-glazed salmon in a sweet-savory soy, mirin, and sugar reduction.", "image_query": "teriyaki salmon"},
-                {"title": "Yaki Onigiri (Grilled Rice Balls)", "slug": None, "description": "Pan-seared rice balls brushed with soy sauce until the outside turns crisp and toasty.", "image_query": "yaki onigiri grilled rice balls"},
-                {"title": "Matcha Cheesecake", "slug": None, "description": "A Japanese-style light, jiggly cheesecake with earthy matcha folded through it.", "image_query": "matcha cheesecake"},
+                {"title": "Chicken Katsu", "slug": "chicken-katsu", "description": "Panko-breaded, fried chicken cutlet, sliced and served with a tangy tonkatsu sauce.", "image_query": "chicken katsu"},
+                {"title": "Miso Soup", "slug": "miso-soup", "description": "A simple, savory soup built on dashi and fermented miso paste.", "image_query": "miso soup"},
+                {"title": "Teriyaki Salmon", "slug": "teriyaki-salmon", "description": "Pan-glazed salmon in a sweet-savory soy, mirin, and sugar reduction.", "image_query": "teriyaki salmon"},
+                {"title": "Yaki Onigiri (Grilled Rice Balls)", "slug": "yaki-onigiri", "description": "Pan-seared rice balls brushed with soy sauce until the outside turns crisp and toasty.", "image_query": "yaki onigiri grilled rice balls"},
+                {"title": "Matcha Cheesecake", "slug": "matcha-cheesecake", "description": "A Japanese-style light, jiggly cheesecake with earthy matcha folded through it.", "image_query": "matcha cheesecake"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Sushi Bake", "Chicken Katsu", "Teriyaki Salmon"]},
@@ -6159,12 +6159,12 @@ SEED_PAGES = [
                 "onions) rather than a long list of specialty ingredients."
             ),
             "recipe_cards": [
-                {"title": "Coq au Vin", "slug": None, "description": "Chicken braised slowly in red wine with mushrooms, pearl onions, and bacon.", "image_query": "coq au vin"},
-                {"title": "French Onion Soup", "slug": None, "description": "Deeply caramelized onions in a rich beef broth, topped with broiled cheese and bread.", "image_query": "french onion soup"},
-                {"title": "Ratatouille", "slug": None, "description": "A slow-cooked medley of summer vegetables, each cooked separately before combining.", "image_query": "ratatouille"},
-                {"title": "Quiche Lorraine", "slug": None, "description": "A custard tart filled with bacon and gruyère in a buttery, blind-baked crust.", "image_query": "quiche lorraine"},
-                {"title": "Beef Bourguignon", "slug": None, "description": "Beef chuck braised for hours in red wine until fall-apart tender.", "image_query": "beef bourguignon"},
-                {"title": "Crème Brûlée", "slug": None, "description": "A silky vanilla custard with a torched, crackling sugar shell on top.", "image_query": "creme brulee"},
+                {"title": "Coq au Vin", "slug": "coq-au-vin", "description": "Chicken braised slowly in red wine with mushrooms, pearl onions, and bacon.", "image_query": "coq au vin"},
+                {"title": "French Onion Soup", "slug": "french-onion-soup", "description": "Deeply caramelized onions in a rich beef broth, topped with broiled cheese and bread.", "image_query": "french onion soup"},
+                {"title": "Ratatouille", "slug": "ratatouille", "description": "A slow-cooked medley of summer vegetables, each cooked separately before combining.", "image_query": "ratatouille"},
+                {"title": "Quiche Lorraine", "slug": "quiche-lorraine", "description": "A custard tart filled with bacon and gruyère in a buttery, blind-baked crust.", "image_query": "quiche lorraine"},
+                {"title": "Beef Bourguignon", "slug": "beef-bourguignon", "description": "Beef chuck braised for hours in red wine until fall-apart tender.", "image_query": "beef bourguignon"},
+                {"title": "Crème Brûlée", "slug": "creme-brulee", "description": "A silky vanilla custard with a torched, crackling sugar shell on top.", "image_query": "creme brulee"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Coq au Vin", "Beef Bourguignon", "Quiche Lorraine"]},
@@ -6215,12 +6215,12 @@ SEED_PAGES = [
                 "shortcut jarred paste."
             ),
             "recipe_cards": [
-                {"title": "Pad Thai", "slug": None, "description": "Stir-fried rice noodles in a tamarind-based sauce with shrimp, egg, and peanuts.", "image_query": "pad thai"},
-                {"title": "Green Curry Chicken", "slug": None, "description": "Chicken simmered in a fragrant, coconut-milk-based curry with Thai basil.", "image_query": "green curry chicken"},
-                {"title": "Tom Yum Soup", "slug": None, "description": "A hot and sour shrimp soup built on lemongrass, galangal, and lime leaf.", "image_query": "tom yum soup"},
-                {"title": "Som Tum (Green Papaya Salad)", "slug": None, "description": "Shredded unripe papaya pounded with chile, lime, and fish sauce in a mortar and pestle.", "image_query": "som tum green papaya salad"},
-                {"title": "Mango Sticky Rice", "slug": None, "description": "Sweetened coconut sticky rice served alongside ripe mango slices.", "image_query": "mango sticky rice"},
-                {"title": "Thai Basil Chicken (Pad Kra Pao)", "slug": None, "description": "Quickly stir-fried ground chicken with garlic, chile, and Thai holy basil.", "image_query": "thai basil chicken pad kra pao"},
+                {"title": "Pad Thai", "slug": "pad-thai", "description": "Stir-fried rice noodles in a tamarind-based sauce with shrimp, egg, and peanuts.", "image_query": "pad thai"},
+                {"title": "Green Curry Chicken", "slug": "green-curry-chicken", "description": "Chicken simmered in a fragrant, coconut-milk-based curry with Thai basil.", "image_query": "green curry chicken"},
+                {"title": "Tom Yum Soup", "slug": "tom-yum-soup", "description": "A hot and sour shrimp soup built on lemongrass, galangal, and lime leaf.", "image_query": "tom yum soup"},
+                {"title": "Som Tum (Green Papaya Salad)", "slug": "som-tum-green-papaya-salad", "description": "Shredded unripe papaya pounded with chile, lime, and fish sauce in a mortar and pestle.", "image_query": "som tum green papaya salad"},
+                {"title": "Mango Sticky Rice", "slug": "mango-sticky-rice", "description": "Sweetened coconut sticky rice served alongside ripe mango slices.", "image_query": "mango sticky rice"},
+                {"title": "Thai Basil Chicken (Pad Kra Pao)", "slug": "thai-basil-chicken-pad-kra-pao", "description": "Quickly stir-fried ground chicken with garlic, chile, and Thai holy basil.", "image_query": "thai basil chicken pad kra pao"},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Pad Thai", "Green Curry Chicken", "Thai Basil Chicken (Pad Kra Pao)"]},
@@ -7235,6 +7235,5890 @@ SEED_PAGES = [
             "technique_link": None,
             "related_recipe_slugs": [],
             "category_link": {"title": "Pie Recipes", "slug": "pie-recipes"},
+        },
+    },
+    {
+        "slug": "baba-ganoush",
+        "template_type": "recipe_or_dish",
+        "title": "Baba Ganoush Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A smoky, creamy Levantine eggplant dip made by charring "
+                "whole eggplants over an open flame, then blending the "
+                "flesh with tahini, lemon, and garlic."
+            ),
+            "hero_image_query": "baba ganoush",
+            "why_it_works": (
+                "Charring the eggplant directly over a flame or under a "
+                "broiler until the skin blackens and the flesh collapses "
+                "is what gives baba ganoush its signature smokiness, a "
+                "step baking alone can't replicate."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 45,
+            "servings": 6,
+            "ingredients": [
+                {"name": "eggplants", "base_qty": 2, "unit_us": "large", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "tahini", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 65, "unit_metric": "g", "hub_slug": None},
+                {"name": "lemon juice", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic cloves, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil, for serving", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh parsley, chopped", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 8, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Prick the eggplants a few times with a fork, then char them directly over a gas flame, on a grill, or under a broiler, turning occasionally, until the skin is blackened and blistered all over and the flesh is completely soft, 15-20 minutes.",
+                "Transfer the charred eggplants to a colander and let them cool enough to handle, about 10 minutes, this also lets the bitter liquid drain away.",
+                "Split the eggplants open and scoop the flesh into a bowl, discarding the blackened skin and as many seeds as easily come away.",
+                "Add the tahini, lemon juice, garlic, and salt, and mash or pulse in a food processor with a few short bursts until combined but still a little textured.",
+                "Taste and adjust the lemon and salt, then spread into a serving bowl.",
+                "Drizzle with olive oil and scatter with parsley before serving.",
+            ],
+            "step_notes": {
+                0: "Direct flame contact is what actually builds the smoky flavor, an oven can soften the eggplant but it won't develop the same char on the skin.",
+                2: "Draining the bitter liquid that pools inside a fully cooked eggplant keeps the finished dip from tasting watery or sharp.",
+            },
+            "tips_and_variations": [
+                "No gas burner or grill? A broiler on high, with the eggplant a few inches from the element, gets close to the same char in about the same time.",
+                "A spoonful of plain yogurt swirled in at the end makes a milder, creamier version common in some regional variations.",
+                "Swap in a little smoked paprika if you want extra smokiness without extending the char time.",
+            ],
+            "reader_tips": [
+                "Let the charred eggplant drain in a colander rather than scraping it straight into the bowl, a surprising amount of bitter liquid collects inside.",
+                "Pulse the food processor in short bursts instead of running it continuously, baba ganoush should keep some texture, not turn fully smooth like hummus.",
+            ],
+            "storage_and_reheating": (
+                "Store in an airtight container in the refrigerator for up "
+                "to 4 days. Baba ganoush is served cold or at room "
+                "temperature and isn't reheated, let it sit out for 15 "
+                "minutes before serving for the best texture."
+            ),
+            "nutrition_note": "A vegetable-forward dip that's moderate in fat from the tahini and olive oil, with fiber and healthy fats but no significant protein.",
+            "faqs": [
+                {"question": "Why is my baba ganoush watery?", "answer": "Usually because the eggplant wasn't drained after charring, or wasn't cooked through enough for the pulp to fully collapse. Let it drain well in a colander and make sure the flesh is completely soft before blending."},
+                {"question": "What's the difference between baba ganoush and hummus?", "answer": "Hummus is made from chickpeas, baba ganoush from charred eggplant. Both use tahini and lemon, but baba ganoush has a smokier flavor and a looser, chunkier texture."},
+                {"question": "Can I make baba ganoush without a grill or gas flame?", "answer": "Yes, a broiler set to high with the eggplant a few inches from the element will char the skin and cook the flesh through in about the same amount of time."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+        },
+    },
+    {
+        "slug": "eggplant-parmesan",
+        "template_type": "recipe_or_dish",
+        "title": "Eggplant Parmesan Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Layers of crisp breaded eggplant, marinara, and melted "
+                "mozzarella and Parmesan, baked until bubbling."
+            ),
+            "hero_image_query": "eggplant parmesan",
+            "why_it_works": (
+                "Salting the eggplant slices first draws out excess "
+                "moisture so they crisp in the pan instead of steaming, "
+                "and a breadcrumb coating gives each layer enough "
+                "structure to hold up under the sauce and cheese."
+            ),
+            "prep_time_minutes": 45,
+            "cook_time_minutes": 45,
+            "total_time_minutes": 90,
+            "servings": 6,
+            "pan_size": {
+                "current": {"label": "9x13-inch baking dish", "area_sq_in": 117},
+                "alternatives": [
+                    {"label": "9x9-inch square baking dish", "area_sq_in": 81},
+                    {"label": "8x8-inch square baking dish", "area_sq_in": 64},
+                ],
+            },
+            "ingredients": [
+                {"name": "eggplants, sliced into 1/4-inch rounds", "base_qty": 2, "unit_us": "large", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt, for salting the eggplant", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 18, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs, beaten", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "breadcrumbs, plain or panko", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None},
+                {"name": "grated Parmesan", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 100, "unit_metric": "g", "hub_slug": None},
+                {"name": "marinara sauce", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 720, "unit_metric": "g", "hub_slug": None},
+                {"name": "shredded mozzarella", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 220, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh basil leaves, torn", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil, for frying", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Slice the eggplant into 1/4-inch rounds, layer in a colander salting each layer, and let sit 30 minutes to draw out moisture.",
+                "Pat the eggplant slices dry with paper towels.",
+                "Set up a breading station: flour in one dish, beaten eggs in a second, and breadcrumbs mixed with 1/4 cup of the Parmesan in a third.",
+                "Dredge each slice in flour, then egg, then the breadcrumb mixture, pressing gently to coat.",
+                "Heat olive oil in a large skillet over medium-high heat and fry the slices in batches until golden on both sides, about 2-3 minutes per side, draining on paper towels.",
+                "Preheat the oven to 375°F (190°C) and spread a thin layer of marinara in the bottom of the baking dish.",
+                "Layer fried eggplant, marinara, mozzarella, and the remaining Parmesan, repeating to use everything and finishing with cheese on top.",
+                "Bake uncovered for 25-30 minutes, until bubbling and golden.",
+                "Let rest 10 minutes, then scatter with fresh basil before serving.",
+            ],
+            "step_notes": {
+                0: "Salting pulls out the bitter liquid eggplant is prone to holding, without this step the slices release moisture into the pan during frying and steam instead of browning.",
+                4: "Frying in batches keeps the oil hot, crowding the pan drops the temperature and the coating soaks up oil instead of crisping.",
+            },
+            "tips_and_variations": [
+                "Bake the breaded slices on a wire rack over a sheet pan at 425°F instead of frying for a lighter version, flipping once, about 20 minutes total.",
+                "Swap in a mix of mozzarella and provolone for a sharper flavor.",
+                "A layer of ricotta between the eggplant and sauce turns this into something closer to a lasagna.",
+            ],
+            "reader_tips": [
+                "Don't skip patting the salted eggplant dry, wet slices won't hold the flour coating and it slides off in the oil.",
+                "Let the finished dish rest for a full 10 minutes before cutting, it firms up enough to slice into clean portions instead of collapsing.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers, covered, for up to 4 days, or "
+                "freeze baked and cooled portions for up to 3 months. "
+                "Reheat in a 350°F oven until warmed through and the "
+                "cheese is bubbling again, about 20 minutes; a microwave "
+                "works but softens the crisp coating."
+            ),
+            "nutrition_note": "A hearty, cheese-forward dish, moderate in carbs from the breading and higher in fat and protein than a plain vegetable side.",
+            "faqs": [
+                {"question": "Do I have to salt the eggplant first?", "answer": "It's worth the 30 minutes. Salting draws out excess moisture and some of the eggplant's bitterness, so the slices fry up crisp instead of soggy."},
+                {"question": "Can I make eggplant Parmesan ahead of time?", "answer": "Yes, assemble the full dish up to a day ahead, refrigerate it covered, then bake straight from the fridge, adding about 10 extra minutes to the bake time."},
+                {"question": "Why did my eggplant Parmesan turn out watery?", "answer": "Usually unsalted eggplant or a very watery marinara. Salt and drain the eggplant well, and reduce a thin sauce on the stove for a few minutes before layering."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+        },
+    },
+    {
+        "slug": "roasted-eggplant-with-garlic-and-herbs",
+        "template_type": "recipe_or_dish",
+        "title": "Roasted Eggplant with Garlic and Herbs Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Cubed eggplant roasted at high heat with garlic, olive "
+                "oil, and fresh herbs until deeply caramelized and tender."
+            ),
+            "hero_image_query": "roasted eggplant with garlic and herbs",
+            "why_it_works": (
+                "Roasting at high heat on a single uncrowded layer lets "
+                "the eggplant's surface caramelize and dry out before the "
+                "inside turns to mush, which is what gives roasted "
+                "eggplant real texture instead of a wet, spongy result."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 45,
+            "servings": 4,
+            "ingredients": [
+                {"name": "eggplants, cut into 1-inch cubes", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 700, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic cloves, thinly sliced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "fresh thyme leaves", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh oregano, chopped", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh parsley, chopped, for serving", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 8, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C) and line a large sheet pan with parchment.",
+                "Toss the eggplant cubes with olive oil, salt, and pepper, spreading them into a single layer with space between the pieces.",
+                "Roast for 20 minutes, then flip the pieces and scatter the garlic, thyme, and oregano over the top.",
+                "Return to the oven and roast another 10 minutes, until the eggplant is deeply golden and tender all the way through and the garlic is soft.",
+                "Transfer to a serving dish and scatter with fresh parsley.",
+            ],
+            "step_notes": {
+                1: "Giving the cubes room on the pan matters more than almost anything else here, crowded eggplant releases steam that gets trapped between the pieces and they braise in it instead of roasting.",
+                2: "Adding the garlic partway through, rather than at the start, keeps it from burning before the eggplant is done.",
+            },
+            "tips_and_variations": [
+                "Toss in a splash of balsamic vinegar or a squeeze of lemon after roasting for brightness.",
+                "A pinch of red pepper flakes added with the herbs gives it a mild heat.",
+                "Stir in crumbled feta or a spoonful of tahini sauce to turn this into a fuller side dish or light meal.",
+            ],
+            "reader_tips": [
+                "Use two sheet pans rather than one crowded one if your oven is large enough, it makes a real difference in how much the eggplant browns versus steams.",
+                "Cut the cubes roughly the same size so they finish cooking at the same time.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container for up to "
+                "4 days. Reheat in a 400°F oven for about 8 minutes to "
+                "recrisp the edges, a microwave will work but leaves it soft."
+            ),
+            "nutrition_note": "A light, vegetable-forward side, low in carbs and calories with fat coming mainly from the olive oil.",
+            "faqs": [
+                {"question": "Do I need to salt the eggplant before roasting?", "answer": "Not for this recipe. High-heat roasting drives off enough moisture on its own, salting ahead of time is more useful for frying or grilling where you're trying to prevent sogginess in a shorter cook."},
+                {"question": "Why isn't my roasted eggplant browning?", "answer": "Most often the pieces are too crowded on the pan, or the oven isn't fully preheated. Give the cubes space and make sure the oven has come all the way up to temperature first."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+        },
+    },
+    {
+        "slug": "baingan-bharta",
+        "template_type": "recipe_or_dish",
+        "title": "Eggplant Curry (Baingan Bharta) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A North Indian eggplant curry made by charring whole "
+                "eggplant, mashing the smoky flesh, and simmering it with "
+                "onion, tomato, and warm spices."
+            ),
+            "hero_image_query": "baingan bharta eggplant curry",
+            "why_it_works": (
+                "Charring the eggplant whole builds the same smoky base "
+                "as baba ganoush, and simmering the mashed flesh with a "
+                "properly cooked-down onion-tomato masala is what turns "
+                "that smokiness into a full curry rather than a raw dip."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 35,
+            "total_time_minutes": 55,
+            "servings": 4,
+            "ingredients": [
+                {"name": "eggplant", "base_qty": 1, "unit_us": "large", "base_qty_metric": 500, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil or ghee", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "cumin seeds", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "onion, finely chopped", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "ginger, grated", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "green chile, minced", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "tomatoes, finely chopped", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 300, "unit_metric": "g", "hub_slug": None},
+                {"name": "turmeric", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground coriander", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "garam masala", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh cilantro, chopped", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Prick the eggplant a few times and char it directly over a gas flame, on a grill, or under a broiler, turning occasionally, until the skin is blackened all over and the flesh is fully soft, 15-20 minutes.",
+                "Let the eggplant cool slightly, then peel off the skin, discard it, and roughly mash the flesh with a fork.",
+                "Heat the oil or ghee in a wide skillet over medium heat and add the cumin seeds, letting them sizzle for a few seconds.",
+                "Add the onion and cook, stirring often, until golden brown, about 8-10 minutes.",
+                "Stir in the garlic, ginger, and green chile and cook 1 minute more, until fragrant.",
+                "Add the tomatoes, turmeric, coriander, and salt, and cook, mashing the tomatoes as they soften, until the mixture thickens and the oil starts to separate at the edges, about 8-10 minutes.",
+                "Stir in the mashed eggplant and simmer 8-10 minutes, until the mixture is well combined and no longer watery.",
+                "Sprinkle in the garam masala, taste and adjust the salt, and finish with fresh cilantro.",
+            ],
+            "step_notes": {
+                3: "Letting the onion actually turn golden brown, not just soften, is what builds the base flavor a good bharta needs, rushing this step leaves the curry tasting flat.",
+                5: "Cooking the tomato masala until the oil visibly separates at the edges is the classic sign that the raw tomato flavor has cooked out, add the eggplant before this point and the curry ends up tasting sharp.",
+            },
+            "tips_and_variations": [
+                "No open flame? Roast the whole eggplant at 450°F for 35-45 minutes instead, the flavor will be milder but still good.",
+                "Stir in a handful of green peas partway through simmering for a common variation.",
+                "Finish with a small pat of butter or ghee off heat for extra richness.",
+            ],
+            "reader_tips": [
+                "Poking holes in the eggplant before charring keeps it from bursting from built-up steam.",
+                "Chop the tomatoes and onion fairly fine, this dish is meant to be soft and spreadable, not chunky.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container for up to 4 days, or "
+                "freeze for up to 2 months. Reheat gently in a covered "
+                "skillet over medium-low heat, adding a splash of water if "
+                "it's thickened too much."
+            ),
+            "nutrition_note": "A vegetable-based curry that's naturally low in fat and carbs, with the oil or ghee providing most of its richness.",
+            "faqs": [
+                {"question": "What does bharta mean?", "answer": "Bharta refers to a style of Indian dish made by mashing a cooked vegetable, usually after roasting or charring it, and simmering it into a curry. Baingan means eggplant, so baingan bharta is smoky mashed eggplant curry."},
+                {"question": "Can I use an oven instead of charring the eggplant over a flame?", "answer": "Yes, roast it whole at 450°F until fully collapsed and soft, 35-45 minutes. It won't have quite the same smokiness as direct flame charring, but it still makes a good curry."},
+                {"question": "Is baingan bharta spicy?", "answer": "As written it's mild to medium, most of the heat comes from the green chile, which you can adjust up or down or leave out entirely."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+        },
+    },
+    {
+        "slug": "grilled-eggplant-slices",
+        "template_type": "recipe_or_dish",
+        "title": "Grilled Eggplant Slices Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Salted, oiled eggplant rounds grilled until charred and "
+                "tender, finished with lemon and herbs."
+            ),
+            "hero_image_query": "grilled eggplant slices",
+            "why_it_works": (
+                "A short salting rest pulls out enough moisture that the "
+                "cut sides sear instead of steaming on the grill, so the "
+                "slices pick up real char while the inside still turns "
+                "creamy."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 40,
+            "servings": 4,
+            "ingredients": [
+                {"name": "eggplants, sliced into 1/2-inch rounds", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 700, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt, for salting", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 1, "unit_us": "clove", "base_qty_metric": 1, "unit_metric": "clove", "hub_slug": None},
+                {"name": "lemon, juiced and zested", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "fresh mint or basil, chopped", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Lay the eggplant slices on paper towels or a rack, sprinkle both sides with salt, and let sit 20-30 minutes to draw out moisture.",
+                "Pat the slices dry and brush both sides with olive oil.",
+                "Heat a grill or grill pan to medium-high.",
+                "Whisk together the remaining olive oil, garlic, lemon juice, and pepper in a small bowl.",
+                "Grill the eggplant slices 3-4 minutes per side, until charred with clear grill marks and tender when pierced with a fork.",
+                "Arrange on a platter, drizzle with the lemon-garlic dressing, and scatter with lemon zest and fresh herbs.",
+            ],
+            "step_notes": {
+                0: "Salting draws out the bitter liquid and softens the flesh slightly, which helps the slices cook through in the short time they're actually on the grill.",
+                4: "Resist moving the slices too soon, letting them sit undisturbed for the first couple minutes on each side is what produces real grill marks instead of a pale, steamed surface.",
+            },
+            "tips_and_variations": [
+                "Swap the lemon-garlic dressing for a tahini sauce or a drizzle of balsamic glaze.",
+                "Cut the eggplant into planks instead of rounds if you want to build them into a stack or sandwich.",
+                "A pinch of chili flakes in the dressing gives it some heat.",
+            ],
+            "reader_tips": [
+                "Slice the eggplant evenly, about 1/2 inch is the sweet spot, thinner slices dry out before they char and thicker ones stay raw in the middle.",
+                "Oil the grill grates as well as the eggplant itself, cut eggplant flesh is porous and sticks easily otherwise.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container for up to "
+                "3 days. Serve cold or at room temperature in a salad, or "
+                "reheat briefly in a dry skillet over medium heat, "
+                "grilled eggplant turns mushy in the microwave."
+            ),
+            "nutrition_note": "A light, low-calorie side dish, most of its fat comes from the olive oil used for brushing and the dressing.",
+            "faqs": [
+                {"question": "Do I have to salt the eggplant before grilling?", "answer": "It's not strictly required for modern eggplant varieties, which are less bitter than older ones, but salting for 20-30 minutes still draws out extra moisture and helps the slices char instead of steam."},
+                {"question": "Why does my grilled eggplant taste bitter?", "answer": "Usually a very large or overripe eggplant with more seeds, or skipping the salting step. Choose smaller, firmer eggplants and salt them before grilling."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+        },
+    },
+    {
+        "slug": "miso-glazed-eggplant",
+        "template_type": "recipe_or_dish",
+        "title": "Miso-Glazed Eggplant (Nasu Dengaku) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Japanese-style eggplant halves broiled with a sweet, "
+                "savory miso glaze until caramelized and tender."
+            ),
+            "hero_image_query": "miso glazed eggplant nasu dengaku",
+            "why_it_works": (
+                "Scoring and pre-cooking the eggplant flesh before "
+                "broiling lets it soften all the way through, so the "
+                "miso glaze on top has time to caramelize under the "
+                "broiler without the eggplant underneath staying raw."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 35,
+            "servings": 4,
+            "ingredients": [
+                {"name": "Japanese or Italian eggplants, halved lengthwise", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 500, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil, such as vegetable or grapeseed", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "white or yellow miso paste", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 55, "unit_metric": "g", "hub_slug": None},
+                {"name": "mirin", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sake", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sugar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "toasted sesame seeds, for garnish", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "scallion, thinly sliced, for garnish", "base_qty": 1, "unit_us": "stalk", "base_qty_metric": 1, "unit_metric": "stalk", "hub_slug": None},
+            ],
+            "instructions": [
+                "Score the cut side of each eggplant half in a crosshatch pattern, cutting about halfway into the flesh without piercing the skin.",
+                "Brush the cut sides generously with oil.",
+                "Heat a skillet over medium heat and cook the eggplant halves, cut-side down, for 6-8 minutes, until the flesh is golden and mostly tender.",
+                "Meanwhile, whisk together the miso, mirin, sake, and sugar in a small saucepan and warm over low heat, stirring, until smooth and slightly thickened, about 2 minutes.",
+                "Flip the eggplant so the cut side faces up and transfer to a baking sheet.",
+                "Spread a generous layer of the miso glaze over the cut side of each half.",
+                "Broil 3-5 minutes, watching closely, until the glaze is bubbling and caramelized in spots.",
+                "Garnish with sesame seeds and scallion before serving.",
+            ],
+            "step_notes": {
+                0: "Scoring lets heat reach into the dense flesh faster and gives the miso glaze more surface area to cling to once it's spread on.",
+                2: "Pre-cooking the eggplant in a skillet before it ever reaches the broiler is what gets the inside fully tender, broiling alone would burn the glaze long before the eggplant cooked through.",
+            },
+            "tips_and_variations": [
+                "Red miso makes a deeper, saltier glaze than white miso, cut the sugar back slightly if you use it.",
+                "No broiler? A 450°F oven works, it just takes a few extra minutes to caramelize the glaze.",
+                "Add a small pat of butter to the glaze for a rounder, less sharply savory finish.",
+            ],
+            "reader_tips": [
+                "Watch the broiler closely in the last couple minutes, miso has enough sugar in it that it goes from caramelized to burnt quickly.",
+                "Score deeply but stop short of cutting through the skin, the skin holds the eggplant half together as it softens.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container for up to "
+                "3 days. Reheat under the broiler for a couple minutes to "
+                "recrisp the glaze, a microwave will heat it through but "
+                "leaves the top soft."
+            ),
+            "nutrition_note": "A moderate-sodium, vegetable-forward dish with a modest amount of natural sugar from the mirin and glaze.",
+            "faqs": [
+                {"question": "What kind of miso should I use for nasu dengaku?", "answer": "White (shiro) miso is traditional and gives a milder, sweeter glaze. Red or mixed miso works too and produces a saltier, more intense flavor, just scale back the sugar slightly."},
+                {"question": "Can I make this without sake or mirin?", "answer": "Mirin's sweetness is hard to replace, but in a pinch you can use a mix of rice vinegar and a little extra sugar for both mirin and sake, the flavor will be a bit flatter but still good."},
+                {"question": "What kind of eggplant works best for this recipe?", "answer": "Japanese or Chinese eggplants are ideal, they're smaller and less seedy than globe eggplants. Regular globe eggplant works too, just cut it into thick rounds instead of halves."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Eggplant Recipes", "slug": "eggplant-recipes"},
+        },
+    },
+    {
+        "slug": "pan-seared-duck-breast",
+        "template_type": "recipe_or_dish",
+        "title": "Pan-Seared Duck Breast Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Crisp-skinned duck breast seared low and slow starting "
+                "in a cold pan, rendering the fat before a quick final "
+                "sear."
+            ),
+            "hero_image_query": "pan seared duck breast",
+            "why_it_works": (
+                "Starting the duck skin-side down in a cold, dry pan and "
+                "bringing the heat up gradually renders the thick fat cap "
+                "slowly, which is what gets the skin genuinely crisp "
+                "without the fat spitting or the meat overcooking."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 25,
+            "servings": 2,
+            "ingredients": [
+                {"name": "duck breasts, skin on", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 700, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh thyme sprigs", "base_qty": 2, "unit_us": "sprigs", "base_qty_metric": 2, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "garlic clove, smashed", "base_qty": 1, "unit_us": "clove", "base_qty_metric": 1, "unit_metric": "clove", "hub_slug": None},
+            ],
+            "instructions": [
+                "Pat the duck breasts dry and score the skin in a crosshatch pattern, cutting through the fat but not into the meat.",
+                "Season both sides generously with salt and pepper.",
+                "Place the duck breasts skin-side down in a cold, dry skillet and set over medium-low heat.",
+                "Cook undisturbed for 10-12 minutes, occasionally spooning off excess rendered fat, until the skin is deep golden brown and very crisp.",
+                "Add the thyme and garlic to the pan, flip the breasts, and sear the second side for 2-3 minutes for medium-rare.",
+                "Transfer to a cutting board and rest for 5-8 minutes before slicing against the grain.",
+            ],
+            "step_notes": {
+                2: "Starting in a cold pan is the whole method here, it gives the fat time to render gradually as the pan heats up instead of the skin scorching on the outside before the fat underneath has melted away.",
+                4: "Flipping only once the skin side is fully rendered and browned keeps the second side from cooking too long, duck breast is best around medium-rare and overcooks quickly once the fat cap is gone.",
+            },
+            "tips_and_variations": [
+                "Save the rendered fat, strained and refrigerated it keeps for months and is excellent for roasting potatoes or vegetables.",
+                "Finish with a quick pan sauce: deglaze with a splash of red wine or orange juice and a spoonful of the drippings after removing the duck.",
+                "A five-spice or orange zest rub on the meat side is a common variation before searing.",
+            ],
+            "reader_tips": [
+                "Use an instant-read thermometer if you're unsure, pull the duck at 130-135°F for medium-rare, it will climb a few more degrees as it rests.",
+                "Score the fat, not the meat, cutting too deep lets juices escape during cooking and toughens the meat.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate sliced or whole duck breast in an airtight "
+                "container for up to 3 days. Reheat gently in a low oven "
+                "or a covered skillet over low heat, high heat will "
+                "quickly overcook meat that was already cooked to "
+                "medium-rare."
+            ),
+            "nutrition_note": "A rich source of protein and iron; duck breast carries more fat than chicken breast, though much of it renders out and can be discarded during cooking.",
+            "faqs": [
+                {"question": "Why do you start duck breast in a cold pan?", "answer": "It gives the thick layer of fat under the skin time to render slowly as the pan heats up, which is what produces genuinely crisp skin. Starting in a hot pan browns the outside before the fat has melted, leaving it chewy."},
+                {"question": "What temperature should duck breast be cooked to?", "answer": "Most cooks prefer duck breast at medium-rare to medium, around 130-140°F, since it's a lean, dark meat that turns tough and livery well done."},
+                {"question": "Why score the skin before cooking?", "answer": "Scoring lets the fat render out faster and more evenly, and helps the skin crisp instead of curling up away from the pan as it cooks."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Duck Recipes", "slug": "duck-recipes"},
+        },
+    },
+    {
+        "slug": "duck-confit",
+        "template_type": "recipe_or_dish",
+        "title": "Duck Confit Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Classic French duck confit: duck legs salt-cured "
+                "overnight, then slow-cooked submerged in fat until "
+                "fall-off-the-bone tender."
+            ),
+            "hero_image_query": "duck confit",
+            "why_it_works": (
+                "Curing the duck legs in salt overnight seasons them deeply "
+                "and draws out moisture, and cooking them fully submerged "
+                "in fat at a low, steady temperature turns the tough dark "
+                "meat meltingly tender without ever drying it out."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 180,
+            "total_time_minutes": 1460,
+            "servings": 4,
+            "ingredients": [
+                {"name": "duck legs", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 1100, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 36, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic cloves, smashed", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "fresh thyme sprigs", "base_qty": 4, "unit_us": "sprigs", "base_qty_metric": 4, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "bay leaves", "base_qty": 2, "unit_us": "leaves", "base_qty_metric": 2, "unit_metric": "leaves", "hub_slug": None},
+                {"name": "black peppercorns, cracked", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "rendered duck fat, enough to submerge the legs", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Rub the duck legs all over with salt, garlic, thyme, bay leaves, and cracked pepper, then arrange in a single layer in a dish, cover, and refrigerate for 12-24 hours.",
+                "Rinse the cure off the duck legs and pat them completely dry.",
+                "Preheat the oven to 225°F (110°C).",
+                "Melt the duck fat in a small saucepan or in the oven, then arrange the duck legs snugly in a deep baking dish or Dutch oven and pour the melted fat over them until fully submerged.",
+                "Cover and cook in the oven for 3 to 3.5 hours, until the meat is fork-tender and pulls easily from the bone.",
+                "Let the duck cool in the fat until just warm, then carefully lift out the legs.",
+                "To serve, heat a skillet over medium-high heat and crisp the duck skin-side down for 3-4 minutes before serving.",
+            ],
+            "step_notes": {
+                0: "The overnight salt cure is what actually seasons the meat all the way through and firms its texture, skipping it or cutting it short leaves the finished confit bland no matter how long it cooks in fat.",
+                4: "Full submersion is the whole point of the fat, it cooks the duck gently and evenly at a temperature well below where the meat's proteins seize up and dry out.",
+            },
+            "tips_and_variations": [
+                "Not enough duck fat on hand? Top off the dish with a neutral oil or rendered pork fat, the flavor will be a little less rich but the technique still works.",
+                "Strain and save the cooking fat after use, it can be reused for future confit or for roasting vegetables and keeps refrigerated for months.",
+                "Confit legs stored submerged in their fat in the refrigerator actually improve over the first week or two, a classic way to hold them longer.",
+            ],
+            "reader_tips": [
+                "Don't skip patting the legs dry after rinsing off the cure, wet duck skin won't crisp properly at the final searing step.",
+                "Check that the legs are truly submerged before they go in the oven, any exposed meat above the fat line will dry out during the long cook.",
+            ],
+            "storage_and_reheating": (
+                "Store the confit legs fully submerged in their strained "
+                "fat in the refrigerator for up to 2 months. To serve, "
+                "warm gently to loosen the fat, wipe off the excess, and "
+                "crisp skin-side down in a hot skillet for a few minutes."
+            ),
+            "nutrition_note": "A rich, protein-heavy dish; the meat absorbs relatively little of the cooking fat, though it's higher in saturated fat than a leaner cut of poultry.",
+            "faqs": [
+                {"question": "Do I need a full 4 cups of duck fat?", "answer": "You need enough to fully submerge the legs, which depends on your dish's shape, closer to 3 cups can work in a narrow, deep pot. Store-bought rendered duck fat is sold specifically for this."},
+                {"question": "Can duck confit be made ahead of time?", "answer": "Yes, that's traditional. Confit is meant to be made in advance and stored submerged in its fat, where it keeps for weeks and the flavor only improves."},
+                {"question": "Why cure the duck legs in salt first?", "answer": "The salt cure seasons the meat deeply and draws out some moisture, both of which help the meat hold its texture during the long, slow cook in fat rather than turning mushy."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Duck Recipes", "slug": "duck-recipes"},
+        },
+    },
+    {
+        "slug": "whole-roast-duck",
+        "template_type": "recipe_or_dish",
+        "title": "Whole Roast Duck Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A whole duck roasted at a low, then high, oven "
+                "temperature for deeply crisp skin and tender meat, with "
+                "rendered fat saved along the way."
+            ),
+            "hero_image_query": "whole roast duck",
+            "why_it_works": (
+                "Pricking the skin and roasting low first gives the thick "
+                "layer of fat under a duck's skin time to render out "
+                "through the oven's full cook, so a final high-heat blast "
+                "can crisp the skin without the bird drying out."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 120,
+            "total_time_minutes": 140,
+            "servings": 4,
+            "ingredients": [
+                {"name": "whole duck", "base_qty": 5, "unit_us": "lb", "base_qty_metric": 2270, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "orange, quartered", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "onion, quartered", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh thyme sprigs", "base_qty": 4, "unit_us": "sprigs", "base_qty_metric": 4, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "garlic head, halved crosswise", "base_qty": 1, "unit_us": "head", "base_qty_metric": 1, "unit_metric": "head", "hub_slug": None},
+            ],
+            "instructions": [
+                "Remove the duck from the refrigerator 30 minutes before roasting and pat it completely dry, inside and out.",
+                "Prick the skin all over, especially over the breast and thighs, being careful not to pierce the meat underneath.",
+                "Season the cavity with salt and pepper and stuff with the orange, onion, thyme, and garlic.",
+                "Season the outside of the duck generously with salt and pepper and place breast-side up on a roasting rack set in a pan.",
+                "Roast at 325°F (165°C) for 90 minutes, carefully spooning or pouring off the rendered fat from the pan every 30 minutes.",
+                "Increase the oven temperature to 425°F (220°C) and roast 20-30 minutes more, until the skin is deeply browned and crisp and a thermometer in the thigh reads 165°F.",
+                "Rest the duck for 15 minutes before carving.",
+            ],
+            "step_notes": {
+                1: "Pricking only the skin, not the meat, opens channels for the fat underneath to escape as it renders, without those channels the fat stays trapped and the skin ends up soft instead of crisp.",
+                4: "Pouring off the fat partway through keeps the duck from essentially deep-frying in its own drippings, and that saved fat is valuable on its own for roasting potatoes or vegetables.",
+            },
+            "tips_and_variations": [
+                "Save every bit of the rendered fat that collects in the pan, strained and refrigerated it keeps for months.",
+                "A five-spice rub or a honey-soy glaze brushed on in the last 15 minutes are both common variations on the classic orange-and-herb approach here.",
+                "Use the carcass afterward for a rich stock, duck bones make an unusually good base.",
+            ],
+            "reader_tips": [
+                "A roasting rack that lifts the duck above the pan drippings is what actually lets the skin crisp on all sides, a duck sitting in its own fat will steam on the bottom.",
+                "Check the thigh, not the breast, for doneness, thigh meat needs to reach a higher temperature to be tender since it's a harder-working muscle.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate carved meat in an airtight container for up "
+                "to 4 days. Reheat gently in a 300°F oven, uncovered, "
+                "which helps keep the skin from going soft the way "
+                "covering or microwaving it would."
+            ),
+            "nutrition_note": "A rich source of protein; duck carries noticeably more fat than chicken, much of which renders into the pan during roasting.",
+            "faqs": [
+                {"question": "Why does duck take a two-stage roasting temperature?", "answer": "The lower initial temperature gives the fat under the skin time to render out slowly without the outside burning, then the final high-heat stage crisps the now fat-free skin quickly."},
+                {"question": "Do I need to prick the skin before roasting?", "answer": "Yes, this is what lets the rendered fat escape as it melts. Skip it and the fat stays trapped under the skin, leaving it soft rather than crisp."},
+                {"question": "How do I know when a whole duck is done?", "answer": "Check the thigh with an instant-read thermometer, it should read 165°F. The breast will be a bit higher than a pan-seared duck breast alone since a whole roasted bird cooks all the way through."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Duck Recipes", "slug": "duck-recipes"},
+        },
+    },
+    {
+        "slug": "duck-fat-roasted-potatoes",
+        "template_type": "recipe_or_dish",
+        "title": "Duck Fat Roasted Potatoes Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Parboiled potatoes roughed up and roasted in duck fat "
+                "until deeply golden with shatteringly crisp edges."
+            ),
+            "hero_image_query": "duck fat roasted potatoes",
+            "why_it_works": (
+                "Parboiling the potatoes until just tender, then shaking "
+                "them in the pot to rough up the edges, creates extra "
+                "starchy surface area that turns craggy and shatteringly "
+                "crisp once it hits the hot duck fat in the oven."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 50,
+            "total_time_minutes": 65,
+            "servings": 4,
+            "ingredients": [
+                {"name": "russet or Yukon Gold potatoes, peeled and cut into 2-inch chunks", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "rendered duck fat", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 55, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh rosemary, chopped", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic cloves, smashed and left whole", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C) and place a large sheet pan inside to heat up.",
+                "Bring a large pot of well-salted water to a boil, add the potatoes, and simmer 8-10 minutes, until just tender at the edge of a knife.",
+                "Drain the potatoes well, return them to the pot, and shake vigorously with the lid on to rough up the surfaces.",
+                "Add the duck fat to the hot sheet pan and carefully swirl to coat, then tip in the potatoes, garlic, salt, and pepper, spreading into a single layer.",
+                "Roast for 35-40 minutes, turning once or twice, until deeply golden and crisp on most sides.",
+                "Scatter with fresh rosemary in the last 5 minutes of roasting, then serve hot.",
+            ],
+            "step_notes": {
+                2: "Shaking the parboiled potatoes rough is the classic move for extra-crisp roast potatoes, it breaks up the starchy exterior into craggy bits that catch the fat and crisp far more than a smooth surface would.",
+                3: "Heating the sheet pan and fat before the potatoes ever go on it means the potatoes start sizzling and searing the instant they land, instead of sitting in warming fat and steaming.",
+            },
+            "tips_and_variations": [
+                "No duck fat on hand? Olive oil or a neutral oil works, though the flavor is noticeably less rich.",
+                "Toss with grated Parmesan and extra herbs right after roasting for a sharper finish.",
+                "Smaller baby or fingerling potatoes can be used whole, just adjust the parboiling time down to 5-6 minutes.",
+            ],
+            "reader_tips": [
+                "Don't skip preheating the pan, cold metal means the fat has to heat up with the potatoes already sitting in it, which slows the sear.",
+                "Give the potatoes real space on the pan, crowding traps steam and keeps them from crisping evenly on all sides.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container for up to "
+                "4 days. Reheat in a 425°F oven for 10-12 minutes to "
+                "recrisp, a microwave will heat them through but leaves "
+                "the edges soft."
+            ),
+            "nutrition_note": "A carbohydrate-forward side dish; duck fat adds richness and a higher saturated fat content than a plant-based oil would.",
+            "faqs": [
+                {"question": "Can I substitute another fat for duck fat?", "answer": "Yes, olive oil, butter, or a neutral oil will all roast potatoes well, but duck fat has a higher smoke point and a distinct richness that's worth using if you have it, including leftover fat from a roast duck or duck confit."},
+                {"question": "Why parboil the potatoes before roasting?", "answer": "Parboiling partially cooks the inside so the roasting time can focus on browning and crisping the outside, without it the outside would burn before the inside finished cooking."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Duck Recipes", "slug": "duck-recipes"},
+        },
+    },
+    {
+        "slug": "roasted-beet-salad-with-goat-cheese",
+        "template_type": "recipe_or_dish",
+        "title": "Roasted Beet Salad with Goat Cheese Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Oven-roasted beets tossed with peppery greens, creamy "
+                "goat cheese, and toasted walnuts in a simple vinaigrette."
+            ),
+            "hero_image_query": "roasted beet salad with goat cheese",
+            "why_it_works": (
+                "Roasting the beets whole and wrapped in foil steams them "
+                "gently in their own juices, concentrating their sweetness "
+                "far more than boiling does while also making the skins "
+                "slip off effortlessly once they're cool."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 60,
+            "total_time_minutes": 90,
+            "servings": 4,
+            "ingredients": [
+                {"name": "beets, tops trimmed", "base_qty": 4, "unit_us": "medium", "base_qty_metric": 600, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "balsamic vinegar", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": "balsamic-vinegar"},
+                {"name": "Dijon mustard", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+                {"name": "honey", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "arugula", "base_qty": 5, "unit_us": "oz", "base_qty_metric": 140, "unit_metric": "g", "hub_slug": None},
+                {"name": "goat cheese, crumbled", "base_qty": 4, "unit_us": "oz", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "walnuts, toasted and roughly chopped", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 400°F (200°C). Wrap each beet individually in foil and place on a sheet pan.",
+                "Roast for 45-60 minutes, until a knife slides easily into the center of the largest beet.",
+                "Unwrap and let the beets cool until just warm, then rub off the skins with a paper towel and cut into wedges.",
+                "Whisk together 2 tablespoons of the olive oil, the balsamic vinegar, mustard, honey, and salt in a small bowl.",
+                "Toss the beet wedges with a spoonful of the dressing while still warm so they absorb it.",
+                "Arrange the arugula on a platter, drizzle with the remaining olive oil and a little more dressing, then top with the dressed beets, goat cheese, and walnuts.",
+            ],
+            "step_notes": {
+                0: "Wrapping each beet individually traps steam around it as it roasts, which cooks the beet through more evenly than roasting them exposed on the pan.",
+                2: "Rubbing the skins off with a paper towel while the beets are still warm is far easier than peeling them raw or cold, the skin loosens as it cooks and slides off with almost no effort.",
+            },
+            "tips_and_variations": [
+                "Mix in golden beets along with red for a more colorful salad, just roast and peel them separately to keep the red from bleeding.",
+                "Swap walnuts for pistachios or pecans, and goat cheese for feta or blue cheese, all work well with beets.",
+                "Add sliced orange segments for a citrus variation that plays well with the earthy sweetness of the beets.",
+            ],
+            "reader_tips": [
+                "Wear kitchen gloves when peeling and cutting beets if you'd rather not have stained fingers for the next day.",
+                "Dress the beets separately from the greens and while they're still warm, they soak up far more flavor than they will once fully cooled.",
+            ],
+            "storage_and_reheating": (
+                "Store roasted, undressed beets in an airtight container "
+                "in the refrigerator for up to 5 days. Assemble the salad "
+                "just before serving, since dressed greens wilt and beet "
+                "juice will bleed into the cheese if it sits too long."
+            ),
+            "nutrition_note": "A fiber-rich, vegetable-forward salad with moderate fat and protein from the goat cheese and walnuts.",
+            "faqs": [
+                {"question": "Can I roast beets without wrapping them in foil?", "answer": "Yes, tossed with a little oil on a covered sheet pan they'll roast fine, they just won't steam quite as gently and may take slightly longer to become fully tender."},
+                {"question": "How do I keep beet juice from staining everything?", "answer": "Wear gloves when handling peeled beets and use a cutting board you don't mind staining, or line it with parchment. A little lemon juice and water helps get stains off hands afterward."},
+                {"question": "Can I make this salad ahead of time?", "answer": "Roast and peel the beets up to 5 days ahead and refrigerate them whole or cut. Wait to dress the greens and assemble the full salad until right before serving."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Beet Recipes", "slug": "beet-recipes"},
+        },
+    },
+    {
+        "slug": "pickled-beets",
+        "template_type": "recipe_or_dish",
+        "title": "Pickled Beets Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Tender cooked beets steeped in a sweet-tart vinegar brine "
+                "with warm spices, a simple refrigerator pickle."
+            ),
+            "hero_image_query": "pickled beets",
+            "why_it_works": (
+                "Pouring the hot vinegar brine over still-warm cooked "
+                "beets lets the liquid penetrate the flesh far more "
+                "readily than it would with cold beets, so the pickle "
+                "flavors season them all the way through, not just the "
+                "surface."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 45,
+            "total_time_minutes": 1500,
+            "servings": 8,
+            "ingredients": [
+                {"name": "beets, tops trimmed", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "white vinegar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "water", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sugar", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 100, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole cloves", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 4, "unit_metric": "whole", "hub_slug": None},
+                {"name": "cinnamon stick", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "black peppercorns", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "red onion, thinly sliced", "base_qty": 0.5, "unit_us": "medium", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Place the beets in a large pot, cover with water, and bring to a boil. Simmer 35-45 minutes, until tender when pierced with a knife.",
+                "Drain and let the beets cool just until safe to handle, then rub off the skins with a paper towel and slice into rounds or wedges.",
+                "While the beets cook, combine the vinegar, water, sugar, salt, cloves, cinnamon stick, and peppercorns in a small saucepan and bring to a boil, stirring until the sugar dissolves.",
+                "Pack the warm sliced beets and red onion into clean jars.",
+                "Pour the hot brine over the beets, making sure they're fully submerged, and let cool to room temperature.",
+                "Seal and refrigerate at least 24 hours before eating for the flavor to develop, they're best after 2-3 days.",
+            ],
+            "step_notes": {
+                1: "Peeling while the beets are still warm is far easier than peeling them raw or cold, the skin loosens during cooking and slides off with just a light rub.",
+                4: "Packing the beets while they're still warm and pouring the brine over them hot keeps the whole jar close to the same temperature, which helps the pickling liquid absorb evenly instead of just sitting cold around already-cooled beets.",
+            },
+            "tips_and_variations": [
+                "Apple cider vinegar gives a rounder, slightly fruitier pickle than plain white vinegar.",
+                "Add a few slices of fresh ginger or a bay leaf to the brine for a different spice profile.",
+                "This is a refrigerator pickle, not a shelf-stable canned one, if you want to can them for pantry storage, follow a tested USDA water-bath canning process instead.",
+            ],
+            "reader_tips": [
+                "Cook the beets whole with the skin on and a bit of stem left attached, this keeps the color and earthy flavor from bleeding out into the cooking water.",
+                "Make sure the beets are fully submerged in the brine before refrigerating, any exposed pieces won't pickle evenly.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in a sealed jar for up to 3 weeks. These are "
+                "eaten cold or at room temperature straight from the jar, "
+                "not reheated."
+            ),
+            "nutrition_note": "A low-calorie, low-fat side; the sugar in the brine adds a modest amount of carbohydrates.",
+            "faqs": [
+                {"question": "How long do pickled beets need to sit before eating?", "answer": "At least 24 hours for the brine to penetrate, but the flavor is noticeably better after 2-3 days and continues improving over the first week or two."},
+                {"question": "Are these safe to can for long-term pantry storage?", "answer": "This recipe is meant for refrigerator storage only. If you want shelf-stable canned beets, follow a tested USDA water-bath canning recipe with the correct vinegar acidity and processing time."},
+                {"question": "Can I use golden beets instead of red?", "answer": "Yes, golden beets pickle well and won't bleed color the way red beets do, useful if you're mixing them with other vegetables in the same jar."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Beet Recipes", "slug": "beet-recipes"},
+        },
+    },
+    {
+        "slug": "shaved-raw-beet-salad",
+        "template_type": "recipe_or_dish",
+        "title": "Shaved Raw Beet Salad Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Thin ribbons of raw beet tossed in a bright citrus "
+                "vinaigrette with herbs, a crisp, no-cook salad."
+            ),
+            "hero_image_query": "shaved raw beet salad",
+            "why_it_works": (
+                "Shaving the beets paper-thin on a mandoline exposes far "
+                "more surface area to the dressing than a chunkier cut "
+                "would, so the vinaigrette actually softens and seasons "
+                "the raw beet in the short time before serving instead of "
+                "just coating the outside."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 0,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "raw beets, mixed colors if available, peeled", "base_qty": 3, "unit_us": "medium", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "orange, juiced and zested", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "red wine vinegar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "Dijon mustard", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 2.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh dill, chopped", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "pistachios or almonds, toasted and chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Using a mandoline or a very sharp knife, shave the beets into paper-thin rounds or ribbons.",
+                "Whisk together the orange juice and zest, olive oil, red wine vinegar, mustard, salt, and pepper in a small bowl.",
+                "Toss the shaved beets with the dressing and let sit for at least 10 minutes to soften slightly and absorb the flavor.",
+                "Just before serving, toss in the fresh dill and taste for seasoning.",
+                "Transfer to a platter and scatter with toasted pistachios.",
+            ],
+            "step_notes": {
+                0: "Shaving the beets thin enough to see light through is really the technique that makes this salad work raw, thicker slices stay firm and taste more like a vegetable snack than a salad.",
+                2: "A short rest in the dressing lets the acid begin to soften the raw beet's texture, tasting one straight after tossing versus after 10 minutes makes the difference obvious.",
+            },
+            "tips_and_variations": [
+                "A vegetable peeler works if you don't have a mandoline, just shave long ribbons down the length of the beet instead of rounds.",
+                "Crumbled goat cheese or feta stirred in at the end turns this into a more substantial salad.",
+                "Mixing red and golden beets, or adding thin-shaved raw fennel, gives it more color and crunch.",
+            ],
+            "reader_tips": [
+                "Use a mandoline's guard, raw beets are firm and slippery, a common way people cut themselves in the kitchen.",
+                "Keep red and golden beets in separate bowls until just before serving if you're using both, red beet juice bleeds fast and will dull the gold color.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate dressed salad in an airtight container for up "
+                "to 1 day, though the beets soften and the color bleeds "
+                "more the longer it sits. For best texture, shave the "
+                "beets ahead but dress just before serving."
+            ),
+            "nutrition_note": "A light, fiber-rich salad, low in calories with fat coming mainly from the olive oil in the dressing.",
+            "faqs": [
+                {"question": "Do I need to cook the beets for this salad?", "answer": "No, that's the point of this recipe, raw beets shaved thin enough have a pleasant crunchy texture and earthy-sweet flavor, and the acid in the dressing softens them slightly as they sit."},
+                {"question": "What's the best tool for shaving beets thin?", "answer": "A mandoline gives the most even, paper-thin slices with the least effort. A sharp chef's knife or a vegetable peeler both work too, just expect slightly thicker, less uniform pieces."},
+                {"question": "How do I keep my hands from staining when peeling beets?", "answer": "Wear disposable gloves while peeling and shaving, or peel the beets under running water, which helps rinse the pigment away as you go."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Beet Recipes", "slug": "beet-recipes"},
+        },
+    },
+    {
+        "slug": "beet-and-feta-hummus",
+        "template_type": "recipe_or_dish",
+        "title": "Beet and Feta Hummus Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Bright pink hummus blended with roasted beet and tangy "
+                "feta, a colorful twist on the classic chickpea dip."
+            ),
+            "hero_image_query": "beet and feta hummus",
+            "why_it_works": (
+                "Blending a fully roasted, cooled beet into the hummus "
+                "base, rather than a raw one, keeps the dip's texture "
+                "smooth instead of grainy, while still turning the whole "
+                "thing a vivid pink."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 50,
+            "total_time_minutes": 65,
+            "servings": 6,
+            "ingredients": [
+                {"name": "beet, roasted, peeled, and cooled", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "canned chickpeas, drained and rinsed", "base_qty": 1, "unit_us": "15 oz can", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None},
+                {"name": "tahini", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None},
+                {"name": "lemon juice", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic clove", "base_qty": 1, "unit_us": "clove", "base_qty_metric": 1, "unit_metric": "clove", "hub_slug": None},
+                {"name": "feta cheese, crumbled", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 50, "unit_metric": "g", "hub_slug": "feta-cheese"},
+                {"name": "olive oil, plus more for serving", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh dill or mint, for garnish", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "If needed, roast the beet: wrap in foil and roast at 400°F for 45-60 minutes, until tender, then cool and peel.",
+                "Chop the roasted beet into rough chunks.",
+                "Combine the beet, chickpeas, tahini, lemon juice, and garlic in a food processor and blend until mostly smooth, scraping down the sides as needed.",
+                "With the processor running, drizzle in the olive oil and blend until creamy.",
+                "Add the feta and salt, and pulse a few times to combine, leaving small flecks of feta rather than blending it fully smooth.",
+                "Taste and adjust lemon or salt, then spread into a serving bowl.",
+                "Drizzle with olive oil and scatter with fresh herbs before serving.",
+            ],
+            "step_notes": {
+                2: "Blending the beet in with the chickpeas from the start, rather than swirling it in at the end, is what gives this dip its even color and smooth consistency instead of pink streaks through a plain hummus.",
+                4: "Pulsing the feta in at the end rather than fully blending it keeps small salty flecks distributed through the dip, giving bites of sharpness instead of just a uniformly cheesy flavor.",
+            },
+            "tips_and_variations": [
+                "No time to roast a beet? A well-drained can of whole cooked beets works in a pinch, though the flavor is milder.",
+                "Swap feta for goat cheese for a creamier, less salty version.",
+                "Peeling the chickpeas' skins off before blending, tedious as it is, makes the hummus noticeably smoother if you want a restaurant-style texture.",
+            ],
+            "reader_tips": [
+                "Blend longer than feels necessary, the processor needs real time to break the chickpea skins down for a silky texture, not just a chunky puree.",
+                "Add the olive oil in a slow stream while the machine runs rather than all at once, the same emulsifying trick used for mayonnaise, it helps the dip stay creamy instead of separating.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container for up to 5 days. "
+                "This is served cold or at room temperature and isn't "
+                "reheated, let it sit out for 15 minutes before serving "
+                "for the best texture."
+            ),
+            "nutrition_note": "A fiber- and protein-rich dip, with a moderate amount of fat from the tahini, olive oil, and feta.",
+            "faqs": [
+                {"question": "Can I use a raw beet instead of roasting it?", "answer": "Roasting is worth the extra time, it brings out the beet's sweetness and softens it enough to blend completely smooth. A raw beet will taste more bitter and can leave the hummus slightly gritty."},
+                {"question": "Why is my hummus grainy instead of smooth?", "answer": "Usually undercooked chickpeas or too little blending time. Canned chickpeas are already soft, so give the processor a full few minutes and scrape down the sides often."},
+                {"question": "What can I serve beet and feta hummus with?", "answer": "Pita, flatbread, or raw vegetables like cucumber and carrot all work well, the earthy sweetness of the beet also pairs nicely with something crunchy like pita chips."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Beet Recipes", "slug": "beet-recipes"},
+        },
+    },
+    {
+        "slug": "fig-and-prosciutto-flatbread",
+        "template_type": "recipe_or_dish",
+        "title": "Fig and Prosciutto Flatbread Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A quick flatbread topped with melted cheese, fresh figs, "
+                "salty prosciutto, and a honey drizzle, baked until the "
+                "crust is crisp."
+            ),
+            "hero_image_query": "fig and prosciutto flatbread",
+            "why_it_works": (
+                "Baking the flatbread on a preheated pan or stone at high "
+                "heat crisps the crust quickly before the fig slices have "
+                "time to release enough juice to make the base soggy, and "
+                "adding the prosciutto after baking keeps it from drying "
+                "into jerky in the oven."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 12,
+            "total_time_minutes": 27,
+            "servings": 4,
+            "ingredients": [
+                {"name": "flatbread or pizza dough, store-bought or homemade", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "shredded mozzarella or fontina", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh figs, sliced", "base_qty": 6, "unit_us": "whole", "base_qty_metric": 300, "unit_metric": "g", "hub_slug": None},
+                {"name": "prosciutto, thinly sliced", "base_qty": 3, "unit_us": "oz", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None},
+                {"name": "honey", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh arugula", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 20, "unit_metric": "g", "hub_slug": None},
+                {"name": "flaky salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Place a pizza stone or heavy sheet pan in the oven and preheat to 475°F (245°C).",
+                "Stretch or roll the dough into a rough oval or rectangle on a piece of parchment.",
+                "Brush the dough with olive oil and scatter the cheese evenly over the surface, leaving a small border.",
+                "Arrange the sliced figs over the cheese.",
+                "Slide the flatbread, still on the parchment, onto the hot stone or pan.",
+                "Bake 10-12 minutes, until the crust is golden and crisp and the cheese is fully melted and bubbling.",
+                "Remove from the oven and drape the prosciutto over the top while the flatbread is still hot.",
+                "Scatter with arugula, drizzle with honey, and finish with a pinch of flaky salt before slicing.",
+            ],
+            "step_notes": {
+                0: "Preheating the stone or pan means the dough starts crisping the moment it touches the surface, a cold pan lets the dough sit and steam before it ever browns, and the crust ends up pale and soft.",
+                6: "Adding the prosciutto after baking, not before, keeps it from crisping into a brittle, overly salty texture, warm from the flatbread's residual heat is exactly the point.",
+            },
+            "tips_and_variations": [
+                "No fresh figs in season? Use dried figs, sliced thin and soaked in warm water for 10 minutes to soften first.",
+                "Swap prosciutto for crispy bacon or thin-sliced speck for a different salty note.",
+                "A smear of ricotta or goat cheese under the mozzarella adds extra creaminess.",
+            ],
+            "reader_tips": [
+                "Roll the dough thin, a thick base won't crisp all the way through in the short bake time this recipe uses.",
+                "Assemble the flatbread on parchment paper so you can slide the whole thing onto a hot stone without it sticking or losing its shape.",
+            ],
+            "storage_and_reheating": (
+                "Best eaten fresh, but leftovers keep in the refrigerator, "
+                "covered, for up to 2 days. Reheat in a 400°F oven for "
+                "5-7 minutes to recrisp the crust; a microwave will leave "
+                "it soft."
+            ),
+            "nutrition_note": "A carbohydrate-forward dish balanced by protein and fat from the cheese and prosciutto, with natural sugar from the figs and honey.",
+            "faqs": [
+                {"question": "Can I use dried figs instead of fresh?", "answer": "Yes, soak thin-sliced dried figs in warm water for about 10 minutes to soften them before using, they won't have quite the same juicy texture as fresh but work well, especially outside fig season."},
+                {"question": "Do I need a pizza stone to make this?", "answer": "No, a heavy sheet pan preheated in the oven works nearly as well. The key is starting with a hot surface so the crust crisps quickly."},
+                {"question": "Why add the prosciutto after baking instead of before?", "answer": "Prosciutto is already cured and thin, baking it directly on the flatbread tends to dry it out and make it brittle. Draping it on after baking keeps it tender and lets the residual heat just warm it through."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Fig Recipes", "slug": "fig-recipes"},
+        },
+    },
+    {
+        "slug": "honey-roasted-figs",
+        "template_type": "recipe_or_dish",
+        "title": "Honey-Roasted Figs Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Fresh figs halved, drizzled with honey and a splash of "
+                "balsamic, and roasted until soft and caramelized."
+            ),
+            "hero_image_query": "honey roasted figs",
+            "why_it_works": (
+                "Roasting the figs cut-side up at high heat caramelizes "
+                "the honey on the exposed flesh into a sticky glaze while "
+                "the fruit itself just barely holds its shape, giving a "
+                "soft, jammy interior without collapsing into mush."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "fresh figs, halved", "base_qty": 12, "unit_us": "whole", "base_qty_metric": 600, "unit_metric": "g", "hub_slug": None},
+                {"name": "honey", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "balsamic vinegar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": "balsamic-vinegar"},
+                {"name": "unsalted butter, cut into small pieces", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh thyme leaves", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "flaky salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "vanilla ice cream or plain yogurt, for serving", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 400°F (200°C) and line a baking dish or sheet pan with parchment.",
+                "Arrange the fig halves cut-side up in the dish.",
+                "Whisk together the honey and balsamic vinegar and drizzle over the figs.",
+                "Dot with the butter pieces and scatter with thyme.",
+                "Roast for 12-15 minutes, until the figs are soft and the honey is bubbling and starting to caramelize at the edges.",
+                "Let cool for a few minutes, then finish with a pinch of flaky salt.",
+                "Serve warm, spooning the pan juices over the figs, alongside ice cream or yogurt.",
+            ],
+            "step_notes": {
+                2: "Whisking the honey and vinegar together before drizzling spreads them evenly over all the figs, poured on separately the honey tends to pool in just a few spots and burns there while the rest stays bare.",
+                4: "Watching for the honey to bubble and just start caramelizing at the edges is the visual cue that the sugars are concentrating, pull the pan too early and the figs taste more steamed than roasted.",
+            },
+            "tips_and_variations": [
+                "A splash of orange liqueur or a little orange zest added with the honey gives these a brighter, more dessert-like character.",
+                "Swap the balsamic for a spoonful of red wine if you want a less sweet, more savory result to serve alongside cheese or roasted meat.",
+                "Crumbled blue cheese or goat cheese scattered over the warm figs turns this into a simple cheese-course dish instead of a dessert.",
+            ],
+            "reader_tips": [
+                "Choose figs that are ripe but still hold their shape when gently squeezed, overripe figs collapse too much under the oven's heat and turn to mush.",
+                "Keep an eye on the pan in the last few minutes, the honey and fig sugars can go from caramelized to burnt quickly once they start bubbling.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container for up to "
+                "3 days. Reheat gently in a low oven or serve cold "
+                "spooned over yogurt, the texture softens further on "
+                "reheating so a short warm-up is enough."
+            ),
+            "nutrition_note": "A dessert-leaning dish that's naturally sweet from the figs and honey, moderate in calories and low in protein.",
+            "faqs": [
+                {"question": "What's the best way to tell if a fig is ripe enough to roast?", "answer": "It should give slightly to gentle pressure and feel heavy for its size. Figs that are still firm won't soften properly in the short roasting time, and very soft, overripe ones will collapse into mush."},
+                {"question": "Can I make honey-roasted figs ahead of time?", "answer": "They're best fresh from the oven while still warm and glossy, but leftovers keep well refrigerated for a few days and are still good served cold over yogurt or a cheese board."},
+                {"question": "What can I serve honey-roasted figs with besides ice cream?", "answer": "They pair well with a cheese board alongside blue cheese or brie, or spooned warm over yogurt, oatmeal, or a simple pound cake."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Fig Recipes", "slug": "fig-recipes"},
+        },
+    },
+    {
+        "slug": "fig-jam",
+        "template_type": "recipe_or_dish",
+        "title": "Fig Jam Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A simple small-batch fig jam simmered with lemon and "
+                "sugar until thick and spreadable, no pectin required."
+            ),
+            "hero_image_query": "fig jam",
+            "why_it_works": (
+                "Figs are naturally high in pectin near their skins, so a "
+                "long, slow simmer that reduces the mixture and "
+                "concentrates the fruit's own sugars is enough to set the "
+                "jam without needing added pectin."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 45,
+            "total_time_minutes": 60,
+            "servings": 16,
+            "ingredients": [
+                {"name": "fresh figs, stemmed and quartered", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "lemon, juiced and zested", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "water", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "cinnamon stick", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+            ],
+            "instructions": [
+                "Combine the figs, sugar, lemon juice and zest, water, and cinnamon stick in a heavy-bottomed saucepan.",
+                "Let sit at room temperature for 15 minutes, stirring occasionally, until the sugar starts to pull juice from the figs.",
+                "Set over medium heat and bring to a simmer, stirring to dissolve the remaining sugar.",
+                "Reduce the heat to medium-low and cook, stirring often and mashing some of the fig pieces against the side of the pan, for 35-45 minutes, until thick and glossy.",
+                "Test for doneness by placing a small spoonful on a chilled plate, if it wrinkles when pushed with a finger, it's ready.",
+                "Remove the cinnamon stick, then ladle the hot jam into clean jars.",
+                "Let cool to room temperature before sealing and refrigerating.",
+            ],
+            "step_notes": {
+                1: "Letting the sugar sit with the raw figs first draws liquid out through osmosis, giving the jam some juice to simmer in from the start instead of scorching dry fruit before it's had a chance to break down.",
+                4: "The chilled-plate test checks whether the jam has actually reached a set, since the exact simmer time varies with how juicy the figs are, judging by time alone can leave you with a jam that's too thin or overcooked past a good spreadable texture.",
+            },
+            "tips_and_variations": [
+                "Stir in a splash of balsamic vinegar or a few grinds of black pepper in the last few minutes for a more savory jam suited to a cheese board.",
+                "A vanilla bean split and added with the cinnamon gives the jam a rounder, more dessert-leaning flavor.",
+                "For a chunkier jam, mash the figs less; for a smoother spread, mash more or pulse briefly with an immersion blender near the end.",
+            ],
+            "reader_tips": [
+                "Use a wide, heavy-bottomed pan rather than a narrow pot, more surface area means the liquid reduces faster and more evenly.",
+                "Chill a small plate in the freezer before you start cooking, so it's ready the moment you want to check the jam's set.",
+            ],
+            "storage_and_reheating": (
+                "This is a refrigerator jam, not shelf-stable canned "
+                "preserves. Store sealed in the refrigerator for up to 1 "
+                "month, or freeze for up to 6 months. If you want "
+                "pantry-stable jars, process them in a boiling water bath "
+                "following a tested canning recipe's timing."
+            ),
+            "nutrition_note": "A high-sugar preserve meant to be used in small spoonfuls, low in fat and protein.",
+            "faqs": [
+                {"question": "Do I need to add pectin to make fig jam set?", "answer": "No, figs have enough natural pectin, especially near the skin, that a slow simmer reducing the mixture is enough to set the jam without any added pectin."},
+                {"question": "How do I know when the jam is done cooking?", "answer": "Put a small spoonful on a chilled plate and push it with your finger after a few seconds. If the surface wrinkles rather than running back together, it's ready."},
+                {"question": "Can I can this fig jam for long-term pantry storage?", "answer": "As written, this recipe is meant for the refrigerator or freezer. To make it shelf-stable, process filled jars in a boiling water bath following a tested canning recipe's specific timing for your jar size and altitude."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Fig Recipes", "slug": "fig-recipes"},
+        },
+    },
+    {
+        "slug": "fig-and-goat-cheese-salad",
+        "template_type": "recipe_or_dish",
+        "title": "Fig and Goat Cheese Salad Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Fresh figs and creamy goat cheese over peppery greens "
+                "with toasted walnuts and a honey-balsamic vinaigrette."
+            ),
+            "hero_image_query": "fig and goat cheese salad",
+            "why_it_works": (
+                "Warming the honey and balsamic dressing briefly before "
+                "tossing it with the greens softens its sharpness just "
+                "enough to balance the ripe sweetness of the figs and the "
+                "tang of the goat cheese, without cooking anything."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 5,
+            "total_time_minutes": 20,
+            "servings": 4,
+            "ingredients": [
+                {"name": "mixed greens or arugula", "base_qty": 5, "unit_us": "oz", "base_qty_metric": 140, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh figs, quartered", "base_qty": 8, "unit_us": "whole", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": None},
+                {"name": "goat cheese, crumbled", "base_qty": 4, "unit_us": "oz", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "walnuts, toasted and roughly chopped", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "balsamic vinegar", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": "balsamic-vinegar"},
+                {"name": "honey", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Toast the walnuts in a dry skillet over medium heat, stirring often, for 3-4 minutes, until fragrant, then set aside to cool.",
+                "Warm the balsamic vinegar and honey together in a small saucepan over low heat for 1-2 minutes, just until slightly thinner and fragrant.",
+                "Remove from heat and whisk in the olive oil, salt, and pepper until emulsified.",
+                "Arrange the greens on a platter and drizzle with about two-thirds of the dressing, tossing gently to coat.",
+                "Top with the quartered figs, crumbled goat cheese, and toasted walnuts.",
+                "Drizzle with the remaining dressing just before serving.",
+            ],
+            "step_notes": {
+                1: "Warming the balsamic and honey briefly, rather than just whisking them cold, mellows the vinegar's sharp edge and lets the two blend more smoothly into the dressing.",
+                3: "Dressing the greens first and adding the figs, cheese, and nuts on top afterward keeps the delicate fig pieces from getting crushed or the goat cheese from smearing as you toss.",
+            },
+            "tips_and_variations": [
+                "Swap walnuts for toasted pecans or pistachios, and goat cheese for a soft blue cheese, if you want a different flavor pairing.",
+                "A few thin shavings of prosciutto make this a heartier, more meal-sized salad.",
+                "No fresh figs? Use dried figs, soaked in warm water for 10 minutes and quartered, though the texture will be chewier than fresh.",
+            ],
+            "reader_tips": [
+                "Toast the walnuts before you start anything else, they burn quickly and it's easy to forget them once the dressing and figs are underway.",
+                "Handle the ripe figs gently once quartered, they bruise and lose their shape easily if tossed roughly with the rest of the salad.",
+            ],
+            "storage_and_reheating": (
+                "Best assembled just before serving. Store any undressed "
+                "components separately in the refrigerator for up to 2 "
+                "days; once dressed, the greens wilt and the figs release "
+                "juice within a few hours, so this salad doesn't keep "
+                "well fully assembled."
+            ),
+            "nutrition_note": "A fiber-rich salad with moderate fat and protein from the goat cheese and walnuts, and natural sugar from the figs.",
+            "faqs": [
+                {"question": "Can I make this salad ahead of time?", "answer": "Prep the components separately, toasted walnuts, dressing, and washed greens, up to 2 days ahead, but wait to slice the figs and assemble the salad until just before serving so the greens don't wilt and the figs stay fresh."},
+                {"question": "What can I use instead of fresh figs?", "answer": "Dried figs work well outside fig season, soak them in warm water for about 10 minutes to soften before quartering, they'll be chewier than fresh but still pair nicely with the goat cheese and walnuts."},
+                {"question": "Why warm the balsamic vinegar for the dressing?", "answer": "A brief warm-up softens balsamic's sharp acidity and helps it blend more smoothly with the honey and olive oil, giving a rounder dressing than whisking everything together cold."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Fig Recipes", "slug": "fig-recipes"},
+        },
+    },
+    {
+        "slug": "roasted-radishes-with-butter",
+        "template_type": "recipe_or_dish",
+        "title": "Roasted Radishes with Butter Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "High-heat roasting turns peppery raw radishes sweet and "
+                "tender, finished with melted butter and flaky salt."
+            ),
+            "hero_image_query": "roasted radishes with butter",
+            "why_it_works": (
+                "Roasting drives off the moisture that carries a raw "
+                "radish's sharp bite, and the sugars that remain caramelize "
+                "at the cut edges, turning a vegetable most people only eat "
+                "raw into something closer to a roasted turnip or potato."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "radishes, halved (quartered if large)", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh chives, chopped", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": "chives"},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C).",
+                "Trim the radishes and halve them (quarter any larger ones so the pieces are roughly even).",
+                "Toss the radishes with olive oil, salt, and pepper on a rimmed baking sheet, spreading them cut-side down in a single layer.",
+                "Roast for 18-22 minutes, until the cut sides are deeply browned and a knife slides in easily.",
+                "While still hot, toss the radishes with the butter directly on the pan until it melts and coats them.",
+                "Transfer to a serving dish and scatter with chives.",
+            ],
+            "step_notes": {
+                2: "Cut-side down matters more than it seems like it should, that's the only surface flat enough to actually make contact with the hot pan and brown rather than just steam.",
+                4: "Adding the butter after roasting, not before, keeps it from burning at 425°F, and tossing it with still-hot radishes melts it into a glossy coating instead of leaving it pooled.",
+            },
+            "tips_and_variations": [
+                "Radish greens don't roast well alongside the roots (they scorch long before the roots are done), save them for a quick sauté instead.",
+                "A squeeze of lemon juice at the end brightens the dish if you want something less rich than butter alone.",
+                "Cutting the radishes closer to uniform size is the single biggest factor in even roasting, quarter the large ones rather than leaving them whole.",
+            ],
+            "reader_tips": [
+                "Don't crowd the pan, radishes packed too tightly steam in their own moisture instead of browning.",
+                "Radishes shrink noticeably as they roast, so a pound looks like less food after cooking than it does raw.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers up to 3 days in an airtight container. "
+                "Reheat in a 400°F oven for 5-8 minutes to re-crisp the edges; "
+                "microwaving works but leaves them softer."
+            ),
+            "nutrition_note": "A low-calorie vegetable side that stays light even with the butter, since radishes themselves have almost no starch or sugar.",
+            "faqs": [
+                {"question": "Do roasted radishes still taste peppery?", "answer": "Not really. High heat mellows the compounds that give raw radishes their sharp bite, so roasted radishes taste closer to a mild, slightly sweet root vegetable, similar to a roasted turnip."},
+                {"question": "Can I roast radishes with the greens still attached?", "answer": "Remove the greens before roasting. They cook much faster than the roots and will burn before the radishes are tender; sauté the greens separately if you want to use them."},
+                {"question": "Why are my roasted radishes soggy instead of browned?", "answer": "Usually overcrowding. Radishes release water as they cook, and if they're piled on the pan that moisture has nowhere to go and steams them instead of letting them brown. Use a large enough sheet pan to keep them in a single layer."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Radish Recipes", "slug": "radish-recipes"},
+        },
+    },
+    {
+        "slug": "quick-pickled-radishes",
+        "template_type": "recipe_or_dish",
+        "title": "Quick-Pickled Radishes Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A fast vinegar brine turns sliced radishes tangy and "
+                "crisp in under an hour, ready for tacos, salads, or sandwiches."
+            ),
+            "hero_image_query": "quick pickled radishes",
+            "why_it_works": (
+                "A hot brine poured over thinly sliced radishes penetrates "
+                "quickly because the slices are thin and the vinegar is "
+                "still warm, so the radishes pick up real tang in under an "
+                "hour instead of the days a true fermented pickle needs."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 5,
+            "total_time_minutes": 45,
+            "servings": 6,
+            "ingredients": [
+                {"name": "radishes, thinly sliced", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "white vinegar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "water", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 25, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 18, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic clove, smashed", "base_qty": 1, "unit_us": "clove", "base_qty_metric": 1, "unit_metric": "clove", "hub_slug": None},
+                {"name": "black peppercorns", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Pack the thinly sliced radishes into a clean pint jar along with the garlic and peppercorns.",
+                "Combine the vinegar, water, sugar, and salt in a small saucepan and bring to a simmer, stirring until the sugar and salt dissolve.",
+                "Pour the hot brine over the radishes, making sure they're fully submerged.",
+                "Let the jar cool uncovered on the counter for 15 minutes, then seal with a lid.",
+                "Refrigerate for at least 30 minutes before eating, though flavor keeps improving over the first 24 hours.",
+            ],
+            "step_notes": {
+                1: "Dissolving the sugar and salt fully before it hits the radishes means every slice gets an evenly seasoned brine instead of some getting a stronger dose than others.",
+                2: "Pouring the brine in hot, not cooled, is what makes this a quick pickle rather than a slow one, the heat helps the vinegar penetrate the radish slices faster.",
+            },
+            "tips_and_variations": [
+                "Slice the radishes on a mandoline for even, thin rounds, thickness is what determines how fast they pickle.",
+                "Swap in a sliced jalapeño or a bay leaf for a different flavor angle without changing the base method.",
+                "Rice vinegar in place of white vinegar gives a milder, slightly sweeter pickle that works especially well on tacos.",
+            ],
+            "reader_tips": [
+                "These are a refrigerator pickle, not a shelf-stable canned one, they need to stay cold and get eaten within a couple weeks.",
+                "The brine is reusable once for a second batch of radishes, though the pickle will be milder the second time around.",
+            ],
+            "storage_and_reheating": (
+                "Store in the refrigerator, fully submerged in brine, for up "
+                "to 2 weeks. No reheating involved, these are meant to be "
+                "eaten cold or at room temperature straight from the jar."
+            ),
+            "nutrition_note": "Very low in calories, the brine adds sodium but essentially no fat or significant carbohydrate per serving.",
+            "faqs": [
+                {"question": "How long do quick-pickled radishes last?", "answer": "About 2 weeks in the refrigerator, as long as the radishes stay submerged in the brine and you use a clean utensil each time you take some out."},
+                {"question": "Do I need to can or process the jar?", "answer": "No. This is a quick refrigerator pickle, not a shelf-stable canned pickle, so there's no water bath or processing step, just cool, seal, and refrigerate."},
+                {"question": "Can I use this brine on other vegetables?", "answer": "Yes, the same ratio works well on thinly sliced cucumbers, red onion, or carrots. Just adjust the pickling time slightly for thicker cuts."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Radish Recipes", "slug": "radish-recipes"},
+        },
+    },
+    {
+        "slug": "radishes-with-butter-and-salt",
+        "template_type": "recipe_or_dish",
+        "title": "Radishes with Butter and Salt Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "The classic French bistro snack: crisp raw radishes "
+                "dragged through soft butter and flaky salt, no cooking required."
+            ),
+            "hero_image_query": "radishes with butter and salt",
+            "why_it_works": (
+                "Cold, crisp radish against soft, fatty butter and coarse "
+                "salt is a study in contrast, the fat rounds off the "
+                "radish's peppery heat while the salt sharpens it, so "
+                "nothing here needs to be cooked to taste finished."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 0,
+            "total_time_minutes": 10,
+            "servings": 4,
+            "ingredients": [
+                {"name": "radishes, very fresh, with a bit of stem left on", "base_qty": 1, "unit_us": "bunch", "base_qty_metric": 1, "unit_metric": "bunch", "hub_slug": None},
+                {"name": "good unsalted butter, softened", "base_qty": 4, "unit_us": "oz", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "flaky sea salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+                {"name": "baguette or crusty bread, sliced", "base_qty": 0.5, "unit_us": "loaf", "base_qty_metric": 0.5, "unit_metric": "loaf", "hub_slug": None},
+            ],
+            "instructions": [
+                "Trim the radish roots and leave an inch of stem attached for a handle, then wash and dry them thoroughly.",
+                "If not eating immediately, submerge the trimmed radishes in ice water for 20-30 minutes to make them extra crisp, then pat dry.",
+                "Arrange the radishes on a plate alongside the softened butter and a small bowl of flaky salt.",
+                "Spread a little butter directly onto each radish (or a slice of bread), sprinkle with salt, and eat immediately.",
+            ],
+            "step_notes": {
+                1: "Leaving a stem handle isn't just presentation, it gives you something to hold onto while spreading butter on a small, round, slippery vegetable.",
+                2: "The ice water bath forces water back into the radish's cells through osmosis, which is what makes bistro-style radishes noticeably crunchier than ones served straight from the fridge.",
+            },
+            "tips_and_variations": [
+                "Softened butter spreads far more easily than cold butter straight from the fridge, take it out at least 30 minutes ahead.",
+                "A few grinds of black pepper or a small pat of anchovy butter is a common upgrade if you want more savory depth.",
+                "Serve alongside thin slices of baguette so guests can build little open-faced bites instead of eating the radishes alone.",
+            ],
+            "reader_tips": [
+                "This only works with genuinely fresh, firm radishes, any that have gone soft or rubbery won't have the snap the dish depends on.",
+                "Flaky sea salt matters here more than in cooked dishes, its texture is part of the point since nothing else on the plate is crunchy in that same way.",
+            ],
+            "storage_and_reheating": (
+                "This is a raw, assemble-to-order snack with nothing to "
+                "store as a finished dish. Keep trimmed radishes in ice "
+                "water in the refrigerator up to 2 days and butter them "
+                "just before serving."
+            ),
+            "nutrition_note": "A high-fat but very low-carb snack, since the calories come almost entirely from the butter rather than the radishes themselves.",
+            "faqs": [
+                {"question": "Why leave the stems on the radishes?", "answer": "A short stem gives you a handle to hold while spreading butter and dipping into salt, it's a practical detail as much as a traditional presentation."},
+                {"question": "What kind of salt should I use?", "answer": "A flaky finishing salt like Maldon gives the best texture and burst of flavor. Fine table salt works in a pinch but dissolves into the butter instead of staying crunchy."},
+                {"question": "Can I make this ahead for a party?", "answer": "Trim and ice-water-crisp the radishes up to a day ahead and refrigerate them, but wait to butter and salt them until just before serving so they don't turn soft or soggy."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Radish Recipes", "slug": "radish-recipes"},
+        },
+    },
+    {
+        "slug": "sauteed-radish-greens",
+        "template_type": "recipe_or_dish",
+        "title": "Sautéed Radish Greens Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A fast garlicky sauté that turns radish tops, usually "
+                "thrown away, into a peppery, tender green side dish."
+            ),
+            "hero_image_query": "sauteed radish greens",
+            "why_it_works": (
+                "Radish greens are tender and slightly fuzzy, closer to "
+                "spinach than to a tough green like kale, so they need "
+                "only a couple minutes of high heat to wilt down without "
+                "turning bitter or slimy."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 5,
+            "total_time_minutes": 15,
+            "servings": 2,
+            "ingredients": [
+                {"name": "radish greens, from about 2 bunches of radishes", "base_qty": 6, "unit_us": "cups", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic, thinly sliced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "red pepper flakes", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "lemon juice", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Wash the radish greens thoroughly in a large bowl of water, changing the water once or twice to remove any grit, then spin or pat dry.",
+                "Trim off any thick, tough stems and roughly chop the leaves.",
+                "Heat the olive oil in a large skillet over medium heat and add the garlic and red pepper flakes, cooking just until fragrant, about 30 seconds.",
+                "Add the greens in batches, tossing as they wilt down to make room for more.",
+                "Cook for 2-3 minutes, tossing often, until all the greens are wilted and tender.",
+                "Season with salt, remove from heat, and finish with a squeeze of lemon juice.",
+            ],
+            "step_notes": {
+                0: "Radish greens grow low to the ground and trap a surprising amount of dirt in their fuzzy leaves, one rinse usually isn't enough to get them fully clean.",
+                4: "Radish greens wilt much faster than heartier greens like kale or chard, watch them closely since another minute or two past tender tips into mushy and dull-tasting.",
+            },
+            "tips_and_variations": [
+                "Stir in a handful of the greens with pasta and parmesan for a quick weeknight meal instead of serving them as a standalone side.",
+                "A splash of soy sauce and sesame oil in place of the lemon gives the dish a different, more savory direction.",
+                "Mix radish greens with spinach or chard if you don't have quite enough on their own, they wilt at a similar rate.",
+            ],
+            "reader_tips": [
+                "Only use greens from radishes that were fresh and firm, greens attached to soft or rubbery radishes are usually already past their best.",
+                "Cook the greens the same day you buy or harvest the radishes, they wilt and turn bitter faster than the roots do.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate cooked greens in an airtight container up to 2 "
+                "days. Reheat briefly in a dry skillet over medium heat; "
+                "they lose texture quickly in the microwave."
+            ),
+            "nutrition_note": "A leafy green side that's naturally low in calories and a good source of fiber, with only a light amount of added oil.",
+            "faqs": [
+                {"question": "Are radish greens actually edible?", "answer": "Yes, they're entirely edible and taste similar to a peppery mix of spinach and mustard greens. They're often thrown away simply because most people don't know they can be cooked."},
+                {"question": "Do radish greens need to be cooked, or can they be eaten raw?", "answer": "They can be eaten raw in small amounts in a salad, but they're fuzzy and slightly bitter raw. Cooking softens the texture and mellows the bitterness considerably."},
+                {"question": "How do I clean radish greens properly?", "answer": "Submerge them in a bowl of cold water and swish vigorously, then lift them out (rather than pouring the bowl through a colander) so the grit that sinks stays behind. Repeat once more if the water looks cloudy."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Radish Recipes", "slug": "radish-recipes"},
+        },
+    },
+    {
+        "slug": "roasted-turnips",
+        "template_type": "recipe_or_dish",
+        "title": "Roasted Turnips Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "High-heat roasting caramelizes turnips into a sweet, "
+                "golden side dish that tastes far milder than the raw root."
+            ),
+            "hero_image_query": "roasted turnips",
+            "why_it_works": (
+                "Turnips carry a sharp, mustardy edge raw, but sustained "
+                "dry heat breaks that down and caramelizes their natural "
+                "sugars at the surface, leaving a vegetable that's mild, "
+                "nutty, and only faintly peppery underneath a browned crust."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 45,
+            "servings": 4,
+            "ingredients": [
+                {"name": "turnips, peeled and cut into 1-inch chunks", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.75, "unit_us": "tsp", "base_qty_metric": 4.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh thyme leaves", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 425°F (220°C) and line a rimmed baking sheet with parchment.",
+                "Peel the turnips and cut into roughly 1-inch chunks so they cook evenly.",
+                "Toss the turnip chunks with olive oil, salt, and pepper, and spread in a single layer on the baking sheet.",
+                "Roast for 25-30 minutes, flipping halfway through, until deeply golden and tender when pierced with a fork.",
+                "Toss with fresh thyme and serve hot.",
+            ],
+            "step_notes": {
+                1: "Cutting the pieces to a consistent size is what keeps small chunks from burning before larger ones finish cooking through.",
+                3: "Flipping halfway through gets browning on two sides instead of one, since turnips release moisture as they cook and the side touching the pan is the only one that actually crisps.",
+            },
+            "tips_and_variations": [
+                "Smaller, younger turnips are noticeably milder than large ones, if yours taste sharp even after roasting, they were likely older and larger.",
+                "A drizzle of honey or maple syrup in the last 5 minutes of roasting leans into their natural sweetness.",
+                "Mix turnips with carrots or parsnips on the same pan, they roast at a similar rate and pair well.",
+            ],
+            "reader_tips": [
+                "Cut turnips a little smaller than you would potatoes, they're denser with less give and take longer to cook through at the same size.",
+                "Don't skip peeling, the skin is tougher and more bitter than the flesh and doesn't soften the way potato skin does.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 4 days. Reheat "
+                "in a 400°F oven for about 10 minutes to restore some "
+                "crispness; a microwave will soften them further."
+            ),
+            "nutrition_note": "A low-calorie root vegetable side, naturally low in starch compared to potatoes, with only a light coating of oil added.",
+            "faqs": [
+                {"question": "Do I need to peel turnips before roasting?", "answer": "Yes, for the best texture. Turnip skin is tougher and more bitter than the flesh, and unlike potato skin it doesn't crisp up appealingly when roasted."},
+                {"question": "Why do my roasted turnips taste bitter?", "answer": "Large, older turnips tend to be sharper and more bitter than small, young ones. Choosing smaller turnips, and roasting them fully until deeply golden, both help mellow that edge."},
+                {"question": "Can I roast turnips ahead of time for a holiday meal?", "answer": "Yes, roast them up to a day ahead, refrigerate, then reheat in a hot oven for about 10 minutes before serving to bring back some of the browning."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Turnip Recipes", "slug": "turnip-recipes"},
+        },
+    },
+    {
+        "slug": "mashed-turnips",
+        "template_type": "recipe_or_dish",
+        "title": "Mashed Turnips Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A lower-carb alternative to mashed potatoes, made creamy "
+                "with butter and a splash of cream after simmering turnips "
+                "until fork-tender."
+            ),
+            "hero_image_query": "mashed turnips",
+            "why_it_works": (
+                "Turnips hold more water than potatoes, so simmering them "
+                "until fully tender and then draining and drying them "
+                "briefly over heat before mashing keeps the final purée "
+                "from turning thin and watery."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "turnips, peeled and cut into 1-inch chunks", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Place the turnip chunks in a large pot and cover with cold, well-salted water.",
+                "Bring to a boil, then reduce to a simmer and cook 15-18 minutes, until very tender when pierced with a knife.",
+                "Drain thoroughly, then return the turnips to the dry pot over low heat for a minute, shaking the pot, to cook off excess moisture.",
+                "Mash with a potato masher or run through a ricer, then stir in the butter and cream.",
+                "Season with salt and pepper to taste, and serve hot.",
+            ],
+            "step_notes": {
+                2: "Turnips absorb more water while boiling than potatoes do, this quick dry-out step over heat drives off that extra moisture so the mash doesn't turn soupy once the cream goes in.",
+                3: "A ricer gives a smoother purée than a masher does, turnip fibers are a bit stringier than potato and a masher alone can leave the mash slightly grainy.",
+            },
+            "tips_and_variations": [
+                "Mash turnips half-and-half with potatoes for a milder flavor and creamier texture if a fully turnip mash feels too sharp.",
+                "Roasted garlic stirred in at the end adds depth without much extra effort.",
+                "Swap the cream for chicken or vegetable stock for a lighter, dairy-light version.",
+            ],
+            "reader_tips": [
+                "Cut the turnip chunks evenly so they finish cooking at the same time, uneven pieces mean some turn mushy while others are still firm.",
+                "Taste and adjust salt after mashing, not before, turnip flavor concentrates as the water cooks off.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 4 days. Reheat "
+                "gently in a saucepan over low heat, stirring in a splash "
+                "of cream or milk to loosen it back to a smooth texture."
+            ),
+            "nutrition_note": "A lighter, lower-starch alternative to mashed potatoes, though the butter and cream still make it a rich side dish.",
+            "faqs": [
+                {"question": "Do mashed turnips taste like mashed potatoes?", "answer": "Similar in texture but milder and slightly sweeter with a faint peppery edge, rather than the neutral starchiness of potato. Blending with potato is a common way to bridge the two."},
+                {"question": "Why are my mashed turnips watery?", "answer": "Turnips hold onto more water than potatoes while boiling. Draining thoroughly and letting them steam-dry briefly in the hot pot before mashing usually solves it."},
+                {"question": "Can I make mashed turnips ahead for a holiday meal?", "answer": "Yes, make them up to a day ahead and reheat gently on the stovetop with a splash of cream, stirring often so they don't scorch on the bottom of the pan."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Turnip Recipes", "slug": "turnip-recipes"},
+        },
+    },
+    {
+        "slug": "turnip-and-potato-gratin",
+        "template_type": "recipe_or_dish",
+        "title": "Turnip and Potato Gratin Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Thin layers of turnip and potato baked in garlicky cream "
+                "until tender and golden-crusted on top."
+            ),
+            "hero_image_query": "turnip and potato gratin",
+            "why_it_works": (
+                "Turnips break up the starchiness of an all-potato gratin "
+                "and add a faint mustardy edge, while the potato keeps the "
+                "dish from tasting one-note vegetal, and a slow bake lets "
+                "the cream thicken as it's absorbed instead of staying loose."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 70,
+            "total_time_minutes": 90,
+            "servings": 6,
+            "pan_size": "9x13-inch baking dish",
+            "ingredients": [
+                {"name": "turnips, peeled and thinly sliced", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "russet potatoes, peeled and thinly sliced", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "ml", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "gruyère cheese, grated", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": "gruyere-cheese"},
+                {"name": "salt", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh thyme leaves", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 375°F (190°C) and butter a 9x13-inch baking dish.",
+                "Warm the cream, milk, garlic, salt, pepper, and thyme in a saucepan over low heat until just steaming, then remove from heat.",
+                "Slice the turnips and potatoes as thinly and evenly as possible, ideally with a mandoline.",
+                "Layer the turnip and potato slices in the baking dish, overlapping and alternating the two, pouring a little of the warm cream mixture over every few layers.",
+                "Pour any remaining cream mixture over the top and press the layers down gently.",
+                "Cover tightly with foil and bake for 40 minutes.",
+                "Uncover, sprinkle the gruyère evenly over the top, and bake uncovered for another 25-30 minutes, until the top is golden and a knife slides through easily.",
+                "Let rest for 10 minutes before serving so the cream fully sets up.",
+            ],
+            "step_notes": {
+                2: "Uniform, thin slices are the single biggest factor in a gratin cooking evenly, a mandoline gets everything to the same thickness far more reliably than a knife.",
+                6: "Baking covered first, then uncovered, cooks the vegetables through with steam before the top is exposed to dry heat for browning, so the gratin doesn't brown on top while the center is still firm.",
+            },
+            "tips_and_variations": [
+                "Swap gruyère for a sharp cheddar or a mix of parmesan and gruyère for a different finish on top.",
+                "A mandoline makes this dish dramatically faster and more even than slicing by hand, worth using if you have one.",
+                "Rutabaga can stand in for some or all of the turnip for a slightly sweeter, denser gratin.",
+            ],
+            "reader_tips": [
+                "Layer the vegetables snugly on their edges, standing rather than flat, it helps the gratin hold together in neater slices once baked.",
+                "If the top browns too fast before the center is tender, tent it loosely with foil and keep baking.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers, tightly covered, up to 4 days. "
+                "Reheat individual portions in a 350°F oven for 15-20 "
+                "minutes, covered loosely with foil, until warmed through."
+            ),
+            "nutrition_note": "A rich, cream-and-cheese-based side dish best served in modest portions alongside a lighter main.",
+            "faqs": [
+                {"question": "Can I make this gratin ahead of time?", "answer": "Yes, assemble it up to a day ahead, cover, and refrigerate unbaked. Bake straight from the fridge, adding roughly 10-15 extra minutes covered to account for the cold start."},
+                {"question": "Why is my gratin still firm in the center after baking?", "answer": "Slices that are too thick are the most common cause. If a knife meets resistance in the center, cover and keep baking in 10-minute increments rather than pulling it out early."},
+                {"question": "Can I use only turnips or only potatoes instead of both?", "answer": "Yes, but the balance is part of what makes this version distinct, potato alone leans starchy and turnip alone can taste sharp; the combination softens both."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Turnip Recipes", "slug": "turnip-recipes"},
+        },
+    },
+    {
+        "slug": "turnip-soup",
+        "template_type": "recipe_or_dish",
+        "title": "Turnip Soup Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A creamy, blended turnip soup built on sautéed aromatics "
+                "and stock, ready in under an hour with just a handful of "
+                "ingredients."
+            ),
+            "hero_image_query": "turnip soup",
+            "why_it_works": (
+                "Sweating the onion and turnips slowly before adding stock "
+                "builds a rounder base flavor than simply boiling the "
+                "vegetables would, and blending the finished soup smooth "
+                "turns turnip's sharper edge into something mellow and "
+                "velvety."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 35,
+            "total_time_minutes": 50,
+            "servings": 4,
+            "ingredients": [
+                {"name": "turnips, peeled and chopped", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion, chopped", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "vegetable or chicken stock", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Melt the butter in a large pot over medium heat and add the onion, cooking until softened, about 5 minutes.",
+                "Add the garlic and cook another minute, until fragrant.",
+                "Add the chopped turnips and stock, bring to a boil, then reduce to a simmer and cook 20-25 minutes, until the turnips are very tender.",
+                "Blend the soup until smooth, using an immersion blender directly in the pot or working in batches in a countertop blender.",
+                "Stir in the cream and season with salt and pepper.",
+                "Warm through gently over low heat and serve.",
+            ],
+            "step_notes": {
+                0: "Softening the onion slowly before anything else builds a sweeter, more rounded background flavor than adding it at the same time as the liquid would.",
+                3: "Blending while the soup is still quite hot gets the smoothest result, it thins slightly as it cools, so a soup blended lukewarm can end up grainier once it comes back to temperature.",
+            },
+            "tips_and_variations": [
+                "A peeled, diced potato added alongside the turnips makes the soup thicker and slightly milder if turnip alone tastes too sharp.",
+                "Swap the cream for coconut milk for a dairy-free version with a different but complementary flavor.",
+                "Top with crispy bacon bits or a swirl of crème fraîche for a more composed presentation.",
+            ],
+            "reader_tips": [
+                "Blend hot soup in small batches if using a countertop blender, and vent the lid, hot liquid expands and can blow the lid off if the blender is filled too full.",
+                "Taste before adding the cream, some turnips are naturally sharper than others and you may want less cream to let that character show through, or more to mellow it.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 4 days, or "
+                "freeze up to 3 months (add the cream after thawing and "
+                "reheating rather than before freezing). Reheat gently on "
+                "the stovetop over low heat, stirring occasionally."
+            ),
+            "nutrition_note": "A moderate-calorie soup that leans lighter than a potato-based version, with the cream adding most of its richness.",
+            "faqs": [
+                {"question": "Does turnip soup taste bitter?", "answer": "Not when cooked properly. Turnip's sharper, mustardy edge mellows significantly with a long simmer and blending, leaving a soup that reads as mild and slightly sweet rather than bitter."},
+                {"question": "Can I make turnip soup vegan?", "answer": "Yes, use vegetable stock, swap the butter for olive oil, and replace the cream with a splash of coconut milk or cashew cream for richness."},
+                {"question": "Can I freeze turnip soup?", "answer": "The base freezes well for up to 3 months. If you've already added cream, the texture can separate slightly on thawing, so it's best to freeze it before the cream goes in and stir that in fresh after reheating."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Turnip Recipes", "slug": "turnip-recipes"},
+        },
+    },
+    {
+        "slug": "pan-seared-venison-backstrap",
+        "template_type": "recipe_or_dish",
+        "title": "Pan-Seared Venison Backstrap Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A quick, hot sear cooks venison backstrap to a rosy "
+                "medium-rare without drying out this lean, tender cut."
+            ),
+            "hero_image_query": "pan-seared venison backstrap",
+            "why_it_works": (
+                "Backstrap is venison's most tender cut and, like beef "
+                "tenderloin, has almost no fat to render, so a very hot "
+                "pan and a short cook time to medium-rare are what keep it "
+                "tender instead of turning it dry and livery, which lean "
+                "game meat does quickly past that point."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "venison backstrap, trimmed of silverskin", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil, such as avocado or grapeseed", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic cloves, smashed", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "fresh rosemary sprig", "base_qty": 1, "unit_us": "sprig", "base_qty_metric": 1, "unit_metric": "sprig", "hub_slug": None},
+            ],
+            "instructions": [
+                "Remove the backstrap from the refrigerator 30 minutes before cooking to take the chill off.",
+                "Pat the meat completely dry and season generously with salt and pepper on all sides.",
+                "Heat the oil in a heavy skillet, cast iron if you have it, over high heat until just smoking.",
+                "Sear the backstrap on all sides, about 2 minutes per side, until deeply browned.",
+                "Reduce heat to medium, add the butter, garlic, and rosemary, and baste the meat with the melted butter for 1-2 minutes.",
+                "Check for an internal temperature of 130-135°F (medium-rare) with a meat thermometer, then remove from the pan.",
+                "Rest for 5-8 minutes before slicing against the grain.",
+            ],
+            "step_notes": {
+                0: "Cold meat straight from the fridge cooks unevenly, the outside can overcook before the center comes up to temperature, so taking the chill off first helps it cook more evenly all the way through.",
+                5: "Venison backstrap has almost no intramuscular fat, so it goes from tender to tough and gamey-tasting fast past medium-rare, checking temperature directly is more reliable than timing alone.",
+            },
+            "tips_and_variations": [
+                "A juniper berry or two crushed into the butter baste is a classic pairing with venison if you have some on hand.",
+                "Marinating isn't necessary for backstrap the way it is for tougher cuts, since it's already tender, but a short soak in buttermilk or red wine can mellow any gaminess if the meat is strongly flavored.",
+                "Slice thinner if serving over a salad, or leave in thicker medallions as a standalone main with a pan sauce.",
+            ],
+            "reader_tips": [
+                "Trim the silverskin thoroughly before cooking, it doesn't render away like fat does and turns chewy and unpleasant once cooked.",
+                "Use a meat thermometer rather than judging by color or time, venison looks different from beef at the same doneness and it's easy to overcook if you're used to reading beef by eye.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate sliced leftovers up to 3 days. Reheat very "
+                "gently in a low oven or skillet, just until warmed "
+                "through, since venison overcooks and toughens quickly on "
+                "reheat."
+            ),
+            "nutrition_note": "A very lean, high-protein cut of meat, notably lower in fat than a comparable cut of beef.",
+            "faqs": [
+                {"question": "What temperature should venison backstrap be cooked to?", "answer": "Aim for 130-135°F for medium-rare. Because backstrap is so lean, it toughens quickly past medium, so pulling it slightly under your target temperature and letting it rest is safer than overcooking."},
+                {"question": "Why does my venison taste gamey?", "answer": "Gaminess often comes from fat and connective tissue left on the meat, or from overcooking. Trimming the silverskin and any fat thoroughly, and keeping the cook to medium-rare, both reduce it significantly."},
+                {"question": "Do I need to marinate venison backstrap?", "answer": "Not for tenderness, backstrap is already the most tender cut on the animal. A marinade is more about adding flavor or mellowing gaminess than tenderizing, and it's optional for this cut."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Venison Recipes", "slug": "venison-recipes"},
+        },
+    },
+    {
+        "slug": "venison-chili",
+        "template_type": "recipe_or_dish",
+        "title": "Venison Chili Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A hearty ground venison chili built low and slow with "
+                "beans, tomatoes, and warm spices, extra lean without "
+                "sacrificing flavor."
+            ),
+            "hero_image_query": "venison chili",
+            "why_it_works": (
+                "Ground venison is much leaner than ground beef, so "
+                "browning it in a little added fat and simmering the chili "
+                "long enough to let the beans and tomatoes build body "
+                "compensates for the fat a beef chili would otherwise "
+                "supply on its own."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 90,
+            "total_time_minutes": 105,
+            "servings": 6,
+            "ingredients": [
+                {"name": "ground venison", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "bacon, diced, or 2 tbsp oil", "base_qty": 3, "unit_us": "slices", "base_qty_metric": 3, "unit_metric": "slices", "hub_slug": None},
+                {"name": "yellow onion, diced", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "bell pepper, diced", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "chili powder", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 24, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cumin", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "crushed tomatoes", "base_qty": 28, "unit_us": "oz", "base_qty_metric": 800, "unit_metric": "g", "hub_slug": None},
+                {"name": "beef or venison stock", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "ml", "hub_slug": None},
+                {"name": "kidney beans, drained and rinsed", "base_qty": 2, "unit_us": "cans (15 oz)", "base_qty_metric": 2, "unit_metric": "cans (425 g)", "hub_slug": None},
+                {"name": "salt", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Cook the bacon in a large Dutch oven over medium heat until it renders its fat, then remove and set aside, leaving the fat in the pot (or heat the oil if skipping bacon).",
+                "Add the ground venison and brown well, breaking it into crumbles, about 6-8 minutes.",
+                "Add the onion and bell pepper, cooking until softened, about 5 minutes.",
+                "Stir in the garlic, chili powder, and cumin, and cook for 1 minute until fragrant.",
+                "Add the crushed tomatoes and stock, stir to combine, and bring to a simmer.",
+                "Cover partially and simmer on low for 60-75 minutes, stirring occasionally, until thickened.",
+                "Stir in the kidney beans and the reserved bacon, and simmer another 15 minutes.",
+                "Season with salt to taste before serving.",
+            ],
+            "step_notes": {
+                0: "Rendering bacon fat first, rather than adding oil straight away, gives the venison something with real fat and smoke flavor to brown in, since venison itself contributes almost none of its own.",
+                5: "A long, low simmer matters more here than with a fattier beef chili, it's doing the work of building richness and thickness that rendered beef fat would otherwise provide.",
+            },
+            "tips_and_variations": [
+                "If your venison is very lean, work in a few extra tablespoons of oil or bacon fat when browning to keep the chili from tasting thin.",
+                "A square of dark chocolate or a spoonful of espresso powder stirred in near the end deepens the chili without making it taste like either.",
+                "Swap kidney beans for black beans or pinto beans, or omit beans entirely for a Texas-style version.",
+            ],
+            "reader_tips": [
+                "Break the venison into small, even crumbles while browning, larger chunks stay tougher through the long simmer than beef would at the same size.",
+                "Chili almost always tastes better the next day, the flavors have more time to meld, so make it a day ahead if your schedule allows.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 4 days, or "
+                "freeze up to 3 months. Reheat on the stovetop over medium-"
+                "low heat, stirring occasionally, adding a splash of stock "
+                "if it's thickened too much."
+            ),
+            "nutrition_note": "A protein-heavy, relatively low-fat chili given how lean ground venison is, with the beans adding fiber and additional protein.",
+            "faqs": [
+                {"question": "Do I need to add fat to ground venison chili?", "answer": "It helps. Ground venison is very lean, and browning it with bacon or a bit of oil, plus a long simmer, keeps the chili from tasting thin or dry the way an unadjusted beef recipe might if made with venison instead."},
+                {"question": "Can I substitute ground beef for the venison?", "answer": "Yes, though the chili will be richer since beef carries more fat. If substituting, you can likely skip or reduce the added bacon fat."},
+                {"question": "How do I keep venison chili from tasting gamey?", "answer": "Trim any visible fat or sinew from the venison before grinding if you're processing your own, and lean on warm spices like chili powder and cumin, which pair especially well with venison's flavor."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Venison Recipes", "slug": "venison-recipes"},
+        },
+    },
+    {
+        "slug": "braised-venison-shoulder",
+        "template_type": "recipe_or_dish",
+        "title": "Braised Venison Shoulder Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A low, slow braise turns a tough venison shoulder cut "
+                "fall-apart tender in a rich wine and stock sauce."
+            ),
+            "hero_image_query": "braised venison shoulder",
+            "why_it_works": (
+                "Shoulder is one of venison's toughest, most worked "
+                "cuts, full of connective tissue that only breaks down "
+                "into gelatin over hours of low, moist heat, which is "
+                "exactly what a covered braise in liquid provides."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 210,
+            "total_time_minutes": 240,
+            "servings": 6,
+            "ingredients": [
+                {"name": "venison shoulder, cut into large chunks", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "yellow onion, chopped", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "carrots, chopped", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 2, "unit_metric": "medium", "hub_slug": None},
+                {"name": "celery, chopped", "base_qty": 2, "unit_us": "stalks", "base_qty_metric": 2, "unit_metric": "stalks", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "tomato paste", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 32, "unit_metric": "g", "hub_slug": None},
+                {"name": "dry red wine", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "ml", "hub_slug": None},
+                {"name": "beef or venison stock", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 475, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh thyme sprigs", "base_qty": 3, "unit_us": "sprigs", "base_qty_metric": 3, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "bay leaf", "base_qty": 1, "unit_us": "leaf", "base_qty_metric": 1, "unit_metric": "leaf", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 325°F (165°C).",
+                "Pat the venison shoulder chunks dry and season all over with salt and pepper.",
+                "Heat the oil in a large Dutch oven over medium-high heat and sear the venison in batches until well browned on all sides, then remove and set aside.",
+                "Add the onion, carrots, and celery to the pot and cook until softened, about 6 minutes.",
+                "Stir in the garlic and tomato paste and cook for 1 minute.",
+                "Pour in the wine, scraping up any browned bits from the bottom of the pot, and simmer for 2-3 minutes.",
+                "Return the venison to the pot, add the stock, thyme, and bay leaf, and bring to a simmer.",
+                "Cover and transfer to the oven, braising for 3 to 3.5 hours, until the meat shreds easily with a fork.",
+                "Skim any excess fat from the surface, discard the bay leaf and thyme stems, and serve the meat with the braising liquid spooned over.",
+            ],
+            "step_notes": {
+                2: "Searing in batches, rather than crowding the pot, keeps the pan hot enough to actually brown the meat, a crowded pot drops in temperature and steams the venison instead.",
+                7: "The long braise time isn't optional here the way it might be for a more tender cut, shoulder is dense with collagen that needs sustained low heat, several hours, to fully convert into gelatin.",
+            },
+            "tips_and_variations": [
+                "This braise reheats and even improves over a day or two in the fridge, making it a good make-ahead option for a dinner party.",
+                "Swap the red wine for extra stock plus a splash of balsamic vinegar for a non-alcoholic version with similar depth.",
+                "Serve over mashed potatoes, polenta, or egg noodles to soak up the braising liquid.",
+            ],
+            "reader_tips": [
+                "Don't rush the sear, a deeply browned crust on the meat and vegetables is where most of the dish's flavor comes from, not the braising liquid alone.",
+                "Check for doneness by tenderness, not time, if the meat resists shredding at the 3-hour mark, give it another 30 minutes rather than pulling it early.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in the braising liquid up to 4 days, or freeze "
+                "up to 3 months. Reheat gently on the stovetop over low "
+                "heat or in a 300°F oven, covered, until warmed through."
+            ),
+            "nutrition_note": "A protein-rich braise; venison's leanness keeps it lighter than a similar beef chuck braise, though the sauce carries some fat from the sear.",
+            "faqs": [
+                {"question": "Why is my braised venison still tough?", "answer": "It likely needs more time. Tough cuts like shoulder need their connective tissue to fully break down, which can take longer than the recipe states depending on the animal's age; keep braising until the meat shreds easily."},
+                {"question": "Can I make this in a slow cooker instead of the oven?", "answer": "Yes, after searing the meat and vegetables as directed, transfer everything to a slow cooker and cook on low for 7-8 hours, until fork-tender."},
+                {"question": "What's the best cut of venison for braising?", "answer": "Shoulder, shank, and neck are all good choices. These tougher, well-worked cuts have the connective tissue that a long braise needs to break down into a tender, rich result."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Venison Recipes", "slug": "venison-recipes"},
+        },
+    },
+    {
+        "slug": "venison-burgers",
+        "template_type": "recipe_or_dish",
+        "title": "Venison Burgers Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Ground venison patties mixed with a little added fat and "
+                "seasoning, grilled or pan-seared to a juicy medium so the "
+                "lean meat doesn't dry out."
+            ),
+            "hero_image_query": "venison burgers",
+            "why_it_works": (
+                "Ground venison has almost no fat of its own, so folding "
+                "in a portion of ground pork or beef fat before forming "
+                "the patties keeps the burgers juicy the way an all-"
+                "venison patty, cooked to standard burger doneness, "
+                "typically won't."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "ground venison", "base_qty": 1.25, "unit_us": "lb", "base_qty_metric": 565, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground pork or beef fat trim", "base_qty": 0.25, "unit_us": "lb", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "Worcestershire sauce", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "burger buns", "base_qty": 4, "unit_us": "buns", "base_qty_metric": 4, "unit_metric": "buns", "hub_slug": None},
+                {"name": "cheddar cheese slices (optional)", "base_qty": 4, "unit_us": "slices", "base_qty_metric": 4, "unit_metric": "slices", "hub_slug": None},
+            ],
+            "instructions": [
+                "In a large bowl, gently combine the ground venison, ground pork fat, Worcestershire sauce, garlic powder, salt, and pepper, mixing just until combined.",
+                "Divide into 4 portions and shape into patties slightly wider than the buns, pressing a shallow dimple into the center of each.",
+                "Heat a grill or heavy skillet over medium-high heat.",
+                "Cook the patties for 3-4 minutes per side, adding cheese in the last minute if using, until an internal temperature of 140-145°F for medium.",
+                "Rest the burgers for 2-3 minutes, then serve on buns with your preferred toppings.",
+            ],
+            "step_notes": {
+                0: "Mixing just until combined, not longer, keeps the patties tender, overworking ground meat develops the proteins in a way that turns burgers dense and springy instead of loose and juicy.",
+                1: "The center dimple stops the patty from puffing into a dome as it cooks, without it, the middle rises and the burger ends up thinner around the edges than in the center.",
+            },
+            "tips_and_variations": [
+                "Adding fat isn't optional the way it might be for beef, all-venison patties made without any added fat tend to fall apart and taste dry regardless of how carefully they're cooked.",
+                "Bacon fat, folded in during mixing, is a common substitute for ground pork fat and adds a smoky note.",
+                "Top with caramelized onions or a fried egg to add richness that plain venison patties don't have on their own.",
+            ],
+            "reader_tips": [
+                "Don't press down on the patties with a spatula while they cook, that squeezes out the juices you're trying to keep in a naturally lean burger.",
+                "Cook to medium rather than well-done, venison burgers taken past medium dry out noticeably faster than a fattier beef burger would at the same doneness.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate cooked patties up to 3 days. Reheat gently in "
+                "a covered skillet over low heat with a splash of water or "
+                "broth to keep them from drying out further."
+            ),
+            "nutrition_note": "A leaner burger than a standard beef patty even with the added fat, since venison itself contributes very little.",
+            "faqs": [
+                {"question": "Do I need to add fat to ground venison for burgers?", "answer": "Yes, it's strongly recommended. Venison is extremely lean, and patties made without added fat tend to crumble on the grill and taste dry, even when cooked carefully."},
+                {"question": "What's the best fat to mix into venison burgers?", "answer": "Ground pork fat or beef fat trim, at roughly a 4:1 ratio of venison to fat, is a common starting point. Bacon fat also works and adds extra flavor."},
+                {"question": "What temperature should venison burgers be cooked to?", "answer": "140-145°F for medium is a good target. Because the meat is so lean, cooking much past that dries the patties out faster than it would with a fattier beef burger."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Venison Recipes", "slug": "venison-recipes"},
+        },
+    },
+    {
+        "slug": "sliced-fuyu-persimmon-salad",
+        "template_type": "recipe_or_dish",
+        "title": "Sliced Fuyu Persimmon Salad Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Thinly sliced Fuyu persimmons tossed with peppery greens, "
+                "toasted nuts, and a light vinaigrette for a bright fall "
+                "salad."
+            ),
+            "hero_image_query": "sliced fuyu persimmon salad",
+            "why_it_works": (
+                "Fuyu persimmons, unlike Hachiya, are firm and non-"
+                "astringent even when not fully ripe, so they slice cleanly "
+                "like an apple and hold their shape in a salad instead of "
+                "needing to be fully soft to be palatable."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 0,
+            "total_time_minutes": 15,
+            "servings": 4,
+            "ingredients": [
+                {"name": "Fuyu persimmons, firm, thinly sliced", "base_qty": 3, "unit_us": "medium", "base_qty_metric": 3, "unit_metric": "medium", "hub_slug": None},
+                {"name": "arugula or mixed peppery greens", "base_qty": 5, "unit_us": "cups", "base_qty_metric": 100, "unit_metric": "g", "hub_slug": None},
+                {"name": "walnuts or pecans, toasted and roughly chopped", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 35, "unit_metric": "g", "hub_slug": None},
+                {"name": "feta cheese, crumbled", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": "feta-cheese"},
+                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "apple cider vinegar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "honey", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the olive oil, vinegar, honey, and salt in a small bowl to make the vinaigrette.",
+                "Wash and dry the persimmons, then slice off the tops and cut into thin rounds or wedges (no need to peel Fuyu, the skin is thin and edible).",
+                "Arrange the greens on a platter or in a large bowl.",
+                "Top with the sliced persimmons, toasted nuts, and feta.",
+                "Drizzle with the vinaigrette just before serving and toss gently.",
+            ],
+            "step_notes": {
+                1: "Fuyu skin is thin enough to eat, unlike a Hachiya's, which is usually discarded once the fruit is scooped soft, so peeling here is a texture preference rather than a necessity.",
+                4: "Dressing the salad right before serving keeps the greens from wilting and the persimmon slices from releasing juice into the bowl and going watery.",
+            },
+            "tips_and_variations": [
+                "Swap feta for goat cheese or shaved parmesan for a different but equally good pairing with the persimmon's sweetness.",
+                "Add thinly sliced red onion or pomegranate seeds for extra color and a tart contrast.",
+                "Make sure to use Fuyu, not Hachiya, persimmons here, an underripe Hachiya is unpleasantly astringent and won't work sliced firm like this.",
+            ],
+            "reader_tips": [
+                "Choose Fuyu persimmons that are firm but not rock-hard, they should give very slightly, like a ripe tomato, for the best flavor while still holding their slice.",
+                "A mandoline gives the most even, attractive slices if you're serving this for company.",
+            ],
+            "storage_and_reheating": (
+                "Best assembled and eaten fresh. Store undressed components "
+                "separately in the refrigerator up to 1 day; once dressed, "
+                "the greens wilt and the persimmon releases liquid within "
+                "a few hours, so combine just before serving."
+            ),
+            "nutrition_note": "A light, nutrient-dense salad; the persimmon adds natural sweetness so the dressing can stay light on added sugar.",
+            "faqs": [
+                {"question": "Do I need to peel Fuyu persimmons for this salad?", "answer": "No, Fuyu skin is thin and tender enough to eat, unlike the tougher skin on a soft, ripe Hachiya. Peeling is optional and mostly a matter of texture preference."},
+                {"question": "Can I use Hachiya persimmons instead of Fuyu?", "answer": "Not sliced firm like this recipe calls for. Hachiya persimmons are astringent and unpleasant unless fully soft and jammy, so they work in purées or baked goods, not sliced into a crisp salad."},
+                {"question": "How do I know if a Fuyu persimmon is ripe enough to eat?", "answer": "Fuyu can be eaten while still fairly firm, similar to biting into an apple. Look for smooth, glossy, deep orange skin and a slight give when pressed; it doesn't need to soften the way Hachiya does."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Persimmon Recipes", "slug": "persimmon-recipes"},
+        },
+    },
+    {
+        "slug": "persimmon-bread",
+        "template_type": "recipe_or_dish",
+        "title": "Persimmon Bread Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A moist, spiced quick bread made with fully ripe Hachiya "
+                "persimmon purée, similar in texture to banana bread."
+            ),
+            "hero_image_query": "persimmon bread",
+            "why_it_works": (
+                "Only a fully soft, jammy Hachiya persimmon purée works "
+                "here, its natural pectin and sugar keep the loaf moist "
+                "the same way overripe banana does in banana bread, while "
+                "an underripe or Fuyu persimmon lacks both the softness "
+                "and the astringency-free sweetness the batter needs."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 60,
+            "total_time_minutes": 90,
+            "servings": 10,
+            "pan_size": "9x5-inch loaf pan",
+            "ingredients": [
+                {"name": "Hachiya persimmons, fully soft and ripe, pulp scooped", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 250, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking soda", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cinnamon", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground nutmeg", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "chopped walnuts or pecans (optional)", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 350°F (175°C) and grease a 9x5-inch loaf pan.",
+                "Scoop the pulp from the fully ripe persimmons and purée or mash until smooth; you should have about 1 cup of purée.",
+                "Whisk together the flour, baking soda, cinnamon, nutmeg, and salt in a bowl.",
+                "In a separate large bowl, whisk the sugar and oil together, then beat in the eggs one at a time.",
+                "Stir the persimmon purée into the wet ingredients.",
+                "Fold the dry ingredients into the wet just until no streaks of flour remain, then fold in the nuts if using.",
+                "Pour into the prepared loaf pan and bake for 55-65 minutes, until a toothpick inserted in the center comes out clean.",
+                "Cool in the pan for 10 minutes, then turn out onto a rack to cool completely before slicing.",
+            ],
+            "step_notes": {
+                1: "The persimmon must be fully soft, almost collapsing, before it's usable here, an underripe Hachiya is strongly astringent and will make the bread taste chalky and puckery rather than sweet.",
+                5: "Folding just until the flour disappears keeps the crumb tender, the same rule as most quick breads, overmixing develops gluten and makes the loaf dense and tough instead of soft.",
+            },
+            "tips_and_variations": [
+                "Fuyu persimmons don't substitute well here, they stay firm rather than turning into soft, spreadable pulp, so the batter's texture depends on using ripe Hachiya.",
+                "Add a half cup of chocolate chips or dried cranberries for a different flavor profile.",
+                "Persimmon pulp freezes well, so ripen a batch of Hachiya persimmons in season and freeze the pulp to make this bread months later.",
+            ],
+            "reader_tips": [
+                "A Hachiya persimmon isn't ready until it looks almost overripe, wrinkled skin and a very soft, jelly-like give are good signs, not bad ones, for this recipe.",
+                "Test doneness in the very center of the loaf, persimmon bread's moisture can make the middle look done on top before it actually is.",
+            ],
+            "storage_and_reheating": (
+                "Store wrapped at room temperature up to 3 days, or "
+                "refrigerate up to a week. Freezes well, wrapped tightly, "
+                "for up to 3 months. Serve at room temperature or warm "
+                "individual slices briefly in the microwave or toaster oven."
+            ),
+            "nutrition_note": "A moderately sweet quick bread; the persimmon purée adds natural sweetness and moisture alongside the added sugar.",
+            "faqs": [
+                {"question": "Can I use Fuyu persimmons instead of Hachiya for persimmon bread?", "answer": "Not well. Fuyu stays firm rather than turning into soft pulp, which this batter is built around. Hachiya, left to ripen until very soft, is the right variety for this recipe."},
+                {"question": "How do I know when a Hachiya persimmon is ripe enough to use?", "answer": "It should feel almost fully soft and jelly-like when gently squeezed, with wrinkled, translucent-looking skin. An underripe Hachiya is strongly astringent and unpleasant to eat or bake with."},
+                {"question": "Can I freeze persimmon pulp to use later?", "answer": "Yes, scoop the pulp from ripe Hachiya persimmons and freeze it in an airtight container or bag for up to several months, then thaw before using in this recipe."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Persimmon Recipes", "slug": "persimmon-recipes"},
+        },
+    },
+    {
+        "slug": "roasted-fuyu-persimmons",
+        "template_type": "recipe_or_dish",
+        "title": "Roasted Fuyu Persimmons Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Firm Fuyu persimmon wedges roasted until caramelized at "
+                "the edges, a simple warm side or dessert topping."
+            ),
+            "hero_image_query": "roasted fuyu persimmons",
+            "why_it_works": (
+                "Fuyu holds its shape under heat the way Hachiya cannot, "
+                "so roasting concentrates its sugars and browns the cut "
+                "edges without the fruit collapsing into mush, turning "
+                "a fruit usually eaten raw into a warm, caramelized side."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "Fuyu persimmons, firm, cut into wedges", "base_qty": 4, "unit_us": "medium", "base_qty_metric": 4, "unit_metric": "medium", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "honey or maple syrup", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ground cinnamon", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "flaky sea salt", "base_qty": 1, "unit_us": "pinch", "base_qty_metric": 1, "unit_metric": "pinch", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 400°F (200°C) and line a baking sheet with parchment.",
+                "Wash the persimmons, trim the tops, and cut each into 6-8 wedges (no need to peel Fuyu).",
+                "Toss the wedges with melted butter, honey, and cinnamon, then spread in a single layer on the baking sheet.",
+                "Roast for 18-22 minutes, until the edges are caramelized and lightly browned, flipping once halfway through.",
+                "Finish with a pinch of flaky salt and serve warm.",
+            ],
+            "step_notes": {
+                1: "Fuyu's firmness is what makes clean wedges possible in the first place, a ripe Hachiya is far too soft to cut into stable pieces that would hold together on a baking sheet.",
+                3: "Flipping partway through browns both cut sides instead of just the one touching the pan, since the flat surface is what actually caramelizes against direct heat.",
+            },
+            "tips_and_variations": [
+                "Serve warm over vanilla ice cream or plain yogurt for a simple dessert or breakfast.",
+                "A splash of orange juice or a scrape of orange zest added to the toss brightens the caramelized flavor.",
+                "Firmer, slightly underripe Fuyu wedges hold their shape best under the oven's heat, very soft Fuyu will still work but will roast down further.",
+            ],
+            "reader_tips": [
+                "Cut the wedges a consistent thickness so they all caramelize at roughly the same rate.",
+                "Watch closely in the last few minutes, the natural sugars that make the caramelization possible can also burn quickly once they start browning.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container up to 3 "
+                "days. Reheat briefly in a 350°F oven for a few minutes to "
+                "warm through; they're also good served cold over yogurt."
+            ),
+            "nutrition_note": "A naturally sweet fruit side; the added butter and honey are light touches on top of the persimmon's own sugar.",
+            "faqs": [
+                {"question": "Can I use Hachiya persimmons for this recipe?", "answer": "No, this recipe depends on Fuyu's firm texture to hold its shape as wedges through roasting. A ripe Hachiya is too soft to cut and roast the same way; it's better suited to purées and baked batters."},
+                {"question": "Do I need to peel Fuyu persimmons before roasting?", "answer": "No, Fuyu skin is thin and tender enough to eat, and it helps the wedges hold together as they roast. Peeling is optional."},
+                {"question": "What can I serve roasted persimmons with?", "answer": "They're good warm over vanilla ice cream or yogurt, alongside roasted pork or duck, or added to a cheese board with something salty like prosciutto or a sharp cheese."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Persimmon Recipes", "slug": "persimmon-recipes"},
+        },
+    },
+    {
+        "slug": "persimmon-pudding",
+        "template_type": "recipe_or_dish",
+        "title": "Persimmon Pudding Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A dense, spiced baked pudding made from fully ripe "
+                "Hachiya persimmon pulp, a classic fall dessert similar in "
+                "spirit to a steamed date pudding."
+            ),
+            "hero_image_query": "persimmon pudding",
+            "why_it_works": (
+                "Only fully ripe, soft Hachiya pulp has the sweetness and "
+                "smooth texture this custardy baked pudding depends on, "
+                "and baking it slowly in a water bath keeps the eggs from "
+                "curdling while the persimmon's natural moisture sets into "
+                "a dense, moist crumb."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 60,
+            "total_time_minutes": 100,
+            "servings": 8,
+            "pan_size": "8x8-inch or 9-inch round baking dish",
+            "ingredients": [
+                {"name": "Hachiya persimmons, fully soft and ripe, pulp scooped and puréed", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 125, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking soda", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cinnamon", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cloves", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 350°F (175°C) and butter an 8x8-inch or 9-inch round baking dish.",
+                "Scoop the pulp from the ripe persimmons and purée until smooth; you should have about 1.5 cups.",
+                "Whisk together the flour, baking soda, cinnamon, cloves, and salt in a bowl.",
+                "In a separate bowl, whisk the sugar, milk, eggs, and melted butter together, then whisk in the persimmon purée.",
+                "Fold the dry ingredients into the wet mixture until just combined.",
+                "Pour the batter into the prepared baking dish and set it inside a larger roasting pan.",
+                "Pour hot water into the roasting pan until it reaches about halfway up the sides of the baking dish.",
+                "Bake for 55-65 minutes, until the center is just set and a toothpick comes out mostly clean (a few moist crumbs are fine).",
+                "Cool at least 20 minutes before serving; serve warm or at room temperature.",
+            ],
+            "step_notes": {
+                1: "This pudding depends on fully ripe pulp the same way persimmon bread does, an underripe Hachiya's astringency doesn't bake out and will carry straight through into the finished dessert.",
+                6: "The water bath insulates the custard-like batter from the oven's direct heat, baking a dish this egg-heavy without one risks a rubbery, overcooked texture around the edges before the center sets.",
+            },
+            "tips_and_variations": [
+                "Serve with lightly sweetened whipped cream or a scoop of vanilla ice cream, the pudding itself is intentionally not overly sweet.",
+                "A splash of brandy or dark rum stirred into the batter is a traditional addition in many family recipes.",
+                "This does not work with firm Fuyu persimmons, the texture and sweetness depend specifically on fully soft Hachiya pulp.",
+            ],
+            "reader_tips": [
+                "Ripen Hachiya persimmons at room temperature until they're very soft, this can take a week or more, don't rush it by using one that's still firm.",
+                "Check the center of the pudding rather than the edges for doneness, the edges set well before the middle does in a water bath.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate, covered, up to 4 days. Serve cold or reheat "
+                "individual portions gently in a 300°F oven or a short "
+                "burst in the microwave, just until warmed through."
+            ),
+            "nutrition_note": "A dessert-level treat that's sweet from both added sugar and the persimmon's own natural sugars, richer than a typical fruit dessert due to the eggs and butter.",
+            "faqs": [
+                {"question": "Why is a water bath necessary for persimmon pudding?", "answer": "The batter is egg-rich and custard-like, and a water bath moderates the oven's heat so the pudding sets gently and evenly rather than overcooking around the edges before the center is done."},
+                {"question": "Can I use Fuyu persimmons for persimmon pudding?", "answer": "No, this dessert relies on fully ripe Hachiya pulp for its sweetness, moisture, and smooth texture. Fuyu stays firm and won't purée into the soft pulp this recipe needs."},
+                {"question": "How ripe should the persimmons be for this recipe?", "answer": "Very ripe, almost to the point of looking overripe, with skin that's soft, wrinkled, and slightly translucent. An underripe Hachiya is astringent and will make the pudding taste chalky."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Persimmon Recipes", "slug": "persimmon-recipes"},
+        },
+    },
+    {
+        "slug": "buttermilk-biscuits",
+        "template_type": "recipe_or_dish",
+        "title": "Buttermilk Biscuits Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Tall, flaky buttermilk biscuits made with cold butter cut "
+                "into flour and a hot oven, no rolling pin skill required."
+            ),
+            "hero_image_query": "buttermilk biscuits",
+            "why_it_works": (
+                "Buttermilk's acidity reacts with the baking powder and "
+                "soda for extra lift and tenderizes the gluten in the "
+                "flour, while keeping the butter cold until it hits the "
+                "oven means it melts into steam pockets that puff the "
+                "dough into distinct flaky layers instead of a dense cake."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 30,
+            "servings": 8,
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 2.5, "unit_us": "cups", "base_qty_metric": 315, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking powder", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking soda", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, very cold, cubed", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 113, "unit_metric": "g", "hub_slug": None},
+                {"name": "buttermilk, cold", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "unsalted butter, melted, for brushing", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 450°F (230°C) and line a baking sheet with parchment.",
+                "Whisk together the flour, baking powder, baking soda, and salt in a large bowl.",
+                "Add the cold cubed butter and cut it into the flour using a pastry cutter or your fingertips, until the mixture looks like coarse crumbs with some pea-sized pieces remaining.",
+                "Pour in the cold buttermilk and stir just until a shaggy dough forms.",
+                "Turn the dough onto a floured surface, pat into a 1-inch-thick rectangle, and fold it over onto itself 3-4 times to create layers.",
+                "Pat back out to 1 inch thick and cut into rounds with a biscuit cutter, pressing straight down without twisting.",
+                "Place the biscuits close together on the baking sheet, brush the tops with melted butter, and bake for 12-15 minutes, until tall and golden brown.",
+            ],
+            "step_notes": {
+                2: "Leaving visible pea-sized butter pieces, rather than blending them in fully, is what creates the flaky layers, each piece melts in the oven and leaves a small steam pocket behind.",
+                4: "The folding step builds thin layers of dough separated by butter, similar in principle to laminated pastry, which is what gives the finished biscuit its characteristic pull-apart layers.",
+            },
+            "tips_and_variations": [
+                "Freeze the butter and grate it on a box grater instead of cubing it for an even faster, more even distribution through the flour.",
+                "Press straight down when cutting the rounds and don't twist the cutter, twisting seals the edges and can prevent the biscuits from rising as tall.",
+                "Placing the biscuits close together on the pan, touching if possible, encourages them to rise up rather than spread out.",
+            ],
+            "reader_tips": [
+                "Keep everything cold, the butter, the buttermilk, even the bowl if your kitchen is warm, warm butter blends into the flour instead of staying in distinct pieces.",
+                "Don't overwork the dough once the buttermilk goes in, a shaggy, slightly rough dough bakes up more tender than one that's been kneaded smooth.",
+            ],
+            "storage_and_reheating": (
+                "Store cooled biscuits in an airtight container at room "
+                "temperature up to 2 days, or freeze up to 2 months. "
+                "Reheat in a 350°F oven for 8-10 minutes to re-crisp the "
+                "exterior; microwaving will soften them."
+            ),
+            "nutrition_note": "A rich, buttery bread that's best thought of as an occasional side rather than an everyday staple, given the amount of butter.",
+            "faqs": [
+                {"question": "Why do my biscuits come out flat instead of tall and flaky?", "answer": "The most common cause is butter that got too warm before baking, or dough that was twisted when cutting, which seals the edges shut. Keep the butter cold and cut straight down without twisting."},
+                {"question": "Can I substitute regular milk for buttermilk in this recipe?", "answer": "Not without losing some rise and tenderness. Buttermilk's acidity reacts with the baking soda for extra lift and tenderizes the dough; if you're out, a mix of milk and a little lemon juice or vinegar is the closest stand-in."},
+                {"question": "Can I make the dough ahead of time?", "answer": "Yes, cut the biscuits and freeze them unbaked on a tray, then transfer to a bag once solid. Bake straight from frozen, adding a few extra minutes to the bake time."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Buttermilk Recipes", "slug": "buttermilk-recipes"},
+        },
+    },
+    {
+        "slug": "buttermilk-fried-chicken",
+        "template_type": "recipe_or_dish",
+        "title": "Buttermilk Fried Chicken Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Bone-in chicken marinated in seasoned buttermilk overnight, "
+                "then dredged and fried until deeply crisp on the outside "
+                "and juicy inside."
+            ),
+            "hero_image_query": "buttermilk fried chicken",
+            "why_it_works": (
+                "Buttermilk's mild acidity slowly tenderizes the chicken "
+                "over a long soak without turning the texture mushy the "
+                "way a stronger acid can, and the buttermilk clinging to "
+                "the meat gives the flour dredge something to grip for a "
+                "thick, craggy crust once it hits hot oil."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 25,
+            "total_time_minutes": 750,
+            "servings": 4,
+            "ingredients": [
+                {"name": "bone-in, skin-on chicken pieces", "base_qty": 3.5, "unit_us": "lb", "base_qty_metric": 1600, "unit_metric": "g", "hub_slug": None},
+                {"name": "buttermilk", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 475, "unit_metric": "ml", "hub_slug": None},
+                {"name": "hot sauce", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 2.5, "unit_us": "tsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 250, "unit_metric": "g", "hub_slug": None},
+                {"name": "paprika", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil, for frying (peanut or vegetable)", "base_qty": 6, "unit_us": "cups", "base_qty_metric": 1400, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Combine the buttermilk, hot sauce, and 1 teaspoon of the salt in a large bowl or resealable bag, add the chicken pieces, and marinate in the refrigerator for at least 8 hours or overnight.",
+                "Remove the chicken from the fridge 30 minutes before frying to take the chill off.",
+                "Whisk together the flour, paprika, garlic powder, black pepper, and remaining salt in a wide shallow dish.",
+                "Lift each piece of chicken from the buttermilk, letting excess drip off, then dredge thoroughly in the seasoned flour, pressing to help it adhere, and set on a rack.",
+                "Heat the oil in a heavy pot or deep skillet to 325-350°F (165-175°C).",
+                "Fry the chicken in batches, without crowding the pot, for 12-15 minutes per batch, turning occasionally, until deep golden brown and an internal temperature of 165°F.",
+                "Drain on a wire rack set over paper towels (not directly on paper towels, which trap steam and soften the crust), and let rest 5 minutes before serving.",
+            ],
+            "step_notes": {
+                0: "An 8-hour-plus soak is what actually tenderizes the chicken, buttermilk's acid works gradually, and a shorter marinade mostly just adds surface flavor rather than the deeper texture change.",
+                5: "Frying in batches keeps the oil temperature from dropping too far, dropping in too much cold chicken at once cools the oil, and chicken that sits in oil below temperature absorbs grease instead of crisping.",
+            },
+            "tips_and_variations": [
+                "Double-dredge (dip pieces back into the buttermilk and flour a second time) for an even thicker, craggier crust.",
+                "Boneless thighs work well for a faster-cooking version, reduce the fry time to about 8-10 minutes per batch.",
+                "A cayenne-heavy dredge, or extra hot sauce in the buttermilk, turns this into a hot fried chicken with more built-in heat.",
+            ],
+            "reader_tips": [
+                "Use a thermometer for the oil, guessing at temperature is the most common reason fried chicken turns out greasy (oil too cool) or burnt outside while raw inside (oil too hot).",
+                "Let the dredged chicken rest on a rack for a few minutes before frying, it helps the coating set so less of it falls off in the oil.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers up to 3 days. Reheat in a 375°F "
+                "oven on a wire rack for 15-20 minutes to recrisp; a "
+                "microwave will leave the crust soft and soggy."
+            ),
+            "nutrition_note": "A rich, indulgent dish given the frying oil and skin-on chicken; best enjoyed as an occasional meal rather than a daily one.",
+            "faqs": [
+                {"question": "How long should chicken marinate in buttermilk?", "answer": "At least 8 hours, and up to 24, for the best tenderizing effect and flavor. Much shorter than that and the buttermilk mostly seasons the surface rather than tenderizing the meat."},
+                {"question": "What oil temperature is best for frying chicken?", "answer": "325-350°F, checked with a thermometer. Too hot and the crust burns before the inside cooks through; too cool and the chicken absorbs excess oil and turns greasy instead of crisp."},
+                {"question": "Why did the coating fall off my fried chicken?", "answer": "Usually the chicken wasn't dredged thoroughly enough, or it went into oil that wasn't hot enough to set the crust quickly. Press the flour on firmly and let the coated chicken rest briefly before frying."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Buttermilk Recipes", "slug": "buttermilk-recipes"},
+        },
+    },
+    {
+        "slug": "buttermilk-pancakes",
+        "template_type": "recipe_or_dish",
+        "title": "Buttermilk Pancakes Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Fluffy, tender buttermilk pancakes made from scratch with "
+                "a simple batter that comes together in under 15 minutes."
+            ),
+            "hero_image_query": "buttermilk pancakes",
+            "why_it_works": (
+                "Buttermilk's acidity reacts with baking soda to produce "
+                "extra lift right as the batter hits the hot griddle, and "
+                "that same acidity tenderizes the batter's gluten, giving "
+                "these pancakes a noticeably fluffier, softer crumb than a "
+                "version made with plain milk."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 250, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 25, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking soda", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "buttermilk", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 475, "unit_metric": "ml", "hub_slug": None},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "unsalted butter, melted and slightly cooled", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the flour, sugar, baking powder, baking soda, and salt in a large bowl.",
+                "In a separate bowl, whisk the buttermilk, eggs, and melted butter together.",
+                "Pour the wet ingredients into the dry and whisk just until combined, a few lumps are fine and expected.",
+                "Let the batter rest for 5 minutes while the griddle heats.",
+                "Heat a griddle or nonstick skillet over medium heat and grease lightly.",
+                "Pour about 1/4 cup of batter per pancake onto the griddle, cook until bubbles form across the surface and the edges look set, about 2-3 minutes, then flip and cook another 1-2 minutes until golden.",
+            ],
+            "step_notes": {
+                2: "A few lumps left in the batter are a good sign, not a mistake, overmixing develops gluten and works some of the baking soda's fizz out before it ever hits the hot pan, both of which make for a tougher, flatter pancake.",
+                5: "Waiting for bubbles across the whole surface, not just a few, is a more reliable cue than a timer, since griddle hot spots mean pancakes of the same size can set at slightly different rates.",
+            },
+            "tips_and_variations": [
+                "Fold in blueberries or chocolate chips right after pouring each pancake onto the griddle, rather than into the whole batter, so they don't sink or bleed color.",
+                "Keep finished pancakes warm on a rack in a 200°F oven while you cook the rest of the batch, rather than stacking them, which traps steam and turns them soggy.",
+                "This batter also works well as waffle batter with a tablespoon or two more melted butter added for extra crispness.",
+            ],
+            "reader_tips": [
+                "Let the batter rest a few minutes before cooking, it gives the baking soda and buttermilk time to react and the flour time to hydrate, both of which improve texture.",
+                "Resist flipping more than once, repeated flipping deflates the air pockets that are building the pancake's rise.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers up to 3 days, or freeze in a single "
+                "layer before transferring to a bag for up to 2 months. "
+                "Reheat in a toaster or a 350°F oven for a few minutes; "
+                "microwaving works but leaves them softer."
+            ),
+            "nutrition_note": "A moderate source of carbohydrates from the flour, with the buttermilk adding some protein and calcium alongside the eggs and butter.",
+            "faqs": [
+                {"question": "Can I substitute regular milk for buttermilk in pancakes?", "answer": "You can, but the pancakes will be less fluffy and slightly less tender, since buttermilk's acidity is part of what activates the baking soda. In a pinch, stir a tablespoon of lemon juice or vinegar into regular milk and let it sit 5 minutes as a substitute."},
+                {"question": "Why are my pancakes flat instead of fluffy?", "answer": "Overmixing the batter is the most common cause, it knocks out air and develops gluten that makes for a denser pancake. Old baking powder or baking soda can also be the culprit; check that they're still active."},
+                {"question": "Can I make buttermilk pancake batter the night before?", "answer": "It's best made fresh, since the baking soda starts reacting with the buttermilk as soon as they're combined and loses some lift over time. If needed, mix the dry and wet ingredients separately overnight and combine just before cooking."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Buttermilk Recipes", "slug": "buttermilk-recipes"},
+        },
+    },
+    {
+        "slug": "buttermilk-ranch-dressing",
+        "template_type": "recipe_or_dish",
+        "title": "Buttermilk Ranch Dressing Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A creamy, tangy homemade ranch dressing built on real "
+                "buttermilk and fresh herbs, ready in 10 minutes with no "
+                "packet mix."
+            ),
+            "hero_image_query": "buttermilk ranch dressing",
+            "why_it_works": (
+                "Buttermilk is what separates real ranch from a plain "
+                "mayonnaise-and-herb dressing, its tang and thinner "
+                "consistency balance the richness of the mayo and sour "
+                "cream and let fresh herbs come through clearly instead "
+                "of tasting muted."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 0,
+            "total_time_minutes": 10,
+            "servings": 8,
+            "ingredients": [
+                {"name": "buttermilk", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 180, "unit_metric": "ml", "hub_slug": None},
+                {"name": "mayonnaise", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "sour cream", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh chives, finely chopped", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": "chives"},
+                {"name": "fresh dill, finely chopped", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh parsley, finely chopped", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "onion powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the mayonnaise and sour cream in a medium bowl until smooth.",
+                "Whisk in the buttermilk a little at a time until fully incorporated and smooth.",
+                "Stir in the chives, dill, parsley, garlic powder, onion powder, salt, and pepper.",
+                "Taste and adjust seasoning, then refrigerate for at least 30 minutes before serving to let the flavors meld.",
+                "Whisk again before serving, as it may thicken slightly in the fridge; thin with a splash more buttermilk if needed.",
+            ],
+            "step_notes": {
+                1: "Adding the buttermilk gradually to the mayo-sour cream base keeps the dressing from breaking or separating, whisking a thin liquid into a thick one all at once is more likely to leave it looking curdled.",
+                3: "The rest in the fridge isn't just for chilling, it gives the dried and fresh seasonings time to actually infuse into the base, a dressing tasted right after mixing is noticeably flatter than the same dressing an hour later.",
+            },
+            "tips_and_variations": [
+                "Thin with extra buttermilk for a pourable salad dressing, or keep it as is for a thicker dip consistency.",
+                "Fresh herbs give the brightest flavor, but 1 teaspoon each of dried dill and parsley work in a pinch if fresh isn't available.",
+                "A dash of hot sauce or a pinch of cayenne turns this into a spicy ranch variation.",
+            ],
+            "reader_tips": [
+                "Real buttermilk, not a soured-milk substitute, makes a real difference in this recipe since its tang and thinner texture are what the dressing depends on, unlike in baking where a substitute usually passes unnoticed.",
+                "Let the dressing sit at least 30 minutes before tasting for seasoning, it tastes noticeably different, and better, once the flavors have had time to meld.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight jar or container up to 1 week. "
+                "No reheating needed; this is served cold. Whisk or shake "
+                "well before each use, as it may separate slightly on "
+                "standing."
+            ),
+            "nutrition_note": "A rich dressing due to the mayonnaise and sour cream base; use in moderation as a topping rather than as a base for a large bowl of greens.",
+            "faqs": [
+                {"question": "Can I use milk with lemon juice instead of real buttermilk?", "answer": "It works in a pinch, but real buttermilk gives a tangier, thicker result that's closer to classic ranch flavor. Since buttermilk is the defining ingredient here, using the real thing makes a bigger difference than it would in most baking substitutions."},
+                {"question": "How long does homemade ranch dressing last?", "answer": "About a week in the refrigerator, stored in an airtight container. It doesn't contain the preservatives bottled ranch does, so use fresh dairy and plan to finish it within that window."},
+                {"question": "Can I make this dressing thicker for a dip?", "answer": "Yes, use less buttermilk, starting with about half the amount and adding more only if needed, to make a thicker, dip-consistency version of the same recipe."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Buttermilk Recipes", "slug": "buttermilk-recipes"},
+        },
+    },
+    {
+        "slug": "potato-cheese-pierogi",
+        "template_type": "recipe_or_dish",
+        "title": "Potato and Cheese Pierogi Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Homemade Polish pierogi filled with mashed potato and farmer's "
+                "cheese, boiled until tender and finished in butter."
+            ),
+            "hero_image_query": "potato and cheese pierogi",
+            "why_it_works": (
+                "Resting the dough lets the gluten relax so it rolls out thin "
+                "without snapping back, and boiling the pierogi just until they "
+                "float keeps the wrapper tender instead of gummy."
+            ),
+            "prep_time_minutes": 60,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 80,
+            "servings": 6,
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 375, "unit_metric": "g", "hub_slug": None},
+                {"name": "sour cream", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+                {"name": "egg", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "warm water", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "russet potatoes, peeled and cubed", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "farmer's cheese or dry curd cottage cheese", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion, finely diced", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 56, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together the flour and salt, then work in the egg, sour cream, and warm water until a shaggy dough forms.",
+                "Knead the dough on a floured surface for 5-6 minutes until smooth and elastic, then cover and rest for 30 minutes.",
+                "Meanwhile, boil the potatoes in salted water until fork-tender, about 15 minutes, then drain well.",
+                "Melt half the butter in a skillet and cook half the diced onion until deeply golden, about 10 minutes.",
+                "Mash the potatoes with the cooked onion, farmer's cheese, and salt to taste until smooth.",
+                "Roll the dough out thin on a floured surface and cut into 3-inch rounds.",
+                "Spoon a scant tablespoon of filling onto each round, fold in half, and pinch the edges firmly to seal.",
+                "Bring a large pot of salted water to a gentle boil and cook the pierogi in batches until they float, about 3 minutes, then simmer 1 minute more.",
+                "Melt the remaining butter in a skillet with the rest of the diced onion and toss the boiled pierogi in it to finish.",
+            ],
+            "step_notes": {
+                1: "Resting the dough relaxes the gluten you just developed by kneading, without this the dough fights back and shrinks every time you try to roll it thin.",
+                6: "A firm pinch matters more than a pretty crimp, any gap in the seal lets the filling leak out and the boiling water in.",
+                7: "Floating is the actual doneness signal, not a clock, the dough is cooked through by the time it floats and just needs a minute more to be sure.",
+            },
+            "tips_and_variations": [
+                "Swap the potato-cheese filling for sautéed sauerkraut and mushroom for a classic savory variation.",
+                "Pierogi freeze well uncooked, freeze them in a single layer on a tray first, then bag them so they don't stick together.",
+                "No farmer's cheese on hand, drained small-curd cottage cheese or even a mild ricotta works in a pinch.",
+            ],
+            "reader_tips": [
+                "Keep a small bowl of water nearby to dab the edges of the dough if they start drying out before you seal them.",
+                "Don't overcrowd the pot, pierogi need room to float freely or they stick to each other and tear.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate cooked pierogi up to 3 days. Reheat by pan-frying "
+                "in butter over medium heat until warmed through and lightly "
+                "crisped. Uncooked pierogi freeze well for up to 2 months; boil "
+                "straight from frozen, adding a minute or two to the cook time."
+            ),
+            "nutrition_note": "A hearty, starch-forward dish, the butter finish adds most of the richness beyond the potato and cheese filling itself.",
+            "faqs": [
+                {"question": "Can I make the dough ahead of time?", "answer": "Yes, the dough can be wrapped tightly and refrigerated up to a day ahead. Let it come back to room temperature before rolling so it doesn't crack."},
+                {"question": "Why do my pierogi keep splitting open while boiling?", "answer": "This almost always means the edges weren't sealed firmly enough or there was flour trapped in the seam. Pinch firmly and wipe any excess flour off the edges before sealing."},
+                {"question": "Can pierogi be baked instead of boiled?", "answer": "They're traditionally boiled, but boiled pierogi can be pan-fried afterward, or brushed with butter and baked at 400°F for about 20 minutes for a firmer, crisper result."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Polish Recipes", "slug": "polish-recipes"},
+        },
+    },
+    {
+        "slug": "bigos-hunters-stew",
+        "template_type": "recipe_or_dish",
+        "title": "Bigos (Hunter's Stew) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A slow-simmered Polish hunter's stew of sauerkraut, cabbage, "
+                "and mixed meats, deeply savory and better the next day."
+            ),
+            "hero_image_query": "bigos hunters stew",
+            "why_it_works": (
+                "A long, slow simmer melds the sauerkraut's tang with the "
+                "sweetness of fresh cabbage and the fat rendered from the "
+                "meats, and like most stews, a rest overnight lets those "
+                "flavors deepen and round out."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 150,
+            "total_time_minutes": 180,
+            "servings": 8,
+            "ingredients": [
+                {"name": "sauerkraut, drained, liquid reserved", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "green cabbage, shredded", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "kielbasa, sliced", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": "kielbasa"},
+                {"name": "pork shoulder, cubed", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "bacon, chopped", "base_qty": 0.5, "unit_us": "lb", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion, diced", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 2, "unit_metric": "medium", "hub_slug": None},
+                {"name": "dried mushrooms, rehydrated and chopped", "base_qty": 1, "unit_us": "oz", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "tomato paste", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 32, "unit_metric": "g", "hub_slug": None},
+                {"name": "bay leaves", "base_qty": 2, "unit_us": "leaves", "base_qty_metric": 2, "unit_metric": "leaves", "hub_slug": None},
+                {"name": "dried marjoram", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "pitted prunes, halved", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Cook the chopped bacon in a large, heavy pot over medium heat until it renders its fat and turns golden.",
+                "Add the pork shoulder and brown on all sides, then remove and set aside with the bacon.",
+                "Add the onion to the pot and cook until softened, about 5 minutes.",
+                "Return the pork and bacon to the pot along with the sauerkraut, cabbage, kielbasa, mushrooms, tomato paste, bay leaves, and marjoram.",
+                "Add enough reserved sauerkraut liquid and water to just cover the mixture, then bring to a gentle simmer.",
+                "Cover and simmer on low for 2 to 2.5 hours, stirring occasionally, until the pork is fork-tender.",
+                "Stir in the prunes for the last 30 minutes of cooking.",
+                "Season to taste with salt and pepper, and let the stew rest, ideally refrigerated overnight, before reheating and serving.",
+            ],
+            "step_notes": {
+                1: "Rendering the bacon first builds a fat base that carries flavor through the whole stew, don't rush past it or skip straight to the pork.",
+                7: "Bigos is famous for tasting better reheated, resting overnight lets the sauerkraut's acidity mellow into the meats instead of sitting sharply on top of them.",
+            },
+            "tips_and_variations": [
+                "Any combination of pork, beef, or game works, traditional bigos was built to use up whatever meat was on hand.",
+                "The prunes add a subtle sweetness that balances the sauerkraut, don't skip them even if it sounds unusual.",
+                "Bigos freezes exceptionally well, make a double batch and freeze portions for a fast weeknight meal.",
+            ],
+            "reader_tips": [
+                "Taste and adjust the ratio of sauerkraut to fresh cabbage partway through, the balance of tang to sweetness is really a matter of preference.",
+                "Don't skip the resting period if you can help it, bigos made and eaten same-day is good, but bigos reheated the next day is genuinely better.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 5 days, the flavor improves for the first "
+                "couple of days. Reheat gently on the stovetop over "
+                "medium-low heat. Freezes well for up to 3 months in an "
+                "airtight container."
+            ),
+            "nutrition_note": "A rich, meat-and-cabbage forward stew, most of the fat comes from the bacon, pork, and kielbasa rendering together.",
+            "faqs": [
+                {"question": "What meats go into traditional bigos?", "answer": "Bigos traditionally uses whatever meat is available, commonly a mix of pork shoulder, kielbasa, bacon, and sometimes leftover roasted meat or game."},
+                {"question": "Why does bigos taste better the next day?", "answer": "The sauerkraut's acidity mellows and the flavors of the meats and spices meld together with time, which is why many Polish cooks make it a day or two ahead."},
+                {"question": "Can I make bigos in a slow cooker?", "answer": "Yes, brown the bacon, pork, and onion in a skillet first, then transfer everything to a slow cooker and cook on low for 6-7 hours."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Polish Recipes", "slug": "polish-recipes"},
+        },
+    },
+    {
+        "slug": "kielbasa-and-sauerkraut",
+        "template_type": "recipe_or_dish",
+        "title": "Kielbasa and Sauerkraut Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Sliced kielbasa braised with tangy sauerkraut, onion, and "
+                "caraway, a simple one-pan Polish weeknight dinner."
+            ),
+            "hero_image_query": "kielbasa and sauerkraut",
+            "why_it_works": (
+                "Browning the kielbasa first renders some of its fat right "
+                "into the pan, and that fat is what the sauerkraut braises in, "
+                "carrying smoky flavor through the whole dish instead of "
+                "staying only on the surface of the sausage."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 40,
+            "servings": 4,
+            "ingredients": [
+                {"name": "kielbasa, sliced into rounds", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": "kielbasa"},
+                {"name": "sauerkraut, drained, liquid reserved", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion, sliced", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "apple, peeled and sliced", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "caraway seeds", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "bay leaf", "base_qty": 1, "unit_us": "leaf", "base_qty_metric": 1, "unit_metric": "leaf", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Heat a large skillet over medium heat and brown the kielbasa slices on both sides, about 5 minutes total, then remove and set aside.",
+                "Melt the butter in the same skillet and cook the onion until softened, about 5 minutes.",
+                "Stir in the sauerkraut, apple, caraway seeds, and bay leaf, along with a splash of the reserved sauerkraut liquid.",
+                "Nestle the browned kielbasa back into the sauerkraut, cover, and simmer on low for 20 minutes.",
+                "Uncover and cook a few minutes more if the mixture looks too wet, then discard the bay leaf before serving.",
+            ],
+            "step_notes": {
+                0: "Browning is doing double duty here, it builds flavor on the kielbasa itself and leaves rendered fat in the pan that the sauerkraut cooks in next.",
+                3: "Simmering covered lets the kielbasa's flavor work its way into the sauerkraut rather than just sitting on top of it, this is a braise, not a reheat.",
+            },
+            "tips_and_variations": [
+                "A sliced apple adds a mellow sweetness against the sauerkraut's tang, leave it out for a more traditional, purely savory version.",
+                "A splash of Polish or German beer in place of the sauerkraut liquid deepens the braise further.",
+                "Serve with boiled potatoes or rye bread to soak up the pan juices.",
+            ],
+            "reader_tips": [
+                "Rinse the sauerkraut briefly if you want a milder tang, or skip rinsing entirely if you like it assertively sour.",
+                "Don't let the pan run dry while braising, add a splash more reserved liquid or water if it looks like it's catching.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days. Reheat in a covered skillet over "
+                "medium-low heat with a splash of water, or in the "
+                "microwave. Freezes well for up to 2 months."
+            ),
+            "nutrition_note": "A protein-rich, savory dish, most of the fat comes from the kielbasa rendering into the braise.",
+            "faqs": [
+                {"question": "Should I rinse the sauerkraut first?", "answer": "It's optional. Rinsing mellows the sourness, while using it straight from the bag or jar keeps the dish more assertively tangy, either way works."},
+                {"question": "What kind of kielbasa works best?", "answer": "A smoked, fully-cooked Polish kielbasa is traditional and simplest, since it only needs browning and heating through rather than a full cook."},
+                {"question": "Can I add potatoes to make it a full meal in one pan?", "answer": "Yes, add diced, par-boiled potatoes along with the sauerkraut so they finish cooking during the simmer."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Polish Recipes", "slug": "polish-recipes"},
+        },
+    },
+    {
+        "slug": "zurek-sour-rye-soup",
+        "template_type": "recipe_or_dish",
+        "title": "Zurek (Sour Rye Soup) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A traditional Polish sour rye soup made with fermented rye "
+                "starter, smoked sausage, and a soft-boiled egg."
+            ),
+            "hero_image_query": "zurek sour rye soup",
+            "why_it_works": (
+                "The fermented rye starter (zakwas) is what gives żurek its "
+                "signature sourness, a flavor that can't be faked with vinegar "
+                "or lemon alone, and simmering it with smoked sausage and "
+                "bacon builds a savory backbone underneath that tang."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 40,
+            "total_time_minutes": 60,
+            "servings": 6,
+            "ingredients": [
+                {"name": "fermented rye sour (zakwas na zurek)", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None},
+                {"name": "chicken or vegetable stock", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None},
+                {"name": "smoked kielbasa, sliced", "base_qty": 0.75, "unit_us": "lb", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": "kielbasa"},
+                {"name": "bacon, chopped", "base_qty": 4, "unit_us": "slices", "base_qty_metric": 4, "unit_metric": "slices", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "marjoram", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "prepared horseradish", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "eggs, soft-boiled", "base_qty": 6, "unit_us": "large", "base_qty_metric": 6, "unit_metric": "large", "hub_slug": None},
+            ],
+            "instructions": [
+                "Cook the chopped bacon in a large pot over medium heat until crisp, then add the garlic and cook 30 seconds more.",
+                "Add the sliced kielbasa and cook until lightly browned, a few minutes.",
+                "Pour in the stock and bring to a simmer, then cook for 15 minutes to let the sausage flavor infuse the broth.",
+                "Stir in the fermented rye sour and marjoram, and simmer gently for 10-15 minutes, do not let it boil hard.",
+                "Whisk the horseradish into the cream, then stir the mixture into the soup to finish and slightly thicken it.",
+                "Taste and season with salt and pepper, keeping in mind the sour base is meant to dominate.",
+                "Ladle into bowls and top each with a halved soft-boiled egg.",
+            ],
+            "step_notes": {
+                3: "A hard boil after the rye sour goes in can make the soup separate or turn overly sharp, a gentle simmer keeps its flavor rounded rather than harsh.",
+                4: "Cream tempers the sourness without masking it, stirring it in at the end (rather than boiling it) keeps the soup from curdling.",
+            },
+            "tips_and_variations": [
+                "Fermented rye sour (zakwas) is sold at Polish delis and some grocers, or can be started at home a few days ahead by fermenting rye flour and water.",
+                "Some versions are served in a hollowed-out bread bowl, a fun presentation for a dinner party.",
+                "White sausage (biala kielbasa) is the traditional choice in Poland, smoked kielbasa is a widely available substitute.",
+            ],
+            "reader_tips": [
+                "Taste the rye sour on its own before adding it, batches vary in sourness, and you may want to add more or less than the recipe calls for.",
+                "A soft-boiled egg (not hard-boiled) is worth the extra care, the runny yolk enriches the broth as you eat.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate the soup base (without the eggs) up to 4 days. "
+                "Reheat gently over low heat without boiling, and add freshly "
+                "boiled eggs when serving leftovers."
+            ),
+            "nutrition_note": "A savory, tangy soup, the cream and sausage add most of the richness against the sour rye base.",
+            "faqs": [
+                {"question": "Where do I find fermented rye sour for żurek?", "answer": "Look for zakwas na żurek at Polish or Eastern European grocery stores, either fresh in the refrigerated section or as a jarred concentrate. It can also be made at home from rye flour, water, and a few days of fermentation."},
+                {"question": "Can I substitute anything for the rye sour?", "answer": "Not really for the true flavor, but in a pinch some cooks use sauerkraut juice or a mix of buttermilk and vinegar for a milder, less authentic approximation."},
+                {"question": "Is żurek traditionally served for a specific occasion?", "answer": "Yes, it's a classic Easter breakfast dish in Poland, often served with hard-boiled eggs and white sausage, though it's enjoyed year-round as well."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Polish Recipes", "slug": "polish-recipes"},
+        },
+    },
+    {
+        "slug": "placki-ziemniaczane-potato-pancakes",
+        "template_type": "recipe_or_dish",
+        "title": "Placki Ziemniaczane (Potato Pancakes) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Crisp Polish potato pancakes made from grated potato and "
+                "onion, fried golden and served with sour cream."
+            ),
+            "hero_image_query": "polish potato pancakes",
+            "why_it_works": (
+                "Squeezing as much liquid as possible out of the grated potato "
+                "keeps the batter from turning watery, which is what lets the "
+                "pancakes fry up crisp at the edges instead of steaming soft "
+                "in the pan."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 40,
+            "servings": 4,
+            "ingredients": [
+                {"name": "russet potatoes, peeled", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil, for frying", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sour cream, for serving", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Grate the potatoes and onion together on the coarse side of a box grater into a large bowl.",
+                "Transfer the mixture to a clean kitchen towel and wring out as much liquid as possible over a bowl or sink.",
+                "Let any collected liquid sit a moment, then pour off the water and keep the starch that settles at the bottom, stirring it back into the potatoes.",
+                "Mix in the eggs, flour, salt, and pepper until evenly combined.",
+                "Heat about 1/4 inch of oil in a large skillet over medium-high heat until shimmering.",
+                "Drop heaping spoonfuls of batter into the oil, flattening slightly, and fry until deep golden, 3-4 minutes per side.",
+                "Drain on paper towels and serve hot with sour cream.",
+            ],
+            "step_notes": {
+                1: "This is the step that makes or breaks the texture, potatoes release a surprising amount of water, and any that stays in the batter turns into steam that keeps the pancakes from crisping.",
+                2: "The starch that settles out is worth saving and adding back in, it acts as a natural binder so you don't need much added flour.",
+            },
+            "tips_and_variations": [
+                "Serve sweet, with applesauce, or savory, with sour cream, both are traditional depending on the region and the meal.",
+                "A food processor's grating disc makes quick work of the potatoes and onion if grating by hand feels tedious.",
+                "For extra crisp edges, don't crowd the pan, fry in batches and keep finished pancakes warm in a low oven.",
+            ],
+            "reader_tips": [
+                "Work quickly once the potatoes are grated, they start browning and releasing more liquid the longer they sit.",
+                "Listen for the sizzle when the batter hits the oil, if it's quiet, the oil isn't hot enough yet and the pancakes will soak up oil instead of crisping.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 3 days. Reheat in a dry skillet or oven at "
+                "375°F until crisp again, microwaving will make them soggy. "
+                "They can be frozen in a single layer, then reheated from "
+                "frozen in the oven."
+            ),
+            "nutrition_note": "A starchy, pan-fried side, most of the fat comes from the frying oil the pancakes absorb.",
+            "faqs": [
+                {"question": "Why are my potato pancakes falling apart?", "answer": "This usually means there's too much moisture left in the batter or not enough binder. Wring the grated potato more thoroughly and make sure the egg and flour are fully incorporated."},
+                {"question": "What's the best potato for placki ziemniaczane?", "answer": "Starchy potatoes like russets work best, they hold together well and crisp up nicely, unlike waxy potatoes which stay wetter."},
+                {"question": "Sweet or savory toppings, which is more traditional?", "answer": "Both are common in Poland. Sour cream is the classic savory topping, while applesauce or a dusting of sugar is popular for a sweeter version."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Polish Recipes", "slug": "polish-recipes"},
+        },
+    },
+    {
+        "slug": "paczki-polish-doughnuts",
+        "template_type": "recipe_or_dish",
+        "title": "Paczki (Polish Doughnuts) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Rich, yeasted Polish doughnuts filled with fruit preserves, "
+                "fried golden and dusted with powdered sugar."
+            ),
+            "hero_image_query": "paczki polish doughnuts",
+            "why_it_works": (
+                "An enriched dough loaded with egg yolks and butter gives "
+                "paczki their signature dense, tender crumb, and a careful "
+                "double rise builds enough air into that heavy dough for it "
+                "to still puff properly in the fryer."
+            ),
+            "prep_time_minutes": 40,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 180,
+            "servings": 14,
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 500, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 65, "unit_metric": "g", "hub_slug": None},
+                {"name": "active dry yeast", "base_qty": 2.25, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk, warmed", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 180, "unit_metric": "ml", "hub_slug": None},
+                {"name": "egg yolks", "base_qty": 6, "unit_us": "large", "base_qty_metric": 6, "unit_metric": "large", "hub_slug": None},
+                {"name": "unsalted butter, softened", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 56, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "rum or vanilla extract", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fruit preserves (plum or raspberry)", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 320, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil, for frying", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None},
+                {"name": "powdered sugar, for dusting", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk the warm milk with a pinch of the sugar and the yeast, and let it sit until foamy, about 5-10 minutes.",
+                "In a stand mixer, combine the flour, remaining sugar, and salt, then add the yeast mixture, egg yolks, and rum or vanilla.",
+                "Mix with the dough hook on low until combined, then knead in the softened butter a tablespoon at a time until the dough is smooth and elastic, 8-10 minutes.",
+                "Cover and let rise in a warm spot until doubled, about 1 hour.",
+                "Punch down the dough, roll it out to 1/2-inch thickness, and cut into 3-inch rounds.",
+                "Place the rounds on a floured tray, cover loosely, and let rise again until puffy, about 30-45 minutes.",
+                "Heat the oil to 350°F (175°C) in a heavy pot and fry the paczki in batches, 2-3 minutes per side, until deep golden.",
+                "Drain on a wire rack and let cool slightly, then fill each with about a tablespoon of preserves using a piping bag with a narrow tip.",
+                "Dust with powdered sugar just before serving.",
+            ],
+            "step_notes": {
+                2: "Adding the butter gradually, after the dough has already come together, keeps the fat from coating the flour too early and blocking the gluten from developing.",
+                6: "Oil temperature matters more here than for most frying, too hot and the outside burns before the dense dough cooks through, too cool and the paczki soak up oil and turn greasy.",
+            },
+            "tips_and_variations": [
+                "Traditional fillings include plum lekvar (a thick plum butter) or rose hip jam, raspberry and custard are popular modern variations.",
+                "A candy thermometer takes the guesswork out of holding the oil at a steady 350°F through multiple batches.",
+                "Paczki are traditionally made for Fat Thursday or Fat Tuesday, using up rich ingredients before Lent.",
+            ],
+            "reader_tips": [
+                "Don't skip the second rise, it's what gives paczki their light, airy interior despite how rich the dough is.",
+                "Fill the doughnuts once they've cooled slightly, piping preserves into hot dough can melt and thin the filling out.",
+            ],
+            "storage_and_reheating": (
+                "Best eaten the day they're made. Store leftovers at room "
+                "temperature in an airtight container up to 2 days; a quick "
+                "10-15 seconds in the microwave revives the texture. "
+                "Unfilled, cooled paczki freeze well for up to a month, thaw "
+                "and fill before serving."
+            ),
+            "nutrition_note": "A rich, fried, enriched dough, the egg yolks and butter make it noticeably heavier than a standard yeasted doughnut.",
+            "faqs": [
+                {"question": "What's the difference between paczki and regular doughnuts?", "answer": "Paczki use an enriched dough with far more egg yolks and butter than a typical doughnut, giving them a denser, richer crumb, and they're traditionally filled with fruit preserves rather than glazed."},
+                {"question": "Can I bake paczki instead of frying them?", "answer": "You can, but you'll lose the characteristic crisp-edged, slightly chewy texture frying gives them. If baking, brush with melted butter and bake at 375°F until golden, about 15 minutes."},
+                {"question": "Why is there a pale ring around the middle of each paczek?", "answer": "That pale band is the traditional sign of a properly proofed and fried paczek, it forms where the dough was submerged at the oil's surface line and is considered a mark of good technique, not a flaw."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Polish Recipes", "slug": "polish-recipes"},
+        },
+    },
+    {
+        "slug": "butter-chicken-murgh-makhani",
+        "template_type": "recipe_or_dish",
+        "title": "Butter Chicken (Murgh Makhani) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Creamy, tomato-based Indian butter chicken with yogurt-marinated "
+                "chicken simmered in a spiced, buttery sauce."
+            ),
+            "hero_image_query": "butter chicken murgh makhani",
+            "why_it_works": (
+                "Marinating the chicken in yogurt and spices tenderizes it and "
+                "lets the seasoning penetrate before it ever hits the pan, and "
+                "finishing the tomato-based sauce with butter and cream rounds "
+                "out its acidity into the dish's signature richness."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 35,
+            "total_time_minutes": 65,
+            "servings": 4,
+            "ingredients": [
+                {"name": "boneless, skinless chicken thighs, cubed", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "plain yogurt", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "ginger, grated", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "garam masala", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground cumin", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 56, "unit_metric": "g", "hub_slug": None},
+                {"name": "crushed tomatoes", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "kashmiri chili powder or paprika", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "dried fenugreek leaves (kasoori methi)", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Combine the chicken with yogurt, half the garlic and ginger, 1 teaspoon garam masala, and the cumin; marinate at least 30 minutes or up to overnight in the fridge.",
+                "Heat 2 tablespoons of the butter in a large skillet over medium-high heat and sear the marinated chicken in batches until browned, 4-5 minutes; set aside (it doesn't need to be cooked through yet).",
+                "Add the remaining butter to the same skillet and cook the rest of the garlic and ginger until fragrant, about 1 minute.",
+                "Stir in the chili powder and remaining garam masala, then add the crushed tomatoes and simmer for 15 minutes, stirring occasionally, until thickened.",
+                "Blend the sauce until smooth using an immersion blender, or carefully in a stand blender.",
+                "Return the sauce to the pan, stir in the cream, and add the chicken back in along with any accumulated juices.",
+                "Simmer for 10-12 minutes until the chicken is cooked through and the sauce has thickened slightly.",
+                "Crush the dried fenugreek leaves between your fingers and stir them in just before serving.",
+            ],
+            "step_notes": {
+                1: "Searing rather than fully cooking the chicken here builds browning flavor into the sauce without drying the meat out before it finishes cooking in the sauce later.",
+                4: "Blending the tomato base smooth is what gives butter chicken its characteristic silky sauce, rather than a chunkier curry texture.",
+            },
+            "tips_and_variations": [
+                "For a smokier flavor closer to restaurant versions, grill or broil the marinated chicken before adding it to the sauce.",
+                "Swap heavy cream for cashew cream for a slightly lighter, dairy-light version.",
+                "Kasoori methi (dried fenugreek leaves) has a distinct aroma that's hard to replace, but the dish is still good without it if you can't find any.",
+            ],
+            "reader_tips": [
+                "Crush the dried fenugreek leaves between your palms right before adding them, this releases their aroma much more than adding them whole.",
+                "Let the sauce actually reduce during the tomato-simmering step, a thin sauce at that stage stays thin no matter how long you simmer the chicken in it afterward.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days. Reheat gently on the stovetop over "
+                "low heat, adding a splash of water or cream if the sauce has "
+                "thickened too much. Freezes well for up to 2 months."
+            ),
+            "nutrition_note": "A rich, cream-and-butter based curry, moderate in carbs on its own but typically served with rice or naan.",
+            "faqs": [
+                {"question": "What's the difference between butter chicken and tikka masala?", "answer": "They're closely related, but butter chicken traditionally has a sweeter, more butter-and-cream forward sauce, while tikka masala tends to be spicier and often includes bell peppers or a smokier char from grilling."},
+                {"question": "Can I use chicken breast instead of thighs?", "answer": "Yes, though thighs stay juicier through the extra simmering time. If using breast, reduce the final simmer slightly to avoid overcooking."},
+                {"question": "Is butter chicken very spicy?", "answer": "Not typically, it's more aromatic and rich than hot. Kashmiri chili powder is chosen for color and mild heat; adjust with cayenne if you want it spicier."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Indian Recipes", "slug": "indian-recipes"},
+        },
+    },
+    {
+        "slug": "chana-masala",
+        "template_type": "recipe_or_dish",
+        "title": "Chana Masala Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A hearty North Indian chickpea curry simmered in a spiced "
+                "onion-tomato base, tangy from amchur and dried pomegranate seed."
+            ),
+            "hero_image_query": "chana masala chickpea curry",
+            "why_it_works": (
+                "Cooking the onion down until it's truly browned, not just "
+                "softened, builds the deep savory base the whole curry rests "
+                "on, and simmering the chickpeas in that base afterward lets "
+                "them soak up flavor rather than just sitting in a sauce."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 35,
+            "total_time_minutes": 50,
+            "servings": 4,
+            "ingredients": [
+                {"name": "chickpeas, cooked or canned, drained", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 500, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion, finely chopped", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "tomatoes, chopped, or canned diced tomatoes", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "ginger, grated", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "cumin seeds", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground coriander", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "chana masala or garam masala spice blend", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground turmeric", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "amchur (dried mango powder) or lemon juice", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "cilantro, chopped, for garnish", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Heat the oil in a large pot over medium heat and toast the cumin seeds until fragrant and sizzling, about 30 seconds.",
+                "Add the onion and cook, stirring occasionally, until deeply golden brown, 12-15 minutes; don't rush this step.",
+                "Stir in the garlic and ginger and cook 1 minute, then add the coriander, chana masala, and turmeric and toast for 30 seconds.",
+                "Add the tomatoes and cook, mashing them down, until the mixture thickens and the oil starts to separate at the edges, about 8-10 minutes.",
+                "Add the chickpeas and 1 cup of water, and simmer for 12-15 minutes, mashing a few chickpeas against the side of the pot to thicken the sauce.",
+                "Stir in the amchur or lemon juice, then season with salt to taste.",
+                "Garnish with chopped cilantro before serving.",
+            ],
+            "step_notes": {
+                1: "This is the step most home cooks rush, but a well-browned onion (not just translucent) is what separates a flat-tasting curry from one with real depth.",
+                3: "Cooking the tomatoes until the oil separates is a visual doneness cue borrowed straight from Indian home cooking, it tells you the raw tomato taste has cooked out and the masala base is actually done.",
+            },
+            "tips_and_variations": [
+                "Mashing some of the chickpeas against the pot thickens the sauce naturally without needing any flour or cornstarch.",
+                "Dried pomegranate seed powder (anardana) is a traditional souring agent if you can find it, in place of amchur.",
+                "Add a diced potato along with the chickpeas for a heartier version, common in some regional variations.",
+            ],
+            "reader_tips": [
+                "Don't skip toasting the whole cumin seeds in oil at the start, it draws out more flavor than adding ground cumin later would.",
+                "If using canned chickpeas, a quick rinse removes the canning liquid's slightly metallic taste before they go into the pot.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 5 days, the flavor deepens overnight. "
+                "Reheat on the stovetop over medium-low heat, adding a "
+                "splash of water if it's thickened too much. Freezes well "
+                "for up to 3 months."
+            ),
+            "nutrition_note": "A plant-based, protein- and fiber-rich curry from the chickpeas, moderate in fat from the cooking oil.",
+            "faqs": [
+                {"question": "Can I use dried chickpeas instead of canned?", "answer": "Yes, soak 1 cup dried chickpeas overnight and cook until tender (about 45-60 minutes on the stovetop, or 15-20 minutes in a pressure cooker) before proceeding with the recipe."},
+                {"question": "What gives chana masala its tangy flavor?", "answer": "Amchur (dried mango powder) or dried pomegranate seed powder are the traditional souring agents; lemon juice is a reasonable substitute if neither is available."},
+                {"question": "Is chana masala the same as chole?", "answer": "They're essentially the same dish, chole (or chole masala) is another common name for the same spiced chickpea curry, particularly in Punjabi cooking."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Indian Recipes", "slug": "indian-recipes"},
+        },
+    },
+    {
+        "slug": "chicken-biryani",
+        "template_type": "recipe_or_dish",
+        "title": "Chicken Biryani Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Layered Indian chicken biryani with marinated chicken, "
+                "fragrant basmati rice, and fried onions, steamed together "
+                "over low heat."
+            ),
+            "hero_image_query": "chicken biryani",
+            "why_it_works": (
+                "Cooking the rice only to about 70% doneness before layering "
+                "it over the chicken means it finishes cooking gently in the "
+                "steam trapped during the final dum (sealed steam) step, "
+                "rather than turning mushy from a full boil."
+            ),
+            "prep_time_minutes": 45,
+            "cook_time_minutes": 60,
+            "total_time_minutes": 150,
+            "servings": 6,
+            "ingredients": [
+                {"name": "basmati rice", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 600, "unit_metric": "g", "hub_slug": None},
+                {"name": "bone-in, skin-on chicken thighs", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "plain yogurt", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "ginger, grated", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "biryani masala spice blend", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 18, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onions, thinly sliced", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
+                {"name": "ghee or vegetable oil", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 110, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole spices (bay leaf, cardamom, cinnamon, cloves)", "base_qty": 1, "unit_us": "set", "base_qty_metric": 1, "unit_metric": "set", "hub_slug": None},
+                {"name": "saffron threads", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.25, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk, warmed", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "mint and cilantro, chopped", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 20, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Marinate the chicken with the yogurt, garlic, ginger, and biryani masala for at least 1 hour, or overnight in the fridge.",
+                "Rinse the basmati rice until the water runs clear, then soak for 30 minutes and drain.",
+                "Heat half the ghee in a wide pan and fry the sliced onions, stirring frequently, until deeply golden and crisp; remove and set half aside for garnish.",
+                "In the same pan, add the marinated chicken and cook over medium heat until nearly cooked through, about 15 minutes, using the remaining fried onion in the sauce.",
+                "Meanwhile, soak the saffron threads in the warm milk.",
+                "Bring a large pot of well-salted water with the whole spices to a boil, add the drained rice, and cook until about 70% done, still firm at the center, then drain.",
+                "Spread the partially cooked rice evenly over the chicken in the pan.",
+                "Drizzle the saffron milk over the rice, scatter the reserved fried onions and chopped herbs on top, and dot with the remaining ghee.",
+                "Cover tightly with a lid (sealing the edge with foil or dough if needed) and cook on very low heat for 25-30 minutes.",
+                "Remove from heat and let rest, still covered, for 10 minutes before gently fluffing and serving.",
+            ],
+            "step_notes": {
+                5: "Stopping the rice at about 70% doneness is deliberate, not undercooking, it still has to finish cooking in the dum step and would turn mushy if fully boiled first.",
+                8: "A tight seal during the dum step traps the steam that finishes cooking the rice and lets the chicken's flavor rise up through the layers, a loose lid lets that steam (and flavor) escape.",
+            },
+            "tips_and_variations": [
+                "Fried onions (birista) can be made a day ahead and stored at room temperature in an airtight container, they crisp up further as they cool.",
+                "For a smokier flavor, place a small piece of hot charcoal in a foil cup on top of the layered biryani, cover, and let it smoke for a few minutes before the final dum step (the dhungar method).",
+                "A dough seal (atta seal) around the lid gives the most reliable steam-tight seal if you don't have a heavy lid.",
+            ],
+            "reader_tips": [
+                "Rinsing and soaking the rice removes excess surface starch, which is part of what keeps the grains separate instead of clumping together.",
+                "Resist opening the lid to check on it during the dum step, every peek lets steam escape that the rice needs to finish cooking properly.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days. Reheat covered in a low oven or "
+                "microwave with a splash of water to restore moisture. "
+                "Freezes well for up to 2 months in an airtight container."
+            ),
+            "nutrition_note": "A substantial rice-and-chicken dish, richer than a plain pilaf from the ghee and fried onions layered through it.",
+            "faqs": [
+                {"question": "What does 'dum' mean in biryani cooking?", "answer": "Dum refers to the final slow-steaming step, where the tightly sealed pot cooks the layered rice and meat gently in trapped steam rather than direct heat, finishing the dish and melding the flavors."},
+                {"question": "Can I make biryani with chicken breast instead of thighs?", "answer": "Thighs are traditional and stay juicier through the long cook, but breast works if cut into larger pieces and watched closely so it doesn't dry out during the dum step."},
+                {"question": "Why is my biryani rice mushy?", "answer": "This usually means the rice was boiled too long before layering, or the dum step ran too hot or too long. Aim for about 70% doneness before layering, and keep the final steam as low and gentle as possible."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Indian Recipes", "slug": "indian-recipes"},
+        },
+    },
+    {
+        "slug": "saag-paneer",
+        "template_type": "recipe_or_dish",
+        "title": "Saag Paneer Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A creamy North Indian spinach curry with pan-seared paneer, "
+                "spiced with cumin, garlic, and ginger."
+            ),
+            "hero_image_query": "saag paneer spinach curry",
+            "why_it_works": (
+                "Searing the paneer before it goes into the sauce gives it a "
+                "light golden crust so it holds its shape and texture in the "
+                "curry, and pureeing the spinach base creates the dish's "
+                "signature smooth, spoonable texture."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 25,
+            "total_time_minutes": 40,
+            "servings": 4,
+            "ingredients": [
+                {"name": "paneer, cubed", "base_qty": 14, "unit_us": "oz", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": None},
+                {"name": "spinach, washed", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "yellow onion, chopped", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "tomato, chopped", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "ginger, grated", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "green chile, chopped", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "cumin seeds", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground coriander", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "garam masala", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ghee or vegetable oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Blanch the spinach in boiling water for 1-2 minutes until just wilted, then plunge into ice water and drain well.",
+                "Puree the blanched spinach with a splash of water until smooth; set aside.",
+                "Heat half the ghee in a skillet over medium-high heat and sear the paneer cubes on all sides until lightly golden, 3-4 minutes; remove and set aside.",
+                "Add the remaining ghee to the pan, toast the cumin seeds until fragrant, then add the onion and cook until golden, about 6-7 minutes.",
+                "Stir in the garlic, ginger, and green chile and cook 1 minute, then add the coriander and cook 30 seconds more.",
+                "Add the chopped tomato and cook until softened and starting to break down, 4-5 minutes.",
+                "Stir in the pureed spinach and simmer for 5-6 minutes to let the flavors meld.",
+                "Fold in the seared paneer, garam masala, and cream, and simmer gently for 3-4 minutes to warm through.",
+            ],
+            "step_notes": {
+                0: "A quick blanch followed by an ice bath keeps the spinach's bright green color, skipping the ice bath lets residual heat turn it a duller, olive-green color.",
+                2: "Searing the paneer separately, rather than simmering it raw in the sauce, gives it a light crust that helps the cubes hold together instead of crumbling as the curry simmers.",
+            },
+            "tips_and_variations": [
+                "Mustard greens or a mix of spinach and mustard greens (sarson ka saag) is a traditional regional variation with a more assertive, peppery flavor.",
+                "Firm tofu is a reasonable substitute for paneer for a dairy-free version, sear it the same way.",
+                "For extra richness, stir in a small knob of butter along with the cream at the end.",
+            ],
+            "reader_tips": [
+                "Don't over-blanch the spinach, a quick minute or two is enough, longer starts leaching flavor and nutrients into the blanching water.",
+                "If your paneer is store-bought and a little firm, soaking the cubes in warm water for 10 minutes before searing softens them slightly.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 3 days. Reheat gently over low heat, "
+                "stirring often, since the cream-based sauce can split if it "
+                "boils. Not recommended for freezing, as the texture "
+                "suffers on thawing."
+            ),
+            "nutrition_note": "A vegetarian, protein-rich curry from the paneer, moderately rich from the cream and ghee.",
+            "faqs": [
+                {"question": "What's the difference between saag and palak paneer?", "answer": "Palak paneer is made specifically with spinach, while saag paneer can include a mix of leafy greens like mustard greens, spinach, and fenugreek leaves, giving it a more complex, slightly bitter edge."},
+                {"question": "Can I use frozen spinach?", "answer": "Yes, thaw and squeeze out excess water first, then puree as directed. It's a convenient substitute for fresh spinach and works well in this dish."},
+                {"question": "Why is my paneer tough after cooking?", "answer": "Paneer toughens if it's cooked too long or at too high heat. Sear it briefly just to color the surface, and add it to the sauce only for the final few minutes of simmering."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Indian Recipes", "slug": "indian-recipes"},
+        },
+    },
+    {
+        "slug": "homemade-naan",
+        "template_type": "recipe_or_dish",
+        "title": "Homemade Naan Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Soft, pillowy homemade naan leavened with yeast and yogurt, "
+                "cooked in a hot skillet and brushed with garlic butter."
+            ),
+            "hero_image_query": "homemade naan bread",
+            "why_it_works": (
+                "Yogurt in the dough adds tenderness and a light tang while "
+                "the yeast does the leavening, and cooking the naan in a "
+                "screaming-hot dry skillet mimics the blast of heat a tandoor "
+                "gives, which is what puffs and chars the bread quickly "
+                "without drying it out."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 120,
+            "servings": 8,
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 3.5, "unit_us": "cups", "base_qty_metric": 440, "unit_metric": "g", "hub_slug": None},
+                {"name": "active dry yeast", "base_qty": 2.25, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "sugar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "warm water", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 180, "unit_metric": "ml", "hub_slug": None},
+                {"name": "plain yogurt", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "cilantro, chopped, for garnish", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk the warm water with the sugar and yeast, and let sit until foamy, about 10 minutes.",
+                "Stir in the yogurt and oil, then add the flour and salt and mix until a shaggy dough forms.",
+                "Knead on a floured surface for 6-8 minutes until smooth and elastic.",
+                "Place in an oiled bowl, cover, and let rise in a warm spot until doubled, about 1-1.5 hours.",
+                "Punch down the dough and divide into 8 equal pieces, rolling each into a ball.",
+                "Roll or stretch each ball into an oval or teardrop shape, about 1/4 inch thick.",
+                "Heat a heavy skillet or griddle over high heat until very hot.",
+                "Cook each naan for 1-2 minutes until bubbles form and the underside is charred in spots, flip and cook 1 minute more.",
+                "Stir the garlic into the melted butter and brush over the hot naan as it comes off the skillet, then sprinkle with cilantro.",
+            ],
+            "step_notes": {
+                5: "Rolling the dough into an oval rather than a perfect circle is traditional and also practical, it stretches more naturally in that shape as it cooks and puffs.",
+                6: "The skillet needs to be genuinely hot before the first naan goes in, a cooler pan lets the dough dry out and turn tough instead of blistering and puffing quickly.",
+            },
+            "tips_and_variations": [
+                "For a smoky, tandoor-like char, finish each naan briefly under a hot broiler after the skillet, watching closely so it doesn't burn.",
+                "Stir chopped garlic directly into the dough for garlic naan throughout, in addition to or instead of the garlic butter.",
+                "The dough can be made a day ahead and left to rise slowly in the refrigerator, bring to room temperature before shaping.",
+            ],
+            "reader_tips": [
+                "A cast iron skillet holds and retains heat better than most nonstick pans, which makes a real difference in how well the naan chars and puffs.",
+                "Keep finished naan wrapped in a clean kitchen towel while you cook the rest, it traps steam and keeps them soft.",
+            ],
+            "storage_and_reheating": (
+                "Store at room temperature in an airtight bag up to 2 days, "
+                "or refrigerate up to 5 days. Reheat in a dry skillet over "
+                "medium heat for about 30 seconds per side, or wrap in foil "
+                "and warm in the oven. Freezes well for up to 2 months, "
+                "reheat from frozen in a skillet."
+            ),
+            "nutrition_note": "A yeasted flatbread, moderate in carbohydrates with added richness from the yogurt and butter.",
+            "faqs": [
+                {"question": "Can I make naan without a tandoor oven?", "answer": "Yes, a very hot skillet or griddle on the stovetop, or a pizza stone in a very hot oven, both mimic the intense heat of a tandoor well enough to get good puff and char."},
+                {"question": "Why isn't my naan puffing up?", "answer": "This usually means the pan wasn't hot enough, or the dough wasn't rolled thin enough. Make sure the skillet is fully preheated and the dough is rolled to an even, moderate thickness."},
+                {"question": "Can I make the dough ahead of time?", "answer": "Yes, after the first rise, the dough can be refrigerated for up to 2 days. Let it come to room temperature before dividing and rolling."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Indian Recipes", "slug": "indian-recipes"},
+        },
+    },
+    {
+        "slug": "gulab-jamun",
+        "template_type": "recipe_or_dish",
+        "title": "Gulab Jamun Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Soft, syrup-soaked Indian milk dumplings made from khoya or "
+                "milk powder, fried golden and steeped in cardamom syrup."
+            ),
+            "hero_image_query": "gulab jamun",
+            "why_it_works": (
+                "Frying the dumplings low and slow gives the dense milk dough "
+                "time to cook through evenly before the outside browns too "
+                "far, and dropping them into warm (not hot) syrup right after "
+                "frying lets them soak it up fully without turning mushy."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 90,
+            "servings": 8,
+            "ingredients": [
+                {"name": "milk powder", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking soda", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "unsalted butter, softened", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": None},
+                {"name": "water", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None},
+                {"name": "green cardamom pods, crushed", "base_qty": 4, "unit_us": "pods", "base_qty_metric": 4, "unit_metric": "pods", "hub_slug": None},
+                {"name": "rose water", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "ml", "hub_slug": None},
+                {"name": "vegetable oil or ghee, for frying", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 700, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Combine the sugar, water, and crushed cardamom pods in a saucepan and simmer for 8-10 minutes until slightly syrupy, then stir in the rose water and keep warm.",
+                "Whisk together the milk powder, flour, and baking soda in a bowl.",
+                "Rub the softened butter into the dry mixture with your fingertips until it resembles coarse crumbs.",
+                "Add the milk a little at a time, gathering the mixture into a soft, smooth dough; avoid kneading it too much.",
+                "Divide the dough into small portions and roll into smooth balls with no cracks, about 1 inch across.",
+                "Heat the oil or ghee in a deep pot to 300-325°F (150-160°C), keeping the heat on medium-low.",
+                "Fry the dumplings in small batches, gently swirling the oil so they color evenly, until deep golden brown all over, 8-10 minutes; they will roughly double in size.",
+                "Remove with a slotted spoon and drop immediately into the warm syrup, letting them soak for at least 30 minutes before serving.",
+            ],
+            "step_notes": {
+                4: "Cracks in the rolled balls will open up further in the fryer and let syrup seep in unevenly later, rolling them perfectly smooth now is worth the extra minute.",
+                5: "Frying at a genuinely low, steady temperature is the single most important step, oil that's too hot browns the outside before the dense center is cooked through, leaving a raw core.",
+            },
+            "tips_and_variations": [
+                "Traditional gulab jamun uses khoya (reduced milk solids) instead of milk powder, if available, it gives an even richer, more authentic result.",
+                "A drop of dough in the oil should rise slowly and steadily if the temperature is right, if it browns almost instantly, the oil is too hot.",
+                "Garnish with slivered pistachios or a few saffron threads in the syrup for a festive presentation.",
+            ],
+            "reader_tips": [
+                "Let the dough rest for 10 minutes before rolling, it firms up slightly and is easier to shape into smooth, crack-free balls.",
+                "Warm syrup soaks in better than hot syrup, if the syrup is too hot when the dumplings go in, it can actually make them fall apart.",
+            ],
+            "storage_and_reheating": (
+                "Store in the syrup, covered, in the refrigerator up to 1 "
+                "week. Serve chilled or gently warmed; a few seconds in the "
+                "microwave restores the soft, syrup-soaked texture."
+            ),
+            "nutrition_note": "A rich, sugar-syrup soaked dessert, best enjoyed in small portions given the sugar content of both the dough and syrup.",
+            "faqs": [
+                {"question": "Why did my gulab jamun turn out hard or dense?", "answer": "This is usually from over-kneading the dough or frying at too high a temperature. Handle the dough gently and keep the oil at a low, steady 300-325°F."},
+                {"question": "Can I use khoya instead of milk powder?", "answer": "Yes, khoya (also called mawa) is the traditional base and gives a richer result. Substitute it roughly 1:1 for the milk powder, adjusting the flour slightly since khoya carries more moisture."},
+                {"question": "How long should the dumplings soak in syrup?", "answer": "At least 30 minutes, though they continue to improve for several hours as they absorb more syrup, which is why gulab jamun is often made a day ahead."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Indian Recipes", "slug": "indian-recipes"},
+        },
+    },
+    {
+        "slug": "margherita-pizza",
+        "template_type": "recipe_or_dish",
+        "title": "Classic Margherita Pizza Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A classic Neapolitan-style margherita pizza with a thin, "
+                "chewy crust, San Marzano tomato sauce, fresh mozzarella, "
+                "and basil."
+            ),
+            "hero_image_query": "margherita pizza",
+            "why_it_works": (
+                "Baking at the highest heat your oven can reach, ideally on a "
+                "preheated stone or steel, is what gets the crust properly "
+                "blistered and chewy in the few minutes it takes the cheese "
+                "and toppings to cook, a cooler oven just dries the dough out "
+                "instead."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 150,
+            "servings": 4,
+            "ingredients": [
+                {"name": "bread flour", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": "bread-flour"},
+                {"name": "warm water", "base_qty": 1.25, "unit_us": "cups", "base_qty_metric": 300, "unit_metric": "ml", "hub_slug": None},
+                {"name": "active dry yeast", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "San Marzano tomatoes, crushed by hand", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh mozzarella, torn or sliced", "base_qty": 8, "unit_us": "oz", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh basil leaves", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk the yeast into the warm water and let sit until foamy, about 5-10 minutes.",
+                "Combine the flour and salt in a large bowl, then add the yeast mixture and olive oil, mixing until a shaggy dough forms.",
+                "Knead for 8-10 minutes until smooth and elastic, then place in an oiled bowl, cover, and let rise until doubled, about 1.5-2 hours.",
+                "Divide the dough into two balls, cover, and let rest another 15-20 minutes.",
+                "Place a pizza stone or steel in the oven and preheat to its highest setting, at least 500°F (260°C), for 45 minutes to an hour.",
+                "Stretch one dough ball by hand into a 10-12 inch round, working from the center outward and leaving a slightly thicker rim.",
+                "Spread a thin layer of the crushed tomatoes over the dough, leaving the rim bare.",
+                "Scatter torn mozzarella evenly over the top.",
+                "Slide the pizza onto the hot stone and bake for 6-9 minutes, until the crust is blistered and golden and the cheese is bubbling.",
+                "Remove, top with fresh basil leaves and a drizzle of olive oil, and slice immediately.",
+            ],
+            "step_notes": {
+                4: "A long, thorough preheat matters more for pizza than for almost anything else you bake, the stone or steel needs to have actually absorbed that heat, not just have the oven reading 500°F.",
+                8: "The high, direct heat from a preheated stone cooks the bottom crust fast enough that the thin dough chars and puffs before the toppings have time to make it soggy.",
+            },
+            "tips_and_variations": [
+                "Use tomatoes sparingly, a thin layer, this is a defining trait of Neapolitan-style pizza and keeps the crust from turning soggy.",
+                "A pizza steel conducts heat even better than a stone and can push the crust closer to what a wood-fired oven produces.",
+                "Fresh mozzarella releases more water than low-moisture mozzarella, tear it and let it drain briefly on a paper towel if your dough is on the thinner side.",
+            ],
+            "reader_tips": [
+                "Stretch the dough by hand rather than with a rolling pin, a rolling pin presses out the air bubbles that give the crust its characteristic chewy-light texture.",
+                "Have all your toppings ready to go before you stretch the dough, the pizza needs to go from counter to hot stone quickly before it starts sticking.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftover slices up to 3 days. Reheat in a "
+                "skillet over medium heat, covered, to re-crisp the bottom "
+                "without drying out the cheese, or in a 400°F oven for a few "
+                "minutes. Microwaving will make the crust soft."
+            ),
+            "nutrition_note": "A simply-topped pizza, moderate in carbohydrates from the crust with protein and fat from the mozzarella.",
+            "faqs": [
+                {"question": "Do I need a pizza stone to make good pizza at home?", "answer": "A stone or steel helps significantly by holding and transferring high heat quickly, but a well-preheated heavy baking sheet, flipped upside down, is a reasonable substitute."},
+                {"question": "Why is my pizza crust soggy in the middle?", "answer": "This is usually from too much sauce, too much moisture in the mozzarella, or an oven that wasn't hot enough. Use a thin layer of sauce, drain wet mozzarella briefly, and preheat the stone thoroughly."},
+                {"question": "Can I make the dough ahead of time?", "answer": "Yes, after the first rise, the dough can be refrigerated up to 3 days (a longer, cold rise actually improves the flavor) or frozen for up to 2 months. Thaw and bring to room temperature before shaping."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Italian Recipes", "slug": "italian-recipes"},
+        },
+    },
+    {
+        "slug": "mushroom-risotto",
+        "template_type": "recipe_or_dish",
+        "title": "Creamy Mushroom Risotto Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A creamy Italian mushroom risotto made with Arborio rice, "
+                "sautéed mushrooms, and warm stock added gradually for a "
+                "rich, spoonable texture."
+            ),
+            "hero_image_query": "creamy mushroom risotto",
+            "why_it_works": (
+                "Adding the warm stock gradually, one ladle at a time, and "
+                "stirring frequently coaxes starch out of the Arborio rice "
+                "slowly, which is what builds the risotto's characteristic "
+                "creamy texture without any cream actually being required."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 35,
+            "total_time_minutes": 50,
+            "servings": 4,
+            "ingredients": [
+                {"name": "Arborio rice", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 300, "unit_metric": "g", "hub_slug": None},
+                {"name": "cremini mushrooms, sliced", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "dried porcini mushrooms", "base_qty": 0.5, "unit_us": "oz", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None},
+                {"name": "chicken or vegetable stock", "base_qty": 5, "unit_us": "cups", "base_qty_metric": 1200, "unit_metric": "ml", "hub_slug": None},
+                {"name": "yellow onion, finely diced", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 2, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "dry white wine", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "parmesan cheese, grated", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Soak the dried porcini in 1 cup of hot water for 15-20 minutes, then drain, reserving the liquid, and chop; strain the liquid into the stock.",
+                "Warm the stock (with the porcini liquid) in a saucepan and keep it at a low simmer.",
+                "Heat the olive oil and half the butter in a wide, heavy pot over medium heat and sauté the cremini mushrooms until browned, 6-8 minutes; remove and set aside.",
+                "Add the onion to the same pot and cook until softened, about 5 minutes, then add the garlic and cook 1 minute more.",
+                "Stir in the rice and toast for 1-2 minutes, stirring constantly, until the edges look slightly translucent.",
+                "Pour in the wine and stir until it's fully absorbed.",
+                "Add the warm stock one ladleful at a time, stirring frequently and waiting until each addition is mostly absorbed before adding the next, about 18-22 minutes total.",
+                "Stir the sautéed mushrooms and chopped porcini back in during the last few minutes of cooking.",
+                "Once the rice is creamy and just tender with a slight bite, remove from heat and stir in the remaining butter and parmesan.",
+                "Let rest for 1-2 minutes, then serve immediately.",
+            ],
+            "step_notes": {
+                6: "Adding stock gradually rather than all at once is the entire technique behind risotto, it forces the rice to release starch slowly into the surrounding liquid, which is what makes the dish creamy without cream.",
+                8: "Stirring in cold butter and cheese off the heat, a step called mantecatura, emulsifies the starchy liquid into a glossy sauce that coats the rice, rather than just melting into a separate pool.",
+            },
+            "tips_and_variations": [
+                "Dried porcini add a deep, savory backbone that fresh mushrooms alone don't provide, don't skip them if you can find them.",
+                "Risotto should be loose enough to slowly spread out on a plate, called all'onda, if it holds a stiff mound, it's too thick, thin it with a bit more warm stock.",
+                "Swap in other mushroom varieties like shiitake or oyster mushrooms for a different flavor profile.",
+            ],
+            "reader_tips": [
+                "Keep the stock at a gentle simmer, not cold and not boiling, cold stock shocks the rice and stalls its cooking, while a hard boil evaporates too much liquid too fast.",
+                "Stir frequently but not constantly, risotto needs regular attention, but stirring nonstop can actually break the rice grains down too much.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 3 days. Reheat gently on the stovetop "
+                "with a splash of stock or water, stirring, to loosen it "
+                "back up, risotto stiffens considerably once chilled. Not "
+                "recommended for freezing, as the texture suffers."
+            ),
+            "nutrition_note": "A creamy, rice-based dish, the richness comes primarily from the butter and parmesan stirred in at the end rather than any added cream.",
+            "faqs": [
+                {"question": "Do I really need to add the stock gradually?", "answer": "Yes, this is what develops risotto's characteristic creamy texture. Adding all the liquid at once cooks the rice more like a pilaf or boiled rice, without the same starchy, creamy result."},
+                {"question": "Can I use a different rice besides Arborio?", "answer": "Carnaroli or Vialone Nano are traditional Italian alternatives with similarly high starch content. Regular long-grain rice won't give the same creamy texture."},
+                {"question": "Why is my risotto gluey instead of creamy?", "answer": "This usually means the rice was overcooked or stirred too aggressively for too long, breaking down the grains completely. Aim for rice that's tender with a slight bite, not fully soft."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Italian Recipes", "slug": "italian-recipes"},
+        },
+    },
+    {
+        "slug": "fettuccine-alfredo",
+        "template_type": "recipe_or_dish",
+        "title": "Homemade Fettuccine Alfredo Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Classic fettuccine Alfredo made simply, with butter, "
+                "parmesan, and starchy pasta water emulsified into a silky "
+                "sauce, no cream required."
+            ),
+            "hero_image_query": "fettuccine alfredo",
+            "why_it_works": (
+                "The starchy pasta water is the real backbone of an "
+                "authentic Alfredo sauce, it's what lets butter and parmesan "
+                "emulsify into a smooth, clinging sauce off the heat, rather "
+                "than separating into a greasy puddle."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "fettuccine, fresh or dried", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, cubed", "base_qty": 8, "unit_us": "tbsp", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "parmesan cheese, finely grated", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 18, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper, freshly ground", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Bring a large pot of well-salted water to a boil and cook the fettuccine until just shy of al dente, reserving 1.5 cups of the pasta water before draining.",
+                "While the pasta cooks, melt half the butter in a large skillet over low heat.",
+                "Add the drained pasta to the skillet along with a ladleful of the reserved pasta water.",
+                "Toss constantly over low heat, adding the remaining butter a bit at a time as it melts in.",
+                "Remove from heat and add the parmesan a handful at a time, tossing continuously and adding splashes of pasta water as needed to keep the sauce loose and glossy.",
+                "Continue until the sauce coats the pasta smoothly and clings to the noodles, adjusting with more pasta water if it looks tight.",
+                "Season generously with black pepper and taste for salt before serving immediately.",
+            ],
+            "step_notes": {
+                4: "Adding the parmesan off the direct heat, a little at a time, keeps the cheese's proteins from seizing and clumping, which is the most common way this sauce turns grainy instead of silky.",
+                5: "This is the emulsification step, tossing constantly while adding starchy water lets the fat, cheese, and water bind into one sauce rather than separating into an oily layer and a cheesy clump.",
+            },
+            "tips_and_variations": [
+                "Real Alfredo, as made in Rome, uses no cream at all, just butter, parmesan, and pasta water, resist the urge to add cream for a more authentic result.",
+                "Freshly grated parmesan melts far more smoothly than pre-shredded, which is often coated in anti-caking starch that can make the sauce grainy.",
+                "Toss in sautéed mushrooms, peas, or grilled chicken to turn it into a fuller meal, though the classic version is left unadorned.",
+            ],
+            "reader_tips": [
+                "Don't drain the pasta too far ahead of finishing the sauce, it needs to go into the skillet still hot and starchy for the emulsion to come together properly.",
+                "Keep the heat low once the cheese goes in, high heat is the fastest way to break this sauce and end up with a greasy, separated mess.",
+            ],
+            "storage_and_reheating": (
+                "Best eaten immediately, as the sauce doesn't reheat "
+                "perfectly. Refrigerate up to 2 days and reheat gently in a "
+                "skillet over low heat with a splash of water or milk, "
+                "tossing constantly to bring the sauce back together."
+            ),
+            "nutrition_note": "A rich, butter-and-cheese sauce over pasta, higher in fat than a tomato-based pasta sauce, given the butter and parmesan.",
+            "faqs": [
+                {"question": "Does traditional Alfredo sauce contain cream?", "answer": "No, the original Roman version uses only butter, parmesan, and starchy pasta water. The cream-heavy version common in the US is more of an American adaptation."},
+                {"question": "Why did my Alfredo sauce turn grainy or clumpy?", "answer": "This usually happens when the cheese is added over too-high heat, or all at once instead of gradually. Keep the heat low, add parmesan a little at a time, and toss continuously."},
+                {"question": "Can I use dried fettuccine instead of fresh?", "answer": "Yes, dried fettuccine works well and is what most home cooks use; just be sure to reserve enough starchy pasta water, since dried pasta releases slightly less starch than fresh."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Italian Recipes", "slug": "italian-recipes"},
+        },
+    },
+    {
+        "slug": "tiramisu",
+        "template_type": "recipe_or_dish",
+        "title": "Tiramisu Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Classic Italian tiramisu with espresso-soaked ladyfingers "
+                "layered under a whipped mascarpone cream, dusted with cocoa."
+            ),
+            "hero_image_query": "tiramisu",
+            "why_it_works": (
+                "A cooked egg yolk base (zabaglione-style) whips into a "
+                "stable, airy custard that folds into the mascarpone without "
+                "deflating, and a quick dip, not a soak, keeps the "
+                "ladyfingers from turning to mush under the weight of the "
+                "cream."
+            ),
+            "prep_time_minutes": 40,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 300,
+            "servings": 9,
+            "ingredients": [
+                {"name": "egg yolks", "base_qty": 6, "unit_us": "large", "base_qty_metric": 6, "unit_metric": "large", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "mascarpone cheese, room temperature", "base_qty": 16, "unit_us": "oz", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream, cold", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "strong brewed espresso, cooled", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 350, "unit_metric": "ml", "hub_slug": None},
+                {"name": "coffee liqueur (optional)", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ladyfingers (savoiardi)", "base_qty": 24, "unit_us": "count", "base_qty_metric": 24, "unit_metric": "count", "hub_slug": None},
+                {"name": "unsweetened cocoa powder, for dusting", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Combine the egg yolks and sugar in a heatproof bowl and whisk over a pot of gently simmering water (not touching the water) for 5-7 minutes, until pale, thickened, and doubled in volume.",
+                "Remove from heat and let cool to room temperature, whisking occasionally.",
+                "Whisk the mascarpone into the cooled egg mixture until smooth.",
+                "In a separate bowl, whip the cold heavy cream to soft peaks.",
+                "Gently fold the whipped cream into the mascarpone mixture in two additions, keeping it as airy as possible.",
+                "Combine the cooled espresso with the coffee liqueur, if using, in a shallow dish.",
+                "Quickly dip each ladyfinger into the espresso mixture, a second or two per side, and arrange in a single layer in a 9x9 inch dish.",
+                "Spread half the mascarpone cream evenly over the ladyfingers.",
+                "Repeat with a second layer of dipped ladyfingers and the remaining cream, smoothing the top.",
+                "Cover and refrigerate for at least 4 hours, ideally overnight, before dusting generously with cocoa powder and serving.",
+            ],
+            "step_notes": {
+                0: "Whisking the yolks and sugar over gentle heat cooks them just enough to be food-safe and stabilize the foam, while stopping short of scrambling them, this cooked base is what lets the cream hold its structure once assembled.",
+                6: "A quick dip, not a soak, is the difference between distinct, moist layers and a tiramisu that collapses into espresso-soaked mush by the time it's sliced.",
+            },
+            "tips_and_variations": [
+                "For a version without cooked egg, some recipes whip raw yolks with sugar alone, if you prefer to avoid this, the cooked zabaglione method here is the safer route.",
+                "A splash of coffee liqueur like Kahlúa or Marsala wine deepens the flavor, but it's entirely optional and easy to leave out for a kid-friendly version.",
+                "Individual tiramisu cups (built in small glasses or jars) make an easy make-ahead, portioned dessert for entertaining.",
+            ],
+            "reader_tips": [
+                "Let the mascarpone come fully to room temperature before mixing, cold mascarpone straight from the fridge is much harder to smooth out without turning lumpy.",
+                "Overnight in the fridge makes a real difference, the layers firm up and the flavors meld far more than they do after just the minimum 4 hours.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate, covered, up to 3 days, tiramisu is a make-ahead "
+                "dessert by nature and only improves after a day. Not "
+                "suitable for freezing, as the texture of the cream and "
+                "ladyfingers suffers on thawing."
+            ),
+            "nutrition_note": "A rich, egg-and-mascarpone based dessert, calorie-dense from the cream and sugar, best served in modest portions.",
+            "faqs": [
+                {"question": "Is tiramisu safe to eat with raw eggs?", "answer": "This recipe cooks the egg yolks gently over simmering water to a safe temperature before combining with the mascarpone, which addresses the raw-egg concern some traditional recipes carry."},
+                {"question": "Can I make tiramisu without coffee liqueur?", "answer": "Yes, it's entirely optional. The espresso alone provides the signature coffee flavor; the liqueur just adds an extra layer of depth for those who want it."},
+                {"question": "How far in advance can I make tiramisu?", "answer": "Tiramisu can be made up to 2 days ahead and actually benefits from resting overnight, which lets the flavors meld and the layers set more firmly."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Italian Recipes", "slug": "italian-recipes"},
+            "pan_size": "9x9-inch baking dish (an 8x8 or a similarly-sized trifle bowl also works, adjust ladyfinger count to fit)",
+        },
+    },
+    {
+        "slug": "kung-pao-chicken",
+        "template_type": "recipe_or_dish",
+        "title": "Kung Pao Chicken Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A Sichuan stir-fry of velveted chicken, roasted peanuts, "
+                "and dried chilies in a tangy-sweet soy and black vinegar "
+                "sauce, built for a screaming-hot wok."
+            ),
+            "hero_image_query": "kung pao chicken",
+            "why_it_works": (
+                "A quick cornstarch-and-egg-white velveting marinade seals "
+                "the chicken so it stays juicy through the high heat the "
+                "dish needs, while toasting the dried chilies and Sichuan "
+                "peppercorns in oil before anything else hits the wok "
+                "builds the smoky, numbing base the whole sauce depends on."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "boneless, skinless chicken thighs, diced", "base_qty": 1.25, "unit_us": "lb", "base_qty_metric": 565, "unit_metric": "g", "hub_slug": None},
+                {"name": "egg white", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "cornstarch", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 16, "unit_metric": "g", "hub_slug": "corn-starch"},
+                {"name": "Shaoxing wine", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "dried whole chilies", "base_qty": 10, "unit_us": "whole", "base_qty_metric": 10, "unit_metric": "whole", "hub_slug": None},
+                {"name": "Sichuan peppercorns", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, sliced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "ginger, sliced", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "roasted unsalted peanuts", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 70, "unit_metric": "g", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "Chinese black vinegar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sugar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Toss the diced chicken with egg white, 1 tablespoon cornstarch, and 1 tablespoon Shaoxing wine; let it sit 15 minutes.",
+                "Whisk the remaining soy sauce, black vinegar, sugar, remaining Shaoxing wine, and remaining cornstarch with 2 tablespoons water into a sauce; set aside.",
+                "Heat 2 tablespoons oil in a wok over medium heat and fry the dried chilies and Sichuan peppercorns until fragrant and just darkening, about 30 seconds.",
+                "Add the marinated chicken in a single layer and sear undisturbed for 1 minute, then stir-fry until just cooked through, 2-3 minutes; remove to a plate.",
+                "Add the remaining oil, then the garlic and ginger, and stir-fry 15 seconds until fragrant.",
+                "Return the chicken to the wok, pour in the sauce, and toss over high heat until it thickens and coats everything, about 30 seconds.",
+                "Stir in the peanuts, toss once more, and serve immediately.",
+            ],
+            "step_notes": {
+                0: "Egg white and cornstarch coat each piece in a thin protective layer, this is what keeps the chicken tender through the aggressive heat instead of drying out.",
+                2: "Blooming the chilies and peppercorns in oil before any other aromatics pulls their flavor into the fat itself, so it carries through every later bite instead of sitting only on the chilies.",
+                5: "The sauce needs to hit a very hot, already-seasoned wok so it reduces and clings in seconds, a cooler pan just leaves it thin and pooling at the bottom.",
+            },
+            "tips_and_variations": [
+                "Swap chicken thighs for shrimp or firm tofu, both take well to the same velveting and sauce.",
+                "Leave the chilies whole rather than chopping, they're meant to perfume the oil, not to be eaten in every bite.",
+                "Chinkiang black vinegar is worth seeking out; a splash of balsamic is the closest common substitute if you can't find it.",
+            ],
+            "reader_tips": [
+                "Have every ingredient prepped and within arm's reach before the wok goes on the heat, this dish moves in seconds once it starts.",
+                "A wok that's smoking slightly before the chicken goes in is exactly what you want, not a sign to turn the heat down.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container up to 3 "
+                "days. Reheat in a hot skillet or wok for a minute or two; "
+                "microwaving works but softens the peanuts."
+            ),
+            "nutrition_note": "A protein-heavy stir-fry with moderate carbs from the sauce and a good hit of fat from the peanuts and cooking oil.",
+            "faqs": [
+                {"question": "Is kung pao chicken very spicy?", "answer": "It's moderately spicy with a numbing tingle from the Sichuan peppercorns rather than pure heat. Use fewer dried chilies, or split them open to reduce the seeds, if you want it milder."},
+                {"question": "What can I use instead of Shaoxing wine?", "answer": "Dry sherry is the closest substitute in flavor. In a pinch, use rice vinegar diluted with a little water plus a pinch of sugar, though the flavor won't be quite as rich."},
+                {"question": "Can I make this ahead?", "answer": "The marinade and sauce can both be made a day ahead and refrigerated separately. Cook the dish itself just before serving, since the peanuts and chicken lose their texture if it sits too long."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Chinese Recipes", "slug": "chinese-recipes"},
+        },
+    },
+    {
+        "slug": "pork-and-chive-dumplings",
+        "template_type": "recipe_or_dish",
+        "title": "Pork and Chive Dumplings Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Homemade pork and garlic chive dumplings, pan-fried into "
+                "potstickers with a crisp golden base and a juicy, savory "
+                "filling."
+            ),
+            "hero_image_query": "pork and chive dumplings",
+            "why_it_works": (
+                "Mixing the pork filling in one direction until it turns "
+                "slightly sticky builds a springy, cohesive texture, and "
+                "steaming the dumplings before uncovering them to crisp "
+                "cooks the filling through without drying out or scorching "
+                "the wrapper's base."
+            ),
+            "prep_time_minutes": 45,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 60,
+            "servings": 4,
+            "ingredients": [
+                {"name": "ground pork", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic chives, finely chopped", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 100, "unit_metric": "g", "hub_slug": "chives"},
+                {"name": "ginger, minced", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "Shaoxing wine", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "toasted sesame oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "white pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "round dumpling wrappers", "base_qty": 40, "unit_us": "wrappers", "base_qty_metric": 40, "unit_metric": "wrappers", "hub_slug": None},
+                {"name": "neutral oil, for frying", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "In a bowl, combine ground pork, ginger, soy sauce, Shaoxing wine, sesame oil, salt, and white pepper, and stir vigorously in one direction until the mixture turns pasty and slightly sticky.",
+                "Fold in the chopped chives just before wrapping, mixing them in too early draws out water and makes the filling soggy.",
+                "Place a heaping teaspoon of filling in the center of a wrapper, wet the edge with water, and fold into a pleated half-moon, pressing to seal.",
+                "Repeat with the remaining wrappers and filling, keeping finished dumplings covered with a damp towel.",
+                "Heat oil in a nonstick or well-seasoned skillet over medium-high heat and arrange dumplings in a single layer.",
+                "Fry undisturbed for 1-2 minutes until the bottoms are golden.",
+                "Add 1/3 cup water, cover immediately, and steam for 5-6 minutes until the wrappers turn translucent.",
+                "Uncover and cook 1-2 more minutes to let any remaining water evaporate and the bottoms re-crisp.",
+            ],
+            "step_notes": {
+                0: "Stirring in one direction develops the proteins in the pork the same way kneading develops gluten, that's what gives the filling its bouncy, cohesive bite instead of a loose, crumbly one.",
+                6: "The covered steam is what actually cooks the pork through, the initial sear only builds the crust, so skipping this step leaves the filling underdone even though the bottoms look done.",
+            },
+            "tips_and_variations": [
+                "No garlic chives on hand? Regular chives plus an extra minced garlic clove gets close, though the flavor is milder.",
+                "Freeze uncooked dumplings on a tray until solid, then bag them, they can go straight from freezer to pan with a couple extra minutes of steaming.",
+                "Boiled dumplings work too: drop into simmering water and cook until they float, then 2 more minutes.",
+            ],
+            "reader_tips": [
+                "Don't overfill the wrappers, a teaspoon feels small but it's enough, overstuffed dumplings split open in the pan.",
+                "Keep a small bowl of water at your station for sealing edges; a dry wrapper edge won't hold a pleat.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate cooked dumplings up to 3 days. Reheat in a "
+                "covered skillet with a splash of water to re-steam, or "
+                "freeze uncooked dumplings up to 2 months and cook straight "
+                "from frozen."
+            ),
+            "nutrition_note": "A good source of protein from the pork, balanced by the carbs in the wrapper; frying adds moderate fat.",
+            "faqs": [
+                {"question": "Can I steam these instead of pan-frying?", "answer": "Yes, arrange them on a lined steamer basket with space between each and steam over boiling water for 8-10 minutes, though you'll lose the crisp bottom."},
+                {"question": "Why did my filling turn out watery?", "answer": "Chives release liquid quickly once cut, so mixing them into the filling too early, or letting the mixture sit too long before wrapping, is usually the cause. Fold them in right before you start wrapping."},
+                {"question": "What's the difference between garlic chives and regular chives?", "answer": "Garlic chives have flat, wider leaves and a stronger, more garlicky flavor than the thin, mild, oniony chives common in Western cooking, and they're the traditional choice for this filling."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Chinese Recipes", "slug": "chinese-recipes"},
+        },
+    },
+    {
+        "slug": "mapo-tofu",
+        "template_type": "recipe_or_dish",
+        "title": "Mapo Tofu Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A silky, fiery Sichuan classic of soft tofu and ground "
+                "pork in a doubanjiang-based sauce, finished with a numbing "
+                "hit of ground Sichuan peppercorn."
+            ),
+            "hero_image_query": "mapo tofu",
+            "why_it_works": (
+                "Simmering the tofu gently in the sauce rather than "
+                "stir-frying it lets the cubes absorb flavor without "
+                "breaking apart, while blooming the doubanjiang in hot oil "
+                "first is what unlocks its deep, fermented red color and "
+                "flavor instead of leaving it tasting raw and salty."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "soft or silken tofu, cubed", "base_qty": 14, "unit_us": "oz", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground pork", "base_qty": 0.5, "unit_us": "lb", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "doubanjiang (fermented chili bean paste)", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "fermented black beans, rinsed and chopped", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "ginger, minced", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "chicken or pork stock", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "cornstarch", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 8, "unit_metric": "g", "hub_slug": "corn-starch"},
+                {"name": "ground Sichuan peppercorn", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "scallions, sliced", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+                {"name": "neutral oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Bring a pot of water to a bare simmer, add a pinch of salt, and gently soak the tofu cubes for 5 minutes to firm them and season the outside; drain carefully.",
+                "Heat oil in a wok or skillet over medium heat and brown the ground pork, breaking it into small crumbles.",
+                "Push the pork aside, add the doubanjiang and fermented black beans to the cleared space, and fry until the oil turns deep red, about 1 minute.",
+                "Stir in the garlic and ginger and cook until fragrant, 30 seconds.",
+                "Pour in the stock and bring to a simmer.",
+                "Slide in the tofu cubes and simmer gently for 4-5 minutes, spooning sauce over the top rather than stirring roughly.",
+                "Mix the cornstarch with 2 tablespoons water, drizzle in while gently shaking the pan, and simmer until the sauce thickens and clings to the tofu.",
+                "Sprinkle with ground Sichuan peppercorn and scallions and serve immediately over rice.",
+            ],
+            "step_notes": {
+                0: "A brief simmer in lightly salted water firms up the tofu's surface and seasons it from the outside in, which helps the cubes hold together once they go into the sauce.",
+                2: "The paste needs direct contact with hot oil, not the liquid, to bloom properly, that's why it goes into a cleared space in the pan rather than being stirred straight into the stock.",
+                5: "Spooning sauce over the tofu instead of stirring it around keeps the soft cubes intact, a wooden spoon dragged through the pan breaks them into mush fast.",
+            },
+            "tips_and_variations": [
+                "Ground beef works in place of pork for a heartier version.",
+                "Make it vegetarian by skipping the meat and doubling the tofu, using vegetable stock and a splash of extra soy sauce for depth.",
+                "Toasted and freshly ground Sichuan peppercorn has far more of the tingling numbness than pre-ground jars that have sat on a shelf.",
+            ],
+            "reader_tips": [
+                "Silken tofu gives a softer, more traditional texture; firmer tofu holds together more easily for a first attempt.",
+                "Doubanjiang varies a lot in saltiness by brand, taste the sauce before adding extra salt.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 3 days in an airtight container. Reheat "
+                "gently over low heat on the stovetop, stirring minimally "
+                "so the tofu stays intact."
+            ),
+            "nutrition_note": "Rich in protein from the pork and tofu, with moderate fat and a good amount of sodium from the fermented pastes.",
+            "faqs": [
+                {"question": "What is doubanjiang and where do I find it?", "answer": "It's a fermented broad bean and chili paste central to Sichuan cooking, sold in jars at most Asian grocery stores and increasingly in well-stocked supermarkets. Pixian doubanjiang is considered the classic version."},
+                {"question": "Is mapo tofu very spicy?", "answer": "Traditionally, yes, it's meant to be both fiery from the chili paste and tingling from the Sichuan peppercorn. Reduce the doubanjiang and skip the peppercorn if you want a milder version."},
+                {"question": "Can I use firm tofu instead of soft or silken?", "answer": "Yes, firm tofu holds its shape more easily and is a good option if you're worried about the cubes breaking apart, though the texture will be less delicate than the traditional soft tofu."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Chinese Recipes", "slug": "chinese-recipes"},
+        },
+    },
+    {
+        "slug": "char-siu",
+        "template_type": "recipe_or_dish",
+        "title": "Char Siu (Chinese BBQ Pork) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Sticky, deeply glazed Cantonese roast pork, marinated "
+                "overnight in a hoisin and honey mixture and finished under "
+                "high heat for a caramelized, lacquered exterior."
+            ),
+            "hero_image_query": "char siu chinese bbq pork",
+            "why_it_works": (
+                "An overnight marinade gives the pork time to actually "
+                "absorb the seasoning rather than just coat the surface, "
+                "and roasting low before finishing with a hot broil builds "
+                "the sticky char without burning the sugar-heavy glaze "
+                "before the inside cooks through."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 35,
+            "total_time_minutes": 55,
+            "servings": 4,
+            "ingredients": [
+                {"name": "pork shoulder, cut into 1.5-inch-thick strips", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "hoisin sauce", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "honey", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "Shaoxing wine", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "five-spice powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "red fermented bean curd (optional)", "base_qty": 1, "unit_us": "cube", "base_qty_metric": 1, "unit_metric": "cube", "hub_slug": None},
+                {"name": "dark brown sugar", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 25, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Whisk together hoisin, honey, soy sauce, Shaoxing wine, five-spice, garlic, bean curd if using, and brown sugar.",
+                "Reserve 1/4 cup of the marinade for basting and refrigerate it.",
+                "Coat the pork strips in the remaining marinade, cover, and refrigerate at least 4 hours, ideally overnight.",
+                "Preheat the oven to 375°F (190°C) and set a wire rack over a foil-lined baking sheet with water in the bottom to catch drips.",
+                "Arrange the pork on the rack and roast for 20 minutes.",
+                "Brush with the reserved marinade, flip, brush the other side, and roast 10 more minutes.",
+                "Switch the oven to broil and broil for 2-4 minutes per side, watching closely, until the edges are charred and sticky.",
+                "Rest 5 minutes, then slice against the grain.",
+            ],
+            "step_notes": {
+                2: "The overnight time is what actually seasons the meat all the way through, a quick 30-minute marinade only flavors the outer surface and leaves the center tasting like plain pork.",
+                3: "Water in the pan bottom keeps the sugary drips from smoking and burning onto the baking sheet, which would otherwise fill the kitchen with acrid smoke by the time you get to broiling.",
+                6: "Broiling only at the very end, after the pork is essentially cooked through, chars the honey and sugar in the glaze without the flame getting a chance to blacken it before the inside is done.",
+            },
+            "tips_and_variations": [
+                "Pork tenderloin or boneless country-style ribs both work if pork shoulder isn't available, adjust roasting time down for leaner, thinner cuts.",
+                "Skip the fermented bean curd if you can't find it, the char siu will be slightly less funky but still good.",
+                "A charcoal grill over indirect heat gives a smokier result closer to a Cantonese barbecue oven.",
+            ],
+            "reader_tips": [
+                "Watch the broiler constantly during the final char, the sugar in the marinade goes from perfectly caramelized to burnt in under a minute.",
+                "Slicing thin and against the grain matters even on this fattier cut, it keeps each piece tender rather than chewy.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate sliced or whole pork up to 4 days. Reheat "
+                "gently in a covered skillet with a splash of water, or "
+                "slice cold for rice bowls and noodle soups."
+            ),
+            "nutrition_note": "A rich, protein-forward dish, the honey and hoisin glaze adds a meaningful amount of sugar.",
+            "faqs": [
+                {"question": "What cut of pork is best for char siu?", "answer": "Pork shoulder (also called pork butt) is traditional, its marbling keeps the meat juicy through roasting. Pork belly is another classic choice for a fattier, richer result."},
+                {"question": "Can I make char siu without a broiler?", "answer": "Yes, finish it on a very hot grill instead, or roast the last few minutes at the highest oven temperature, watching closely since it will take a bit longer to char without direct top heat."},
+                {"question": "What is red fermented bean curd and can I skip it?", "answer": "It's a fermented tofu product that gives char siu some of its classic reddish color and funky depth. It can be skipped, some cooks use a few drops of red food coloring purely for color, though it's entirely optional."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Chinese Recipes", "slug": "chinese-recipes"},
+        },
+    },
+    {
+        "slug": "egg-fried-rice",
+        "template_type": "recipe_or_dish",
+        "title": "Egg Fried Rice Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Fast, restaurant-style egg fried rice made with day-old "
+                "rice, scrambled egg, and scallions, tossed hard and fast "
+                "in a hot wok for separate, lightly crisped grains."
+            ),
+            "hero_image_query": "egg fried rice",
+            "why_it_works": (
+                "Cold, day-old rice has had time to dry out and firm up, "
+                "so the grains separate and fry rather than clumping into a "
+                "sticky mass, and cooking the egg first and setting it "
+                "aside keeps it from turning rubbery by the time the rice "
+                "is done."
+            ),
+            "prep_time_minutes": 5,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 15,
+            "servings": 3,
+            "ingredients": [
+                {"name": "cooked white rice, cold, preferably day-old", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 640, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs, beaten", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
+                {"name": "scallions, sliced, whites and greens separated", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 4, "unit_metric": "whole", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "toasted sesame oil", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "white pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Break up the cold rice with your hands, separating any large clumps.",
+                "Heat 1 tablespoon oil in a wok over high heat, pour in the beaten eggs, and scramble until just set but still soft; remove to a plate.",
+                "Add the remaining oil to the wok, then the scallion whites and garlic, and stir-fry 15 seconds until fragrant.",
+                "Add the rice and toss constantly, breaking up any remaining clumps, until every grain is coated in oil and heated through, 3-4 minutes.",
+                "Push the rice to one side, drizzle the soy sauce onto the empty side of the pan so it sizzles, then toss it through the rice.",
+                "Return the scrambled egg to the wok, breaking it into small pieces as you fold it through.",
+                "Season with salt, white pepper, and sesame oil, toss in the scallion greens, and serve immediately.",
+            ],
+            "step_notes": {
+                1: "Cooking the egg separately and pulling it out early keeps it soft, if it stayed in the wok through the rest of the frying it would toughen into rubbery bits.",
+                4: "Hitting the hot metal directly with the soy sauce for a second before mixing it in caramelizes it slightly, giving the rice a rounder flavor than just pouring it over the top would.",
+            },
+            "tips_and_variations": [
+                "No day-old rice? Spread freshly cooked rice on a tray and refrigerate uncovered for 30-60 minutes to dry it out before frying.",
+                "Add diced ham, char siu, shrimp, or leftover roast chicken along with the garlic for a heartier version.",
+                "Frozen peas and diced carrot, added with the garlic, turn this into a simple vegetable fried rice.",
+            ],
+            "reader_tips": [
+                "Keep the heat high and keep tossing, this dish is meant to move fast, a low flame just steams the rice instead of frying it.",
+                "A wok isn't required, a large, well-seasoned skillet gets close enough as long as it's hot before the rice goes in.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 3 days in an airtight container. Reheat "
+                "in a hot skillet with a small splash of oil to re-crisp "
+                "the grains; microwaving softens the texture."
+            ),
+            "nutrition_note": "A carb-forward dish with moderate protein from the eggs; light on fat beyond the cooking and finishing oils.",
+            "faqs": [
+                {"question": "Why does fried rice need to be made with cold, old rice?", "answer": "Freshly cooked rice holds too much moisture, so it steams and clumps instead of frying into separate grains. Rice that's been refrigerated overnight loses excess moisture and firms up, which fries much better."},
+                {"question": "Can I use brown rice instead of white?", "answer": "Yes, day-old brown rice fries well and adds a chewier texture and nuttier flavor, though the dish moves further from the classic version."},
+                {"question": "What's the best pan if I don't have a wok?", "answer": "A wide, heavy skillet or a cast iron pan works well, the key is a large surface area and a hot enough pan that the rice fries rather than steams."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Chinese Recipes", "slug": "chinese-recipes"},
+        },
+    },
+    {
+        "slug": "scallion-pancakes",
+        "template_type": "recipe_or_dish",
+        "title": "Scallion Pancakes Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Flaky, layered Chinese scallion pancakes made from a "
+                "simple hot-water dough, rolled with oil and scallions and "
+                "pan-fried until crisp outside and chewy within."
+            ),
+            "hero_image_query": "scallion pancakes",
+            "why_it_works": (
+                "Using hot water to make the dough partially cooks the "
+                "flour's starches, producing a pliable, slightly chewy "
+                "texture instead of a tough, bread-like one, and rolling "
+                "the dough into a coil before flattening it is what "
+                "creates the pancake's signature flaky layers."
+            ),
+            "prep_time_minutes": 40,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 60,
+            "servings": 4,
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 250, "unit_metric": "g", "hub_slug": None},
+                {"name": "boiling water", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 180, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "toasted sesame oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "scallions, finely chopped", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 90, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil, for frying", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "In a bowl, pour boiling water over the flour, stirring with chopsticks or a fork until it forms shaggy clumps.",
+                "Once cool enough to handle, knead into a smooth dough, about 5 minutes; cover and rest 30 minutes.",
+                "Divide the dough into 4 pieces and roll each into a thin rectangle on a lightly floured surface.",
+                "Brush each rectangle generously with sesame oil, sprinkle with salt and chopped scallions.",
+                "Roll each rectangle up tightly into a log, then coil the log into a flat spiral and tuck the end underneath.",
+                "Rest the coiled spirals 10 minutes, then roll each one out flat into a 7-8 inch round.",
+                "Heat 1-2 tablespoons oil in a skillet over medium heat and fry one pancake at a time, 2-3 minutes per side, until deep golden and crisp.",
+                "Drain briefly on paper towels, then cut into wedges and serve hot.",
+            ],
+            "step_notes": {
+                0: "Boiling water changes how the flour's starches behave compared to cold water, it's what gives this dough its characteristic soft, slightly chewy texture rather than the springy bite of a cold-water noodle dough.",
+                4: "The coil is the entire trick behind the flaky layers, rolling the oiled, scallion-covered dough into a spiral traps thin sheets of oil between layers of dough that separate and crisp individually as they fry.",
+                6: "Medium heat, not high, gives the inside time to cook through before the outside burns, a pancake this thick needs a slower fry than the color alone might suggest.",
+            },
+            "tips_and_variations": [
+                "Add a pinch of five-spice powder to the oil brushed inside for a more fragrant pancake.",
+                "Freeze the rolled, uncooked spirals between layers of parchment and fry straight from frozen, adding a minute or two per side.",
+                "Serve with a simple dipping sauce of soy sauce, black vinegar, and a few drops of chili oil.",
+            ],
+            "reader_tips": [
+                "Roll the dough out thin before coiling, a thick rectangle won't produce as many distinct layers.",
+                "Resist pressing down on the pancake while it fries, that squeezes out the oil between the layers and flattens the flakiness.",
+            ],
+            "storage_and_reheating": (
+                "Store cooked pancakes in the refrigerator up to 2 days, or "
+                "freeze uncooked dough spirals up to 2 months. Reheat in a "
+                "dry skillet over medium heat to re-crisp; microwaving "
+                "makes them chewy rather than flaky."
+            ),
+            "nutrition_note": "A carb-forward dish, with fat coming mainly from the sesame oil layered into the dough and the frying oil.",
+            "faqs": [
+                {"question": "Why is my dough tough instead of tender?", "answer": "This usually means the water wasn't hot enough, or too much flour was worked in while kneading. The water should be at a full boil when it hits the flour, and the dough should stay soft and slightly tacky, not stiff."},
+                {"question": "Can I make the dough ahead of time?", "answer": "Yes, the rested dough keeps well wrapped tightly in the refrigerator for up to a day. Let it come closer to room temperature before rolling, cold dough is stiffer and harder to stretch thin."},
+                {"question": "Are scallion pancakes the same as green onion pancakes?", "answer": "Yes, these are the same dish, scallion and green onion are just different names for the same vegetable used here."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Chinese Recipes", "slug": "chinese-recipes"},
+        },
+    },
+    {
+        "slug": "chicken-katsu",
+        "template_type": "recipe_or_dish",
+        "title": "Chicken Katsu Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Crisp, panko-crusted fried chicken cutlets served with a "
+                "tangy-sweet katsu sauce and shredded cabbage, the classic "
+                "Japanese comfort food."
+            ),
+            "hero_image_query": "chicken katsu",
+            "why_it_works": (
+                "Pounding the chicken to an even thickness means it cooks "
+                "through at the same rate the crust browns, and panko's "
+                "large, dry flakes fry up into a shatteringly crisp coating "
+                "that stays crunchy far longer than fine breadcrumbs would."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 35,
+            "servings": 4,
+            "ingredients": [
+                {"name": "boneless, skinless chicken breasts", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 4, "unit_metric": "whole", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs, beaten", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "panko breadcrumbs", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 90, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil, for frying", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ketchup", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "g", "hub_slug": None},
+                {"name": "Worcestershire sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "oyster sauce", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sugar", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "green cabbage, finely shredded", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 210, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Place each chicken breast between plastic wrap and pound to an even 1/2-inch thickness.",
+                "Season both sides with salt and pepper.",
+                "Set up three shallow dishes: flour, beaten eggs, and panko.",
+                "Dredge each cutlet in flour, shaking off excess, then egg, then press firmly into the panko to coat both sides.",
+                "Heat about 1/2 inch of oil in a heavy skillet over medium-high heat until it shimmers, around 350°F (175°C).",
+                "Fry the cutlets 3-4 minutes per side, until deep golden brown and cooked through.",
+                "Drain on a wire rack or paper towels and rest 2 minutes before slicing into strips.",
+                "Whisk together ketchup, Worcestershire sauce, oyster sauce, and sugar for the katsu sauce.",
+                "Serve the sliced chicken over shredded cabbage with the sauce alongside.",
+            ],
+            "step_notes": {
+                0: "Pounding to an even thickness matters more here than with most pan-fried cutlets, an uneven piece forces you to choose between an undercooked center and an overly dark crust.",
+                4: "Panko needs to be pressed on firmly rather than just sprinkled, its large flakes don't cling the way fine breadcrumbs do, and a loosely coated cutlet sheds its crust in the oil.",
+            },
+            "tips_and_variations": [
+                "Pork loin cutlets, pounded the same way, make this tonkatsu, the traditional version of the dish.",
+                "For a lighter version, bake the breaded cutlets on a wire rack at 425°F (220°C) for about 20 minutes, flipping once.",
+                "Store-bought tonkatsu sauce works fine if you'd rather skip mixing your own.",
+            ],
+            "reader_tips": [
+                "Let the coated cutlets rest for a few minutes before frying, it helps the panko adhere and reduces how much falls off in the oil.",
+                "Fry in batches rather than crowding the pan, too many cutlets at once drops the oil temperature and leaves the crust greasy instead of crisp.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate cooked cutlets up to 3 days. Reheat in a "
+                "375°F oven or air fryer for about 8 minutes to restore "
+                "crispness; microwaving leaves the crust soft."
+            ),
+            "nutrition_note": "A protein-rich dish; the panko crust and frying oil add a meaningful amount of carbs and fat.",
+            "faqs": [
+                {"question": "What's the difference between chicken katsu and karaage?", "answer": "Katsu is a breaded, pounded cutlet fried whole and sliced afterward, while karaage is bite-sized chicken marinated and coated in a thin starch layer before frying. They're both fried Japanese chicken dishes but different in cut, coating, and technique."},
+                {"question": "Can I air fry chicken katsu instead of pan-frying?", "answer": "Yes, spray the breaded cutlets lightly with oil and air fry at 400°F for about 12 minutes, flipping halfway, for a lighter version with a similarly crisp crust."},
+                {"question": "What can I use instead of panko?", "answer": "Regular breadcrumbs work in a pinch but produce a finer, less shatteringly crisp crust. Panko's larger, airier flakes are really what give katsu its texture, so it's worth seeking out."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Japanese Recipes", "slug": "japanese-recipes"},
+        },
+    },
+    {
+        "slug": "miso-soup",
+        "template_type": "recipe_or_dish",
+        "title": "Miso Soup Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A simple, comforting Japanese miso soup built on homemade "
+                "kombu-katsuobushi dashi, with silken tofu, wakame, and "
+                "scallions."
+            ),
+            "hero_image_query": "miso soup",
+            "why_it_works": (
+                "Pulling the kombu out just before the water boils avoids "
+                "the bitterness it releases at a hard boil, and whisking "
+                "the miso in off the heat at the very end preserves its "
+                "delicate aroma and living cultures, which a hard boil "
+                "would cook away."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "water", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None},
+                {"name": "kombu (dried kelp)", "base_qty": 1, "unit_us": "piece (4-inch)", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+                {"name": "katsuobushi (bonito flakes)", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
+                {"name": "miso paste", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 70, "unit_metric": "g", "hub_slug": None},
+                {"name": "silken tofu, cubed", "base_qty": 7, "unit_us": "oz", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "dried wakame seaweed", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "scallion, thinly sliced", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+            ],
+            "instructions": [
+                "Combine the water and kombu in a pot and let it soak 20-30 minutes if time allows.",
+                "Heat the pot over medium heat and remove the kombu just before the water reaches a boil.",
+                "Add the katsuobushi, bring to a boil, then immediately turn off the heat and let it steep 5 minutes.",
+                "Strain the dashi through a fine sieve into a clean pot, discarding the solids.",
+                "Soak the dried wakame in a small bowl of water for 5 minutes to rehydrate, then drain.",
+                "Bring the dashi back to a gentle simmer and add the tofu and wakame.",
+                "Ladle a little hot dashi into a small bowl with the miso paste and whisk until smooth.",
+                "Remove the pot from the heat and stir the dissolved miso back into the soup.",
+                "Garnish with sliced scallion and serve immediately.",
+            ],
+            "step_notes": {
+                1: "Kombu turns bitter and slimy if it boils hard, pulling it out right as bubbles start keeps the dashi clean-tasting instead of murky.",
+                7: "Dissolving the miso in a separate splash of dashi first, then stirring it in off the heat, keeps it from clumping and protects its flavor and beneficial cultures from being boiled away.",
+            },
+            "tips_and_variations": [
+                "Instant dashi granules are a fine substitute if kombu and katsuobushi aren't on hand, use about 1 teaspoon dissolved in the water.",
+                "White (shiro) miso gives a milder, sweeter soup; red (aka) miso is saltier and more assertive, mix the two for a balanced flavor.",
+                "Swap tofu and wakame for thinly sliced mushrooms, clams, or leftover cooked greens.",
+            ],
+            "reader_tips": [
+                "Never let the soup boil hard once the miso is in, high heat dulls its flavor and can make it taste flat and overly salty.",
+                "Cut the tofu gently and add it late so the cubes don't break apart while simmering.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 2 days; the tofu texture softens over "
+                "time. Reheat gently over low heat and avoid boiling, "
+                "which mutes the miso's flavor."
+            ),
+            "nutrition_note": "A light, savory soup, moderate in protein from the tofu and generally low in fat and carbohydrates.",
+            "faqs": [
+                {"question": "What's the difference between white and red miso?", "answer": "White miso is fermented for a shorter time and tastes milder and slightly sweet, while red miso ferments longer and is saltier and more pungent. Many cooks blend the two for a balanced everyday soup."},
+                {"question": "Can I make miso soup without dashi?", "answer": "You can use plain water or vegetable stock, but the soup will taste noticeably flatter, dashi's savory depth is really what defines the dish. Instant dashi granules are the easiest shortcut."},
+                {"question": "Why shouldn't miso soup boil?", "answer": "Miso is a fermented, living ingredient, and prolonged high heat cooks off some of its aroma and beneficial cultures while also making the flavor taste flatter and more one-note."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Japanese Recipes", "slug": "japanese-recipes"},
+        },
+    },
+    {
+        "slug": "teriyaki-salmon",
+        "template_type": "recipe_or_dish",
+        "title": "Teriyaki Salmon Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Pan-seared salmon glazed in a homemade soy, mirin, and "
+                "sake teriyaki sauce that reduces to a glossy, sweet-savory "
+                "coating in the same pan."
+            ),
+            "hero_image_query": "teriyaki salmon",
+            "why_it_works": (
+                "Searing the salmon skin-side down first renders the fat "
+                "and crisps the skin before the glaze goes in, and building "
+                "the teriyaki sauce right in the same pan lets it pick up "
+                "the browned bits left behind for a deeper flavor than a "
+                "sauce made separately."
+            ),
+            "prep_time_minutes": 5,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 20,
+            "servings": 4,
+            "ingredients": [
+                {"name": "salmon fillets, skin-on", "base_qty": 4, "unit_us": "whole (6 oz)", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "mirin", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sake", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sugar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, grated", "base_qty": 1, "unit_us": "clove", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "neutral oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sesame seeds", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "scallion, sliced", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+            ],
+            "instructions": [
+                "Pat the salmon dry and season lightly with salt.",
+                "Whisk together soy sauce, mirin, sake, sugar, and garlic for the teriyaki sauce.",
+                "Heat oil in a skillet over medium-high heat and lay the salmon skin-side down.",
+                "Sear undisturbed for 4 minutes, until the skin is crisp and releases easily from the pan.",
+                "Flip and cook the other side 2 minutes.",
+                "Pour the teriyaki sauce into the pan and reduce heat to medium.",
+                "Spoon the sauce over the salmon repeatedly as it simmers and thickens, 3-4 minutes, until glossy and coating the fish.",
+                "Sprinkle with sesame seeds and scallion and serve immediately with the extra pan sauce spooned over.",
+            ],
+            "step_notes": {
+                3: "Letting the skin sear undisturbed is what renders the fat underneath and lets it release cleanly, trying to move the fillet too soon just tears the skin off.",
+                5: "Adding the sauce after the fish is mostly cooked, then reducing it in the same pan, means it picks up the browned bits from searing instead of tasting like a separate glaze poured on top.",
+            },
+            "tips_and_variations": [
+                "No mirin? Use 2 tablespoons dry white wine or sake plus an extra teaspoon of sugar as a rough substitute.",
+                "This sauce works just as well on chicken thighs; increase the cook time and reduce the sauce the same way.",
+                "For a thicker glaze, whisk in a teaspoon of cornstarch slurry once the sauce is simmering.",
+            ],
+            "reader_tips": [
+                "Don't skip patting the salmon dry, a wet surface won't sear and the skin won't crisp properly.",
+                "Watch the sauce closely once it starts to reduce, the sugar can go from glossy to scorched quickly over direct heat.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 2 days. Reheat gently in a covered "
+                "skillet over low heat with a splash of water to loosen "
+                "the sauce, salmon toughens quickly if reheated too hot."
+            ),
+            "nutrition_note": "High in protein and healthy fats from the salmon, with moderate sugar from the teriyaki glaze.",
+            "faqs": [
+                {"question": "Can I use skinless salmon?", "answer": "Yes, just reduce the initial sear to about 2-3 minutes per side since you'll lose the extra time needed to crisp skin, and watch closely so it doesn't overcook."},
+                {"question": "What's the difference between mirin and sake?", "answer": "Mirin is a sweetened rice wine used mainly for flavor and glaze, while sake is a drier rice wine. Teriyaki sauce traditionally uses both, mirin for sweetness and shine, sake for depth."},
+                {"question": "How do I know when salmon is done?", "answer": "It should flake easily with a fork and look opaque with a slightly translucent center, or register about 125-130°F (52-54°C) on an instant-read thermometer for a moist, medium result."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Japanese Recipes", "slug": "japanese-recipes"},
+        },
+    },
+    {
+        "slug": "yaki-onigiri",
+        "template_type": "recipe_or_dish",
+        "title": "Yaki Onigiri (Grilled Rice Balls) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Grilled Japanese rice balls brushed with a savory soy and "
+                "mirin glaze and pan-seared until a crisp, toasted crust "
+                "forms around a warm, tender center."
+            ),
+            "hero_image_query": "yaki onigiri grilled rice balls",
+            "why_it_works": (
+                "Packing the rice firmly while it's still warm lets the "
+                "starches bind the grains into a shape that holds together "
+                "on the grill, and letting the glaze caramelize onto the "
+                "surface undisturbed is what turns the outside into a "
+                "crisp, savory crust instead of just a sticky coating."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 30,
+            "servings": 4,
+            "ingredients": [
+                {"name": "cooked short-grain Japanese rice, warm", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "g", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "mirin", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "miso paste", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "toasted sesame oil", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "neutral oil, for the pan", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "toasted sesame seeds, for garnish", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Wet your hands lightly with water to keep the rice from sticking, then divide the warm rice into 6-8 portions.",
+                "Shape each portion into a firm, compact triangle or disc, pressing hard enough that it holds together when squeezed.",
+                "Whisk together soy sauce, mirin, miso, and sesame oil for the glaze.",
+                "Heat oil in a nonstick or well-seasoned skillet over medium heat and place the rice shapes in the pan.",
+                "Cook undisturbed for 3-4 minutes per side, until a light golden crust forms.",
+                "Brush both sides generously with the glaze and continue cooking, flipping and brushing again, until deep golden brown and fragrant, 4-5 more minutes.",
+                "Sprinkle with sesame seeds and serve hot.",
+            ],
+            "step_notes": {
+                1: "The rice needs to be packed firmly while still warm, cold rice has lost the tackiness that lets the grains bond, and a loosely packed ball falls apart the moment it hits the pan.",
+                5: "Brushing the glaze on in stages and letting each layer dry slightly before adding more builds up a real caramelized crust rather than one wet coat that just steams the outside.",
+            },
+            "tips_and_variations": [
+                "Tuck a small cube of cheese, a piece of umeboshi, or flaked salmon into the center before shaping for a filled version.",
+                "A charcoal or gas grill works even better than a skillet if you have one going, it adds a smokiness the pan can't.",
+                "Swap the miso for a teaspoon of grated ginger for a brighter, less funky glaze.",
+            ],
+            "reader_tips": [
+                "Let freshly cooked rice cool for a couple of minutes before shaping, rice straight off the boil is too hot to handle and packs less firmly.",
+                "Resist flipping too early, the crust needs a few undisturbed minutes to actually set before it will release cleanly from the pan.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 2 days, tightly wrapped. Reheat in a "
+                "dry skillet over medium heat to re-crisp the surface; "
+                "microwaving works but loses the crust."
+            ),
+            "nutrition_note": "A simple, carb-forward dish, light on fat and protein beyond what's in the rice and glaze.",
+            "faqs": [
+                {"question": "What kind of rice works best for yaki onigiri?", "answer": "Short-grain Japanese rice, sometimes labeled sushi rice, is essential, its higher starch content is what lets the rice hold together in a shape. Long-grain rice like basmati or jasmine won't work here."},
+                {"question": "Can I use leftover cold rice?", "answer": "It's harder to shape since it's lost its warm stickiness, but you can microwave it briefly with a splash of water to soften it before packing it into shapes."},
+                {"question": "What's the difference between onigiri and yaki onigiri?", "answer": "Onigiri are plain or filled rice balls, often wrapped in nori and eaten as-is. Yaki onigiri means grilled onigiri, brushed with a savory glaze and pan-seared or grilled for a crisp, toasted exterior."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Japanese Recipes", "slug": "japanese-recipes"},
+        },
+    },
+    {
+        "slug": "matcha-cheesecake",
+        "template_type": "recipe_or_dish",
+        "title": "Matcha Cheesecake Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A baked matcha cheesecake with a graham cracker crust and "
+                "a smooth, lightly bittersweet green tea filling, baked "
+                "gently in a water bath."
+            ),
+            "hero_image_query": "matcha cheesecake",
+            "why_it_works": (
+                "Sifting the matcha into the batter and blending it in "
+                "thoroughly at room temperature avoids the bitter, clumpy "
+                "streaks unmixed powder leaves behind, and baking in a "
+                "water bath keeps the oven's heat gentle and even so the "
+                "custard-like filling sets without cracking."
+            ),
+            "prep_time_minutes": 25,
+            "cook_time_minutes": 60,
+            "total_time_minutes": 360,
+            "servings": 10,
+            "pan_size": "8-inch (20cm) springform pan",
+            "ingredients": [
+                {"name": "graham cracker crumbs", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, melted", "base_qty": 5, "unit_us": "tbsp", "base_qty_metric": 70, "unit_metric": "g", "hub_slug": None},
+                {"name": "cream cheese, softened", "base_qty": 24, "unit_us": "oz", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
+                {"name": "sour cream", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
+                {"name": "matcha powder, culinary grade", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 325°F (165°C). Mix graham cracker crumbs with melted butter and press firmly into the bottom of a springform pan.",
+                "Bake the crust for 8 minutes, then set aside to cool; wrap the outside of the pan in two layers of foil.",
+                "Sift the matcha powder to remove any clumps.",
+                "Beat the cream cheese and sugar together until smooth and free of lumps, scraping down the bowl as needed.",
+                "Add the eggs one at a time, beating just until incorporated after each.",
+                "Whisk the sifted matcha with the sour cream and vanilla until fully smooth, then fold into the batter.",
+                "Pour the batter over the cooled crust and place the pan in a larger roasting pan; add hot water to come halfway up the sides.",
+                "Bake for 55-65 minutes, until the edges are set but the center still jiggles slightly.",
+                "Turn off the oven, crack the door, and let the cheesecake cool inside for 1 hour.",
+                "Remove from the water bath, cool to room temperature, then refrigerate at least 4 hours before slicing.",
+            ],
+            "step_notes": {
+                2: "Sifting breaks up the tiny clumps matcha forms after sitting in its tin, unsifted powder leaves bitter, gritty flecks throughout the filling instead of blending in smoothly.",
+                7: "Pulling the cheesecake out at a slight jiggle, not when it looks fully firm, matters because the residual heat keeps setting it as it cools, baking until it looks totally done in the oven usually means it's overbaked and cracked by the time it's cold.",
+            },
+            "tips_and_variations": [
+                "Swirl in a few tablespoons of plain cheesecake batter before baking for a marbled look.",
+                "A digestive biscuit crust is a close substitute for graham crackers if they're not available locally.",
+                "Dust the top with extra sifted matcha just before serving for a more vivid green and a slightly bitter contrast to the sweet filling.",
+            ],
+            "reader_tips": [
+                "Use room-temperature cream cheese and eggs, cold ingredients don't blend smoothly and leave lumps in the batter.",
+                "Don't skip the water bath, it's the difference between a smooth, creamy filling and one that cracks across the top.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate, covered, up to 5 days. Freeze whole or in "
+                "slices, wrapped tightly, up to 2 months, and thaw "
+                "overnight in the refrigerator before serving."
+            ),
+            "nutrition_note": "A rich, indulgent dessert, high in fat and sugar from the cream cheese filling and buttery crust.",
+            "faqs": [
+                {"question": "What kind of matcha should I use for baking?", "answer": "Culinary-grade matcha is made for exactly this, it has a more assertive flavor than ceremonial-grade matcha and holds up well against the sweetness of the cheesecake, at a lower price."},
+                {"question": "Why did my cheesecake crack on top?", "answer": "Cracking usually comes from overbaking, a sudden temperature change, or skipping the water bath. Pull it from the oven while the center still jiggles slightly and let it cool gradually in the turned-off oven."},
+                {"question": "Can I make this without a water bath?", "answer": "You can, but the filling is more likely to crack and the texture will be a bit denser. If skipping it, bake at a slightly lower temperature and watch closely toward the end."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Japanese Recipes", "slug": "japanese-recipes"},
+        },
+    },
+    {
+        "slug": "chiles-rellenos",
+        "template_type": "recipe_or_dish",
+        "title": "Chiles Rellenos Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Roasted poblano peppers stuffed with melty cheese, coated "
+                "in a light, airy egg batter, and fried until golden, "
+                "served with a simple tomato sauce."
+            ),
+            "hero_image_query": "chiles rellenos",
+            "why_it_works": (
+                "Charring the poblanos until the skin blisters and then "
+                "steaming them in a covered bowl loosens that skin so it "
+                "peels away cleanly, and whipping the egg whites to soft "
+                "peaks before folding in the yolks gives the batter enough "
+                "structure to puff into a light, tempura-like crust rather "
+                "than a dense one."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 60,
+            "servings": 4,
+            "ingredients": [
+                {"name": "poblano peppers", "base_qty": 6, "unit_us": "whole", "base_qty_metric": 6, "unit_metric": "whole", "hub_slug": None},
+                {"name": "Oaxaca or Monterey Jack cheese, cut into sticks", "base_qty": 8, "unit_us": "oz", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs, separated", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
+                {"name": "all-purpose flour, for dredging and batter", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "canned crushed tomatoes", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "g", "hub_slug": None},
+                {"name": "white onion, chopped", "base_qty": 0.5, "unit_us": "whole", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 2, "unit_us": "cloves", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil, for frying", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Char the poblanos directly over a gas flame or under a broiler, turning often, until the skin is blistered and black on all sides.",
+                "Transfer to a bowl, cover tightly with plastic wrap, and let steam for 10 minutes.",
+                "Peel off the blackened skin, then make a slit down one side of each pepper and carefully remove the seeds and membranes, keeping the pepper intact.",
+                "Stuff each pepper with a stick of cheese and press the slit closed.",
+                "Heat a splash of oil in a saucepan, sauté the onion and garlic until softened, add the crushed tomatoes and a pinch of salt, and simmer 15 minutes; keep warm.",
+                "Beat the egg whites to soft peaks, then gently fold in the yolks and 2 tablespoons flour until just combined.",
+                "Dredge each stuffed pepper lightly in flour, shaking off excess, then dip and coat fully in the egg batter.",
+                "Heat 1/2 inch of oil in a skillet over medium-high heat and fry the battered peppers, seam-side down first, until golden on all sides, about 2 minutes per side.",
+                "Drain briefly on paper towels and serve warm over the tomato sauce.",
+            ],
+            "step_notes": {
+                1: "Steaming the charred peppers in a closed bowl traps the heat against the skin and loosens it from the flesh, skip this step and the skin tears and clings instead of peeling off in sheets.",
+                5: "Whipping the whites separately and folding in the yolks afterward is what gives the batter enough air to puff up around the pepper as it fries, a batter made by simply beating whole eggs together fries flat and dense.",
+            },
+            "tips_and_variations": [
+                "Shredded chicken, ground beef picadillo, or refried beans all make good substitutes or additions to the cheese filling.",
+                "Baking instead of frying is possible, arrange stuffed and battered peppers on an oiled sheet and bake at 400°F for about 20 minutes, though the crust will be less crisp.",
+                "A pinch of ground cumin or Mexican oregano in the tomato sauce adds depth if you want it less plain.",
+            ],
+            "reader_tips": [
+                "Keep the stem intact when removing seeds, it makes the pepper much easier to handle and stuff without it falling apart.",
+                "Fry the peppers seam-side down first, this helps the batter seal the opening before the cheese has a chance to leak out.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 3 days. Reheat in a 350°F oven for "
+                "about 10 minutes to warm through and re-crisp the "
+                "batter; the texture suffers in a microwave."
+            ),
+            "nutrition_note": "A rich dish, moderate in protein from the cheese and egg batter and higher in fat from the cheese and frying oil.",
+            "faqs": [
+                {"question": "Are poblanos spicy?", "answer": "Poblanos are generally mild, with heat levels closer to a bell pepper than a jalapeño, though individual peppers can vary, so it's worth tasting a small piece before you commit to the whole batch."},
+                {"question": "Can I make chiles rellenos ahead of time?", "answer": "Roast, peel, and stuff the peppers up to a day ahead and refrigerate, but batter and fry them just before serving, the egg coating doesn't hold up well made in advance."},
+                {"question": "Why is my batter falling off the peppers?", "answer": "This usually means the peppers weren't dried and dredged in flour before the egg batter went on, that dry flour layer is what gives the wet batter something to grip."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Mexican Recipes", "slug": "mexican-recipes"},
+        },
+    },
+    {
+        "slug": "pozole-rojo",
+        "template_type": "recipe_or_dish",
+        "title": "Pozole Rojo Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A deeply savory Mexican hominy and pork soup, built on a "
+                "toasted dried chile broth and finished at the table with "
+                "cabbage, radish, lime, and oregano."
+            ),
+            "hero_image_query": "pozole rojo",
+            "why_it_works": (
+                "Toasting the dried chiles briefly before soaking wakes up "
+                "their fruity, smoky notes without turning bitter, and "
+                "simmering the pork low and slow in the same broth the "
+                "chiles are blended into lets the meat and the sauce build "
+                "flavor together instead of being combined only at the end."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 150,
+            "total_time_minutes": 180,
+            "servings": 6,
+            "ingredients": [
+                {"name": "pork shoulder, cut into large chunks", "base_qty": 2.5, "unit_us": "lb", "base_qty_metric": 1130, "unit_metric": "g", "hub_slug": None},
+                {"name": "white onion, half whole and half chopped", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic, whole cloves plus extra minced", "base_qty": 6, "unit_us": "cloves", "base_qty_metric": 18, "unit_metric": "g", "hub_slug": None},
+                {"name": "dried guajillo chiles, stemmed and seeded", "base_qty": 6, "unit_us": "whole", "base_qty_metric": 6, "unit_metric": "whole", "hub_slug": None},
+                {"name": "dried ancho chiles, stemmed and seeded", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+                {"name": "dried Mexican oregano", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "cumin seeds", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+                {"name": "canned or cooked hominy, drained", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 725, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "green cabbage, thinly shredded, for serving", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 140, "unit_metric": "g", "hub_slug": None},
+                {"name": "radishes, thinly sliced, for serving", "base_qty": 6, "unit_us": "whole", "base_qty_metric": 6, "unit_metric": "whole", "hub_slug": None},
+                {"name": "lime wedges, for serving", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+            ],
+            "instructions": [
+                "Place the pork in a large pot with the whole onion half, 4 garlic cloves, and a big pinch of salt; cover with water by 2 inches.",
+                "Bring to a boil, skim off any foam, then reduce to a low simmer, partially cover, and cook 1.5-2 hours until the pork is tender; reserve the broth.",
+                "Meanwhile, toast the guajillo and ancho chiles in a dry skillet over medium heat for about 30 seconds per side, until fragrant and pliable.",
+                "Soak the toasted chiles in hot water for 15 minutes until softened.",
+                "Blend the softened chiles with 1 cup of the pork broth, the remaining garlic, chopped onion, oregano, and cumin until completely smooth.",
+                "Strain the chile mixture through a fine sieve into the pot with the pork and broth, pressing to extract as much liquid as possible.",
+                "Stir in the hominy and simmer, uncovered, 30-40 minutes to let the flavors meld and the broth deepen in color.",
+                "Season with salt to taste.",
+                "Ladle into bowls and serve with shredded cabbage, sliced radish, lime wedges, and extra oregano at the table.",
+            ],
+            "step_notes": {
+                2: "A quick dry toast pulls the fruity, slightly smoky notes out of the dried chiles, going past 30 seconds a side tips them into bitter instead, so watch closely rather than walking away.",
+                5: "Straining out the blended chile skins is what gives the broth its smooth, silky body, skip it and the soup ends up with a grainy, papery texture that doesn't cook out no matter how long it simmers.",
+            },
+            "tips_and_variations": [
+                "Chicken thighs make a lighter version, reduce the simmer time to about 45 minutes.",
+                "Some cooks add a whole dried chile de árbol to the blend for extra heat, taste the puréed base first and adjust.",
+                "Leftover shredded pork or rotisserie chicken can shortcut this into a faster weeknight version, simmer just long enough to build the broth.",
+            ],
+            "reader_tips": [
+                "Don't skip skimming the foam early in the simmer, it's what keeps the final broth clear rather than cloudy.",
+                "Let the toppings stay separate until serving, this soup is meant to be built bowl by bowl at the table.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate the broth and pork up to 4 days, or freeze up "
+                "to 3 months; add fresh toppings only after reheating. "
+                "Reheat gently on the stovetop over medium-low heat."
+            ),
+            "nutrition_note": "A hearty, protein-rich soup with substantial carbohydrates from the hominy.",
+            "faqs": [
+                {"question": "What is hominy and can I substitute something else?", "answer": "Hominy is dried corn kernels treated to remove the hull and germ, giving it a chewy texture and distinct flavor. Canned hominy, found in the international or canned vegetable aisle, is the easiest option, there isn't a good substitute since it's central to the dish."},
+                {"question": "What's the difference between pozole rojo, verde, and blanco?", "answer": "Rojo gets its color and flavor from dried red chiles, verde uses a green sauce of tomatillos and green chiles, and blanco skips the chile base entirely for a plainer, lighter broth. All three share the same pork and hominy foundation."},
+                {"question": "Can I make pozole rojo in a slow cooker?", "answer": "Yes, cook the pork on low for about 6-7 hours, then stir in the strained chile purée and hominy for the last hour on high to let the flavors come together."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Mexican Recipes", "slug": "mexican-recipes"},
+        },
+    },
+    {
+        "slug": "elote",
+        "template_type": "recipe_or_dish",
+        "title": "Elote (Mexican Street Corn) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Grilled corn on the cob slathered in a creamy chile-lime "
+                "mixture and coated in crumbled cotija cheese, the classic "
+                "Mexican street food."
+            ),
+            "hero_image_query": "elote mexican street corn",
+            "why_it_works": (
+                "Grilling the corn directly over the flame until it's "
+                "lightly charred concentrates its natural sugars and adds "
+                "a smoky edge, and coating it while still hot melts the "
+                "mayonnaise-crema mixture just enough for the cotija and "
+                "chili powder to stick evenly across every kernel."
+            ),
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "corn on the cob, husked", "base_qty": 4, "unit_us": "ears", "base_qty_metric": 4, "unit_metric": "ears", "hub_slug": None},
+                {"name": "mayonnaise", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None},
+                {"name": "Mexican crema or sour cream", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "cotija cheese, finely crumbled", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 90, "unit_metric": "g", "hub_slug": None},
+                {"name": "chili powder or Tajín", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime, cut into wedges", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
+                {"name": "cilantro, chopped", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 5, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Heat a grill to medium-high, or a grill pan on the stove over medium-high heat.",
+                "Grill the corn, turning every couple of minutes, until charred in spots on all sides, about 10-12 minutes total.",
+                "Meanwhile, whisk together the mayonnaise and crema in a small bowl.",
+                "While the corn is still hot, brush or spread the mayonnaise mixture generously over each ear.",
+                "Immediately roll each ear in crumbled cotija so the cheese sticks to the coating.",
+                "Dust with chili powder, squeeze fresh lime juice over the top, and sprinkle with chopped cilantro.",
+                "Serve right away while still warm.",
+            ],
+            "step_notes": {
+                1: "Turning the corn every couple of minutes rather than leaving one side down gets even charring across the whole ear, letting it sit too long in one spot burns that side before the rest gets any color.",
+                3: "Coating the corn while it's still hot off the grill is what lets the mayonnaise mixture soften just enough to grip the cheese, spread it on cooled corn and the coating slides right off instead of clinging.",
+            },
+            "tips_and_variations": [
+                "No grill? Char the corn under a broiler, turning occasionally, or in a dry cast iron skillet over high heat.",
+                "For esquites, the cup version, cut the grilled kernels off the cob and stir everything together in a bowl instead of coating whole ears.",
+                "Cotija can be swapped for crumbled feta if it's not available, feta is saltier and softer but a reasonable stand-in.",
+            ],
+            "reader_tips": [
+                "Buy corn as fresh as possible, the natural sweetness is a big part of what makes this dish work.",
+                "Have all the toppings prepped and within reach before the corn comes off the grill, the coating step goes fastest while everything is still hot.",
+            ],
+            "storage_and_reheating": (
+                "Best eaten fresh, but leftovers keep refrigerated up to 2 "
+                "days. Reheat briefly in a covered skillet or the "
+                "microwave; the coating won't be quite as fresh."
+            ),
+            "nutrition_note": "A rich side dish, moderate in carbohydrates from the corn and higher in fat from the mayonnaise, crema, and cheese.",
+            "faqs": [
+                {"question": "What is cotija cheese and can I substitute it?", "answer": "Cotija is a firm, salty Mexican cheese similar in style to a dry feta or Parmesan, used crumbled as a finishing cheese. Feta is the closest widely available substitute, though it's softer and tangier."},
+                {"question": "What's the difference between elote and esquites?", "answer": "Elote is served on the cob, while esquites is the same flavor combination with the kernels cut off and served in a cup, usually eaten with a spoon. Both use the same toppings."},
+                {"question": "Can I make elote without a grill?", "answer": "Yes, char it under a broiler or in a dry, very hot skillet, turning occasionally, you'll get less smoky flavor than a live flame but still good char and sweetness."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Mexican Recipes", "slug": "mexican-recipes"},
+        },
+    },
+    {
+        "slug": "tres-leches-cake",
+        "template_type": "recipe_or_dish",
+        "title": "Tres Leches Cake Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A light sponge cake soaked in a three-milk mixture until "
+                "meltingly moist, topped with lightly sweetened whipped "
+                "cream, the classic Latin American dessert."
+            ),
+            "hero_image_query": "tres leches cake",
+            "why_it_works": (
+                "Whipping the egg whites separately and folding them into "
+                "the batter builds an airy, open sponge with enough "
+                "structure to soak up a large volume of milk, and poking "
+                "the cooled cake all over before pouring the milk mixture "
+                "over slowly lets it absorb evenly instead of pooling on "
+                "top or sliding straight to the bottom."
+            ),
+            "prep_time_minutes": 25,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 300,
+            "servings": 12,
+            "pan_size": "9x13-inch baking pan",
+            "ingredients": [
+                {"name": "all-purpose flour", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 190, "unit_metric": "g", "hub_slug": None},
+                {"name": "baking powder", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs, separated", "base_qty": 5, "unit_us": "large", "base_qty_metric": 5, "unit_metric": "large", "hub_slug": None},
+                {"name": "granulated sugar, divided", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "ml", "hub_slug": None},
+                {"name": "vanilla extract", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "ml", "hub_slug": None},
+                {"name": "evaporated milk", "base_qty": 1, "unit_us": "can (12 oz)", "base_qty_metric": 354, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sweetened condensed milk", "base_qty": 1, "unit_us": "can (14 oz)", "base_qty_metric": 397, "unit_metric": "g", "hub_slug": None},
+                {"name": "heavy cream, divided", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None},
+                {"name": "powdered sugar", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 25, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 350°F (175°C) and grease a 9x13-inch baking pan.",
+                "Whisk together the flour, baking powder, and salt.",
+                "Beat the egg yolks with 3/4 cup sugar until pale and thick, then mix in the whole milk and 1 teaspoon vanilla.",
+                "Fold the dry ingredients into the yolk mixture just until combined.",
+                "In a separate clean bowl, beat the egg whites to soft peaks, then gradually add the remaining sugar and beat to stiff, glossy peaks.",
+                "Fold the whipped whites into the batter in two additions, being careful not to deflate it.",
+                "Pour into the prepared pan and bake 25-30 minutes, until a toothpick comes out clean and the top springs back when touched.",
+                "Cool the cake in the pan for 10 minutes, then poke holes all over the surface with a fork or skewer.",
+                "Whisk together the evaporated milk, condensed milk, and 1/2 cup of the heavy cream.",
+                "Slowly pour the milk mixture over the cake, letting it absorb between pours, until fully soaked.",
+                "Refrigerate at least 4 hours, or overnight, to let the cake fully absorb the milk.",
+                "Whip the remaining heavy cream with powdered sugar and remaining vanilla to soft peaks and spread over the cake before serving.",
+            ],
+            "step_notes": {
+                4: "Whipping the whites to a full, stable stiff peak before folding is what gives this sponge enough structure to survive being soaked without collapsing into mush later.",
+                9: "Pouring the milk mixture slowly and in stages, rather than all at once, keeps it from just running off the surface and pooling at the edges of the pan instead of soaking evenly through the crumb.",
+            },
+            "tips_and_variations": [
+                "Add a tablespoon of dark rum or coffee liqueur to the milk mixture for a grown-up variation.",
+                "Top with fresh berries or a dusting of cinnamon along with the whipped cream.",
+                "For individual servings, bake in a sheet pan and cut into squares once soaked, spooning extra milk mixture over any dry spots.",
+            ],
+            "reader_tips": [
+                "Poke the cake while it's still a little warm, the holes close up less than in a fully cooled cake and let the milk soak in more evenly.",
+                "Give the cake the full resting time in the refrigerator, a cake that hasn't chilled long enough will taste dry in the center even though it looks soaked.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate, covered, up to 4 days; this cake is served "
+                "cold and doesn't need reheating. It doesn't freeze well "
+                "once soaked, since the milk mixture separates on thawing."
+            ),
+            "nutrition_note": "A rich, sweet dessert, high in sugar and fat from the three milks and whipped cream topping.",
+            "faqs": [
+                {"question": "Why is my tres leches cake soggy instead of moist?", "answer": "This usually means too much milk mixture was added at once before the cake had a chance to absorb it, or the cake was under-baked to begin with. Pour slowly in stages and make sure the sponge is fully baked and cooled first."},
+                {"question": "Can I make tres leches cake ahead of time?", "answer": "Yes, it actually benefits from resting, soak the cake and refrigerate it overnight, then add the whipped cream topping just before serving for the best texture."},
+                {"question": "What are the three milks in tres leches cake?", "answer": "Evaporated milk, sweetened condensed milk, and either whole milk or heavy cream, whisked together to soak into the sponge. The combination gives the cake its rich, custardy sweetness."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Mexican Recipes", "slug": "mexican-recipes"},
+        },
+    },
+    {
+        "slug": "coq-au-vin",
+        "template_type": "recipe_or_dish",
+        "title": "Coq au Vin Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A classic French braise of chicken cooked slowly in red "
+                "wine with bacon, mushrooms, and pearl onions until deeply "
+                "tender."
+            ),
+            "hero_image_query": "coq au vin",
+            "why_it_works": (
+                "Browning the chicken and bacon first builds a fond that "
+                "carries through the whole braise, and a slow simmer in wine "
+                "gives the collagen in the chicken thighs time to break down "
+                "into a silky, self-thickened sauce."
+            ),
+            "prep_time_minutes": 25,
+            "cook_time_minutes": 90,
+            "total_time_minutes": 115,
+            "servings": 6,
+            "ingredients": [
+                {"name": "bone-in, skin-on chicken thighs and drumsticks", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None},
+                {"name": "thick-cut bacon, diced", "base_qty": 6, "unit_us": "oz", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
+                {"name": "pearl onions, peeled", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "cremini mushrooms, quartered", "base_qty": 12, "unit_us": "oz", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
+                {"name": "carrots, sliced", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 2, "unit_metric": "medium", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "dry red wine, such as Burgundy or Pinot Noir", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 750, "unit_metric": "ml", "hub_slug": None},
+                {"name": "chicken stock", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "tomato paste", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh thyme sprigs", "base_qty": 4, "unit_us": "sprigs", "base_qty_metric": 4, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "bay leaf", "base_qty": 1, "unit_us": "leaf", "base_qty_metric": 1, "unit_metric": "leaf", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 16, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter, softened", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt and black pepper", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Pat the chicken pieces dry and season generously with salt and pepper.",
+                "Cook the bacon in a large Dutch oven over medium heat until crisp, then remove with a slotted spoon and set aside, leaving the fat in the pot.",
+                "Brown the chicken in the bacon fat, skin side down first, in batches, until deep golden on all sides, then remove and set aside.",
+                "Add the pearl onions and carrots to the pot and cook 5 minutes, then stir in the garlic and tomato paste and cook 1 minute more.",
+                "Pour in the wine, scraping up the browned bits from the bottom of the pot, then add the stock, thyme, and bay leaf.",
+                "Return the chicken and bacon to the pot, bring to a simmer, cover, and cook over low heat for 45 minutes.",
+                "Add the mushrooms, cover, and continue cooking 20-25 minutes more, until the chicken is fork-tender.",
+                "Transfer the chicken and vegetables to a platter. Mash the butter and flour together into a paste and whisk it into the simmering liquid to thicken the sauce.",
+                "Simmer the sauce 5 minutes, season to taste, discard the bay leaf and thyme stems, then pour the sauce back over the chicken.",
+            ],
+            "step_notes": {
+                2: "Browning in batches keeps the pot from steaming instead of searing, crowd it and the chicken skin never gets past pale and rubbery.",
+                7: "A beurre manie, that mashed butter-flour paste, thickens the sauce without needing a separate roux or a long reduction, it's the classic French shortcut for finishing a braise.",
+            },
+            "tips_and_variations": [
+                "A cheaper Cotes du Rhone or Pinot Noir works fine here, you don't need an expensive bottle, just one you'd actually drink.",
+                "Boneless thighs cut the cooking time by about 20 minutes if you're short on time, though bone-in gives more body to the sauce.",
+                "Frozen pearl onions, thawed, are a fine substitute for fresh and skip the fussy peeling step.",
+                "This dish tastes even better the next day, making it a good one to braise a day ahead and reheat gently before serving.",
+            ],
+            "reader_tips": [
+                "Let the pot sit at a bare simmer, not a boil, once the chicken goes back in, a hard boil toughens the meat instead of tenderizing it.",
+                "Taste the sauce before you thicken it, wine brands vary a lot in acidity and you may want a pinch of sugar to balance it.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 4 days, the "
+                "flavor deepens overnight. Reheat gently on the stovetop "
+                "over low heat, or freeze the braise (without the mushrooms, "
+                "which turn rubbery) for up to 3 months."
+            ),
+            "nutrition_note": "A rich, protein-heavy braise, the wine cooks down substantially so most of the alcohol content evaporates during simmering.",
+            "faqs": [
+                {"question": "Do I need to marinate the chicken in wine overnight?", "answer": "Traditional recipes sometimes call for it, but it's not necessary for a great result, the long braise itself does the work of infusing the wine flavor into the meat."},
+                {"question": "What's the best wine to use for coq au vin?", "answer": "A medium-bodied dry red like Burgundy, Pinot Noir, or Cotes du Rhone works well, avoid anything oaky or overly tannic, which can turn bitter as it reduces."},
+                {"question": "Can I make coq au vin in a slow cooker?", "answer": "Yes, brown the chicken and bacon and saute the vegetables on the stovetop first, then transfer everything to a slow cooker and cook on low for 6-7 hours."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "French Recipes", "slug": "french-recipes"},
+        },
+    },
+    {
+        "slug": "french-onion-soup",
+        "template_type": "recipe_or_dish",
+        "title": "French Onion Soup Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Deeply caramelized onions simmered in beef broth and "
+                "topped with a toasted baguette slice and melted gruyere."
+            ),
+            "hero_image_query": "french onion soup",
+            "why_it_works": (
+                "A long, patient caramelization over low heat, not a quick "
+                "browning, is what develops the deep sweetness that gives "
+                "this soup its color and flavor, there's no shortcut that "
+                "replicates 45 minutes of slowly cooked onions."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 75,
+            "total_time_minutes": 95,
+            "servings": 4,
+            "ingredients": [
+                {"name": "yellow onions, thinly sliced", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 4, "unit_us": "tbsp", "base_qty_metric": 56, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                {"name": "sugar", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+                {"name": "dry sherry or white wine", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "beef stock", "base_qty": 6, "unit_us": "cups", "base_qty_metric": 1400, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh thyme", "base_qty": 2, "unit_us": "sprigs", "base_qty_metric": 2, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "bay leaf", "base_qty": 1, "unit_us": "leaf", "base_qty_metric": 1, "unit_metric": "leaf", "hub_slug": None},
+                {"name": "baguette, sliced into rounds", "base_qty": 8, "unit_us": "slices", "base_qty_metric": 8, "unit_metric": "slices", "hub_slug": None},
+                {"name": "gruyere cheese, grated", "base_qty": 8, "unit_us": "oz", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": "gruyere-cheese"},
+            ],
+            "instructions": [
+                "Melt the butter with the olive oil in a large heavy pot over medium heat.",
+                "Add the onions, salt, and sugar, and cook, stirring occasionally, for 45-50 minutes, until deeply golden brown and jammy.",
+                "If the onions start to stick or scorch, reduce the heat and add a splash of water, scraping up the browned bits.",
+                "Add the sherry and cook 2 minutes, scraping up any remaining browned bits from the bottom of the pot.",
+                "Add the beef stock, thyme, and bay leaf, bring to a simmer, and cook uncovered for 20 minutes.",
+                "Discard the thyme stems and bay leaf, and season the soup to taste with salt and pepper.",
+                "Toast the baguette slices until golden.",
+                "Ladle the soup into oven-safe crocks, top each with two toasted baguette slices, and cover generously with grated gruyere.",
+                "Broil until the cheese is melted and bubbling with golden spots, 2-4 minutes, watching closely.",
+            ],
+            "step_notes": {
+                1: "This is the step that actually makes the soup, low and slow coaxes out the onions' natural sugars into real caramelization, rushing it with high heat just browns the edges while the inside stays raw-tasting.",
+                7: "Toasting the bread before it goes under the broiler keeps it from turning to a soggy, sunken layer once it's floating in hot broth.",
+            },
+            "tips_and_variations": [
+                "Vidalia or other sweet onions caramelize a little faster and add extra sweetness, though yellow onions give the most classic depth.",
+                "No sherry on hand, a dry white wine or even a splash of brandy works as a substitute.",
+                "Swap in vegetable stock and skip the sherry's meat pairing entirely for a vegetarian version, the caramelized onions still carry most of the flavor.",
+                "Comte or a mix of gruyere and mozzarella both make a good substitute if gruyere isn't available.",
+            ],
+            "reader_tips": [
+                "Use a wide, heavy pot rather than a narrow one, more surface area means the onions caramelize faster and more evenly.",
+                "Resist stirring constantly during the caramelization, let the onions sit for a few minutes between stirs so they actually get a chance to brown.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate the soup base (without bread or cheese) up to 4 "
+                "days, or freeze up to 3 months. Reheat on the stovetop, "
+                "then assemble and broil the bread and cheese fresh just "
+                "before serving."
+            ),
+            "nutrition_note": "A rich, savory soup, the melted cheese and buttered onions make it more indulgent than a typical broth-based soup.",
+            "faqs": [
+                {"question": "Why is my onion soup bitter?", "answer": "Onions that scorch rather than caramelize turn bitter, if they're browning too fast, lower the heat and add a splash of water to slow things down and keep them from burning."},
+                {"question": "Can I use chicken stock instead of beef stock?", "answer": "Beef stock gives the traditional deep, savory flavor, but chicken stock works in a pinch, the soup will just taste lighter and less robust."},
+                {"question": "What if I don't have oven-safe bowls?", "answer": "Broil the cheese-topped bread separately on a baking sheet, then float each toast on top of a bowl of hot soup instead."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "French Recipes", "slug": "french-recipes"},
+        },
+    },
+    {
+        "slug": "ratatouille",
+        "template_type": "recipe_or_dish",
+        "title": "Ratatouille Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A rustic Provencal vegetable stew of eggplant, zucchini, "
+                "peppers, and tomatoes, cooked in stages so each vegetable "
+                "keeps its own texture."
+            ),
+            "hero_image_query": "ratatouille",
+            "why_it_works": (
+                "Cooking each vegetable separately before combining them "
+                "keeps watery vegetables like zucchini and eggplant from "
+                "turning the whole pot mushy, letting every component hold "
+                "its shape while still melding in flavor at the end."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 45,
+            "total_time_minutes": 75,
+            "servings": 6,
+            "ingredients": [
+                {"name": "eggplant, cut into 3/4-inch cubes", "base_qty": 1, "unit_us": "medium (about 1 lb)", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "zucchini, cut into 3/4-inch cubes", "base_qty": 2, "unit_us": "medium", "base_qty_metric": 2, "unit_metric": "medium", "hub_slug": None},
+                {"name": "red bell pepper, chopped", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "yellow onion, chopped", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "ripe tomatoes, chopped (or one 28 oz can)", "base_qty": 2, "unit_us": "lb", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 6, "unit_us": "tbsp", "base_qty_metric": 90, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh thyme", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "tsp", "hub_slug": None},
+                {"name": "fresh basil, torn, plus more for garnish", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+                {"name": "black pepper", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Salt the cubed eggplant and let it sit in a colander for 20 minutes, then pat dry.",
+                "Heat 2 tablespoons of olive oil in a large skillet over medium-high heat and cook the eggplant until browned and softened, 6-8 minutes, then remove.",
+                "Add another 2 tablespoons oil and cook the zucchini until lightly browned, 4-5 minutes, then remove.",
+                "Add the remaining oil and cook the onion and bell pepper until softened, about 6 minutes.",
+                "Stir in the garlic and cook 1 minute, until fragrant.",
+                "Add the tomatoes, thyme, salt, and pepper, and simmer 10 minutes, until the tomatoes break down into a sauce.",
+                "Return the eggplant and zucchini to the pan and simmer gently, uncovered, 10-15 minutes more, until everything is tender but still holds its shape.",
+                "Remove from heat, stir in the fresh basil, and adjust seasoning to taste.",
+            ],
+            "step_notes": {
+                0: "Salting the eggplant draws out excess moisture and some of its bitterness, so it browns instead of steaming when it hits the hot pan.",
+                6: "Cooking the vegetables separately first, then combining them only at the end, is what keeps ratatouille from turning into an undifferentiated stew, each piece stays distinct instead of dissolving.",
+            },
+            "tips_and_variations": [
+                "For the classic layered presentation, thinly slice all the vegetables into rounds and arrange them spiral-fashion over a bed of the tomato sauce before baking at 375°F for about 45 minutes.",
+                "Yellow squash makes a fine substitute or addition alongside the zucchini.",
+                "A splash of red wine vinegar stirred in at the end brightens the whole dish if it tastes flat.",
+                "Ratatouille is naturally vegan and gluten-free as written, and works equally well warm, at room temperature, or cold the next day.",
+            ],
+            "reader_tips": [
+                "Don't rush the tomato sauce step, letting it reduce properly before adding back the other vegetables keeps the finished dish from being watery.",
+                "Cut all the vegetables to roughly the same size so everything cooks at the same rate.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 5 days, the "
+                "flavors deepen after a day or two. Reheat gently on the "
+                "stovetop, or serve cold as a salad. Freezes well up to 3 "
+                "months."
+            ),
+            "nutrition_note": "A vegetable-forward, naturally low-calorie dish, the olive oil is the main source of fat.",
+            "faqs": [
+                {"question": "Do I need to peel the eggplant?", "answer": "No, the skin softens fully during cooking and helps the cubes hold their shape, peeling is optional and mostly a matter of preference."},
+                {"question": "Can I make ratatouille ahead of time?", "answer": "Yes, it actually improves after resting a day in the fridge, which gives the vegetables time to absorb more of the tomato and herb flavors."},
+                {"question": "Is ratatouille served hot or cold?", "answer": "Both are traditional, it's commonly served warm as a side dish or main, but is just as good served cold or at room temperature in the summer."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "French Recipes", "slug": "french-recipes"},
+        },
+    },
+    {
+        "slug": "quiche-lorraine",
+        "template_type": "recipe_or_dish",
+        "title": "Quiche Lorraine Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A classic French custard tart of eggs, cream, gruyere, and "
+                "crisp bacon baked in a buttery pastry shell."
+            ),
+            "hero_image_query": "quiche lorraine",
+            "why_it_works": (
+                "Blind-baking the crust before it's filled keeps it from "
+                "turning soggy under the wet custard, and baking the "
+                "custard just until it barely sets in the center leaves it "
+                "silky instead of turning rubbery."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 55,
+            "total_time_minutes": 120,
+            "servings": 8,
+            "pan_size": "9-inch tart pan or pie dish (a 10-inch pan works too, use slightly less custard and reduce bake time by about 5 minutes)",
+            "ingredients": [
+                {"name": "pie dough, homemade or store-bought", "base_qty": 1, "unit_us": "9-inch crust", "base_qty_metric": 1, "unit_metric": "9-inch crust", "hub_slug": None},
+                {"name": "thick-cut bacon, diced", "base_qty": 8, "unit_us": "oz", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "shallot, minced", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "eggs", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
+                {"name": "heavy cream", "base_qty": 1.25, "unit_us": "cups", "base_qty_metric": 300, "unit_metric": "ml", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
+                {"name": "gruyere cheese, grated", "base_qty": 6, "unit_us": "oz", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": "gruyere-cheese"},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "white pepper", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
+                {"name": "ground nutmeg", "base_qty": 0.125, "unit_us": "tsp", "base_qty_metric": 0.3, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 400°F (200°C). Fit the pie dough into a 9-inch tart pan or pie dish and prick the bottom with a fork.",
+                "Line the crust with parchment paper and pie weights and blind-bake for 15 minutes, then remove the weights and parchment and bake 5 minutes more, until just barely golden.",
+                "Reduce the oven temperature to 350°F (175°C).",
+                "Cook the bacon in a skillet over medium heat until crisp, remove with a slotted spoon and drain on paper towels.",
+                "Cook the shallot in the remaining bacon fat for 2 minutes, until softened.",
+                "Whisk together the eggs, cream, milk, salt, pepper, and nutmeg in a large bowl.",
+                "Scatter the bacon, shallot, and gruyere over the bottom of the crust.",
+                "Pour the custard mixture over the filling.",
+                "Bake for 30-35 minutes, until the center is just set with a slight jiggle and the top is golden.",
+                "Let rest at least 15 minutes before slicing.",
+            ],
+            "step_notes": {
+                1: "Blind-baking with weights keeps the bottom crust from puffing up or staying pale and undercooked once the wet custard is added on top of it.",
+                8: "Pulling the quiche while the center still jiggles slightly matters, it keeps cooking from residual heat as it rests, and overbaking is what turns a silky custard grainy and rubbery.",
+            },
+            "tips_and_variations": [
+                "Swap the bacon for diced ham for a milder, less smoky version.",
+                "Gruyere is traditional, but a mix of gruyere and sharp cheddar or Swiss also works well.",
+                "For a lighter custard, use all whole milk in place of the cream, though the texture will be less rich.",
+                "Add sauteed mushrooms or wilted spinach along with the bacon for a heartier variation.",
+            ],
+            "reader_tips": [
+                "Let the quiche rest well before slicing, cutting it too soon while it's still very hot causes the custard to run instead of holding a clean slice.",
+                "A glass or ceramic pan shows you the crust color better than a dark metal one, which can make it hard to judge doneness by sight.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftover quiche, covered, up to 4 days. Reheat "
+                "slices in a 325°F oven for about 15 minutes to keep the "
+                "crust from turning soggy, microwaving works but softens "
+                "the pastry. Quiche also freezes well, baked and cooled, "
+                "wrapped tightly, for up to 2 months."
+            ),
+            "nutrition_note": "A rich, protein- and fat-forward dish thanks to the eggs, cream, and cheese, best served as a moderate slice alongside a salad.",
+            "faqs": [
+                {"question": "Why is my quiche soggy on the bottom?", "answer": "This usually means the crust wasn't fully blind-baked before filling, or the filling had too much excess liquid from watery add-ins like mushrooms that weren't cooked down first."},
+                {"question": "Can I make quiche lorraine ahead of time?", "answer": "Yes, it reheats well and some people prefer it the next day once the flavors have settled, bake it a day ahead and reheat gently before serving."},
+                {"question": "Do I really need to blind-bake the crust?", "answer": "For a crisp bottom crust, yes, skipping it usually results in a pale, undercooked layer under the custard since the filling doesn't give the crust enough direct oven exposure on its own."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "French Recipes", "slug": "french-recipes"},
+        },
+    },
+    {
+        "slug": "beef-bourguignon",
+        "template_type": "recipe_or_dish",
+        "title": "Beef Bourguignon Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A slow-braised Burgundy classic of beef chuck simmered in "
+                "red wine with bacon, mushrooms, and pearl onions until "
+                "fork-tender."
+            ),
+            "hero_image_query": "beef bourguignon",
+            "why_it_works": (
+                "A tough, well-marbled cut like chuck needs hours at a low, "
+                "steady simmer for its connective tissue to break down into "
+                "gelatin, which is what gives the finished sauce its "
+                "characteristic body and richness."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 180,
+            "total_time_minutes": 210,
+            "servings": 6,
+            "ingredients": [
+                {"name": "beef chuck roast, cut into 2-inch cubes", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None},
+                {"name": "bacon, diced", "base_qty": 6, "unit_us": "oz", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
+                {"name": "carrots, sliced into chunks", "base_qty": 3, "unit_us": "medium", "base_qty_metric": 3, "unit_metric": "medium", "hub_slug": None},
+                {"name": "yellow onion, chopped", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "tomato paste", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "all-purpose flour", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 16, "unit_metric": "g", "hub_slug": None},
+                {"name": "dry red wine, such as Burgundy", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 750, "unit_metric": "ml", "hub_slug": None},
+                {"name": "beef stock", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 480, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh thyme sprigs", "base_qty": 4, "unit_us": "sprigs", "base_qty_metric": 4, "unit_metric": "sprigs", "hub_slug": None},
+                {"name": "bay leaves", "base_qty": 2, "unit_us": "leaves", "base_qty_metric": 2, "unit_metric": "leaves", "hub_slug": None},
+                {"name": "pearl onions, peeled", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "button or cremini mushrooms, halved", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt and black pepper", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Pat the beef cubes very dry and season with salt and pepper.",
+                "Cook the bacon in a Dutch oven over medium heat until crisp, remove with a slotted spoon and reserve, leaving the fat in the pot.",
+                "Sear the beef in batches in the bacon fat over medium-high heat until deeply browned on all sides, then remove and set aside.",
+                "Add the carrots and onion to the pot and cook 5 minutes, then stir in the garlic and tomato paste and cook 1 minute more.",
+                "Sprinkle in the flour and stir to coat the vegetables, cooking 1 minute.",
+                "Pour in the wine, scraping up the browned bits from the bottom of the pot, then add the stock, thyme, and bay leaves.",
+                "Return the beef and bacon to the pot, bring to a simmer, cover, and cook in a 325°F oven (or over very low heat on the stovetop) for 2 to 2.5 hours, until the beef is fork-tender.",
+                "Meanwhile, melt the butter in a skillet and cook the pearl onions and mushrooms over medium heat until browned, 8-10 minutes.",
+                "Stir the browned onions and mushrooms into the pot for the final 15 minutes of cooking.",
+                "Discard the bay leaves and thyme stems, skim excess fat from the surface, and season to taste before serving.",
+            ],
+            "step_notes": {
+                2: "Searing the beef in batches, without crowding the pot, is what actually builds flavor here, too much meat at once drops the pan's temperature and the beef steams instead of browning.",
+                6: "The oven holds a steadier, more even low temperature than a stovetop burner does over a long braise, which matters for breaking down tough chuck without scorching the bottom.",
+            },
+            "tips_and_variations": [
+                "Chuck roast is ideal because of its marbling and connective tissue, leaner cuts like sirloin will turn dry rather than fall-apart tender over this long a braise.",
+                "Frozen pearl onions, thawed, save real time over peeling fresh ones.",
+                "A pressure cooker or Instant Pot can shorten the braise to about 45 minutes at high pressure if you're short on time.",
+                "Serve over egg noodles, mashed potatoes, or with crusty bread to soak up the sauce.",
+            ],
+            "reader_tips": [
+                "Dry the beef thoroughly with paper towels before searing, any surface moisture is the main thing standing between you and a proper crust.",
+                "Don't skip skimming the fat off the top before serving, a long braise renders a fair amount of it and skimming makes the sauce taste cleaner.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days, the flavor improves overnight. "
+                "Reheat gently on the stovetop over low heat. Freezes "
+                "well, without the mushrooms if possible, for up to 3 "
+                "months."
+            ),
+            "nutrition_note": "A hearty, protein-rich braise, most of the wine's alcohol cooks off during the long simmer.",
+            "faqs": [
+                {"question": "What's the difference between beef bourguignon and coq au vin?", "answer": "They use the same wine-braising technique, but coq au vin is made with chicken while beef bourguignon uses beef chuck, giving it a longer cook time and a heartier result."},
+                {"question": "Can I make this in a slow cooker?", "answer": "Yes, sear the beef and saute the aromatics on the stovetop first, then transfer everything to a slow cooker and cook on low for 7-8 hours."},
+                {"question": "What cut of beef is best for beef bourguignon?", "answer": "Chuck roast is the classic choice for its marbling, other well-marbled braising cuts like brisket or short rib also work well."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "French Recipes", "slug": "french-recipes"},
+        },
+    },
+    {
+        "slug": "creme-brulee",
+        "template_type": "recipe_or_dish",
+        "title": "Creme Brulee Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A silky vanilla custard baked in a water bath and topped "
+                "with a crackling layer of caramelized sugar."
+            ),
+            "hero_image_query": "creme brulee",
+            "why_it_works": (
+                "Baking the custard in a water bath insulates it from the "
+                "oven's direct heat, keeping the cooking gentle enough that "
+                "the eggs set into a smooth custard instead of curdling "
+                "into scrambled egg texture."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 40,
+            "total_time_minutes": 300,
+            "servings": 6,
+            "ingredients": [
+                {"name": "heavy cream", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 720, "unit_metric": "ml", "hub_slug": None},
+                {"name": "vanilla bean, split and scraped (or 2 tsp vanilla extract)", "base_qty": 1, "unit_us": "bean", "base_qty_metric": 1, "unit_metric": "bean", "hub_slug": None},
+                {"name": "egg yolks", "base_qty": 6, "unit_us": "large", "base_qty_metric": 6, "unit_metric": "large", "hub_slug": None},
+                {"name": "granulated sugar, divided", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 100, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.125, "unit_us": "tsp", "base_qty_metric": 0.75, "unit_metric": "g", "hub_slug": None},
+                {"name": "granulated sugar, for topping", "base_qty": 6, "unit_us": "tsp", "base_qty_metric": 25, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Preheat the oven to 325°F (165°C) and place six 6-ounce ramekins in a large roasting pan.",
+                "Heat the cream and vanilla bean (or extract) in a saucepan over medium heat until it just begins to steam, do not let it boil.",
+                "Whisk the egg yolks, 1/2 cup sugar, and salt together in a bowl until pale and slightly thickened.",
+                "Slowly pour the hot cream into the egg mixture in a thin stream, whisking constantly, to temper the eggs.",
+                "Strain the custard through a fine-mesh sieve into a large measuring cup or pitcher.",
+                "Divide the custard evenly among the ramekins.",
+                "Pour hot water into the roasting pan until it reaches halfway up the sides of the ramekins.",
+                "Bake for 35-40 minutes, until the custards are just set at the edges but still jiggle slightly in the center.",
+                "Remove the ramekins from the water bath, cool to room temperature, then refrigerate at least 4 hours or overnight.",
+                "Just before serving, sprinkle a thin, even layer of sugar over each custard and caramelize with a kitchen torch, or under a very hot broiler, until deep amber.",
+            ],
+            "step_notes": {
+                3: "Adding the hot cream slowly while whisking raises the eggs' temperature gradually instead of all at once, which is what keeps them from scrambling on contact with the heat.",
+                7: "Pulling the custards while the centers still have a slight wobble matters, they firm up further as they cool, and baking until fully firm in the oven means they'll be overcooked by the time they're chilled.",
+            },
+            "tips_and_variations": [
+                "A real vanilla bean gives the best flavor and those signature flecks, but 2 teaspoons of good vanilla extract, added after straining, works well too.",
+                "No kitchen torch, a broiler works, just watch closely since broilers caramelize unevenly and can scorch fast.",
+                "Flavor variations like a splash of espresso, orange zest, or a spoonful of Grand Marnier can be added to the cream while it heats.",
+                "Straining the custard is optional but removes any bits of cooked egg or vanilla bean fiber for the smoothest texture.",
+            ],
+            "reader_tips": [
+                "Use a light-colored ramekin if you can, it makes it easier to judge the custard's doneness by eye compared to a dark one.",
+                "Sugar the tops just before serving, not ahead of time, sugar left on a chilled custard for more than an hour or so starts to soften and lose its crackle.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate un-sugared custards, covered, up to 3 days. "
+                "Add the caramelized sugar topping only right before "
+                "serving, since it doesn't hold its crisp texture once "
+                "refrigerated or left sitting for long. Do not freeze, the "
+                "texture breaks down when thawed."
+            ),
+            "nutrition_note": "A rich dessert built on egg yolks and heavy cream, meant to be served in the small individual portions the ramekins provide.",
+            "faqs": [
+                {"question": "Why did my creme brulee turn out grainy or curdled?", "answer": "This usually means the custard baked too hot or too long, either the oven ran hotter than 325°F or the water bath wasn't deep enough to properly insulate the ramekins."},
+                {"question": "Can I make creme brulee without a kitchen torch?", "answer": "Yes, place the sugared ramekins under a very hot broiler for 1-3 minutes, watching constantly, a torch just gives more even control over the caramelization."},
+                {"question": "How far ahead can I make creme brulee?", "answer": "The baked custards can be made up to 3 days ahead and refrigerated, just torch the sugar topping fresh right before serving for the best crackling texture."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "French Recipes", "slug": "french-recipes"},
+        },
+    },
+    {
+        "slug": "pad-thai",
+        "template_type": "recipe_or_dish",
+        "title": "Pad Thai Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Stir-fried rice noodles in a tangy tamarind sauce with "
+                "shrimp, egg, tofu, and crushed peanuts, made just like a "
+                "Thai street stall."
+            ),
+            "hero_image_query": "pad thai",
+            "why_it_works": (
+                "Balancing tamarind's sourness against fish sauce's saltiness "
+                "and palm sugar's sweetness in the right proportions is what "
+                "makes the sauce taste like real pad Thai rather than a "
+                "generic sweet noodle stir-fry, and cooking everything fast "
+                "over high heat keeps the noodles from turning gummy."
+            ),
+            "prep_time_minutes": 30,
+            "cook_time_minutes": 15,
+            "total_time_minutes": 45,
+            "servings": 4,
+            "ingredients": [
+                {"name": "dried flat rice noodles (pad Thai noodles)", "base_qty": 8, "unit_us": "oz", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
+                {"name": "tamarind paste", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "g", "hub_slug": None},
+                {"name": "fish sauce", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "palm sugar or light brown sugar", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 40, "unit_metric": "g", "hub_slug": None},
+                {"name": "vegetable oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "garlic, minced", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "shallot, thinly sliced", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "firm tofu, cubed", "base_qty": 4, "unit_us": "oz", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
+                {"name": "medium shrimp, peeled and deveined", "base_qty": 12, "unit_us": "oz", "base_qty_metric": 340, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "bean sprouts, divided", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic chives or scallions, cut into 2-inch lengths", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "roasted peanuts, crushed", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 45, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime wedges, for serving", "base_qty": 4, "unit_us": "wedges", "base_qty_metric": 4, "unit_metric": "wedges", "hub_slug": None},
+                {"name": "dried chili flakes, for serving", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Soak the rice noodles in room-temperature or lukewarm water for 30-40 minutes, until pliable but still firm, then drain.",
+                "Whisk together the tamarind paste, fish sauce, and palm sugar in a small bowl until the sugar dissolves, this is your pad Thai sauce.",
+                "Heat the oil in a large wok or skillet over high heat.",
+                "Add the garlic and shallot and stir-fry 30 seconds, until fragrant.",
+                "Add the tofu and shrimp, stir-frying until the shrimp turn pink, about 2 minutes.",
+                "Push everything to one side of the wok, crack the eggs into the empty space, and scramble briefly before folding into the rest.",
+                "Add the drained noodles and the sauce, tossing constantly, and stir-fry 2-3 minutes, until the noodles are tender and have absorbed the sauce.",
+                "Add half the bean sprouts and the garlic chives, tossing another minute, until just wilted.",
+                "Remove from heat and plate, topping with the remaining raw bean sprouts, crushed peanuts, lime wedges, and chili flakes.",
+            ],
+            "step_notes": {
+                0: "Soaking rather than boiling the noodles keeps them just short of fully cooked, so they finish softening in the wok without turning to mush by the time the dish comes together.",
+                6: "This is the moment the dish is actually made, tossing hard and fast over high heat lets the noodles absorb the sauce evenly and pick up a bit of wok char instead of steaming in a puddle of liquid.",
+            },
+            "tips_and_variations": [
+                "No tamarind paste, a mix of lime juice and a touch of brown sugar approximates the sourness, though the flavor won't be quite as deep.",
+                "Chicken or a fully vegetarian version with extra tofu and mushrooms in place of the shrimp both work well with the same sauce.",
+                "Palm sugar has a rounder, less sharp sweetness than white sugar, light brown sugar is the closest common substitute.",
+                "Keep the raw bean sprouts and peanuts as a garnish added at the very end, cooking them into the noodles loses their crunch.",
+            ],
+            "reader_tips": [
+                "Have every ingredient prepped and within arm's reach before you turn on the heat, pad Thai moves fast once the wok is hot and there's no time to chop mid-cook.",
+                "Undersoak the noodles slightly rather than oversoak them, they keep cooking in the wok and mushy noodles can't be fixed once they're overcooked.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftovers in an airtight container up to 3 "
+                "days. Reheat in a hot skillet or wok with a splash of "
+                "water to loosen the noodles, a microwave works but the "
+                "noodles turn softer and less distinct."
+            ),
+            "nutrition_note": "A balanced dish with protein from the shrimp, tofu, and eggs alongside the carbohydrate-heavy rice noodles.",
+            "faqs": [
+                {"question": "What can I use instead of tamarind paste?", "answer": "A mix of fresh lime juice and a little brown sugar can stand in, it won't have quite the same fruity depth, but it gets close to the sweet-sour balance tamarind provides."},
+                {"question": "Why are my pad Thai noodles mushy?", "answer": "This usually comes from oversoaking the dried noodles before cooking, or stir-frying them too long in the sauce, aim for noodles that are still slightly firm going into the wok."},
+                {"question": "Can I make pad Thai vegetarian?", "answer": "Yes, swap the fish sauce for soy sauce or a vegetarian fish sauce substitute, skip the shrimp, and add extra tofu and vegetables like mushrooms or bell peppers."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Thai Recipes", "slug": "thai-recipes"},
+        },
+    },
+    {
+        "slug": "green-curry-chicken",
+        "template_type": "recipe_or_dish",
+        "title": "Green Curry Chicken Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A fragrant, spicy Thai green curry of chicken and "
+                "vegetables simmered in coconut milk with green curry "
+                "paste and Thai basil."
+            ),
+            "hero_image_query": "thai green curry chicken",
+            "why_it_works": (
+                "Frying the curry paste in the thick coconut cream that "
+                "rises to the top of an unshaken can blooms its aromatics "
+                "and chilies in fat before any liquid is added, which gives "
+                "the finished curry far more depth than simply stirring "
+                "paste into a pot of coconut milk."
+            ),
+            "prep_time_minutes": 20,
+            "cook_time_minutes": 25,
+            "total_time_minutes": 45,
+            "servings": 4,
+            "ingredients": [
+                {"name": "full-fat coconut milk, unshaken, divided", "base_qty": 2, "unit_us": "cans (13.5 oz each)", "base_qty_metric": 800, "unit_metric": "ml", "hub_slug": None},
+                {"name": "Thai green curry paste", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "g", "hub_slug": None},
+                {"name": "boneless, skinless chicken thighs, sliced", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
+                {"name": "fish sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "palm sugar or light brown sugar", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "Thai eggplant or Japanese eggplant, cut into chunks", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "red bell pepper, sliced", "base_qty": 1, "unit_us": "medium", "base_qty_metric": 1, "unit_metric": "medium", "hub_slug": None},
+                {"name": "kaffir lime leaves, torn", "base_qty": 4, "unit_us": "leaves", "base_qty_metric": 4, "unit_metric": "leaves", "hub_slug": None},
+                {"name": "bamboo shoots, sliced (optional)", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh Thai basil leaves", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 25, "unit_metric": "g", "hub_slug": None},
+                {"name": "red chili, sliced, for garnish", "base_qty": 1, "unit_us": "chili", "base_qty_metric": 1, "unit_metric": "chili", "hub_slug": None},
+                {"name": "jasmine rice, for serving", "base_qty": 2, "unit_us": "cups cooked", "base_qty_metric": 370, "unit_metric": "g cooked", "hub_slug": None},
+            ],
+            "instructions": [
+                "Without shaking the cans, scoop the thick coconut cream from the top of one can into a wok or large pot and heat over medium-high heat until it starts to sizzle and separate slightly.",
+                "Add the curry paste and fry, stirring constantly, for 2-3 minutes, until very fragrant and the oil starts to separate from the paste.",
+                "Add the chicken and stir to coat in the paste, cooking 3-4 minutes until the outside is no longer pink.",
+                "Pour in the remaining coconut milk from both cans, along with the fish sauce and palm sugar, and bring to a gentle simmer.",
+                "Add the eggplant, bell pepper, kaffir lime leaves, and bamboo shoots if using.",
+                "Simmer uncovered for 12-15 minutes, until the chicken is cooked through and the vegetables are tender.",
+                "Taste and adjust the balance with more fish sauce for saltiness or sugar for sweetness as needed.",
+                "Remove from heat and stir in the Thai basil leaves just until wilted.",
+                "Serve hot over jasmine rice, garnished with sliced red chili.",
+            ],
+            "step_notes": {
+                1: "Frying the paste in hot coconut fat until the oil visibly separates out is the single step that most determines the curry's final flavor, a paste that's only briefly warmed through tastes flat and raw by comparison.",
+                6: "Green curry paste brands vary a lot in saltiness and heat, tasting and adjusting the fish sauce and sugar at the end is what actually dials the curry to the right balance rather than trusting the recipe amounts alone.",
+            },
+            "tips_and_variations": [
+                "Store-bought curry paste varies widely in spice level between brands, start with less than you think you need and add more to taste.",
+                "Swap the chicken for shrimp, tofu, or a mix of extra vegetables for a different protein.",
+                "No Thai eggplant available, zucchini or regular eggplant cut into smaller pieces both work as substitutes.",
+                "Kaffir lime leaves can be left out if unavailable, though they add a distinct citrusy aroma that's hard to replace exactly.",
+            ],
+            "reader_tips": [
+                "Don't shake the coconut milk cans before opening, the separated cream on top is what you want for frying the paste, shaking mixes it back into the thinner liquid.",
+                "Tear the kaffir lime leaves rather than leaving them whole, tearing releases more of their fragrance into the curry.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate in an airtight container up to 3 days. Reheat "
+                "gently on the stovetop over low heat, coconut curries can "
+                "split if boiled hard when reheating. Freezes reasonably "
+                "well up to 2 months, though the eggplant softens further "
+                "after thawing."
+            ),
+            "nutrition_note": "A rich curry due to the coconut milk, balanced by lean chicken and vegetables, best served with rice to round out the meal.",
+            "faqs": [
+                {"question": "Is green curry spicier than red curry?", "answer": "Generally yes, green curry paste is made with fresh green chilies, which tend to give it a sharper, more immediate heat than the dried red chilies used in red curry paste."},
+                {"question": "Can I use light coconut milk?", "answer": "You can, but the curry will be thinner and less rich, full-fat coconut milk is what gives the sauce its characteristic body and lets the paste fry properly in step one."},
+                {"question": "What's a substitute for kaffir lime leaves?", "answer": "A strip of lime zest added at the end gets closer to the citrus note than nothing at all, though it won't fully replicate the distinct floral aroma of the actual leaves."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Thai Recipes", "slug": "thai-recipes"},
+        },
+    },
+    {
+        "slug": "tom-yum-soup",
+        "template_type": "recipe_or_dish",
+        "title": "Tom Yum Soup Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A hot and sour Thai shrimp soup built on a fragrant broth "
+                "of lemongrass, galangal, kaffir lime, and chili."
+            ),
+            "hero_image_query": "tom yum soup",
+            "why_it_works": (
+                "Bruising the lemongrass, galangal, and lime leaves before "
+                "simmering them, rather than leaving them whole and "
+                "untouched, ruptures their oils into the broth, which is "
+                "what gives tom yum its sharp, unmistakably fragrant base."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 20,
+            "total_time_minutes": 35,
+            "servings": 4,
+            "ingredients": [
+                {"name": "chicken or shrimp stock", "base_qty": 6, "unit_us": "cups", "base_qty_metric": 1400, "unit_metric": "ml", "hub_slug": None},
+                {"name": "lemongrass stalks, smashed and cut into 2-inch pieces", "base_qty": 3, "unit_us": "stalks", "base_qty_metric": 3, "unit_metric": "stalks", "hub_slug": None},
+                {"name": "galangal, sliced (or fresh ginger)", "base_qty": 1, "unit_us": "oz", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "kaffir lime leaves, torn", "base_qty": 5, "unit_us": "leaves", "base_qty_metric": 5, "unit_metric": "leaves", "hub_slug": None},
+                {"name": "Thai chilies, smashed", "base_qty": 3, "unit_us": "chilies", "base_qty_metric": 3, "unit_metric": "chilies", "hub_slug": None},
+                {"name": "medium shrimp, peeled and deveined (shells reserved)", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "cremini or straw mushrooms, halved", "base_qty": 6, "unit_us": "oz", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
+                {"name": "fish sauce", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh lime juice", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
+                {"name": "Thai chili paste (nam prik pao)", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "cherry tomatoes, halved", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
+                {"name": "cilantro leaves, for garnish", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "If using shrimp shells, simmer them in the stock for 10 minutes to build extra flavor, then strain and discard the shells, or skip this if using plain stock.",
+                "Bring the stock to a simmer and add the smashed lemongrass, galangal, kaffir lime leaves, and Thai chilies.",
+                "Simmer for 10 minutes to infuse the broth, keeping it at a gentle simmer rather than a hard boil.",
+                "Stir in the chili paste and mushrooms and simmer 3-4 minutes, until the mushrooms soften.",
+                "Add the shrimp and cherry tomatoes and cook 2-3 minutes, just until the shrimp turn pink and curl.",
+                "Remove from heat and stir in the fish sauce and lime juice.",
+                "Taste and adjust, adding more fish sauce for saltiness, lime juice for sourness, or chili paste for heat.",
+                "Ladle into bowls and garnish with cilantro leaves.",
+            ],
+            "step_notes": {
+                2: "Simmering the aromatics gently rather than boiling hard keeps their volatile citrus oils from cooking off too fast, a rolling boil actually mutes tom yum's flavor rather than intensifying it.",
+                5: "Adding the lime juice off the heat, at the very end, preserves its brightness, lime juice that simmers for even a few minutes turns noticeably more bitter and loses its fresh sourness.",
+            },
+            "tips_and_variations": [
+                "Tom yum comes in a clear version (tom yum nam sai) and a creamy version (tom yum nam khon) made with a splash of evaporated milk or coconut milk stirred in at the end, both are traditional.",
+                "Swap the shrimp for chicken, mixed seafood, or mushrooms alone for a vegetarian version, using vegetable stock and soy sauce in place of fish sauce.",
+                "Frozen galangal and kaffir lime leaves, found at most Asian grocers, work just as well as fresh and are worth stocking for this soup.",
+                "No nam prik pao chili paste, a spoonful of tomato paste with a pinch of extra chili gets closer than omitting it entirely.",
+            ],
+            "reader_tips": [
+                "Smash the lemongrass, galangal, and chilies with the flat of a knife before adding them, bruising the aromatics releases far more flavor than dropping them in whole.",
+                "The lemongrass, galangal, and lime leaves are meant to be fished out or left in the bowl uneaten, warn guests rather than let them bite into a woody stalk.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 2 days, though the shrimp continue "
+                "firming up over time. Reheat gently over low heat without "
+                "boiling, and add a fresh squeeze of lime juice after "
+                "reheating since its brightness fades in storage. Not "
+                "recommended for freezing, the shrimp texture suffers."
+            ),
+            "nutrition_note": "A light, brothy soup, the shrimp provide lean protein while the broth itself is low in fat.",
+            "faqs": [
+                {"question": "What can I use instead of galangal?", "answer": "Fresh ginger is the most common substitute, though it has a milder, sweeter flavor than galangal's sharper, more citrusy and peppery profile."},
+                {"question": "Do I eat the lemongrass and lime leaves?", "answer": "No, they're simmered for flavor and traditionally left in the bowl to be pushed aside rather than eaten, they're too woody and fibrous to chew."},
+                {"question": "What is nam prik pao and can I skip it?", "answer": "It's a Thai roasted chili paste that adds smoky depth and a touch of sweetness, you can skip it, but the soup will taste flatter and less complex without it."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Thai Recipes", "slug": "thai-recipes"},
+        },
+    },
+    {
+        "slug": "som-tum-green-papaya-salad",
+        "template_type": "recipe_or_dish",
+        "title": "Som Tum (Green Papaya Salad) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A pounded Thai green papaya salad balancing spicy, sour, "
+                "salty, and sweet flavors with lime, fish sauce, and "
+                "peanuts."
+            ),
+            "hero_image_query": "som tum green papaya salad",
+            "why_it_works": (
+                "Pounding rather than just tossing the ingredients in a "
+                "mortar bruises the papaya, chilies, and garlic enough to "
+                "release their juices and let the dressing actually "
+                "penetrate the shreds, which is what separates real som "
+                "tum from a papaya slaw with sauce poured over it."
+            ),
+            "prep_time_minutes": 25,
+            "cook_time_minutes": 0,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "green (unripe) papaya, peeled and shredded", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 400, "unit_metric": "g", "hub_slug": None},
+                {"name": "garlic cloves", "base_qty": 3, "unit_us": "cloves", "base_qty_metric": 3, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "Thai bird's eye chilies, to taste", "base_qty": 2, "unit_us": "chilies", "base_qty_metric": 2, "unit_metric": "chilies", "hub_slug": None},
+                {"name": "cherry tomatoes, halved", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 75, "unit_metric": "g", "hub_slug": None},
+                {"name": "long beans or green beans, cut into 2-inch pieces", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "dried shrimp (optional)", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 8, "unit_metric": "g", "hub_slug": None},
+                {"name": "roasted peanuts, roughly chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 35, "unit_metric": "g", "hub_slug": None},
+                {"name": "palm sugar or light brown sugar", "base_qty": 1.5, "unit_us": "tbsp", "base_qty_metric": 20, "unit_metric": "g", "hub_slug": None},
+                {"name": "fish sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fresh lime juice", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+            ],
+            "instructions": [
+                "Peel the green papaya, remove the seeds, and shred it into thin matchsticks using a knife, mandoline, or grater.",
+                "Pound the garlic and chilies together in a large mortar with a pestle until roughly broken down.",
+                "Add the palm sugar and pound briefly to help it dissolve into the garlic and chili paste.",
+                "Add the long beans and cherry tomatoes and lightly bruise them with a few gentle pounds, don't pulverize them.",
+                "Pour in the fish sauce and lime juice and stir to combine, tasting the dressing at the bottom of the mortar.",
+                "Add the shredded papaya and dried shrimp, if using, and use a spoon in one hand and the pestle in the other to pound and toss together, turning the salad over as you go.",
+                "Continue pounding and tossing for a minute or two, until the papaya softens slightly and is well coated in the dressing.",
+                "Taste and adjust the balance of sour, salty, sweet, and spicy with more lime, fish sauce, sugar, or chili as needed.",
+                "Transfer to a plate and top with the chopped peanuts.",
+            ],
+            "step_notes": {
+                1: "Pounding the garlic and chilies into a rough paste first, before anything else goes in, distributes their heat and pungency evenly through the dressing instead of leaving pockets of raw garlic or a single fiery bite of chili.",
+                5: "Alternating the spoon and pestle, turning the salad as you pound, bruises every strand of papaya rather than just the top layer, that's what actually gets the dressing worked into the salad instead of sitting on top of it.",
+            },
+            "tips_and_variations": [
+                "No mortar and pestle, a large bowl and the end of a rolling pin or wooden spoon can approximate the bruising, though the texture won't be quite as authentic.",
+                "Green papaya can be hard to find, shredded green mango or a very firm green cabbage with an extra squeeze of lime are common substitutes.",
+                "Skip the dried shrimp for a vegetarian version, and substitute soy sauce or a mushroom-based fish sauce alternative for the fish sauce.",
+                "Add cooked rice noodles for som tum thua, a heartier variation that turns the salad into more of a meal.",
+            ],
+            "reader_tips": [
+                "Soak shredded papaya in ice water for 10 minutes before dressing it, this crisps it up if it's sitting for a bit before serving.",
+                "Taste the dressing before adding the papaya, it's much easier to adjust the sour-salty-sweet-spicy balance in the mortar than after the whole salad is tossed together.",
+            ],
+            "storage_and_reheating": (
+                "Best eaten fresh within an hour of making, as green "
+                "papaya releases water and turns soggy once dressed. If "
+                "needed, store the shredded papaya and dressing "
+                "separately in the fridge for up to a day and combine just "
+                "before serving."
+            ),
+            "nutrition_note": "A light, low-calorie salad, most of its heft comes from fresh vegetables with just a modest amount of peanuts and dried shrimp for richness.",
+            "faqs": [
+                {"question": "What is green papaya and where do I find it?", "answer": "It's an unripe papaya, firm and starchy rather than sweet, typically sold at Asian grocery stores, sometimes labeled simply as green papaya or as papaya for salad."},
+                {"question": "Do I need a mortar and pestle to make som tum?", "answer": "It's the traditional tool and gives the best texture, but a sturdy bowl and a rolling pin end can substitute if you don't own one, the goal is just to bruise the ingredients rather than finely mince them."},
+                {"question": "How spicy is som tum typically?", "answer": "It's traditionally quite spicy, built on Thai bird's eye chilies, but the heat is fully adjustable by using fewer chilies or removing their seeds."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Thai Recipes", "slug": "thai-recipes"},
+        },
+    },
+    {
+        "slug": "mango-sticky-rice",
+        "template_type": "recipe_or_dish",
+        "title": "Mango Sticky Rice Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "Warm, sweet coconut sticky rice served with ripe sliced "
+                "mango, a classic Thai dessert of glutinous rice steamed "
+                "and soaked in coconut milk."
+            ),
+            "hero_image_query": "mango sticky rice",
+            "why_it_works": (
+                "Steaming the glutinous rice rather than boiling it keeps "
+                "the grains from turning to mush, and letting the hot "
+                "cooked rice soak in warm sweetened coconut milk lets it "
+                "absorb the liquid fully instead of just coating the "
+                "outside."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 30,
+            "total_time_minutes": 300,
+            "servings": 4,
+            "ingredients": [
+                {"name": "Thai glutinous (sticky) rice", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 300, "unit_metric": "g", "hub_slug": None},
+                {"name": "full-fat coconut milk, divided", "base_qty": 1.75, "unit_us": "cups", "base_qty_metric": 420, "unit_metric": "ml", "hub_slug": None},
+                {"name": "granulated sugar", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 65, "unit_metric": "g", "hub_slug": None},
+                {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
+                {"name": "ripe mangoes, peeled and sliced", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "cornstarch", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": "corn-starch"},
+                {"name": "toasted sesame seeds or mung beans, for garnish", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 9, "unit_metric": "g", "hub_slug": None},
+            ],
+            "instructions": [
+                "Rinse the glutinous rice in several changes of water until it runs mostly clear, then soak in plenty of water for at least 4 hours or overnight.",
+                "Drain the rice well and line a steamer basket with cheesecloth or a thin cotton cloth.",
+                "Steam the rice over simmering water for 25-30 minutes, until translucent and tender, flipping it once halfway through for even cooking.",
+                "While the rice steams, warm 1.5 cups of the coconut milk with the sugar and salt in a saucepan over low heat, stirring until dissolved, do not boil.",
+                "Transfer the hot cooked rice to a bowl and pour about three-quarters of the warm coconut milk mixture over it, stirring gently to combine.",
+                "Cover and let the rice sit for 15-20 minutes, allowing it to absorb the coconut milk, reserve the rest of the coconut sauce.",
+                "Whisk the cornstarch into the remaining plain coconut milk and warm gently in a small saucepan until just slightly thickened, this becomes the topping sauce.",
+                "To serve, scoop the sweetened sticky rice onto plates alongside sliced mango, drizzle with the thickened coconut sauce, and sprinkle with sesame seeds or mung beans.",
+            ],
+            "step_notes": {
+                0: "A long soak is what actually softens the starches enough for steaming to fully cook the rice, skipping or shortcutting the soak leaves the grains hard and chalky in the center no matter how long you steam.",
+                5: "Letting the rice rest, covered, after the coconut milk is added gives the grains time to actually absorb the liquid rather than just sitting wet on the surface, patience here is what makes the rice taste seasoned all the way through.",
+            },
+            "tips_and_variations": [
+                "Glutinous rice, also labeled sweet rice or sticky rice, is a different variety from regular short-grain rice, don't substitute regular rice, it won't get the right texture.",
+                "No steamer, a rice cooker with a steaming tray or a metal colander set over a pot of simmering water both work as substitutes.",
+                "Black glutinous rice makes a striking, nuttier variation, though it needs a slightly longer soak and steam time.",
+                "Ataulfo or honey mangoes are especially good here for their low fiber and high sweetness, though any ripe, sweet mango works.",
+            ],
+            "reader_tips": [
+                "Choose mangoes that give slightly to gentle pressure and smell fragrant at the stem end, an underripe mango will taste too tart against the sweet rice.",
+                "Keep the coconut sauce warm but not hot when pouring it over the rice, warm liquid absorbs more evenly than cold, and rice that's too hot can seize slightly when hit with cold liquid.",
+            ],
+            "storage_and_reheating": (
+                "Best served the day it's made, glutinous rice firms up "
+                "noticeably once refrigerated. If needed, store the rice "
+                "and mango separately, covered, up to 2 days, and reheat "
+                "the rice in the microwave with a splash of coconut milk "
+                "or water to loosen it before serving."
+            ),
+            "nutrition_note": "A sweet, coconut-rich dessert, the mango adds natural sweetness and the glutinous rice provides most of the carbohydrate content.",
+            "faqs": [
+                {"question": "Can I use regular rice instead of glutinous rice?", "answer": "No, regular rice doesn't have the same starch structure and won't turn sticky and chewy the way glutinous rice does, look for rice labeled sweet rice or sticky rice specifically."},
+                {"question": "Do I need a rice cooker or bamboo steamer?", "answer": "A dedicated steamer basket works well, but a metal colander or sieve set over a pot of simmering water, covered with a lid, gets the job done just as effectively."},
+                {"question": "Why is my sticky rice still hard in the center?", "answer": "This almost always means the rice wasn't soaked long enough before steaming, aim for a minimum of 4 hours, and overnight if you have the time."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Thai Recipes", "slug": "thai-recipes"},
+        },
+    },
+    {
+        "slug": "thai-basil-chicken-pad-kra-pao",
+        "template_type": "recipe_or_dish",
+        "title": "Thai Basil Chicken (Pad Kra Pao) Recipe",
+        "batch_number": 5,
+        "content": {
+            "meta_description": (
+                "A fast, fiery Thai stir-fry of ground chicken, garlic, "
+                "and chilies tossed with holy basil, served over rice with "
+                "a fried egg."
+            ),
+            "hero_image_query": "thai basil chicken pad kra pao",
+            "why_it_works": (
+                "Pounding the garlic and chilies into a rough paste rather "
+                "than mincing them releases far more of their oils into "
+                "the hot pan almost immediately, letting the whole dish "
+                "cook in just a few fast minutes without the aromatics "
+                "tasting raw."
+            ),
+            "prep_time_minutes": 15,
+            "cook_time_minutes": 10,
+            "total_time_minutes": 25,
+            "servings": 4,
+            "ingredients": [
+                {"name": "garlic cloves", "base_qty": 5, "unit_us": "cloves", "base_qty_metric": 5, "unit_metric": "cloves", "hub_slug": None},
+                {"name": "Thai bird's eye chilies, to taste", "base_qty": 4, "unit_us": "chilies", "base_qty_metric": 4, "unit_metric": "chilies", "hub_slug": None},
+                {"name": "vegetable oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "ground chicken", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "shallot, thinly sliced", "base_qty": 1, "unit_us": "small", "base_qty_metric": 1, "unit_metric": "small", "hub_slug": None},
+                {"name": "green beans, cut into 1-inch pieces", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "g", "hub_slug": None},
+                {"name": "oyster sauce", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "fish sauce", "base_qty": 1.5, "unit_us": "tbsp", "base_qty_metric": 22, "unit_metric": "ml", "hub_slug": None},
+                {"name": "soy sauce", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sugar", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
+                {"name": "fresh Thai holy basil (or Thai basil) leaves", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 40, "unit_metric": "g", "hub_slug": None},
+                {"name": "eggs, for frying", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
+                {"name": "jasmine rice, for serving", "base_qty": 4, "unit_us": "cups cooked", "base_qty_metric": 740, "unit_metric": "g cooked", "hub_slug": None},
+            ],
+            "instructions": [
+                "Pound the garlic and chilies together in a mortar and pestle, or pulse in a food processor, until roughly broken down into a coarse paste.",
+                "Heat 2 tablespoons of the oil in a wok or large skillet over high heat until shimmering.",
+                "Add the garlic-chili paste and stir-fry 20-30 seconds, until very fragrant, taking care not to let the garlic burn.",
+                "Add the ground chicken and shallot, breaking the chicken up with a spatula, and stir-fry until mostly cooked through, 3-4 minutes.",
+                "Add the green beans and stir-fry 1-2 minutes, until just tender-crisp.",
+                "Stir in the oyster sauce, fish sauce, soy sauce, and sugar, tossing to coat everything evenly.",
+                "Cook another 1-2 minutes, until the chicken is fully cooked and the sauce has mostly reduced and coats the meat.",
+                "Remove from heat and fold in the basil leaves just until wilted.",
+                "In a separate pan, fry the eggs in the remaining oil over medium-high heat until the whites are crisp at the edges and the yolks are still runny.",
+                "Serve the basil chicken hot over jasmine rice, each portion topped with a fried egg.",
+            ],
+            "step_notes": {
+                2: "Frying the pounded garlic and chili paste in hot oil for only a brief moment before the chicken goes in builds the base flavor of the whole dish fast, this is a stir-fry meant to move quickly from start to finish, not a slow saute.",
+                8: "A crispy-edged, runny-yolked fried egg on top is a signature, near-nonnegotiable part of pad kra pao, the yolk breaks over the rice and chicken and effectively becomes part of the sauce.",
+            },
+            "tips_and_variations": [
+                "Holy basil (bai kra pao) has a peppery, slightly clove-like flavor that's traditional here, but Thai basil (with its anise note) is the common, widely available substitute and still tastes great.",
+                "Ground pork, beef, or turkey all work in place of chicken using the same technique and timing.",
+                "Adjust the chili count up or down freely, this dish ranges from mild to very spicy depending entirely on how many chilies go into the paste.",
+                "Skip the fried egg for a lighter meal, though it's traditional and adds a rich, sauce-like element once broken over the rice.",
+            ],
+            "reader_tips": [
+                "Have the sauce ingredients measured out and the rice already cooked before you start the stir-fry, this whole dish moves from raw to plated in under 10 minutes once the wok is hot.",
+                "Fold the basil in off the heat, or in just the last few seconds over heat, cooking it too long turns the leaves dark and bitter instead of keeping them bright and fragrant.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate the chicken (without a fried egg) in an "
+                "airtight container up to 3 days. Reheat in a hot skillet "
+                "or wok for a minute or two, a microwave works but the "
+                "basil loses some of its brightness. Fry a fresh egg for "
+                "each reheated portion rather than storing it."
+            ),
+            "nutrition_note": "A protein-forward stir-fry, ground chicken keeps it leaner than versions made with pork or beef, while the fried egg adds extra richness.",
+            "faqs": [
+                {"question": "What's the difference between Thai basil and holy basil?", "answer": "Holy basil (bai kra pao) is spicier and slightly peppery with a clove-like note, and is what the dish is traditionally named for, Thai basil has a milder anise flavor and is the easier-to-find substitute most home cooks use."},
+                {"question": "Is pad kra pao the same as pad Thai?", "answer": "No, they're different dishes entirely, pad Thai is a sweet-sour stir-fried noodle dish, while pad kra pao is a spicy, savory ground meat and basil stir-fry served over plain rice."},
+                {"question": "How spicy is Thai basil chicken traditionally?", "answer": "It's typically quite spicy in Thailand, made with a generous number of bird's eye chilies, but the heat scales easily by adjusting how many chilies go into the paste."},
+            ],
+            "technique_link": None,
+            "related_recipe_slugs": [],
+            "category_link": {"title": "Thai Recipes", "slug": "thai-recipes"},
         },
     },
 ]
