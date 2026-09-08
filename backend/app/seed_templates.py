@@ -6391,6 +6391,14 @@ def resync_content(db: Session) -> int:
     SEED_PAGES at all and would otherwise be wiped out by a naive
     overwrite. Safe to run on every startup: idempotent, a no-op once a
     page's non-image content already matches SEED_PAGES.
+
+    Also removes a key that's no longer in SEED_PAGES at all -- e.g. a
+    recipe whose nutrition_note was deliberately deleted (superseded by
+    structured nutrition_per_unit data) once stayed stuck in the database
+    forever, since the loop below only ever visited keys SEED_PAGES still
+    had. That let a live page render two disagreeing nutrition numbers:
+    the new live block from nutrition_per_unit, and the old nutrition_note
+    prose nothing had ever cleared out of the stored row.
     """
     seed_by_slug = {p["slug"]: p["content"] for p in SEED_PAGES}
     updated = 0
@@ -6401,6 +6409,10 @@ def resync_content(db: Session) -> int:
         # silently fail to persist.
         content = copy.deepcopy(page.content)
         changed = False
+        for key in list(content.keys()):
+            if key not in seed_content and key not in _RUNTIME_IMAGE_KEYS:
+                del content[key]
+                changed = True
         for key, seed_value in seed_content.items():
             if key in _RUNTIME_IMAGE_KEYS:
                 continue
@@ -6408,6 +6420,17 @@ def resync_content(db: Session) -> int:
                 merged = _merge_recipe_cards(content.get(key, []), seed_value)
                 if merged != content.get(key):
                     content[key] = merged
+                    changed = True
+            elif key == "step_notes":
+                # SEED_PAGES writes this with int keys (0-based instruction
+                # indexes), but a dict stored as JSON always reads back with
+                # string keys -- comparing against the int-keyed seed value
+                # directly would look "changed" on every single run even
+                # when nothing actually differs, and rewrite the row on
+                # every startup for no reason.
+                normalized = {str(k): v for k, v in seed_value.items()}
+                if content.get(key) != normalized:
+                    content[key] = normalized
                     changed = True
             elif content.get(key) != seed_value:
                 content[key] = seed_value
