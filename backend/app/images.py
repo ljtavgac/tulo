@@ -50,10 +50,17 @@ ALLOWED_IMAGE_HOSTS = ("https://images.unsplash.com/", "https://images.pexels.co
 
 
 def is_allowed_image_url(url: str | None) -> bool:
-    """True for a missing URL too -- callers that need to distinguish
-    "no photo yet" from "a photo, but a broken one" check `url` themselves
-    first (see fetch_stock_images.py and main.py's /admin/image-audit)."""
-    return url is None or url.startswith(ALLOWED_IMAGE_HOSTS)
+    """False for a missing URL too, not just a disallowed host -- "does this
+    page already have a real, usable photo" is what every caller actually
+    wants to know (fetch_stock_images.py's "does this still need a fetch"
+    check, and main.py's /admin/image-audit "missing vs. broken" report,
+    which checks `if not url` first and only reaches this function once url
+    is already known truthy, so it never actually depends on this case).
+    Getting this backwards once already caused a real bug: treating a
+    missing image_url as "nothing to do here" instead of "needs a fetch"
+    silently stopped every brand new page from ever getting a photo.
+    """
+    return url is not None and url.startswith(ALLOWED_IMAGE_HOSTS)
 
 
 def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:

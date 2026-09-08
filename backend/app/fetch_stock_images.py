@@ -154,14 +154,13 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
 
         query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
         if query_key and query_key in content:
-            # Treats an existing image_url pointing at a disallowed host
-            # (see is_allowed_image_url) the same as no image_url at all --
-            # both need a real fetch. Before this, a URL that slipped past
-            # images.py's own host filter (or was written before that
-            # filter existed) satisfied "already has *a* image_url" forever
-            # and never got a second look, so a page that once broke stayed
-            # broken through every future startup and every future
-            # /admin/fetch-images run until someone found it by hand via
+            # is_allowed_image_url is false for both a missing image_url and
+            # one pointing at a disallowed host -- both need a real fetch.
+            # Before this existed, a URL that slipped past images.py's own
+            # host filter (or was written before that filter existed)
+            # satisfied "already has *a* image_url" forever and never got a
+            # second look, so a page that once broke stayed broken through
+            # every future startup until someone found it by hand via
             # /admin/image-audit and re-ran with force=true.
             if force_this_page or not is_allowed_image_url(content.get("image_url")):
                 query = content[query_key]
