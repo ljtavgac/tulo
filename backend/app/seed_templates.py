@@ -948,12 +948,7 @@ SEED_PAGES = [
             # "nori sheets, for serving" has no nutrition_per_unit -- a "pack"
             # varies too much by brand (10 vs. 50 sheets) to give a real
             # per-unit figure, and nori itself is calorie-negligible either
-            # way. No step_notes on this recipe either: its instructions are
-            # mostly plain assembly, and the two real technique insights
-            # (press the rice firmly, save some furikake for after baking)
-            # already live in reader_tips above -- duplicating them as
-            # step_notes wouldn't add anything, and inventing a third,
-            # weaker one just to hit a quota isn't worth it.
+            # way.
             "ingredients": [
                 {"name": "sushi rice, cooked and seasoned with rice vinegar", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 555, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 210, "protein_g": 4.0, "carbs_g": 46.0, "fat_g": 0.3}},
                 {"name": "imitation crab, chopped", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 454, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 410, "protein_g": 36.0, "carbs_g": 55.0, "fat_g": 2.5}},
@@ -971,6 +966,10 @@ SEED_PAGES = [
                 "Bake for 12-15 minutes, until bubbling and lightly golden on top.",
                 "Cut nori sheets into squares and serve alongside for scooping.",
             ],
+            "step_notes": {
+                2: "The cream cheese isn't just there for flavor, it thickens the topping enough to hold together in a scoop instead of running off the nori like a thin sauce would.",
+                4: "This bake is short and hot mainly to brown and set the topping, the rice and crab are both already fully cooked going in, so there's nothing left to actually cook through.",
+            },
             "tips_and_variations": [
                 "Real cooked crab or shrimp works in place of imitation crab for a more upscale version.",
                 "Add a thin layer of sliced avocado or cucumber under the topping for texture and freshness.",
@@ -2056,6 +2055,12 @@ SEED_PAGES = [
                 "there is no meaningful quality tier to shop for, just "
                 "check that it is plain starch with no added seasoning."
             ),
+            "pairing_suggestions": (
+                "Best reached for wherever a glossy, clear finish matters more "
+                "than a cloudy one: stir-fry sauces, fruit pie and cobbler "
+                "fillings, and pan sauces meant to cling to meat rather than "
+                "pool underneath it."
+            ),
             "faqs": [
                 {
                     "question": "Why did my cornstarch-thickened sauce turn out lumpy?",
@@ -2124,6 +2129,13 @@ SEED_PAGES = [
                 "Check the protein content on the nutrition label if "
                 "it is listed, bread flour should run 12-14%, noticeably "
                 "higher than all-purpose (10-12%)."
+            ),
+            "pairing_suggestions": (
+                "Reach for it with any yeasted dough meant to rise tall and "
+                "chew, pizza dough, bagels, sandwich loaves, and pretzels all "
+                "benefit from the extra structure; skip it for cookies, cakes, "
+                "and pie crust, where all-purpose flour's lower gluten gives "
+                "a more tender result."
             ),
             "faqs": [
                 {
@@ -2274,6 +2286,12 @@ SEED_PAGES = [
                 "very white, bone-dry salt sold as 'Celtic salt' may be "
                 "a lower-quality imitation rather than the real "
                 "hand-harvested product."
+            ),
+            "pairing_suggestions": (
+                "Best on foods where you actually taste the salt itself, not "
+                "just its seasoning effect: sliced ripe tomatoes, good butter "
+                "on bread, dark chocolate, or the crust of a rested, "
+                "just-sliced steak."
             ),
             "faqs": [
                 {
@@ -6307,15 +6325,15 @@ SEED_PAGES = [
             "total_time_minutes": 30,
             "servings": 4,
             "ingredients": [
-                {"name": "skirt steak", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
-                {"name": "orange juice", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None},
-                {"name": "lime juice", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "skirt steak", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1030, "protein_g": 92.0, "carbs_g": 0, "fat_g": 72.0}},
+                {"name": "orange juice", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 60, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 448, "protein_g": 6.8, "carbs_g": 104.0, "fat_g": 2.0}},
+                {"name": "lime juice", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.1, "carbs_g": 1.4, "fat_g": 0}},
                 {"name": "garlic, minced", "base_qty": 4, "unit_us": "cloves", "base_qty_metric": 4, "unit_metric": "cloves", "hub_slug": None},
-                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None},
+                {"name": "olive oil", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 45, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 119, "protein_g": 0, "carbs_g": 0, "fat_g": 13.5}},
                 {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
                 {"name": "ground cumin", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
-                {"name": "corn tortillas", "base_qty": 12, "unit_us": "tortillas", "base_qty_metric": 12, "unit_metric": "tortillas", "hub_slug": None},
-                {"name": "white onion, diced", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 12, "unit_us": "tortillas", "base_qty_metric": 12, "unit_metric": "tortillas", "hub_slug": None, "nutrition_per_unit": {"calories": 52, "protein_g": 1.4, "carbs_g": 11.0, "fat_g": 0.6}},
+                {"name": "white onion, diced", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 64, "protein_g": 1.8, "carbs_g": 15.0, "fat_g": 0.1}},
                 {"name": "cilantro, chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
                 {"name": "lime wedges, for serving", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
             ],
@@ -6327,10 +6345,23 @@ SEED_PAGES = [
                 "Let the steak rest for 5 minutes, then slice thin against the grain.",
                 "Warm the tortillas and fill with sliced steak, onion, and cilantro. Serve with lime wedges.",
             ],
+            "step_notes": {
+                1: "20-30 minutes is plenty for a marinade this acidic, skirt steak is thin enough that the citrus penetrates quickly, longer than a few hours and the acid starts breaking down the surface texture instead of just flavoring it.",
+                3: "Patting off the marinade before it hits the pan matters, wet meat steams instead of searing, which is what actually builds the char this cut is meant to have.",
+            },
             "tips_and_variations": [
                 "Slicing against the grain is what keeps skirt steak tender, cutting with the grain makes every bite noticeably chewier.",
                 "A screaming-hot pan or grill matters more than exact timing here, the goal is a hard char in the time it takes the thin steak to hit medium-rare.",
             ],
+            "reader_tips": [
+                "Look at the direction the muscle fibers run before you start slicing, skirt steak's grain isn't always obvious once it's off the grill and resting.",
+                "A dry cast iron pan gets hotter than most people expect, if the kitchen fills with smoke, that's actually the pan doing its job.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftover meat up to 3 days. Reheat gently in a "
+                "skillet over medium heat, just until warmed through, longer "
+                "and the thin-sliced steak dries out and toughens."
+            ),
             "faqs": [
                 {
                     "question": "What cut of beef is traditional for carne asada?",
@@ -6376,17 +6407,23 @@ SEED_PAGES = [
             "total_time_minutes": 35,
             "servings": 4,
             "ingredients": [
-                {"name": "white fish fillets (cod or mahi mahi)", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
-                {"name": "all-purpose flour", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None},
-                {"name": "cold beer (Mexican lager)", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "white fish fillets (cod or mahi mahi)", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 356, "protein_g": 78.0, "carbs_g": 0, "fat_g": 2.9}},
+                {"name": "all-purpose flour", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 455, "protein_g": 13.0, "carbs_g": 95.0, "fat_g": 1.0}},
+                {"name": "cold beer (Mexican lager)", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 96, "protein_g": 0.9, "carbs_g": 7.6, "fat_g": 0}},
                 {"name": "baking powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 4, "unit_metric": "g", "hub_slug": None},
                 {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
+                # A frying-oil quantity, not an ingested one -- only a thin
+                # absorbed layer actually ends up eaten and that fraction
+                # varies too much by batter and oil temperature to give a
+                # meaningful per-cup figure, so this is left without
+                # nutrition_per_unit rather than overcounting 3 cups of oil
+                # as if it were all consumed.
                 {"name": "neutral oil, for frying", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 700, "unit_metric": "ml", "hub_slug": None},
-                {"name": "green cabbage, shredded", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None},
-                {"name": "mayonnaise", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None},
-                {"name": "chipotle peppers in adobo, minced", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None},
-                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
-                {"name": "corn tortillas", "base_qty": 12, "unit_us": "tortillas", "base_qty_metric": 12, "unit_metric": "tortillas", "hub_slug": None},
+                {"name": "green cabbage, shredded", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 22, "protein_g": 1.1, "carbs_g": 5.2, "fat_g": 0.1}},
+                {"name": "mayonnaise", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 115, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1440, "protein_g": 2.0, "carbs_g": 2.0, "fat_g": 160.0}},
+                {"name": "chipotle peppers in adobo, minced", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 15, "protein_g": 0.5, "carbs_g": 2.0, "fat_g": 0.5}},
+                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.1, "carbs_g": 1.4, "fat_g": 0}},
+                {"name": "corn tortillas", "base_qty": 12, "unit_us": "tortillas", "base_qty_metric": 12, "unit_metric": "tortillas", "hub_slug": None, "nutrition_per_unit": {"calories": 52, "protein_g": 1.4, "carbs_g": 11.0, "fat_g": 0.6}},
             ],
             "instructions": [
                 "Whisk together the mayonnaise, minced chipotle, and 1 tablespoon of the lime juice for the chipotle sauce; set aside.",
@@ -6397,10 +6434,23 @@ SEED_PAGES = [
                 "Dip each fish strip in the batter, let excess drip off, and fry in batches for 3-4 minutes until golden and crisp. Drain on a wire rack.",
                 "Warm the tortillas and assemble with fried fish, cabbage slaw, and a drizzle of chipotle sauce.",
             ],
+            "step_notes": {
+                3: "Whisking in cold beer just until combined, lumps and all, matters, overmixing develops gluten in the flour the same way it would in a pancake batter, and a chewy batter defeats the point of frying it.",
+                5: "375°F is hot enough that the batter sets almost immediately on contact, sealing in moisture before the fish itself overcooks in the couple minutes it takes to fry.",
+            },
             "tips_and_variations": [
                 "Keep the batter cold right up until it hits the oil, a cold batter against hot oil is what makes the crust shatter instead of turning gummy.",
                 "Fry in small batches, too much fish at once drops the oil temperature and the batter absorbs oil instead of crisping.",
             ],
+            "reader_tips": [
+                "Set the batter bowl in a larger bowl of ice water while you work, it stays cold much longer than just leaving it on the counter between batches.",
+                "A wire rack over a sheet pan drains the fried fish better than paper towels, which trap steam underneath and soften the bottom crust.",
+            ],
+            "storage_and_reheating": (
+                "Best eaten fresh, fried batter doesn't hold well. If needed, "
+                "refrigerate the fried fish up to a day and reheat in a hot "
+                "oven, not a microwave, to bring back some crispness."
+            ),
             "faqs": [
                 {
                     "question": "What's the best fish for fish tacos?",
@@ -6449,19 +6499,19 @@ SEED_PAGES = [
             "total_time_minutes": 210,
             "servings": 6,
             "ingredients": [
-                {"name": "beef chuck roast", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None},
-                {"name": "dried guajillo chiles, stemmed and seeded", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 4, "unit_metric": "whole", "hub_slug": None},
-                {"name": "dried ancho chiles, stemmed and seeded", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
-                {"name": "white onion, quartered", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "beef chuck roast", "base_qty": 3, "unit_us": "lb", "base_qty_metric": 1360, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 940, "protein_g": 79.0, "carbs_g": 0, "fat_g": 66.0}},
+                {"name": "dried guajillo chiles, stemmed and seeded", "base_qty": 4, "unit_us": "whole", "base_qty_metric": 4, "unit_metric": "whole", "hub_slug": None, "nutrition_per_unit": {"calories": 15, "protein_g": 0.6, "carbs_g": 3.0, "fat_g": 0.2}},
+                {"name": "dried ancho chiles, stemmed and seeded", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None, "nutrition_per_unit": {"calories": 48, "protein_g": 2.0, "carbs_g": 9.0, "fat_g": 1.3}},
+                {"name": "white onion, quartered", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None, "nutrition_per_unit": {"calories": 44, "protein_g": 1.2, "carbs_g": 10.3, "fat_g": 0.1}},
                 {"name": "garlic", "base_qty": 6, "unit_us": "cloves", "base_qty_metric": 6, "unit_metric": "cloves", "hub_slug": None},
-                {"name": "tomatoes", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
-                {"name": "beef broth", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None},
+                {"name": "tomatoes", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None, "nutrition_per_unit": {"calories": 22, "protein_g": 1.1, "carbs_g": 4.8, "fat_g": 0.2}},
+                {"name": "beef broth", "base_qty": 4, "unit_us": "cups", "base_qty_metric": 950, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 17, "protein_g": 2.8, "carbs_g": 0, "fat_g": 0.5}},
                 {"name": "bay leaves", "base_qty": 2, "unit_us": "whole", "base_qty_metric": 2, "unit_metric": "whole", "hub_slug": None},
                 {"name": "dried oregano", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
                 {"name": "salt", "base_qty": 2, "unit_us": "tsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
-                {"name": "corn tortillas", "base_qty": 18, "unit_us": "tortillas", "base_qty_metric": 18, "unit_metric": "tortillas", "hub_slug": None},
-                {"name": "shredded Oaxaca or mozzarella cheese", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None},
-                {"name": "white onion, diced, for serving", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 18, "unit_us": "tortillas", "base_qty_metric": 18, "unit_metric": "tortillas", "hub_slug": None, "nutrition_per_unit": {"calories": 52, "protein_g": 1.4, "carbs_g": 11.0, "fat_g": 0.6}},
+                {"name": "shredded Oaxaca or mozzarella cheese", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 225, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 336, "protein_g": 24.0, "carbs_g": 2.8, "fat_g": 25.0}},
+                {"name": "white onion, diced, for serving", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 80, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 64, "protein_g": 1.8, "carbs_g": 15.0, "fat_g": 0.1}},
                 {"name": "cilantro, chopped, for serving", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
             ],
             "instructions": [
@@ -6474,10 +6524,24 @@ SEED_PAGES = [
                 "Dip tortillas in the reserved fat, fill with shredded meat and cheese, fold, and pan-fry on a griddle until crisp and golden on both sides.",
                 "Serve the tacos with the hot consommé for dipping, topped with diced onion and cilantro.",
             ],
+            "step_notes": {
+                0: "Toasting the dried chiles briefly before soaking wakes up their oils the same way toasting a spice does, skip it and the sauce tastes flatter even though the chiles look identical once blended.",
+                5: "Skimming the fat off the top before straining isn't optional cleanup, that reserved fat is what fries the tortillas crisp and deep red in the next step, without it they just steam in the pan.",
+            },
             "tips_and_variations": [
                 "Don't skip skimming the fat, it's what makes the tortillas fry up crisp and deep red instead of just steaming in the broth.",
                 "The meat and consommé both improve overnight in the fridge, this is genuinely a good make-ahead recipe.",
             ],
+            "reader_tips": [
+                "Make this a day ahead if you can, the flavor is noticeably better once the meat has had time to sit in the broth overnight.",
+                "A blender handles the softened chiles more smoothly than a food processor, strain the sauce afterward if any tough bits of skin remain.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate the shredded meat and consommé separately for up "
+                "to 4 days, or freeze up to 3 months. Reheat the consommé on "
+                "the stovetop and re-fry assembled tacos fresh rather than "
+                "microwaving them, which turns the crisp shell soft."
+            ),
             "faqs": [
                 {
                     "question": "What is birria traditionally made with?",
@@ -6525,16 +6589,16 @@ SEED_PAGES = [
             "total_time_minutes": 40,
             "servings": 4,
             "ingredients": [
-                {"name": "sweet potatoes, diced small", "base_qty": 2, "unit_us": "large", "base_qty_metric": 600, "unit_metric": "g", "hub_slug": None},
-                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
+                {"name": "sweet potatoes, diced small", "base_qty": 2, "unit_us": "large", "base_qty_metric": 600, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 180, "protein_g": 4.0, "carbs_g": 41.0, "fat_g": 0.2}},
+                {"name": "olive oil", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 119, "protein_g": 0, "carbs_g": 0, "fat_g": 13.5}},
                 {"name": "ground cumin", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
                 {"name": "smoked paprika", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
                 {"name": "chili powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
                 {"name": "salt", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 6, "unit_metric": "g", "hub_slug": None},
-                {"name": "black beans, drained and rinsed", "base_qty": 1, "unit_us": "can (15 oz)", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None},
-                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
-                {"name": "corn tortillas", "base_qty": 8, "unit_us": "tortillas", "base_qty_metric": 8, "unit_metric": "tortillas", "hub_slug": None},
-                {"name": "avocado, sliced", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None},
+                {"name": "black beans, drained and rinsed", "base_qty": 1, "unit_us": "can (15 oz)", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 350, "protein_g": 21.0, "carbs_g": 63.0, "fat_g": 1.5}},
+                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.1, "carbs_g": 1.4, "fat_g": 0}},
+                {"name": "corn tortillas", "base_qty": 8, "unit_us": "tortillas", "base_qty_metric": 8, "unit_metric": "tortillas", "hub_slug": None, "nutrition_per_unit": {"calories": 52, "protein_g": 1.4, "carbs_g": 11.0, "fat_g": 0.6}},
+                {"name": "avocado, sliced", "base_qty": 1, "unit_us": "whole", "base_qty_metric": 1, "unit_metric": "whole", "hub_slug": None, "nutrition_per_unit": {"calories": 240, "protein_g": 3.0, "carbs_g": 13.0, "fat_g": 22.0}},
                 {"name": "cilantro, chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
             ],
             "instructions": [
@@ -6544,10 +6608,22 @@ SEED_PAGES = [
                 "Warm the black beans in a small pot with a splash of water, then stir in the lime juice.",
                 "Warm the tortillas and fill with roasted sweet potato, black beans, avocado, and cilantro.",
             ],
+            "step_notes": {
+                2: "A true single layer with a little space between pieces is what lets the oven's dry heat caramelize the cut edges, piled-up or touching pieces trap steam and end up soft instead of browned.",
+            },
             "tips_and_variations": [
                 "Spread the sweet potato in a genuinely single layer, crowding the pan traps steam and the pieces soften instead of caramelizing.",
                 "A squeeze of lime and a spoonful of plain yogurt or crema balance the sweetness of the potato nicely if serving with something creamy.",
             ],
+            "reader_tips": [
+                "Cut the sweet potato into genuinely small, even pieces, roughly half-inch cubes roast through and caramelize in the same 20-25 minutes; larger chunks won't.",
+                "Don't rinse the black beans too aggressively, a little of their own starchy liquid clinging on helps the lime juice cling to them too.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate the roasted sweet potato and beans separately "
+                "for up to 4 days. Reheat in a skillet or oven rather than "
+                "the microwave to bring some of the caramelized edge back."
+            ),
             "faqs": [
                 {
                     "question": "Can I make this ahead of time?",
@@ -6594,16 +6670,16 @@ SEED_PAGES = [
             "total_time_minutes": 18,
             "servings": 4,
             "ingredients": [
-                {"name": "large shrimp, peeled and deveined", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
+                {"name": "large shrimp, peeled and deveined", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 480, "protein_g": 92.0, "carbs_g": 4.0, "fat_g": 8.0}},
                 {"name": "chili powder", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
                 {"name": "ground cumin", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
                 {"name": "garlic powder", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
                 {"name": "salt", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 3, "unit_metric": "g", "hub_slug": None},
-                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
-                {"name": "olive oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
-                {"name": "green cabbage, shredded", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None},
+                {"name": "lime juice", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.1, "carbs_g": 1.4, "fat_g": 0}},
+                {"name": "olive oil", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 119, "protein_g": 0, "carbs_g": 0, "fat_g": 13.5}},
+                {"name": "green cabbage, shredded", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 180, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 22, "protein_g": 1.1, "carbs_g": 5.2, "fat_g": 0.1}},
                 {"name": "cilantro, chopped", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 10, "unit_metric": "g", "hub_slug": None},
-                {"name": "corn tortillas", "base_qty": 8, "unit_us": "tortillas", "base_qty_metric": 8, "unit_metric": "tortillas", "hub_slug": None},
+                {"name": "corn tortillas", "base_qty": 8, "unit_us": "tortillas", "base_qty_metric": 8, "unit_metric": "tortillas", "hub_slug": None, "nutrition_per_unit": {"calories": 52, "protein_g": 1.4, "carbs_g": 11.0, "fat_g": 0.6}},
             ],
             "instructions": [
                 "Toss the shrimp with chili powder, cumin, garlic powder, and salt.",
@@ -6613,10 +6689,22 @@ SEED_PAGES = [
                 "Remove from heat and toss with the remaining lime juice.",
                 "Warm the tortillas and fill with shrimp and slaw.",
             ],
+            "step_notes": {
+                3: "A single layer with room between the shrimp is what lets the pan stay hot enough to sear, crowding them drops the pan's temperature and they release liquid and steam instead of browning.",
+            },
             "tips_and_variations": [
                 "Don't crowd the pan, shrimp packed too close together steam instead of sear and won't brown properly.",
                 "Pull the shrimp the moment they turn opaque and curl into a loose C shape, a tight O shape means they've already gone slightly past done.",
             ],
+            "reader_tips": [
+                "Pat the shrimp fully dry before seasoning, any surface moisture works against getting a real sear in such a short cook time.",
+                "Have the slaw and tortillas ready before the shrimp hit the pan, they cook fast enough that there's no time to prep anything else afterward.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate leftover shrimp up to 2 days. Reheat briefly in "
+                "a hot skillet, shrimp overcook fast even on reheat, so keep "
+                "it quick."
+            ),
             "faqs": [
                 {
                     "question": "How do I know when shrimp are done cooking?",
@@ -6662,14 +6750,14 @@ SEED_PAGES = [
             "total_time_minutes": 95,
             "servings": 8,
             "ingredients": [
-                {"name": "double pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "package", "base_qty_metric": 1, "unit_metric": "package", "hub_slug": None},
-                {"name": "apples (Granny Smith or Honeycrisp), peeled and sliced", "base_qty": 6, "unit_us": "large", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
-                {"name": "all-purpose flour", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 24, "unit_metric": "g", "hub_slug": None},
+                {"name": "double pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "package", "base_qty_metric": 1, "unit_metric": "package", "hub_slug": None, "nutrition_per_unit": {"calories": 1680, "protein_g": 20.0, "carbs_g": 160.0, "fat_g": 108.0}},
+                {"name": "apples (Granny Smith or Honeycrisp), peeled and sliced", "base_qty": 6, "unit_us": "large", "base_qty_metric": 900, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 130, "protein_g": 0.6, "carbs_g": 34.0, "fat_g": 0.4}},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 774, "protein_g": 0, "carbs_g": 200.0, "fat_g": 0}},
+                {"name": "all-purpose flour", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 24, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 28, "protein_g": 0.8, "carbs_g": 6.0, "fat_g": 0.1}},
                 {"name": "ground cinnamon", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
-                {"name": "lemon juice", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None},
-                {"name": "unsalted butter, cubed", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
-                {"name": "egg, beaten (for egg wash)", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "lemon juice", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 15, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 4, "protein_g": 0.1, "carbs_g": 1.3, "fat_g": 0}},
+                {"name": "unsalted butter, cubed", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5}},
+                {"name": "egg, beaten (for egg wash)", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 72, "protein_g": 6.3, "carbs_g": 0.4, "fat_g": 4.8}},
             ],
             "instructions": [
                 "Preheat the oven to 425°F (220°C) and fit one pie crust into a 9-inch pie dish.",
@@ -6680,10 +6768,23 @@ SEED_PAGES = [
                 "Bake for 20 minutes, then reduce the oven to 375°F (190°C) and bake for 35-40 minutes more, until the crust is deep golden and filling bubbles through the vents.",
                 "Cool at least 2 hours before slicing, so the filling has time to set.",
             ],
+            "step_notes": {
+                3: "Vents aren't just decorative, they let steam escape as the filling cooks, without them steam has nowhere to go and can split the top crust open somewhere less tidy.",
+                5: "Starting hot and dropping the temperature partway through browns the crust before the filling has fully cooked, then finishes the filling gently without burning the crust further.",
+            },
             "tips_and_variations": [
                 "Letting the apples sit with the sugar for 15 minutes draws out juice you can drain off, keeping the bottom crust from turning soggy.",
                 "Cooling the pie fully before slicing isn't optional if you want clean slices, a warm pie's filling is still loose.",
             ],
+            "reader_tips": [
+                "Mix a couple of apple varieties, a firm tart one like Granny Smith alongside a sweeter one like Honeycrisp gives more complex flavor than either alone.",
+                "Tent the edges of the crust with foil partway through baking if they're browning faster than the center, a common issue in the last 15 minutes.",
+            ],
+            "storage_and_reheating": (
+                "Store loosely covered at room temperature up to 2 days, or "
+                "refrigerate up to 5 days. Reheat individual slices in a "
+                "300°F oven to re-crisp the crust, a microwave leaves it soft."
+            ),
             "faqs": [
                 {
                     "question": "Why is my apple pie filling watery?",
@@ -6731,10 +6832,10 @@ SEED_PAGES = [
             "total_time_minutes": 70,
             "servings": 8,
             "ingredients": [
-                {"name": "single pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None},
-                {"name": "pumpkin puree", "base_qty": 15, "unit_us": "oz can", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None},
-                {"name": "sweetened condensed milk", "base_qty": 14, "unit_us": "oz can", "base_qty_metric": 396, "unit_metric": "g", "hub_slug": None},
-                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
+                {"name": "single pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None, "nutrition_per_unit": {"calories": 840, "protein_g": 10.0, "carbs_g": 80.0, "fat_g": 54.0}},
+                {"name": "pumpkin puree", "base_qty": 15, "unit_us": "oz can", "base_qty_metric": 425, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 83, "protein_g": 2.7, "carbs_g": 20.0, "fat_g": 0.7}},
+                {"name": "sweetened condensed milk", "base_qty": 14, "unit_us": "oz can", "base_qty_metric": 396, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1300, "protein_g": 32.0, "carbs_g": 220.0, "fat_g": 35.0}},
+                {"name": "eggs", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 72, "protein_g": 6.3, "carbs_g": 0.4, "fat_g": 4.8}},
                 {"name": "ground cinnamon", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 2, "unit_metric": "g", "hub_slug": None},
                 {"name": "ground ginger", "base_qty": 0.5, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "g", "hub_slug": None},
                 {"name": "ground clove", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 0.5, "unit_metric": "g", "hub_slug": None},
@@ -6747,10 +6848,21 @@ SEED_PAGES = [
                 "Bake for 15 minutes, then reduce the oven to 350°F (175°C) and bake for 40-45 minutes more, until the center is just set but still slightly jiggly.",
                 "Cool completely on a wire rack before slicing, at least 2 hours.",
             ],
+            "step_notes": {
+                3: "Dropping the oven temperature after the first 15 minutes keeps the custard's edges from overcooking and cracking while the center gently finishes setting, a steady lower heat all the way through does the same job more slowly.",
+            },
             "tips_and_variations": [
                 "A slight jiggle in the very center when you take it out is correct, it firms up fully as it cools; a fully-set center at pull time means it's overbaked.",
                 "Make sure to use plain pumpkin puree, not pumpkin pie filling, which is already sweetened and spiced differently than this recipe accounts for.",
             ],
+            "reader_tips": [
+                "Place the pie dish on a baking sheet before it goes in the oven, it catches any filling that bubbles over the edge and makes cleanup much easier.",
+                "Whisk the filling until it's completely smooth with no streaks of condensed milk, an unevenly mixed filling can bake with slightly different textures in different spots.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days, this pie is traditionally served "
+                "cold or at room temperature, not reheated."
+            ),
             "faqs": [
                 {
                     "question": "Why did my pumpkin pie crack?",
@@ -6798,13 +6910,13 @@ SEED_PAGES = [
             "total_time_minutes": 210,
             "servings": 8,
             "ingredients": [
-                {"name": "graham cracker crumbs", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
-                {"name": "unsalted butter, melted", "base_qty": 6, "unit_us": "tbsp", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 38, "unit_metric": "g", "hub_slug": None},
-                {"name": "sweetened condensed milk", "base_qty": 14, "unit_us": "oz can", "base_qty_metric": 396, "unit_metric": "g", "hub_slug": None},
-                {"name": "egg yolks", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
-                {"name": "key lime juice (or regular lime juice)", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None},
-                {"name": "heavy cream, whipped, for topping", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
+                {"name": "graham cracker crumbs", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 356, "protein_g": 5.7, "carbs_g": 65.0, "fat_g": 8.7}},
+                {"name": "unsalted butter, melted", "base_qty": 6, "unit_us": "tbsp", "base_qty_metric": 85, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5}},
+                {"name": "granulated sugar", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 38, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 48, "protein_g": 0, "carbs_g": 12.5, "fat_g": 0}},
+                {"name": "sweetened condensed milk", "base_qty": 14, "unit_us": "oz can", "base_qty_metric": 396, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 1300, "protein_g": 32.0, "carbs_g": 220.0, "fat_g": 35.0}},
+                {"name": "egg yolks", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 55, "protein_g": 2.7, "carbs_g": 0.6, "fat_g": 4.5}},
+                {"name": "key lime juice (or regular lime juice)", "base_qty": 0.5, "unit_us": "cup", "base_qty_metric": 120, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 60, "protein_g": 1.0, "carbs_g": 20.0, "fat_g": 0.2}},
+                {"name": "heavy cream, whipped, for topping", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 821, "protein_g": 5.0, "carbs_g": 6.6, "fat_g": 88.0}},
             ],
             "instructions": [
                 "Preheat the oven to 350°F (175°C).",
@@ -6815,10 +6927,22 @@ SEED_PAGES = [
                 "Cool to room temperature, then refrigerate at least 3 hours before serving.",
                 "Top with whipped cream just before serving.",
             ],
+            "step_notes": {
+                3: "The lime juice's acid actually thickens the condensed milk on contact, which is why this filling can set with barely any oven time at all, the brief bake is just finishing the job, not doing all of it.",
+            },
             "tips_and_variations": [
                 "Real key limes are more tart and floral than standard limes but much more work to juice, bottled key lime juice is a genuinely good shortcut here.",
                 "Pressing the crust firmly and evenly, especially into the corners, is what keeps it from crumbling apart when sliced.",
             ],
+            "reader_tips": [
+                "Let the crust cool fully before adding the filling, a warm crust can make the bottom layer of filling set unevenly.",
+                "Whip the cream just before serving rather than ahead of time, it holds its shape best right after whipping.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days. This pie is served cold and isn't "
+                "reheated; add the whipped cream topping fresh if making the "
+                "pie itself ahead."
+            ),
             "faqs": [
                 {
                     "question": "What's the difference between key limes and regular limes?",
@@ -6865,16 +6989,16 @@ SEED_PAGES = [
             "total_time_minutes": 280,
             "servings": 8,
             "ingredients": [
-                {"name": "single pie crust, baked and cooled", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
-                {"name": "cornstarch", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 40, "unit_metric": "g", "hub_slug": "corn-starch"},
-                {"name": "unsweetened cocoa powder", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None},
+                {"name": "single pie crust, baked and cooled", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None, "nutrition_per_unit": {"calories": 840, "protein_g": 10.0, "carbs_g": 80.0, "fat_g": 54.0}},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 774, "protein_g": 0, "carbs_g": 200.0, "fat_g": 0}},
+                {"name": "cornstarch", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 40, "unit_metric": "g", "hub_slug": "corn-starch", "nutrition_per_unit": {"calories": 488, "protein_g": 0.3, "carbs_g": 117.0, "fat_g": 0.1}},
+                {"name": "unsweetened cocoa powder", "base_qty": 0.33, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 197, "protein_g": 17.0, "carbs_g": 47.0, "fat_g": 11.7}},
                 {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
-                {"name": "whole milk", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 720, "unit_metric": "ml", "hub_slug": None},
-                {"name": "egg yolks", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None},
-                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None},
-                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
-                {"name": "heavy cream, whipped, for topping", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "ml", "hub_slug": None},
+                {"name": "whole milk", "base_qty": 3, "unit_us": "cups", "base_qty_metric": 720, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 149, "protein_g": 7.7, "carbs_g": 11.7, "fat_g": 8.0}},
+                {"name": "egg yolks", "base_qty": 4, "unit_us": "large", "base_qty_metric": 4, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 55, "protein_g": 2.7, "carbs_g": 0.6, "fat_g": 4.5}},
+                {"name": "unsalted butter", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 28, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5}},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 12, "protein_g": 0, "carbs_g": 0.5, "fat_g": 0}},
+                {"name": "heavy cream, whipped, for topping", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 360, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 821, "protein_g": 5.0, "carbs_g": 6.6, "fat_g": 88.0}},
             ],
             "instructions": [
                 "Whisk together the sugar, cornstarch, cocoa powder, and salt in a saucepan.",
@@ -6885,10 +7009,22 @@ SEED_PAGES = [
                 "Refrigerate at least 4 hours, or until fully set.",
                 "Top with whipped cream just before serving.",
             ],
+            "step_notes": {
+                2: "Medium heat and constant whisking give the cornstarch time to thicken the custard gradually and evenly, higher heat cooks the egg yolks into visible curds before the starch has fully activated.",
+                4: "Plastic wrap pressed flush against the surface, not just draped over the dish, is what actually stops a skin from forming, any air gap between the wrap and the filling lets it happen anyway.",
+            },
             "tips_and_variations": [
                 "Pressing plastic wrap directly onto the filling's surface before chilling is what keeps a thick skin from forming on top.",
                 "Whisk constantly while the custard cooks, walking away even briefly is how it scrambles or scorches on the bottom.",
             ],
+            "reader_tips": [
+                "Use a whisk, not a spoon, while the custard cooks, it reaches into the corners of the pan where scorching tends to start first.",
+                "The full 4-hour chill really is necessary, cutting it early gives cleaner-looking slices but a filling that's noticeably softer than intended.",
+            ],
+            "storage_and_reheating": (
+                "Refrigerate up to 4 days. This pie is served cold and isn't "
+                "reheated."
+            ),
             "faqs": [
                 {
                     "question": "Why is my chocolate cream pie filling runny?",
@@ -6936,13 +7072,13 @@ SEED_PAGES = [
             "total_time_minutes": 65,
             "servings": 8,
             "ingredients": [
-                {"name": "single pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None},
-                {"name": "pecan halves", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None},
-                {"name": "corn syrup", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
-                {"name": "brown sugar, packed", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
-                {"name": "eggs", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None},
-                {"name": "unsalted butter, melted", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None},
-                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None},
+                {"name": "single pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "crust", "base_qty_metric": 1, "unit_metric": "crust", "hub_slug": None, "nutrition_per_unit": {"calories": 840, "protein_g": 10.0, "carbs_g": 80.0, "fat_g": 54.0}},
+                {"name": "pecan halves", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 165, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 753, "protein_g": 10.0, "carbs_g": 15.0, "fat_g": 78.0}},
+                {"name": "corn syrup", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 960, "protein_g": 0, "carbs_g": 260.0, "fat_g": 0}},
+                {"name": "brown sugar, packed", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 828, "protein_g": 0, "carbs_g": 214.0, "fat_g": 0}},
+                {"name": "eggs", "base_qty": 3, "unit_us": "large", "base_qty_metric": 3, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 72, "protein_g": 6.3, "carbs_g": 0.4, "fat_g": 4.8}},
+                {"name": "unsalted butter, melted", "base_qty": 3, "unit_us": "tbsp", "base_qty_metric": 42, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5}},
+                {"name": "vanilla extract", "base_qty": 1, "unit_us": "tsp", "base_qty_metric": 5, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 12, "protein_g": 0, "carbs_g": 0.5, "fat_g": 0}},
                 {"name": "salt", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1.5, "unit_metric": "g", "hub_slug": None},
             ],
             "instructions": [
@@ -6953,10 +7089,23 @@ SEED_PAGES = [
                 "Bake for 45-50 minutes, until the edges are set and the center has a slight jiggle.",
                 "Cool completely on a wire rack, at least 2 hours, before slicing.",
             ],
+            "step_notes": {
+                0: "A quick toast, just until fragrant, is enough to bring out the pecans' natural oils without pushing them toward bitter, they'll spend another 45 minutes in the oven submerged in filling, so a light touch here is deliberate.",
+                4: "The same jiggle-in-the-center rule as custard pies applies here, the filling firms up as it cools, so pulling it while the very center still moves slightly avoids overbaking.",
+            },
             "tips_and_variations": [
                 "Toasting the pecans first, even briefly, makes a real difference, their flavor otherwise gets muted sitting in the sweet filling for the full bake.",
                 "Tent the edges of the crust with foil partway through baking if they're browning faster than the filling sets.",
             ],
+            "reader_tips": [
+                "Arrange the pecans cut-side down in a neat layer if you want a clean, presentation-ready top, they'll float slightly as the filling bakes but mostly hold their arrangement.",
+                "Let the pie cool completely, undisturbed, on a wire rack rather than moving it around, the filling is still quite loose right out of the oven.",
+            ],
+            "storage_and_reheating": (
+                "Store loosely covered at room temperature up to 2 days, or "
+                "refrigerate up to 5 days. Serve at room temperature or "
+                "gently warmed, not reheated hot."
+            ),
             "faqs": [
                 {
                     "question": "How do I know when pecan pie is done?",
@@ -7004,13 +7153,13 @@ SEED_PAGES = [
             "total_time_minutes": 200,
             "servings": 8,
             "ingredients": [
-                {"name": "double pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "package", "base_qty_metric": 1, "unit_metric": "package", "hub_slug": None},
-                {"name": "sour cherries, pitted (fresh or frozen)", "base_qty": 5, "unit_us": "cups", "base_qty_metric": 700, "unit_metric": "g", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None},
-                {"name": "cornstarch", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": "corn-starch"},
+                {"name": "double pie crust, homemade or store-bought", "base_qty": 1, "unit_us": "package", "base_qty_metric": 1, "unit_metric": "package", "hub_slug": None, "nutrition_per_unit": {"calories": 1680, "protein_g": 20.0, "carbs_g": 160.0, "fat_g": 108.0}},
+                {"name": "sour cherries, pitted (fresh or frozen)", "base_qty": 5, "unit_us": "cups", "base_qty_metric": 700, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 78, "protein_g": 1.6, "carbs_g": 19.0, "fat_g": 0.5}},
+                {"name": "granulated sugar", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 200, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 774, "protein_g": 0, "carbs_g": 200.0, "fat_g": 0}},
+                {"name": "cornstarch", "base_qty": 0.25, "unit_us": "cup", "base_qty_metric": 30, "unit_metric": "g", "hub_slug": "corn-starch", "nutrition_per_unit": {"calories": 488, "protein_g": 0.3, "carbs_g": 117.0, "fat_g": 0.1}},
                 {"name": "almond extract", "base_qty": 0.25, "unit_us": "tsp", "base_qty_metric": 1, "unit_metric": "ml", "hub_slug": None},
-                {"name": "unsalted butter, cubed", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None},
-                {"name": "egg, beaten (for egg wash)", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None},
+                {"name": "unsalted butter, cubed", "base_qty": 1, "unit_us": "tbsp", "base_qty_metric": 14, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5}},
+                {"name": "egg, beaten (for egg wash)", "base_qty": 1, "unit_us": "large", "base_qty_metric": 1, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 72, "protein_g": 6.3, "carbs_g": 0.4, "fat_g": 4.8}},
             ],
             "instructions": [
                 "Preheat the oven to 425°F (220°C) and fit one crust into a 9-inch pie dish.",
@@ -7022,10 +7171,23 @@ SEED_PAGES = [
                 "Bake for 20 minutes, then reduce the oven to 375°F (190°C) and bake 30 minutes more, until deep golden and bubbling through the vents.",
                 "Cool at least 3 hours before slicing to let the filling fully set.",
             ],
+            "step_notes": {
+                1: "Draining thawed cherries well, and using only a measured 1/4 cup of the reserved juice, keeps the filling from ending up with more liquid than the cornstarch can actually thicken.",
+                6: "The same hot-start, lower-finish bake as apple pie, it browns the crust before the filling has fully cooked, then lets the filling finish thickening without scorching the top.",
+            },
             "tips_and_variations": [
                 "Sour (tart) cherries, sold frozen year-round if not in fresh season, make a noticeably better pie than sweet cherries here, don't substitute without adjusting the sugar down.",
                 "A splash of almond extract is a classic pairing with cherry, it doesn't taste like almond so much as it deepens the cherry flavor itself.",
             ],
+            "reader_tips": [
+                "A cherry pitter makes fresh cherries genuinely fast to prep, worth owning if cherry pie becomes a repeat recipe.",
+                "Set the pie on a foil-lined baking sheet before it goes in the oven, this filling reliably bubbles over the vents partway through.",
+            ],
+            "storage_and_reheating": (
+                "Store loosely covered at room temperature up to 2 days, or "
+                "refrigerate up to 5 days. Reheat individual slices in a "
+                "300°F oven to re-crisp the crust."
+            ),
             "faqs": [
                 {
                     "question": "Can I use sweet cherries instead of sour cherries?",
@@ -7101,7 +7263,76 @@ def _check_no_double_dashes() -> None:
     )
 
 
+# template_type -> the fields every live page of that type is required to
+# have populated. Each is a "component" this site's own content-depth
+# standard treats as universal, not incidental -- the fields that were
+# quietly missing on 11 new pages once (all skipped for pacing while a
+# large content-creation batch was in flight) and had to be found by a
+# manual re-audit rather than caught immediately.
+#
+# Two fields are deliberately absent from this list even though they look
+# similar: RecipeContent.pan_size (only recipes actually baked in a shaped
+# pan have one -- a cocktail or a skillet sear never will) and
+# IngredientHubContent.variety_notes ("only where a real variety
+# distinction exists... omit elsewhere rather than padding", per that
+# field's own doc comment in types.ts). Both are conditional by design, not
+# omittable-but-expected the way everything below is -- requiring them here
+# would force inventing content that doesn't exist, which is exactly what
+# this whole content model is built to avoid.
+_REQUIRED_CONTENT_FIELDS: dict[str, list[str]] = {
+    "recipe_or_dish": ["tips_and_variations", "storage_and_reheating", "reader_tips", "faqs", "step_notes"],
+    "ingredient_hub": ["buying_tips", "pairing_suggestions", "faqs"],
+    "howto_technique": ["intro", "common_mistakes", "equipment", "faqs"],
+    "definition": ["faqs"],
+    "comparison": ["faqs"],
+    "substitute": ["faqs"],
+    "category_roundup": ["faqs", "sub_categories"],
+}
+
+
+def _check_content_depth() -> None:
+    """Every live page of a template type in _REQUIRED_CONTENT_FIELDS must
+    have every field listed for that type populated (a non-empty list/dict/
+    string) -- raises immediately at import time otherwise, the same
+    enforcement pattern as _check_no_double_dashes above, and for the same
+    reason: resync_content() pushes every edit here straight to production
+    on the next deploy, so a new page (or batch of them) that's missing a
+    component needs to be caught before it ships, not found later by a
+    manual re-audit of the live site.
+
+    A recipe's nutrition data is checked separately (nutrition_note OR at
+    least one ingredient's nutrition_per_unit -- either satisfies the
+    "nutrition is represented" requirement, and the two are mutually
+    exclusive by design, see the seed data's own comments on
+    nutrition_note).
+    """
+    missing: list[tuple[str, str, str]] = []
+    for page in SEED_PAGES:
+        required = _REQUIRED_CONTENT_FIELDS.get(page["template_type"])
+        if not required:
+            continue
+        content = page["content"]
+        for field in required:
+            if not content.get(field):
+                missing.append((page["slug"], page["template_type"], field))
+        if page["template_type"] == "recipe_or_dish":
+            has_nutrition = content.get("nutrition_note") or any(
+                ing.get("nutrition_per_unit") for ing in content.get("ingredients", [])
+            )
+            if not has_nutrition:
+                missing.append((page["slug"], page["template_type"], "nutrition (note or per_unit)"))
+    if not missing:
+        return
+    shown = "\n".join(f"  [{tt}] {slug}: missing {field}" for slug, tt, field in missing[:20])
+    more = f"\n  ...and {len(missing) - 20} more" if len(missing) > 20 else ""
+    raise ValueError(
+        f"Found {len(missing)} content-depth gap(s) in SEED_PAGES -- every "
+        f"page must have every component for its template type populated:\n{shown}{more}"
+    )
+
+
 _check_no_double_dashes()
+_check_content_depth()
 
 
 def seed(db: Session) -> int:
