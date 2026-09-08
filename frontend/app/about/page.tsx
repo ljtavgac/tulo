@@ -47,9 +47,7 @@ export default async function AboutPage() {
         </p>
         <p>
           Ingredient hubs, how-to guides, substitute comparisons, and curated collections are
-          all built to answer the specific question that brought you to the page, not to pad
-          out word count. If a page doesn&apos;t have something useful to add, it doesn&apos;t
-          get published.
+          all tailored to your needs.
         </p>
         <p>
           We&apos;re actively growing Tulo&apos;s library of recipes and guides. If something

@@ -32,7 +32,7 @@ export default function Footer() {
           <h2 className="text-xs font-semibold uppercase tracking-wide text-cream/50">Explore</h2>
           <nav className="mt-4 flex flex-col gap-2 text-sm">
             {FOOD_INDEX_SECTIONS.map((section) => (
-              <Link key={section.key} href={section.path} className="text-cream/80 hover:text-accent">
+              <Link key={section.key} href={section.path} className="text-cream/80 hover:text-cream">
                 {section.label}
               </Link>
             ))}
@@ -43,7 +43,7 @@ export default function Footer() {
           <h2 className="text-xs font-semibold uppercase tracking-wide text-cream/50">Guides</h2>
           <nav className="mt-4 flex flex-col gap-2 text-sm">
             {LONG_TAIL_SECTIONS.map((section) => (
-              <Link key={section.key} href={section.path} className="text-cream/80 hover:text-accent">
+              <Link key={section.key} href={section.path} className="text-cream/80 hover:text-cream">
                 {section.label}
               </Link>
             ))}
@@ -54,7 +54,7 @@ export default function Footer() {
           <h2 className="text-xs font-semibold uppercase tracking-wide text-cream/50">Tools</h2>
           <nav className="mt-4 flex flex-col gap-2 text-sm">
             {TOOL_PAGES.map((tool) => (
-              <Link key={tool.slug} href={pagePath("tool_page", tool.slug)} className="text-cream/80 hover:text-accent">
+              <Link key={tool.slug} href={pagePath("tool_page", tool.slug)} className="text-cream/80 hover:text-cream">
                 {tool.title}
               </Link>
             ))}
@@ -65,13 +65,13 @@ export default function Footer() {
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-cream/50">
           <p>© {new Date().getFullYear()} Tulo</p>
           <nav className="flex flex-wrap gap-4">
-            <Link href="/about" className="hover:text-accent">
+            <Link href="/about" className="hover:text-cream">
               About
             </Link>
-            <Link href="/contact" className="hover:text-accent">
+            <Link href="/contact" className="hover:text-cream">
               Contact
             </Link>
-            <Link href="/privacy" className="hover:text-accent">
+            <Link href="/privacy" className="hover:text-cream">
               Privacy Policy
             </Link>
           </nav>
