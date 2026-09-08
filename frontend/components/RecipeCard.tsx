@@ -25,10 +25,11 @@ export default function RecipeCard({
         imageUrl={imageUrl}
         attribution={imageAttribution}
         aspect="thumbnail"
+        reserveSpace
       />
       <div className="p-3">
-        <h3 className="text-sm font-bold">{title}</h3>
-        {description ? <p className="mt-1 text-xs text-ink/60">{description}</p> : null}
+        <h3 className="line-clamp-2 min-h-10 text-sm font-bold">{title}</h3>
+        {description ? <p className="mt-1 line-clamp-2 min-h-8 text-xs text-ink/60">{description}</p> : null}
         {!slug ? <p className="mt-1 text-xs italic text-ink/40">Recipe page coming soon</p> : null}
       </div>
     </>
