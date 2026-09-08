@@ -10,31 +10,60 @@ history for the numbers behind this plan; this doc is the "how," not the
 "how much."
 
 **Plan owner is on a Claude Max 5x subscription.** This changes where the
-two phases' cost actually lands, without changing the phases themselves:
+two phases' cost actually lands, without changing the phases themselves.
+
+**Correction to an earlier version of this estimate:** a prior pass at
+this section carried over the timeline logic from a *different* scenario
+(running the entire project -- including writing all 1,947 pages --
+through agentic Claude Code sessions) into Phase 2, and quoted 1.5-2+
+weeks for it. That's wrong for what Phase 2 actually is once Phase 1
+exists: Batch API has already written every page's draft by the time
+Phase 2 starts, so Phase 2 is integration and cleanup, not authorship.
+Corrected below.
 
 - **Phase 1 (Batch API drafting)** is unaffected by any Claude.ai plan --
-  it's billed separately through the Developer Platform regardless.
-  Estimated ~$40-60, ~1 day turnaround (see cost safeguards section below).
-- **Phase 2 (integration, cross-linking, verification, fixing gaps)** is
-  real agentic Claude Code work -- exactly what a Max subscription's usage
-  allowance covers. At Max 5x specifically (the lower of the two Max
-  tiers), this phase realistically fits inside the existing subscription
-  at no additional API spend, but likely needs to be paced across
-  **1.5-2+ weeks** of usage rather than done in one continuous push, since
-  5x's ceiling -- higher than Pro's, but not as high as 20x -- is still a
-  rolling-window quota, not unlimited, and Phase 2's own work can't be
-  meaningfully parallelized around it the same way Phase 1's batch
-  generation can.
-- **Net new cash cost for the full 1,947-page pass: ~$40-60** (Batch API
-  only), assuming Phase 2 fits inside the existing Max 5x subscription.
-  Total elapsed time: roughly 2-3 weeks (Phase 1's ~1 day, plus Phase 2
-  paced across Max 5x's rolling usage windows).
-- If Phase 2 turns out to need more throughput than Max 5x comfortably
-  provides once real work starts (e.g. the "needs fix" list from a batch
-  is larger than expected), the fallback is either pacing it out longer
-  under the existing plan, or supplementing that phase with API/token
-  credits for just the overflow -- not a full re-plan, since Phase 1
-  doesn't change either way.
+  billed separately through the Developer Platform regardless. Estimated
+  ~$40-60, ~1 day turnaround (see cost safeguards section below).
+- **Phase 2, broken into what it actually is:**
+  - Parsing results, schema-validating, serializing into
+    `seed_templates.py`, running `_check_content_depth()`, reconciling
+    `CONTENT_QUEUE.csv` -- all scripted, not agent conversation. Minutes
+    to hours, regardless of plan.
+  - Cross-linking is mostly already automatic (see the section above) --
+    spot-checking, not per-page work.
+  - The one genuinely agentic, Max-usage-bound piece is **fixing whichever
+    fraction of the 1,947 pages fail the depth check** -- a bounded
+    subset, not a second pass over everything. This is the one real
+    unknown; its size isn't known until the pilot batch runs.
+  - Realistic result if that failure rate is modest: **the full pipeline
+    fits in a few days**, not weeks, even paced across Max 5x's rolling
+    usage windows.
+- **To make "a couple of days" a guarantee rather than an "if the pilot
+  goes well" hope:** run the fix-pass (and integration generally) through
+  API/token credits instead of Max 5x session quota. This removes the
+  rolling-window pacing entirely -- API rate limits are far above this
+  workload's scale, so it runs as one continuous push instead of being
+  spread across a subscription's reset cycle.
+  - Incremental cost is small because it only touches the failing
+    subset, and a targeted fix costs less than original generation:
+    roughly **+$8-12 at a 10% failure rate, +$16-23 at 20%, +$24-35 at
+    30%** -- all-in total (Batch + fix-pass) landing around **$50-95**
+    depending on that rate, versus the pure-Max-5x path's ~$40-60 with a
+    less certain timeline.
+- **Image backfill is separate from all of the above** -- bounded by
+  Unsplash/Pexels free-tier rate limits (only Pexels is currently
+  configured), not by any Claude plan or API tier. Fetching ~1,900 photos
+  could take the better part of a day of background, unattended time.
+  This doesn't need to gate "content live": pages already render
+  correctly with no photo and self-heal as `fetch_images()` keeps running
+  (per this session's earlier image-pipeline work), so it's reasonable to
+  treat photos as filling in progressively rather than a blocker on the
+  batch being considered done.
+- **Recommendation:** budget the small incremental API cost for the
+  fix-pass from the start rather than betting on Max 5x's pacing being
+  fast enough -- cheap insurance against the one real unknown (the
+  pilot's failure rate) that turns "probably a couple of days" into
+  "reliably a couple of days."
 
 ## Why hybrid (recap)
 
