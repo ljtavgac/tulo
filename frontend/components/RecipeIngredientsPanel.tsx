@@ -7,6 +7,7 @@ import { formatUsQuantity, formatMetricQuantity } from "@/lib/format";
 import { pagePath } from "@/lib/seo";
 import ServingsScaler from "./ServingsScaler";
 import UnitToggle, { type Unit } from "./UnitToggle";
+import IngredientUnitConversion from "./IngredientUnitConversion";
 
 export default function RecipeIngredientsPanel({
   ingredients,
@@ -49,10 +50,8 @@ export default function RecipeIngredientsPanel({
           // one side rounding to whole grams (which could round a small
           // fractional count down to a nonsensical "0").
           const isCount = ing.unit_metric === ing.unit_us;
-          const qty =
-            unit === "us" || isCount
-              ? formatUsQuantity(ing.base_qty * scale * multiplier)
-              : formatMetricQuantity(ing.base_qty_metric * scale * multiplier);
+          const rawQty = unit === "us" || isCount ? ing.base_qty * scale * multiplier : ing.base_qty_metric * scale * multiplier;
+          const qty = unit === "us" || isCount ? formatUsQuantity(rawQty) : formatMetricQuantity(rawQty);
           const unitLabel = unit === "us" || isCount ? ing.unit_us : ing.unit_metric;
           const displayName = activeSubstitute ? activeSubstitute.name : ing.name;
 
@@ -61,7 +60,8 @@ export default function RecipeIngredientsPanel({
               <div>
                 <span className="font-medium">
                   {qty} {unitLabel}
-                </span>{" "}
+                </span>
+                <IngredientUnitConversion amount={rawQty} unit={unitLabel} />{" "}
                 {!activeSubstitute && ing.hub_slug ? (
                   <Link href={pagePath("ingredient_hub", ing.hub_slug)} className="underline hover:text-accent">
                     {displayName}
