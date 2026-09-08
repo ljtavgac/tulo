@@ -22,6 +22,16 @@ import type { ImageAttribution } from "@/lib/types";
 // this is the one place that can actually see the failure happen and hide
 // it, the same way a missing imageUrl already hides instead of showing a
 // broken image icon.
+//
+// `unoptimized`: Unsplash/Pexels URLs are already pre-sized via their own
+// query params (see backend/app/images.py -- "regular"/"large" variants,
+// not full-resolution originals), so there's nothing for Next's own image
+// optimizer to usefully add here, only another hop that can fail on its
+// own -- a request that goes through Vercel's optimizer pipeline instead
+// of straight to the source CDN, and one subject to that pipeline's own
+// separate quota/availability, distinct from Unsplash/Pexels ever being
+// down. Skipping it removes that whole extra failure surface for photos
+// that don't need it.
 export default function StockPhotoSlot({
   query,
   imageUrl,
@@ -48,6 +58,7 @@ export default function StockPhotoSlot({
           src={imageUrl}
           alt={query}
           fill
+          unoptimized
           sizes="(min-width: 1024px) 640px, 100vw"
           className="object-cover"
           onError={() => setFailed(true)}
