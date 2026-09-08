@@ -96,6 +96,9 @@ export interface IngredientHubContent {
   storage: string;
   uses: string;
   nutrition_note: string;
+  buying_tips?: string;
+  pairing_suggestions?: string;
+  variety_notes?: string;
   faqs?: Faq[];
   recipe_slugs: string[];
   related_ingredient_slugs: string[];
@@ -106,6 +109,7 @@ export interface HowToContent {
   hero_image_query: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
+  intro: string;
   steps: string[];
   common_mistakes: string[];
   equipment: string[];

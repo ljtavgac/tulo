@@ -51,7 +51,7 @@ export default async function HowToPage({
           "@context": "https://schema.org",
           "@type": "HowTo",
           name: page.title,
-          description: content.meta_description,
+          description: content.meta_description ?? content.intro,
           image: content.image_url,
           step: content.steps.map((step) => ({
             "@type": "HowToStep",
@@ -66,6 +66,8 @@ export default async function HowToPage({
         attribution={content.image_attribution}
         className="mt-4"
       />
+
+      <p className="mt-4 text-ink/80">{content.intro}</p>
 
       <h2 className="mt-8 text-xl font-bold">Steps</h2>
       <ol className="mt-3 space-y-3">

@@ -62,6 +62,24 @@ export default async function IngredientHubPage({
         <LinkifiedText text={content.description} terms={linkTerms} />
       </p>
 
+      {content.variety_notes ? (
+        <>
+          <h2 className="mt-8 text-xl font-bold">Varieties</h2>
+          <p className="mt-2 text-ink/80">
+            <LinkifiedText text={content.variety_notes} terms={linkTerms} />
+          </p>
+        </>
+      ) : null}
+
+      {content.buying_tips ? (
+        <>
+          <h2 className="mt-8 text-xl font-bold">Buying tips</h2>
+          <p className="mt-2 text-ink/80">
+            <LinkifiedText text={content.buying_tips} terms={linkTerms} />
+          </p>
+        </>
+      ) : null}
+
       <h2 className="mt-8 text-xl font-bold">Substitutes</h2>
       <ul className="mt-3 space-y-3">
         {content.substitutes.map((sub) => (
@@ -91,6 +109,15 @@ export default async function IngredientHubPage({
       <p className="mt-2 text-ink/80">
         <LinkifiedText text={content.uses} terms={linkTerms} />
       </p>
+
+      {content.pairing_suggestions ? (
+        <>
+          <h2 className="mt-8 text-xl font-bold">What it pairs with</h2>
+          <p className="mt-2 text-ink/80">
+            <LinkifiedText text={content.pairing_suggestions} terms={linkTerms} />
+          </p>
+        </>
+      ) : null}
 
       <div className="my-8">
         <AdSlot variant="in-content" />

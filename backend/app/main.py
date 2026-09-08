@@ -1,3 +1,4 @@
+import copy
 import io
 import os
 import secrets
@@ -108,11 +109,48 @@ def health_check():
     return {"status": "ok"}
 
 
+def _recipe_slugs_using_ingredient(db: Session, hub_slug: str) -> list[str]:
+    """Every recipe_or_dish page with an ingredient whose hub_slug matches
+    this ingredient hub, computed live rather than hand-curated. The
+    hand-curated version of this (a plain content field an author fills in)
+    is exactly what went stale on 10 of 11 hub pages -- new recipes kept
+    shipping without anyone remembering to go back and add themselves to
+    every relevant hub's list. Deriving it from the same hub_slug each
+    recipe ingredient already carries (used today for the forward link,
+    ingredient name -> hub page) means a new recipe lights up here the
+    moment its ingredients are tagged, with nothing left to forget.
+
+    A plain full-table scan is fine at today's page count (dozens to low
+    hundreds); a real join/index is the right upgrade if the site reaches
+    thousands of recipes.
+    """
+    slugs = []
+    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+        if any(ing.get("hub_slug") == hub_slug for ing in page.content.get("ingredients", [])):
+            slugs.append(page.slug)
+    return slugs
+
+
 @app.get("/pages/{slug}", response_model=PageOut)
 def get_page(slug: str, db: Session = Depends(get_db)):
     page = db.query(Page).filter(Page.slug == slug).first()
     if page is None:
         raise HTTPException(status_code=404, detail="Page not found")
+    if page.template_type == "ingredient_hub":
+        # A copy, not a mutation of page.content itself -- this is a
+        # response-only override, never persisted, so the stored (still
+        # hand-curated, now unused for display) field is left alone.
+        content = copy.deepcopy(page.content)
+        content["recipe_slugs"] = _recipe_slugs_using_ingredient(db, page.slug)
+        return PageOut(
+            slug=page.slug,
+            template_type=page.template_type,
+            title=page.title,
+            status=page.status,
+            batch_number=page.batch_number,
+            content=content,
+            created_at=page.created_at,
+        )
     return page
 
 

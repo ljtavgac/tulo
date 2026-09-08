@@ -198,6 +198,23 @@ SEED_PAGES = [
                 "more of a flavor accent than a significant nutrient source at "
                 "typical serving sizes."
             ),
+            "buying_tips": (
+                "Look for bright green, firm stems with no yellowing or "
+                "sliminess at the cut ends. Buy in small bunches, they wilt "
+                "within a few days, so a bunch used up gradually beats a "
+                "large one going slimy in the crisper."
+            ),
+            "pairing_suggestions": (
+                "Pairs naturally with sour cream, crème fraîche, and butter "
+                "in potato and egg dishes, and with mild white fish or "
+                "chicken where a stronger onion flavor would overpower."
+            ),
+            "variety_notes": (
+                "Garlic chives (Chinese chives) are a different plant "
+                "entirely, flat, wider leaves and a mild garlic flavor "
+                "rather than onion. They are not a 1:1 swap for standard "
+                "chives in flavor, though both work as a garnish."
+            ),
             "faqs": [
                 {
                     "question": "Are chives and green onions the same thing?",
@@ -229,7 +246,7 @@ SEED_PAGES = [
                 },
             ],
             "recipe_slugs": [],
-            "related_ingredient_slugs": [],
+            "related_ingredient_slugs": ["creme-fraiche"],
         },
     },
     {
@@ -243,6 +260,14 @@ SEED_PAGES = [
                 "plus the most common mistake that leaves it mushy or undercooked."
             ),
             "hero_image_query": "roasted spaghetti squash",
+            "intro": (
+                "Spaghetti squash only takes on its signature noodle-like "
+                "strands with the right roasting setup, cut wrong or "
+                "roasted the wrong way up and it turns mushy or stays "
+                "undercooked in the center. This walks through the "
+                "roasting method that reliably gets long, distinct "
+                "strands every time."
+            ),
             "steps": [
                 "Preheat the oven to 400°F (200°C).",
                 "Slice the spaghetti squash in half lengthwise, from stem to base. If the whole squash is hard to cut, microwave it whole for 3-4 minutes first to soften the skin.",
@@ -1164,7 +1189,14 @@ SEED_PAGES = [
                 "Pasteurized egg whites (or the liquid egg white product sold in cartons) work fine and remove any raw-egg concern.",
                 "No egg white on hand? The drink is still good without it, just less foamy on top.",
             ],
-            "storage_and_reheating": None,
+            "storage_and_reheating": (
+                "Best made fresh and drunk right away, the whipped egg-white "
+                "foam collapses within a few minutes and won't come back with "
+                "re-shaking. If you need to prep ahead for a crowd, batch the "
+                "amaretto, lemon juice, and simple syrup together and "
+                "refrigerate up to a day, then add egg white and shake to "
+                "order per drink."
+            ),
             "nutrition_note": (
                 "Approximately 170 calories per serving, almost entirely from "
                 "sugar and alcohol. An estimate only."
@@ -1387,6 +1419,25 @@ SEED_PAGES = [
                 "relatively low in calories, roughly 50-70 calories per "
                 "half-dozen raw oysters, depending on size."
             ),
+            "buying_tips": (
+                "Live oysters should be tightly closed, or close when "
+                "tapped, discard any that stay open. Buy from a source "
+                "with high turnover and keep them on ice, cup-side down, "
+                "until shucking."
+            ),
+            "pairing_suggestions": (
+                "Classic raw-bar pairings are a simple mignonette "
+                "(shallot, vinegar, cracked pepper), a squeeze of lemon, "
+                "or hot sauce, all meant to accent, not mask, the "
+                "oyster's own brine."
+            ),
+            "variety_notes": (
+                "Flavor and size vary significantly by growing region, "
+                "East Coast oysters (like Blue Points) tend to be brinier "
+                "and firmer, while Pacific varieties (like Kumamotos) run "
+                "sweeter and smaller. Neither is a straight substitute for "
+                "a recipe built around the other's size."
+            ),
             "faqs": [
                 {
                     "question": "How can I tell if an oyster is bad before opening it?",
@@ -1448,6 +1499,24 @@ SEED_PAGES = [
                 "High in protein and sodium; a 2-oz serving typically runs "
                 "150-190 calories and 500-600mg sodium, so it's often used as a "
                 "flavor component rather than the sole protein in a dish."
+            ),
+            "buying_tips": (
+                "Check the label for 'fully cooked' vs 'fresh', most US "
+                "grocery kielbasa is the former and only needs reheating, "
+                "while fresh kielbasa needs to be cooked through like any "
+                "raw sausage."
+            ),
+            "pairing_suggestions": (
+                "Pairs well with sauerkraut, mustard, cabbage, and "
+                "potatoes, the classic Eastern European combinations, and "
+                "holds up well simmered into bean or lentil soups."
+            ),
+            "variety_notes": (
+                "Fully cooked, smoked kielbasa (the common US supermarket "
+                "version) is ready to slice and pan-sear. Fresh (raw) "
+                "kielbasa, more common at Polish delis, needs to be cooked "
+                "through first like any raw sausage, check the package "
+                "before assuming either."
             ),
             "faqs": [
                 {
@@ -1512,6 +1581,16 @@ SEED_PAGES = [
                 "on the brand, so it's more calorie-dense, roughly 50-55 "
                 "calories per tablespoon."
             ),
+            "buying_tips": (
+                "Check the expiration date and look for a thick, "
+                "spoonable texture through the container lid, it "
+                "shouldn't look separated or watery."
+            ),
+            "pairing_suggestions": (
+                "Good with both sweet and savory: dolloped over fruit or "
+                "a warm dessert, or stirred into pan sauces and soups "
+                "where sour cream would curdle."
+            ),
             "faqs": [
                 {
                     "question": "Can I make crème fraîche at home?",
@@ -1533,7 +1612,7 @@ SEED_PAGES = [
                 },
             ],
             "recipe_slugs": [],
-            "related_ingredient_slugs": ["gruyere-cheese"],
+            "related_ingredient_slugs": ["gruyere-cheese", "chives"],
         },
     },
     {
@@ -1577,6 +1656,17 @@ SEED_PAGES = [
                 "calories and 9g fat per 1-oz serving, similar to most hard "
                 "cheeses."
             ),
+            "buying_tips": (
+                "Buy a wedge cut from a wheel rather than pre-shredded "
+                "when possible, pre-shredded cheese is coated in "
+                "anti-caking starch that keeps it from melting as "
+                "smoothly."
+            ),
+            "pairing_suggestions": (
+                "A natural match for white wine, crusty bread, and cured "
+                "meats on a cheese board, and for onions and nutmeg in "
+                "cooked dishes like French onion soup and gratins."
+            ),
             "faqs": [
                 {
                     "question": "Why is my gruyère grainy instead of smooth?",
@@ -1599,7 +1689,7 @@ SEED_PAGES = [
                 },
             ],
             "recipe_slugs": ["chicken-broccoli-rice-casserole"],
-            "related_ingredient_slugs": ["creme-fraiche"],
+            "related_ingredient_slugs": ["creme-fraiche", "pecorino"],
         },
     },
     {
@@ -1642,6 +1732,26 @@ SEED_PAGES = [
                 "Low in calories at typical serving sizes, about 14 calories "
                 "per tablespoon, mostly from natural grape sugars."
             ),
+            "buying_tips": (
+                "For everyday cooking, a mid-priced bottle labeled "
+                "'balsamic vinegar of Modena' (IGP) is the right call, "
+                "save the true aged Tradizionale for finishing, not "
+                "cooking, since heat destroys what makes it special."
+            ),
+            "pairing_suggestions": (
+                "Classic with fresh mozzarella and tomatoes (caprese), "
+                "strawberries, and grilled or roasted vegetables, its "
+                "sweetness balances rich or bitter flavors like blue "
+                "cheese and dark leafy greens."
+            ),
+            "variety_notes": (
+                "Most bottles labeled 'balsamic vinegar of Modena' are a "
+                "commercial blend of wine vinegar and grape must, fine for "
+                "everyday cooking. True Aceto Balsamico Tradizionale "
+                "(aged 12+ years, sold in a small, expensive bottle with a "
+                "DOP seal) is a completely different, syrupy product "
+                "meant for finishing dishes, not cooking with."
+            ),
             "faqs": [
                 {
                     "question": "How do I know if I'm buying real balsamic vinegar?",
@@ -1664,7 +1774,7 @@ SEED_PAGES = [
                 },
             ],
             "recipe_slugs": [],
-            "related_ingredient_slugs": [],
+            "related_ingredient_slugs": ["feta-cheese"],
         },
     },
     {
@@ -1706,6 +1816,25 @@ SEED_PAGES = [
                 "sodium due to the brine; approximately 75 calories and 320mg "
                 "sodium per 1-oz serving."
             ),
+            "buying_tips": (
+                "Buy feta stored in brine (a block in liquid) rather than "
+                "pre-crumbled and dry-packed, it stays fresher longer and "
+                "has better texture. Taste before buying if possible, "
+                "saltiness and tang vary a lot by brand."
+            ),
+            "pairing_suggestions": (
+                "Pairs well with watermelon, olives, cucumber, and olive "
+                "oil in salads, and with honey and nuts as a simple "
+                "appetizer, its saltiness balances sweet and bright "
+                "flavors especially well."
+            ),
+            "variety_notes": (
+                "Traditional Greek feta (look for a PDO label) is made "
+                "from sheep's milk or a sheep-and-goat blend and has a "
+                "tangier, more complex flavor. Feta made purely from "
+                "cow's milk, common in US supermarkets, is milder and "
+                "less crumbly."
+            ),
             "faqs": [
                 {
                     "question": "Why is my feta so salty?",
@@ -1726,7 +1855,7 @@ SEED_PAGES = [
                 },
             ],
             "recipe_slugs": [],
-            "related_ingredient_slugs": [],
+            "related_ingredient_slugs": ["balsamic-vinegar"],
         },
     },
     {
@@ -1767,6 +1896,11 @@ SEED_PAGES = [
             "nutrition_note": (
                 "Essentially pure starch, about 30 calories per tablespoon, "
                 "with negligible protein, fat, or fiber."
+            ),
+            "buying_tips": (
+                "Any plain cornstarch works the same for thickening, "
+                "there is no meaningful quality tier to shop for, just "
+                "check that it is plain starch with no added seasoning."
             ),
             "faqs": [
                 {
@@ -1832,6 +1966,11 @@ SEED_PAGES = [
                 "calories per ¼ cup, with slightly more protein per serving "
                 "due to the higher-protein wheat it's milled from."
             ),
+            "buying_tips": (
+                "Check the protein content on the nutrition label if "
+                "it is listed, bread flour should run 12-14%, noticeably "
+                "higher than all-purpose (10-12%)."
+            ),
             "faqs": [
                 {
                     "question": "Can I use bread flour for cookies or cakes?",
@@ -1895,6 +2034,22 @@ SEED_PAGES = [
                 "curing process; approximately 110 calories and 340mg sodium "
                 "per 1-oz serving."
             ),
+            "buying_tips": (
+                "Buy it in a wedge and grate it yourself right before "
+                "using, pre-grated pecorino loses its sharp aroma fast "
+                "and often contains anti-caking additives."
+            ),
+            "pairing_suggestions": (
+                "The traditional partner for black pepper and guanciale "
+                "in Roman pastas, and a sharp, salty finish shaved over "
+                "roasted vegetables or a simple green salad."
+            ),
+            "variety_notes": (
+                "Pecorino Romano is the sharpest and saltiest of the "
+                "pecorino family. Pecorino Toscano and other regional "
+                "pecorinos are aged less and taste milder, closer to a "
+                "firm, nutty table cheese than a grating cheese."
+            ),
             "faqs": [
                 {
                     "question": "Can I use parmesan instead of pecorino in carbonara?",
@@ -1917,7 +2072,7 @@ SEED_PAGES = [
                 },
             ],
             "recipe_slugs": [],
-            "related_ingredient_slugs": [],
+            "related_ingredient_slugs": ["gruyere-cheese"],
         },
     },
     {
@@ -1960,6 +2115,12 @@ SEED_PAGES = [
                 "though it contains trace minerals like magnesium and potassium "
                 "in amounts too small to be nutritionally significant."
             ),
+            "buying_tips": (
+                "Look for a grayish color and slightly damp texture, "
+                "very white, bone-dry salt sold as 'Celtic salt' may be "
+                "a lower-quality imitation rather than the real "
+                "hand-harvested product."
+            ),
             "faqs": [
                 {
                     "question": "Is Celtic salt healthier than regular table salt?",
@@ -1996,6 +2157,13 @@ SEED_PAGES = [
                 "wedges, or sticks without a mess."
             ),
             "hero_image_query": "cutting a watermelon into cubes",
+            "intro": (
+                "A whole watermelon is awkward, and genuinely risky, to "
+                "cut without a plan, its round shape rolls under the "
+                "knife the moment you apply pressure. Squaring it off "
+                "first turns a wobbly job into a fast, controlled one, "
+                "however you want the pieces cut."
+            ),
             "steps": [
                 "Wash the outside of the watermelon and pat dry.",
                 "Slice off both ends so the melon sits flat and stable on the cutting board.",
@@ -2044,6 +2212,14 @@ SEED_PAGES = [
                 "roast - ratios, timing, and food-safety notes."
             ),
             "hero_image_query": "turkey brining in a bucket",
+            "intro": (
+                "A wet brine seasons a turkey all the way through and "
+                "helps it hold onto moisture during the long roast, but "
+                "only if the ratio, timing, and turkey type are right. "
+                "Get any of those wrong, especially brining an "
+                "already-injected bird, and the result is worse than "
+                "skipping it entirely."
+            ),
             "steps": [
                 "Dissolve 1 cup of kosher salt per gallon of water, along with any aromatics (bay leaves, peppercorns, citrus, herbs), in a large pot over heat, then cool completely.",
                 "Place the fully thawed turkey in a food-safe brining bag or a very large stockpot.",
@@ -2092,6 +2268,12 @@ SEED_PAGES = [
                 "crumb coat, the technique bakeries actually use."
             ),
             "hero_image_query": "frosting a layer cake",
+            "intro": (
+                "The smooth, bakery-style finish on a frosted layer cake "
+                "comes down to one step home bakers skip: the crumb "
+                "coat. This is the technique bakeries actually use to "
+                "keep loose crumbs out of the final layer of frosting."
+            ),
             "steps": [
                 "Make sure cake layers are completely cool, frosting a warm cake melts the frosting and tears the crumb.",
                 "Level the tops of the layers with a serrated knife if they domed while baking.",
@@ -2144,6 +2326,13 @@ SEED_PAGES = [
                 "basket, either works."
             ),
             "hero_image_query": "steaming dumplings in a bamboo steamer",
+            "intro": (
+                "Steaming is the gentlest way to cook a dumpling without "
+                "blowing out or drying the wrapper, but it goes wrong "
+                "fast if the basket is overcrowded or the wrappers "
+                "stick. This works the same whether you are using a "
+                "bamboo steamer or a metal steamer basket."
+            ),
             "steps": [
                 "Line the steamer basket with parchment paper, cabbage leaves, or a light coat of oil to prevent sticking.",
                 "Arrange dumplings with at least ½ inch of space between them, they expand slightly and will stick together if too close.",
@@ -2192,6 +2381,13 @@ SEED_PAGES = [
                 "reading, plus the USDA safe minimum temperatures by protein."
             ),
             "hero_image_query": "meat thermometer in chicken",
+            "intro": (
+                "A thermometer is only as accurate as where you put it, "
+                "a probe touching bone or sitting in the wrong spot in "
+                "the cut can read many degrees off from the actual "
+                "internal temperature. Here is the correct placement, "
+                "plus the USDA's safe minimum temperatures by protein."
+            ),
             "steps": [
                 "Insert the probe into the thickest part of the meat, avoiding bone, fat pockets, and gristle, all of which give a false reading.",
                 "For poultry, check the innermost part of the thigh and wing, and the thickest part of the breast.",
@@ -2241,6 +2437,13 @@ SEED_PAGES = [
                 "and it resists rust, the stovetop method, step by step."
             ),
             "hero_image_query": "seasoning a carbon steel wok",
+            "intro": (
+                "A new carbon steel wok is bare metal that rusts and "
+                "sticks until it builds up a seasoned patina, and that "
+                "only happens with the right stovetop process. Skip a "
+                "step, or reach for soap too early, and the seasoning "
+                "you are building gets stripped right back off."
+            ),
             "steps": [
                 "Scrub a new wok thoroughly with soap and hot water to remove the factory coating, this is the one time it's fine to use soap on it.",
                 "Dry completely, then heat the empty wok over high heat until it starts to change color slightly.",
@@ -2289,6 +2492,13 @@ SEED_PAGES = [
                 "steep time, and how to dilute it for drinking."
             ),
             "hero_image_query": "cold brew coffee concentrate in a jar",
+            "intro": (
+                "Cold brew concentrate is just coffee grounds steeped in "
+                "cold water for a long time, but the grind size, ratio, "
+                "and steep time all matter more than they do for hot "
+                "coffee. Get them right and you get a smooth, low-acid "
+                "concentrate that is easy to dilute to taste."
+            ),
             "steps": [
                 "Coarsely grind coffee beans, a texture like coarse sea salt, similar to French press grind.",
                 "Combine 1 cup of coarsely ground coffee with 4 cups of cold or room-temperature water in a large jar or pitcher.",
@@ -2339,6 +2549,13 @@ SEED_PAGES = [
                 "juicy, timing by size, plus how to shred it afterward."
             ),
             "hero_image_query": "boiled chicken breast sliced",
+            "intro": (
+                "Chicken breast turns tough and stringy shockingly fast "
+                "in boiling water. The fix is not a magic timing number "
+                "so much as keeping the water at a bare simmer rather "
+                "than a rolling boil, and timing here also depends "
+                "heavily on the size of the breast, not just the clock."
+            ),
             "steps": [
                 "Place boneless, skinless chicken breasts in a single layer in a pot and cover with cold water or broth by about an inch.",
                 "Add aromatics if desired, a bay leaf, a few peppercorns, a smashed garlic clove.",
@@ -2386,6 +2603,14 @@ SEED_PAGES = [
                 "stovetop splatter - temperature, timing, and cleanup tips."
             ),
             "hero_image_query": "baking bacon on a sheet pan",
+            "intro": (
+                "Baking bacon in the oven gets every strip evenly crisp "
+                "at the same time, with none of the stovetop splatter "
+                "or standing-over-the-pan babysitting that comes with "
+                "frying it. The main choice to make upfront is oven "
+                "temperature and whether to start from cold or "
+                "preheated, pick one and watch closely the first time."
+            ),
             "steps": [
                 "Preheat the oven to 400°F (200°C).",
                 "Line a rimmed baking sheet with foil or parchment for easy cleanup.",
@@ -2434,6 +2659,14 @@ SEED_PAGES = [
                 "a blender or food processor, ready in under a minute."
             ),
             "hero_image_query": "homemade powdered sugar",
+            "intro": (
+                "Powdered sugar is just granulated sugar ground fine "
+                "enough to dissolve instantly, something a blender or "
+                "food processor can do in under a minute at home. The "
+                "one thing store-bought powdered sugar has that a DIY "
+                "batch needs too is a bit of cornstarch, without it, it "
+                "clumps back together fast."
+            ),
             "steps": [
                 "Add granulated sugar to a high-speed blender or food processor.",
                 "For every cup of sugar, add 1 tablespoon of cornstarch (this prevents clumping, matching store-bought powdered sugar).",
