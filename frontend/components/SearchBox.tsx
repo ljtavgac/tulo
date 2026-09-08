@@ -68,6 +68,9 @@ export default function SearchBox() {
 
   function goTo(page: PageSummary) {
     setOpen(false);
+    setQuery("");
+    setResults([]);
+    setActiveIndex(-1);
     router.push(pagePath(page.template_type, page.slug));
   }
 
