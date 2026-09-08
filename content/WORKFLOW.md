@@ -98,11 +98,25 @@ part of the weekly process, not a one-time cleanup:
    `CONTENT_QUEUE.csv`, verify it against the required-sections checklist
    for its `template_type` (per `PAGE_TEMPLATES.md`): Recipe pages need
    variations, storage/reheating, nutrition (note or per-ingredient data
-   for live recalculation), FAQ, reader tips, and step notes; Ingredient
-   Hub pages need buying tips, pairing suggestions, and FAQ; How-To pages
-   need the intro paragraph, common mistakes, equipment, and FAQ; and so
-   on for each type (Definition, Comparison, Substitute, Category
-   Roundup) per its own template spec.
+   for live recalculation), FAQ, reader tips, step notes, and `image_alt`;
+   Ingredient Hub pages need buying tips, pairing suggestions, FAQ, and
+   `image_alt`; How-To pages need the intro paragraph, common mistakes,
+   equipment, FAQ, and `image_alt`; Definition, Comparison, and Substitute
+   pages each need `image_alt`; Category Roundup pages need each
+   individual recipe card's own `image_alt`; and so on for each type per
+   its own template spec.
+   - `image_alt` means real, specific caption text describing the actual
+     photo (e.g. "Sliced banana nut bread on a wire cooling rack"), not
+     the bare Unsplash/Pexels search term reused as a caption (e.g.
+     "banana nut bread") -- that reuse was a real, confirmed SEO/
+     accessibility gap found across every photo on the site (see the SEO
+     audit). Write it by hand for every new page going forward, the same
+     as any other required field below -- don't let a future batch fall
+     back to deriving it from meta_description the way the ~193
+     pre-existing pages were backfilled (see PAGE_TEMPLATES.md and
+     `backend/app/seed_templates.py`'s git history for that one-time
+     stopgap); a hand-written caption describes what's actually in the
+     photo, which a description of the dish itself can only approximate.
 2. This check is per-page, not per-batch — a batch isn't done because
    500 pages exist, it's done because 500 pages each pass their
    checklist.

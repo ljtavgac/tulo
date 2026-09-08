@@ -51,6 +51,7 @@ export default async function ComparisonPage({
       <h1 className="mt-4 text-3xl font-bold">{page.title}</h1>
       <StockPhotoSlot
         query={content.hero_image_query ?? `${content.item_a_name} vs ${content.item_b_name}`}
+        alt={content.image_alt}
         imageUrl={content.image_url}
         attribution={content.image_attribution}
         className="mt-4"

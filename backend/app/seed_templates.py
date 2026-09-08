@@ -55,6 +55,7 @@ SEED_PAGES = [
                 "unit toggle."
             ),
             "hero_image_query": "banana nut bread",
+            "image_alt": "A moist banana nut bread recipe using extra-ripe bananas, ready in about an hour. Includes a live serving-size scaler and US/metric unit toggle.",
             "why_it_works": (
                 "Extra-ripe, well-spotted bananas add natural sweetness and "
                 "moisture, so this loaf stays tender without drying out, and "
@@ -181,6 +182,7 @@ SEED_PAGES = [
                 "flavor."
             ),
             "hero_image_query": "fresh chives",
+            "image_alt": "What chives are, the best substitutes with ratios, how to store them so they don't wilt, and how to use them without losing their flavor.",
             "description": (
                 "Chives (Allium schoenoprasum) are the mildest member of the onion "
                 "family, grown for their thin, hollow, grass-like green stems. They "
@@ -277,6 +279,7 @@ SEED_PAGES = [
                 "plus the most common mistake that leaves it mushy or undercooked."
             ),
             "hero_image_query": "roasted spaghetti squash",
+            "image_alt": "How to roast spaghetti squash so it separates into tender strands, plus the most common mistake that leaves it mushy or undercooked.",
             "intro": (
                 "Spaghetti squash only takes on its signature noodle-like "
                 "strands with the right roasting setup, cut wrong or "
@@ -346,6 +349,7 @@ SEED_PAGES = [
                 "how it's used, and the best substitute if you're out."
             ),
             "hero_image_query": "tahini paste jar",
+            "image_alt": "Tahini is a smooth paste made from ground sesame seeds. What it is, how it's used, and the best substitute if you're out.",
             "direct_answer": (
                 "Tahini is a smooth paste made from toasted, ground sesame seeds, "
                 "similar in consistency to thin peanut butter, with a nutty, "
@@ -413,6 +417,7 @@ SEED_PAGES = [
                 "the right one."
             ),
             "hero_image_query": "cappuccino and latte side by side",
+            "image_alt": "Cappuccino vs. latte: the real difference is the milk-to-foam ratio. A side-by-side comparison to help you order, or make, the right one.",
             "item_a_name": "Cappuccino",
             "item_b_name": "Latte",
             "comparison_table": [
@@ -492,6 +497,7 @@ SEED_PAGES = [
                 "cooking."
             ),
             "hero_image_query": "baking soda box",
+            "image_alt": "Out of baking soda? Here are four ranked substitutes with exact ratios, including which ones work best for baking vs. general cooking.",
             "ranked_substitutes": [
                 {
                     "name": "Baking powder",
@@ -596,12 +602,12 @@ SEED_PAGES = [
                 "in rotation, organized by cooking method."
             ),
             "recipe_cards": [
-                {"title": "Baba Ganoush", "slug": "baba-ganoush", "description": "Smoky, roasted eggplant dip blended with tahini, garlic, and lemon.", "image_query": "baba ganoush"},
-                {"title": "Eggplant Parmesan", "slug": "eggplant-parmesan", "description": "Breaded, fried (or baked) eggplant layered with marinara and melted cheese.", "image_query": "eggplant parmesan"},
-                {"title": "Roasted Eggplant with Garlic and Herbs", "slug": "roasted-eggplant-with-garlic-and-herbs", "description": "The simplest way to cook eggplant - olive oil, high heat, and just enough seasoning to let it shine.", "image_query": "roasted eggplant"},
-                {"title": "Eggplant Curry (Baingan Bharta)", "slug": "baingan-bharta", "description": "Charred, mashed eggplant simmered with tomatoes, onion, and warm spices.", "image_query": "baingan bharta"},
-                {"title": "Grilled Eggplant Slices", "slug": "grilled-eggplant-slices", "description": "Salted, grilled eggplant rounds with a quick balsamic glaze.", "image_query": "grilled eggplant"},
-                {"title": "Miso-Glazed Eggplant (Nasu Dengaku)", "slug": "miso-glazed-eggplant", "description": "Broiled eggplant halves topped with a sweet-savory miso glaze.", "image_query": "nasu dengaku"},
+                {"title": "Baba Ganoush", "slug": "baba-ganoush", "description": "Smoky, roasted eggplant dip blended with tahini, garlic, and lemon.", "image_query": "baba ganoush", "image_alt": "Smoky, roasted eggplant dip blended with tahini, garlic, and lemon."},
+                {"title": "Eggplant Parmesan", "slug": "eggplant-parmesan", "description": "Breaded, fried (or baked) eggplant layered with marinara and melted cheese.", "image_query": "eggplant parmesan", "image_alt": "Breaded, fried (or baked) eggplant layered with marinara and melted cheese."},
+                {"title": "Roasted Eggplant with Garlic and Herbs", "slug": "roasted-eggplant-with-garlic-and-herbs", "description": "The simplest way to cook eggplant - olive oil, high heat, and just enough seasoning to let it shine.", "image_query": "roasted eggplant", "image_alt": "The simplest way to cook eggplant - olive oil, high heat, and just enough seasoning to let it shine."},
+                {"title": "Eggplant Curry (Baingan Bharta)", "slug": "baingan-bharta", "description": "Charred, mashed eggplant simmered with tomatoes, onion, and warm spices.", "image_query": "baingan bharta", "image_alt": "Charred, mashed eggplant simmered with tomatoes, onion, and warm spices."},
+                {"title": "Grilled Eggplant Slices", "slug": "grilled-eggplant-slices", "description": "Salted, grilled eggplant rounds with a quick balsamic glaze.", "image_query": "grilled eggplant", "image_alt": "Salted, grilled eggplant rounds with a quick balsamic glaze."},
+                {"title": "Miso-Glazed Eggplant (Nasu Dengaku)", "slug": "miso-glazed-eggplant", "description": "Broiled eggplant halves topped with a sweet-savory miso glaze.", "image_query": "nasu dengaku", "image_alt": "Broiled eggplant halves topped with a sweet-savory miso glaze."},
             ],
             "sub_categories": [
                 {"label": "Mediterranean", "items": ["Baba Ganoush", "Grilled Eggplant Slices"]},
@@ -648,6 +654,7 @@ SEED_PAGES = [
                 "center, baked (not fried) in about 30 minutes."
             ),
             "hero_image_query": "parmesan crusted chicken",
+            "image_alt": "Parmesan crusted chicken with a crisp, cheesy crust and a juicy center, baked (not fried) in about 30 minutes.",
             "why_it_works": (
                 "A mayonnaise-and-parmesan coating keeps the chicken moist while "
                 "it bakes, and gives the panko topping something to cling to so "
@@ -744,6 +751,7 @@ SEED_PAGES = [
                 "soup shortcut."
             ),
             "hero_image_query": "chicken broccoli rice casserole",
+            "image_alt": "A one-dish chicken, broccoli, and rice casserole with a creamy sauce and a melted gruyère topping, real ingredients, no canned soup shortcut.",
             "why_it_works": (
                 "Par-cooking the rice and broccoli separately before combining "
                 "means everything finishes baking at the same rate, no raw "
@@ -842,6 +850,7 @@ SEED_PAGES = [
                 "pan-fried until golden."
             ),
             "hero_image_query": "fried green tomatoes",
+            "image_alt": "Classic Southern fried green tomatoes with a crisp cornmeal crust - firm, tart green tomatoes sliced, breaded, and pan-fried until golden.",
             "why_it_works": (
                 "Unripe green tomatoes are firm and tart, so they hold their "
                 "shape in the pan instead of collapsing into mush the way a "
@@ -928,6 +937,7 @@ SEED_PAGES = [
                 "flavor, none of the rolling."
             ),
             "hero_image_query": "sushi bake casserole",
+            "image_alt": "A crowd-size sushi bake with seasoned rice, a creamy baked imitation crab topping, and nori for scooping, all the sushi flavor, none of the rolling.",
             "why_it_works": (
                 "Layering seasoned sushi rice under a baked, creamy seafood "
                 "topping delivers the same flavors as a spicy crab roll at "
@@ -1019,6 +1029,7 @@ SEED_PAGES = [
                 "the Portuguese-African classic."
             ),
             "hero_image_query": "grilled peri peri chicken thighs",
+            "image_alt": "Spicy, garlicky peri peri chicken marinated in a bird's eye chile sauce and grilled or baked until charred, a copycat of the Portuguese-African classic.",
             "why_it_works": (
                 "A long marinade of chile, garlic, lemon, and smoked paprika "
                 "penetrates the chicken rather than just coating the surface, so "
@@ -1110,6 +1121,7 @@ SEED_PAGES = [
                 "required."
             ),
             "hero_image_query": "chicken al pastor tacos",
+            "image_alt": "A chicken version of al pastor, marinated in dried chiles, achiote, and pineapple, then seared for the same sweet, smoky-spicy flavor as the classic pork",
             "why_it_works": (
                 "The same guajillo-and-achiote marinade that defines pork al "
                 "pastor works just as well on chicken, and pineapple juice in "
@@ -1200,6 +1212,7 @@ SEED_PAGES = [
                 "ripe mango puree, no ice cream maker required."
             ),
             "hero_image_query": "mango ice cream",
+            "image_alt": "No-churn mango ice cream made with sweetened condensed milk and ripe mango puree, no ice cream maker required.",
             "why_it_works": (
                 "Sweetened condensed milk's sugar content lowers the freezing "
                 "point enough that the mixture stays scoopable without an ice "
@@ -1282,6 +1295,7 @@ SEED_PAGES = [
                 "version."
             ),
             "hero_image_query": "amaretto sour cocktail",
+            "image_alt": "A properly balanced amaretto sour with fresh lemon juice and an egg white for a silky foam top, not the cloying bar-mix version.",
             "why_it_works": (
                 "Fresh lemon juice cuts amaretto's sweetness, and a dry shake "
                 "(no ice) whips the egg white into a stable foam before the wet "
@@ -1367,6 +1381,7 @@ SEED_PAGES = [
                 "enough for a weeknight."
             ),
             "hero_image_query": "pan seared chilean sea bass",
+            "image_alt": "Pan-seared Chilean sea bass with a crisp skin and buttery, flaky center, a restaurant-style preparation that's simple enough for a weeknight.",
             "why_it_works": (
                 "Chilean sea bass's high fat content makes it nearly impossible "
                 "to overcook into dryness the way leaner white fish can, a hot "
@@ -1452,6 +1467,7 @@ SEED_PAGES = [
                 "not a shortcut version."
             ),
             "hero_image_query": "arroz con leche rice pudding",
+            "image_alt": "Classic arroz con leche (Mexican rice pudding) simmered slowly with cinnamon and milk until creamy, a traditional recipe, not a shortcut version.",
             "why_it_works": (
                 "Simmering the rice low and slow in milk, rather than boiling it "
                 "hard, lets the starch release gradually so the pudding thickens "
@@ -1535,6 +1551,7 @@ SEED_PAGES = [
                 "them safely, and how they're typically served."
             ),
             "hero_image_query": "fresh oysters on ice",
+            "image_alt": "What to look for when buying oysters, how to store and shuck them safely, and how they're typically served.",
             "description": (
                 "Oysters are bivalve mollusks harvested from coastal and "
                 "estuarine waters, eaten raw on the half shell, grilled, fried, "
@@ -1620,6 +1637,7 @@ SEED_PAGES = [
                 "tips, and the best ways to cook it."
             ),
             "hero_image_query": "sliced kielbasa sausage",
+            "image_alt": "What kielbasa is, how it differs from other sausages, storage tips, and the best ways to cook it.",
             "description": (
                 "Kielbasa is a Polish smoked sausage, most commonly made from "
                 "pork (sometimes blended with beef), seasoned with garlic and "
@@ -1701,6 +1719,7 @@ SEED_PAGES = [
                 "tips, and how to use it in both cooking and baking."
             ),
             "hero_image_query": "creme fraiche in a bowl",
+            "image_alt": "What crème fraîche is, how it differs from sour cream, storage tips, and how to use it in both cooking and baking.",
             "description": (
                 "Crème fraîche is a thick, cultured cream, similar to sour cream "
                 "but higher in fat and milder, less tangy in flavor. Its higher "
@@ -1773,6 +1792,7 @@ SEED_PAGES = [
                 "and the best substitutes when it's not available."
             ),
             "hero_image_query": "gruyere cheese wedge",
+            "image_alt": "What gruyère cheese is, how it melts and tastes, storage tips, and the best substitutes when it's not available.",
             "description": (
                 "Gruyère is a hard, Swiss cow's-milk cheese, aged anywhere from "
                 "5 months to over a year. Younger gruyère is mild and nutty; "
@@ -1856,6 +1876,7 @@ SEED_PAGES = [
                 "supermarket versions, storage tips, and how to use it."
             ),
             "hero_image_query": "balsamic vinegar bottle",
+            "image_alt": "What balsamic vinegar is, how to tell real aged balsamic from supermarket versions, storage tips, and how to use it.",
             "description": (
                 "Balsamic vinegar is made from reduced, fermented grape must "
                 "(unfermented grape juice), giving it a dark color and a "
@@ -1941,6 +1962,7 @@ SEED_PAGES = [
                 "the best substitutes for its salty, tangy flavor."
             ),
             "hero_image_query": "feta cheese block",
+            "image_alt": "What feta cheese is, how to store it properly in brine, and the best substitutes for its salty, tangy flavor.",
             "description": (
                 "Feta is a brined, crumbly white cheese, traditionally made in "
                 "Greece from sheep's milk (or a sheep-and-goat blend). It's "
@@ -2022,6 +2044,7 @@ SEED_PAGES = [
                 "storage tips, and the best substitutes for thickening."
             ),
             "hero_image_query": "cornstarch in a bowl",
+            "image_alt": "What cornstarch is used for, how to make a proper slurry, storage tips, and the best substitutes for thickening.",
             "description": (
                 "Cornstarch is a fine, flavorless powder milled from the "
                 "endosperm of corn kernels, used almost entirely as a "
@@ -2096,6 +2119,7 @@ SEED_PAGES = [
                 "to use it, storage tips, and how to substitute in a pinch."
             ),
             "hero_image_query": "bread flour bag",
+            "image_alt": "What makes bread flour different from all-purpose flour, when to use it, storage tips, and how to substitute in a pinch.",
             "description": (
                 "Bread flour is milled from hard wheat with a higher protein "
                 "content (typically 12-14%) than all-purpose flour (10-12%). "
@@ -2172,6 +2196,7 @@ SEED_PAGES = [
                 "tips, and how to use its sharp, salty flavor."
             ),
             "hero_image_query": "pecorino romano wedge",
+            "image_alt": "What pecorino romano is, how it differs from parmesan, storage tips, and how to use its sharp, salty flavor.",
             "description": (
                 "Pecorino Romano is a hard, salty Italian cheese made from "
                 "sheep's milk (\"pecorino\" comes from pecora, Italian for "
@@ -2252,6 +2277,7 @@ SEED_PAGES = [
                 "salt, and how to use its coarser, moister crystals."
             ),
             "hero_image_query": "celtic sea salt",
+            "image_alt": "What Celtic salt is, how it differs from table and kosher salt, and how to use its coarser, moister crystals.",
             "description": (
                 "Celtic salt (sel gris) is an unrefined, grayish sea salt "
                 "harvested from coastal salt marshes in Brittany, France, "
@@ -2329,6 +2355,7 @@ SEED_PAGES = [
                 "wedges, or sticks without a mess."
             ),
             "hero_image_query": "cutting a watermelon into cubes",
+            "image_alt": "The fastest, cleanest way to cut a watermelon into cubes, wedges, or sticks without a mess.",
             "intro": (
                 "A whole watermelon is awkward, and genuinely risky, to "
                 "cut without a plan, its round shape rolls under the "
@@ -2384,6 +2411,7 @@ SEED_PAGES = [
                 "roast - ratios, timing, and food-safety notes."
             ),
             "hero_image_query": "turkey brining in a bucket",
+            "image_alt": "How to wet-brine a turkey for a juicier, more evenly seasoned roast - ratios, timing, and food-safety notes.",
             "intro": (
                 "A wet brine seasons a turkey all the way through and "
                 "helps it hold onto moisture during the long roast, but "
@@ -2440,6 +2468,7 @@ SEED_PAGES = [
                 "crumb coat, the technique bakeries actually use."
             ),
             "hero_image_query": "frosting a layer cake",
+            "image_alt": "How to frost a layer cake with smooth, even sides using a crumb coat, the technique bakeries actually use.",
             "intro": (
                 "The smooth, bakery-style finish on a frosted layer cake "
                 "comes down to one step home bakers skip: the crumb "
@@ -2498,6 +2527,7 @@ SEED_PAGES = [
                 "basket, either works."
             ),
             "hero_image_query": "steaming dumplings in a bamboo steamer",
+            "image_alt": "How to steam dumplings so the wrappers stay tender without sticking or turning gummy, bamboo steamer or metal steamer basket, either works.",
             "intro": (
                 "Steaming is the gentlest way to cook a dumpling without "
                 "blowing out or drying the wrapper, but it goes wrong "
@@ -2553,6 +2583,7 @@ SEED_PAGES = [
                 "reading, plus the USDA safe minimum temperatures by protein."
             ),
             "hero_image_query": "meat thermometer in chicken",
+            "image_alt": "How to correctly place a meat thermometer for an accurate reading, plus the USDA safe minimum temperatures by protein.",
             "intro": (
                 "A thermometer is only as accurate as where you put it, "
                 "a probe touching bone or sitting in the wrong spot in "
@@ -2609,6 +2640,7 @@ SEED_PAGES = [
                 "and it resists rust, the stovetop method, step by step."
             ),
             "hero_image_query": "seasoning a carbon steel wok",
+            "image_alt": "How to season a new carbon steel wok so food releases cleanly and it resists rust, the stovetop method, step by step.",
             "intro": (
                 "A new carbon steel wok is bare metal that rusts and "
                 "sticks until it builds up a seasoned patina, and that "
@@ -2664,6 +2696,7 @@ SEED_PAGES = [
                 "steep time, and how to dilute it for drinking."
             ),
             "hero_image_query": "cold brew coffee concentrate in a jar",
+            "image_alt": "How to make cold brew coffee concentrate at home - ratio, steep time, and how to dilute it for drinking.",
             "intro": (
                 "Cold brew concentrate is just coffee grounds steeped in "
                 "cold water for a long time, but the grind size, ratio, "
@@ -2721,6 +2754,7 @@ SEED_PAGES = [
                 "juicy, timing by size, plus how to shred it afterward."
             ),
             "hero_image_query": "boiled chicken breast sliced",
+            "image_alt": "How long to boil chicken breast until safely cooked but still juicy, timing by size, plus how to shred it afterward.",
             "intro": (
                 "Chicken breast turns tough and stringy shockingly fast "
                 "in boiling water. The fix is not a magic timing number "
@@ -2775,6 +2809,7 @@ SEED_PAGES = [
                 "stovetop splatter - temperature, timing, and cleanup tips."
             ),
             "hero_image_query": "baking bacon on a sheet pan",
+            "image_alt": "How to bake bacon in the oven for evenly crisp strips with no stovetop splatter - temperature, timing, and cleanup tips.",
             "intro": (
                 "Baking bacon in the oven gets every strip evenly crisp "
                 "at the same time, with none of the stovetop splatter "
@@ -2831,6 +2866,7 @@ SEED_PAGES = [
                 "a blender or food processor, ready in under a minute."
             ),
             "hero_image_query": "homemade powdered sugar",
+            "image_alt": "How to make powdered sugar at home from granulated sugar using a blender or food processor, ready in under a minute.",
             "intro": (
                 "Powdered sugar is just granulated sugar ground fine "
                 "enough to dissolve instantly, something a blender or "
@@ -2886,6 +2922,7 @@ SEED_PAGES = [
                 "shell and a soft, creamy center. What it is and how to serve it."
             ),
             "hero_image_query": "burrata cheese cut open",
+            "image_alt": "Burrata is a fresh Italian cheese with a solid mozzarella shell and a soft, creamy center. What it is and how to serve it.",
             "direct_answer": (
                 "Burrata is a fresh Italian cheese made of a solid mozzarella "
                 "shell filled with a soft mixture of shredded mozzarella and "
@@ -2941,6 +2978,7 @@ SEED_PAGES = [
                 "it's typically prepared."
             ),
             "hero_image_query": "raw beef brisket",
+            "image_alt": "Brisket is a tough, well-worked cut of beef from the chest that turns tender with long, slow cooking. What it is and how it's typically prepared.",
             "direct_answer": (
                 "Brisket is a cut of beef from the lower chest of the cow, "
                 "made of two muscles (the \"flat\" and the \"point\") that "
@@ -2996,6 +3034,7 @@ SEED_PAGES = [
                 "rice. What it is, how it's made, and its common forms."
             ),
             "hero_image_query": "mochi rice cakes",
+            "image_alt": "Mochi is a chewy Japanese rice cake made from pounded glutinous rice. What it is, how it's made, and its common forms.",
             "direct_answer": (
                 "Mochi is a chewy Japanese rice cake made by pounding cooked "
                 "glutinous (sticky) rice into a smooth, elastic paste, then "
@@ -3054,6 +3093,7 @@ SEED_PAGES = [
                 "preparation."
             ),
             "hero_image_query": "bowl of hummus",
+            "image_alt": "Hummus is a creamy Middle Eastern dip made from blended chickpeas and tahini. What it is and its traditional preparation.",
             "direct_answer": (
                 "Hummus is a smooth, creamy dip or spread made by blending "
                 "cooked chickpeas with tahini, lemon juice, garlic, and olive "
@@ -3111,6 +3151,7 @@ SEED_PAGES = [
                 "American ice cream. What makes it different."
             ),
             "hero_image_query": "gelato in a display case",
+            "image_alt": "Gelato is an Italian frozen dessert, denser and less airy than American ice cream. What makes it different.",
             "direct_answer": (
                 "Gelato is an Italian-style frozen dessert made with a base "
                 "similar to ice cream's, but churned much more slowly, which "
@@ -3166,6 +3207,7 @@ SEED_PAGES = [
                 "as true caviar and how it's traditionally served."
             ),
             "hero_image_query": "caviar tin with spoon",
+            "image_alt": "Caviar is salt-cured sturgeon roe (fish eggs). What qualifies as true caviar and how it's traditionally served.",
             "direct_answer": (
                 "Caviar is salt-cured fish roe (eggs), and by strict "
                 "traditional definition, specifically the roe of wild sturgeon "
@@ -3222,6 +3264,7 @@ SEED_PAGES = [
                 "is and why it's prized for flaky pastry."
             ),
             "hero_image_query": "lard in a jar",
+            "image_alt": "Lard is rendered pork fat used for cooking and baking. What it is and why it's prized for flaky pastry.",
             "direct_answer": (
                 "Lard is rendered (melted down and purified) pork fat, used as "
                 "a cooking fat and, especially, as a shortening in baking."
@@ -3278,6 +3321,7 @@ SEED_PAGES = [
                 "and how it's used."
             ),
             "hero_image_query": "yuzu citrus fruit",
+            "image_alt": "Yuzu is an East Asian citrus fruit with an aromatic, tart flavor between a mandarin, grapefruit, and lemon. What it is and how it's used.",
             "direct_answer": (
                 "Yuzu is an East Asian citrus fruit, roughly the size of a "
                 "small orange, with a highly aromatic, tart flavor often "
@@ -3333,6 +3377,7 @@ SEED_PAGES = [
                 "categorized."
             ),
             "hero_image_query": "vermouth bottle and glass",
+            "image_alt": "Vermouth is a fortified, aromatized wine used in cocktails like the martini and Manhattan. What it is and how it's categorized.",
             "direct_answer": (
                 "Vermouth is a fortified wine flavored with botanicals, "
                 "herbs, spices, roots, and bark, and typically categorized "
@@ -3388,6 +3433,7 @@ SEED_PAGES = [
                 "source of whey protein powder. What it is and how it's used."
             ),
             "hero_image_query": "whey protein powder and liquid whey",
+            "image_alt": "Whey is the liquid left over from making cheese, and the source of whey protein powder. What it is and how it's used.",
             "direct_answer": (
                 "Whey is the watery liquid left behind after milk is curdled "
                 "and strained during cheesemaking, it's the part that "
@@ -3451,6 +3497,7 @@ SEED_PAGES = [
                 "air back out. How and when to use it."
             ),
             "hero_image_query": "folding whipped cream into batter",
+            "image_alt": "Folding is a gentle mixing technique that combines a light, whipped ingredient into a heavier one without knocking the air back out. How and when to use it.",
             "link_terms": ["fold", "folds", "folded", "folding"],
             "direct_answer": (
                 "Folding is a gentle mixing technique that combines a light, "
@@ -3515,6 +3562,7 @@ SEED_PAGES = [
                 "with no visible chunks. What it means and how it's done."
             ),
             "hero_image_query": "pureeing mango in a blender",
+            "image_alt": "Pureeing means blending a food until completely smooth, with no visible chunks. What it means and how it's done.",
             "link_terms": ["puree", "purees", "pureed", "pureeing"],
             "direct_answer": (
                 "Pureeing means blending a food until it's completely "
@@ -3578,6 +3626,7 @@ SEED_PAGES = [
                 "works and why it matters."
             ),
             "hero_image_query": "dredging tomato slices in flour",
+            "image_alt": "Dredging means coating food lightly in a dry ingredient, usually the first step in a multi-step breading. How it works and why it matters.",
             "link_terms": ["dredge", "dredges", "dredged", "dredging"],
             "direct_answer": (
                 "Dredging means coating food lightly in a dry ingredient, "
@@ -3639,6 +3688,7 @@ SEED_PAGES = [
                 "when to do it safely."
             ),
             "hero_image_query": "basting chicken with a spoon",
+            "image_alt": "Basting means spooning or brushing liquid over food as it cooks, to add flavor and moisture to the surface. How and when to do it safely.",
             "link_terms": ["baste", "bastes", "basted", "basting"],
             "direct_answer": (
                 "Basting means spooning, brushing, or squeezing liquid, "
@@ -3703,6 +3753,7 @@ SEED_PAGES = [
                 "through. Why it works and how to get it right."
             ),
             "hero_image_query": "searing a steak in a hot pan",
+            "image_alt": "Searing means cooking a food's surface over high heat until it browns deeply, without necessarily cooking it through. Why it works and how to get it right.",
             "link_terms": ["sear", "sears", "seared", "searing"],
             "direct_answer": (
                 "Searing means cooking food's surface, usually meat or "
@@ -3767,6 +3818,7 @@ SEED_PAGES = [
                 "and whipping."
             ),
             "hero_image_query": "whisking eggs in a bowl",
+            "image_alt": "Whisking means rapidly beating ingredients to combine them smoothly and incorporate air. How it differs from stirring and whipping.",
             "link_terms": ["whisk", "whisks", "whisked", "whisking"],
             "direct_answer": (
                 "Whisking means rapidly beating ingredients with a whisk "
@@ -3832,6 +3884,7 @@ SEED_PAGES = [
                 "it works and common mistakes."
             ),
             "hero_image_query": "whipping cream to stiff peaks",
+            "image_alt": "Whipping means beating cream or egg whites until they trap enough air to hold a shape, like soft or stiff peaks. How it works and common mistakes.",
             "link_terms": ["whip", "whips", "whipped", "whipping"],
             "direct_answer": (
                 "Whipping means beating an ingredient, most often cream or "
@@ -3897,6 +3950,7 @@ SEED_PAGES = [
                 "underneath. How and why to do it."
             ),
             "hero_image_query": "zesting a lemon with a microplane",
+            "image_alt": "Zesting means removing just the thin, colorful outer peel of a citrus fruit, without the bitter white pith underneath. How and why to do it.",
             "link_terms": ["zest", "zests", "zested", "zesting"],
             "direct_answer": (
                 "Zesting means removing just the thin, colorful outer layer "
@@ -3961,6 +4015,7 @@ SEED_PAGES = [
                 "Why it matters and how it works."
             ),
             "hero_image_query": "cocktail shaker with egg white foam",
+            "image_alt": "A dry shake is a cocktail technique that shakes egg white or aquafaba without ice first, to build a stable foam. Why it matters and how it works.",
             "link_terms": ["dry shake"],
             "direct_answer": (
                 "A dry shake is a cocktail technique where ingredients, "
@@ -4026,6 +4081,7 @@ SEED_PAGES = [
                 "original texture. How and why it's done."
             ),
             "hero_image_query": "dried chiles soaking in hot water",
+            "image_alt": "Rehydrating means soaking a dried ingredient, like dried chiles or mushrooms, until it softens back toward its original texture. How and why it's done.",
             "link_terms": ["rehydrate", "rehydrates", "rehydrated", "rehydrating"],
             "direct_answer": (
                 "Rehydrating means soaking a dried ingredient, most often "
@@ -4088,6 +4144,7 @@ SEED_PAGES = [
                 "churning speed, and serving temperature, not just the name."
             ),
             "hero_image_query": "gelato and ice cream side by side",
+            "image_alt": "Gelato vs. ice cream: the real differences are butterfat, churning speed, and serving temperature, not just the name.",
             "item_a_name": "Gelato",
             "item_b_name": "Ice Cream",
             "comparison_table": [
@@ -4158,6 +4215,7 @@ SEED_PAGES = [
                 "The real difference is whether an acid is already built in."
             ),
             "hero_image_query": "baking powder and baking soda side by side",
+            "image_alt": "Baking powder vs. baking soda: they're not interchangeable. The real difference is whether an acid is already built in.",
             "item_a_name": "Baking Powder",
             "item_b_name": "Baking Soda",
             "comparison_table": [
@@ -4229,6 +4287,7 @@ SEED_PAGES = [
                 "sweet potatoes. The real botanical difference explained."
             ),
             "hero_image_query": "yam and sweet potato side by side",
+            "image_alt": "Yam vs. sweet potato: in most US grocery stores, they're both sweet potatoes. The real botanical difference explained.",
             "item_a_name": "Yam",
             "item_b_name": "Sweet Potato",
             "comparison_table": [
@@ -4302,6 +4361,7 @@ SEED_PAGES = [
                 "bourbon."
             ),
             "hero_image_query": "bourbon and whiskey glasses",
+            "image_alt": "Bourbon vs. whiskey: bourbon is a legally defined type of whiskey, not a separate category. What actually makes it bourbon.",
             "item_a_name": "Bourbon",
             "item_b_name": "Whiskey",
             "comparison_table": [
@@ -4373,6 +4433,7 @@ SEED_PAGES = [
                 "interchangeable by volume."
             ),
             "hero_image_query": "kosher salt and sea salt side by side",
+            "image_alt": "Kosher salt vs. sea salt: the real differences are crystal shape, density, and source, and why they aren't interchangeable by volume.",
             "item_a_name": "Kosher Salt",
             "item_b_name": "Sea Salt",
             "comparison_table": [
@@ -4446,6 +4507,7 @@ SEED_PAGES = [
                 "in, crushed fruit versus strained juice."
             ),
             "hero_image_query": "jam and jelly jars side by side",
+            "image_alt": "Jam vs. jelly: the difference is what part of the fruit goes in, crushed fruit versus strained juice.",
             "item_a_name": "Jam",
             "item_b_name": "Jelly",
             "comparison_table": [
@@ -4514,6 +4576,7 @@ SEED_PAGES = [
                 "each."
             ),
             "hero_image_query": "parsley and cilantro side by side",
+            "image_alt": "Parsley vs. cilantro: they look almost identical but taste completely different. How to tell them apart and when to use each.",
             "item_a_name": "Parsley",
             "item_b_name": "Cilantro",
             "comparison_table": [
@@ -4585,6 +4648,7 @@ SEED_PAGES = [
                 "nutrition, and how well each froths and bakes."
             ),
             "hero_image_query": "oat milk and almond milk cartons",
+            "image_alt": "Oat milk vs. almond milk: how they compare on taste, nutrition, and how well each froths and bakes.",
             "item_a_name": "Oat Milk",
             "item_b_name": "Almond Milk",
             "comparison_table": [
@@ -4658,6 +4722,7 @@ SEED_PAGES = [
                 "explained."
             ),
             "hero_image_query": "prawns and shrimp side by side",
+            "image_alt": "Prawn vs. shrimp: there's a real biological difference, but the words are also used regionally and interchangeably. Both explained.",
             "item_a_name": "Prawn",
             "item_b_name": "Shrimp",
             "comparison_table": [
@@ -4730,6 +4795,7 @@ SEED_PAGES = [
                 "processing, and a real difference in flavor and best uses."
             ),
             "hero_image_query": "white pepper and black pepper side by side",
+            "image_alt": "White pepper vs. black pepper: same plant, different processing, and a real difference in flavor and best uses.",
             "item_a_name": "White Pepper",
             "item_b_name": "Black Pepper",
             "comparison_table": [
@@ -4801,6 +4867,7 @@ SEED_PAGES = [
                 "ratios, for both baking and toppings."
             ),
             "hero_image_query": "sour cream in a bowl",
+            "image_alt": "Out of sour cream? Here are four ranked substitutes with exact ratios, for both baking and toppings.",
             "ranked_substitutes": [
                 {"name": "Plain Greek yogurt", "ratio": "1:1", "best_for": "Both baking and toppings", "note": "Very close in tang and thickness; the closest all-around substitute."},
                 {"name": "Crème fraîche", "ratio": "1:1", "best_for": "Cooking and sauces", "note": "Milder and richer, and won't curdle when heated the way sour cream can."},
@@ -4849,6 +4916,7 @@ SEED_PAGES = [
                 "minutes, plus other ranked options."
             ),
             "hero_image_query": "buttermilk in a glass",
+            "image_alt": "Out of buttermilk? A simple milk-and-acid substitute works in minutes, plus other ranked options.",
             "ranked_substitutes": [
                 {"name": "Milk + lemon juice or white vinegar", "ratio": "1 cup milk + 1 tbsp acid, rested 5-10 minutes", "best_for": "Both baking and cooking", "note": "The classic, near-universal substitute, the acid curdles the milk slightly, mimicking buttermilk's tang and thinness."},
                 {"name": "Plain yogurt, thinned with milk", "ratio": "¾ cup yogurt + ¼ cup milk, whisked smooth", "best_for": "Baking", "note": "Close in tang and thickness once thinned; a very reliable substitute."},
@@ -4895,6 +4963,7 @@ SEED_PAGES = [
                 "including how much vanilla bean or paste to use instead."
             ),
             "hero_image_query": "vanilla extract bottle",
+            "image_alt": "Out of vanilla extract? Here are four ranked substitutes, including how much vanilla bean or paste to use instead.",
             "ranked_substitutes": [
                 {"name": "Vanilla bean paste", "ratio": "1:1", "best_for": "Both baking and no-bake desserts", "note": "Nearly identical flavor to extract, with visible vanilla bean flecks as a bonus."},
                 {"name": "Scraped vanilla bean pod", "ratio": "1 whole bean per teaspoon of extract called for", "best_for": "Custards, ice cream, and other cooked applications", "note": "The most intense, purest vanilla flavor, but more expensive and requires scraping out the seeds."},
@@ -4945,6 +5014,7 @@ SEED_PAGES = [
                 "four ranked substitutes with exact ratios."
             ),
             "hero_image_query": "fish sauce bottle",
+            "image_alt": "Out of fish sauce, or need a vegetarian alternative? Here are four ranked substitutes with exact ratios.",
             "ranked_substitutes": [
                 {"name": "Soy sauce + a squeeze of lime", "ratio": "1:1, plus a small squeeze of lime juice", "best_for": "Vegetarian/vegan cooking", "note": "Lacks fish sauce's deep umami funk, but adds comparable saltiness and a similar savory backbone."},
                 {"name": "Worcestershire sauce", "ratio": "1:1", "best_for": "Western dishes wanting umami depth", "note": "Contains anchovies, so not vegetarian, but its flavor profile is genuinely close to fish sauce's savory funk."},
@@ -4995,6 +5065,7 @@ SEED_PAGES = [
                 "Here are four ranked substitutes with exact ratios."
             ),
             "hero_image_query": "butter and alternatives",
+            "image_alt": "Out of butter, dairy-free, or just want a healthier swap? Here are four ranked substitutes with exact ratios.",
             "ranked_substitutes": [
                 {"name": "Neutral vegetable oil", "ratio": "Use ¾ the amount of butter called for", "best_for": "Quick breads, muffins, brownies", "note": "Adds moisture but no structure, best in recipes that don't rely on butter for a flaky or creamed texture."},
                 {"name": "Unsweetened applesauce", "ratio": "Use half the amount, plus a little extra flour if the batter seems too wet", "best_for": "Lower-fat baking", "note": "Cuts fat and calories significantly but changes texture, denser, moister, less rich."},
@@ -5045,6 +5116,7 @@ SEED_PAGES = [
                 "how to make your own at home overnight."
             ),
             "hero_image_query": "creme fraiche substitute ingredients",
+            "image_alt": "Out of crème fraîche? Here are three ranked substitutes, plus how to make your own at home overnight.",
             "ranked_substitutes": [
                 {"name": "Sour cream", "ratio": "1:1", "best_for": "Cold toppings and dips", "note": "Tangier and lower in fat; can curdle if boiled the way crème fraîche won't."},
                 {"name": "Mascarpone thinned with a little cream", "ratio": "1:1", "best_for": "Desserts and rich sauces", "note": "Milder and richer, closer to crème fraîche's fat content than sour cream."},
@@ -5091,6 +5163,7 @@ SEED_PAGES = [
                 "soup."
             ),
             "hero_image_query": "gruyere cheese substitute options",
+            "image_alt": "Out of gruyère? Here are three ranked substitutes that melt and taste similarly, for fondue, gratins, and French onion soup.",
             "ranked_substitutes": [
                 {"name": "Comté", "ratio": "1:1", "best_for": "Any use, fondue, gratins, soups", "note": "The closest possible substitute; a French cousin cheese with nearly identical melting and flavor."},
                 {"name": "Swiss Emmental", "ratio": "1:1", "best_for": "Melted dishes and sandwiches", "note": "Milder and sweeter, with the classic large holes; melts just as smoothly."},
@@ -5136,6 +5209,7 @@ SEED_PAGES = [
                 "there's no perfect match for its unique floral-citrus flavor."
             ),
             "hero_image_query": "cardamom pods and ground cardamom",
+            "image_alt": "Out of cardamom? Here are three ranked substitutes, since there's no perfect match for its unique floral-citrus flavor.",
             "ranked_substitutes": [
                 {"name": "Cinnamon + a pinch of nutmeg", "ratio": "Equal parts cinnamon, plus a small pinch of nutmeg, in place of cardamom", "best_for": "Baking", "note": "A different but pleasant warm-spice profile; won't replicate cardamom's floral citrus note."},
                 {"name": "Allspice", "ratio": "Use half the amount of cardamom called for", "best_for": "Baking and spice blends", "note": "Allspice is more intensely flavored, so use less; closer to cardamom's complexity than plain cinnamon."},
@@ -5184,6 +5258,7 @@ SEED_PAGES = [
                 "sauces, and baking."
             ),
             "hero_image_query": "tahini substitute ingredients",
+            "image_alt": "Out of tahini? Here are three ranked substitutes for hummus, sauces, and baking.",
             "ranked_substitutes": [
                 {"name": "Sunflower seed butter", "ratio": "1:1", "best_for": "Nut-free needs, hummus, sauces", "note": "The closest nut-free substitute, though it lacks tahini's distinct roasted-sesame flavor."},
                 {"name": "Almond butter", "ratio": "1:1", "best_for": "Sauces and dressings, not traditional hummus", "note": "Sweeter and richer; changes the flavor character noticeably."},
@@ -5230,6 +5305,7 @@ SEED_PAGES = [
                 "substitutes with exact ratios for one egg."
             ),
             "hero_image_query": "egg substitute ingredients flaxseed and applesauce",
+            "image_alt": "Out of eggs, or baking vegan? Here are four ranked egg substitutes with exact ratios for one egg.",
             "ranked_substitutes": [
                 {"name": "Flax egg (ground flaxseed + water)", "ratio": "1 tbsp ground flaxseed + 3 tbsp water, rested 5 minutes, per egg", "best_for": "Muffins, quick breads, cookies", "note": "Adds binding similar to egg; slightly denser crumb and a mild nutty flavor."},
                 {"name": "Unsweetened applesauce", "ratio": "¼ cup per egg", "best_for": "Moist baked goods (muffins, cakes)", "note": "Adds moisture but little binding or lift; best combined with a bit of extra leavening."},
@@ -5286,12 +5362,12 @@ SEED_PAGES = [
                 "regular rotation, organized by protein."
             ),
             "recipe_cards": [
-                {"title": "Chicken Al Pastor Tacos", "slug": "chicken-al-pastor", "description": "Achiote-and-pineapple marinated chicken, seared hard and chopped for tacos.", "image_query": "chicken al pastor tacos"},
-                {"title": "Carne Asada Tacos", "slug": "carne-asada-tacos", "description": "Grilled, citrus-marinated skirt steak, sliced thin against the grain.", "image_query": "carne asada tacos"},
-                {"title": "Baja Fish Tacos", "slug": "baja-fish-tacos", "description": "Crispy beer-battered fish with cabbage slaw and a creamy chipotle sauce.", "image_query": "baja fish tacos"},
-                {"title": "Birria Tacos", "slug": "birria-tacos", "description": "Slow-braised, chile-spiced beef tacos, dipped and served with their own consommé.", "image_query": "birria tacos"},
-                {"title": "Black Bean and Sweet Potato Tacos", "slug": "black-bean-sweet-potato-tacos", "description": "A hearty vegetarian filling with roasted sweet potato and smoky black beans.", "image_query": "black bean sweet potato tacos"},
-                {"title": "Shrimp Tacos", "slug": "shrimp-tacos", "description": "Quick-seared, chili-lime shrimp with a bright cabbage and cilantro slaw.", "image_query": "shrimp tacos"},
+                {"title": "Chicken Al Pastor Tacos", "slug": "chicken-al-pastor", "description": "Achiote-and-pineapple marinated chicken, seared hard and chopped for tacos.", "image_query": "chicken al pastor tacos", "image_alt": "Achiote-and-pineapple marinated chicken, seared hard and chopped for tacos."},
+                {"title": "Carne Asada Tacos", "slug": "carne-asada-tacos", "description": "Grilled, citrus-marinated skirt steak, sliced thin against the grain.", "image_query": "carne asada tacos", "image_alt": "Grilled, citrus-marinated skirt steak, sliced thin against the grain."},
+                {"title": "Baja Fish Tacos", "slug": "baja-fish-tacos", "description": "Crispy beer-battered fish with cabbage slaw and a creamy chipotle sauce.", "image_query": "baja fish tacos", "image_alt": "Crispy beer-battered fish with cabbage slaw and a creamy chipotle sauce."},
+                {"title": "Birria Tacos", "slug": "birria-tacos", "description": "Slow-braised, chile-spiced beef tacos, dipped and served with their own consommé.", "image_query": "birria tacos", "image_alt": "Slow-braised, chile-spiced beef tacos, dipped and served with their own consommé."},
+                {"title": "Black Bean and Sweet Potato Tacos", "slug": "black-bean-sweet-potato-tacos", "description": "A hearty vegetarian filling with roasted sweet potato and smoky black beans.", "image_query": "black bean sweet potato tacos", "image_alt": "A hearty vegetarian filling with roasted sweet potato and smoky black beans."},
+                {"title": "Shrimp Tacos", "slug": "shrimp-tacos", "description": "Quick-seared, chili-lime shrimp with a bright cabbage and cilantro slaw.", "image_query": "shrimp tacos", "image_alt": "Quick-seared, chili-lime shrimp with a bright cabbage and cilantro slaw."},
             ],
             "sub_categories": [
                 {"label": "Meat", "items": ["Chicken Al Pastor Tacos", "Carne Asada Tacos", "Birria Tacos"]},
@@ -5339,12 +5415,12 @@ SEED_PAGES = [
                 "the pies worth mastering, organized by type."
             ),
             "recipe_cards": [
-                {"title": "Classic Apple Pie", "slug": "classic-apple-pie", "description": "A double-crust pie with cinnamon-spiced apples, baked until the filling bubbles through the vents.", "image_query": "apple pie"},
-                {"title": "Pumpkin Pie", "slug": "pumpkin-pie", "description": "A silky custard pie spiced with cinnamon, ginger, and clove in a single crust.", "image_query": "pumpkin pie"},
-                {"title": "Key Lime Pie", "slug": "key-lime-pie", "description": "A tart, creamy custard pie in a graham cracker crust, no baking required for the filling.", "image_query": "key lime pie"},
-                {"title": "Chocolate Cream Pie", "slug": "chocolate-cream-pie", "description": "A rich chocolate pudding filling topped with whipped cream in a baked crust.", "image_query": "chocolate cream pie"},
-                {"title": "Pecan Pie", "slug": "pecan-pie", "description": "A gooey, deeply sweet filling packed with toasted pecans in a single crust.", "image_query": "pecan pie"},
-                {"title": "Cherry Pie", "slug": "cherry-pie", "description": "A double-crust pie with a tart-sweet cherry filling, best made with fresh or frozen sour cherries.", "image_query": "cherry pie"},
+                {"title": "Classic Apple Pie", "slug": "classic-apple-pie", "description": "A double-crust pie with cinnamon-spiced apples, baked until the filling bubbles through the vents.", "image_query": "apple pie", "image_alt": "A double-crust pie with cinnamon-spiced apples, baked until the filling bubbles through the vents."},
+                {"title": "Pumpkin Pie", "slug": "pumpkin-pie", "description": "A silky custard pie spiced with cinnamon, ginger, and clove in a single crust.", "image_query": "pumpkin pie", "image_alt": "A silky custard pie spiced with cinnamon, ginger, and clove in a single crust."},
+                {"title": "Key Lime Pie", "slug": "key-lime-pie", "description": "A tart, creamy custard pie in a graham cracker crust, no baking required for the filling.", "image_query": "key lime pie", "image_alt": "A tart, creamy custard pie in a graham cracker crust, no baking required for the filling."},
+                {"title": "Chocolate Cream Pie", "slug": "chocolate-cream-pie", "description": "A rich chocolate pudding filling topped with whipped cream in a baked crust.", "image_query": "chocolate cream pie", "image_alt": "A rich chocolate pudding filling topped with whipped cream in a baked crust."},
+                {"title": "Pecan Pie", "slug": "pecan-pie", "description": "A gooey, deeply sweet filling packed with toasted pecans in a single crust.", "image_query": "pecan pie", "image_alt": "A gooey, deeply sweet filling packed with toasted pecans in a single crust."},
+                {"title": "Cherry Pie", "slug": "cherry-pie", "description": "A double-crust pie with a tart-sweet cherry filling, best made with fresh or frozen sour cherries.", "image_query": "cherry pie", "image_alt": "A double-crust pie with a tart-sweet cherry filling, best made with fresh or frozen sour cherries."},
             ],
             "sub_categories": [
                 {"label": "Fruit", "items": ["Classic Apple Pie", "Cherry Pie"]},
@@ -5393,10 +5469,10 @@ SEED_PAGES = [
                 "temperature. These are the duck preparations worth learning."
             ),
             "recipe_cards": [
-                {"title": "Pan-Seared Duck Breast", "slug": "pan-seared-duck-breast", "description": "Scored, slowly rendered duck breast with crackling-crisp skin and a rosy center.", "image_query": "pan seared duck breast"},
-                {"title": "Duck Confit", "slug": "duck-confit", "description": "Duck legs slow-cooked and preserved in their own rendered fat until fall-apart tender.", "image_query": "duck confit"},
-                {"title": "Whole Roast Duck", "slug": "whole-roast-duck", "description": "A whole roasted duck with crisp skin, basted and pricked to release excess fat as it cooks.", "image_query": "whole roast duck"},
-                {"title": "Duck Fat Roasted Potatoes", "slug": "duck-fat-roasted-potatoes", "description": "Potatoes roasted in reserved duck fat for an especially crisp, savory crust.", "image_query": "duck fat potatoes"},
+                {"title": "Pan-Seared Duck Breast", "slug": "pan-seared-duck-breast", "description": "Scored, slowly rendered duck breast with crackling-crisp skin and a rosy center.", "image_query": "pan seared duck breast", "image_alt": "Scored, slowly rendered duck breast with crackling-crisp skin and a rosy center."},
+                {"title": "Duck Confit", "slug": "duck-confit", "description": "Duck legs slow-cooked and preserved in their own rendered fat until fall-apart tender.", "image_query": "duck confit", "image_alt": "Duck legs slow-cooked and preserved in their own rendered fat until fall-apart tender."},
+                {"title": "Whole Roast Duck", "slug": "whole-roast-duck", "description": "A whole roasted duck with crisp skin, basted and pricked to release excess fat as it cooks.", "image_query": "whole roast duck", "image_alt": "A whole roasted duck with crisp skin, basted and pricked to release excess fat as it cooks."},
+                {"title": "Duck Fat Roasted Potatoes", "slug": "duck-fat-roasted-potatoes", "description": "Potatoes roasted in reserved duck fat for an especially crisp, savory crust.", "image_query": "duck fat potatoes", "image_alt": "Potatoes roasted in reserved duck fat for an especially crisp, savory crust."},
             ],
             "sub_categories": [
                 {"label": "Breast", "items": ["Pan-Seared Duck Breast"]},
@@ -5443,10 +5519,10 @@ SEED_PAGES = [
                 "worth trying, organized by preparation."
             ),
             "recipe_cards": [
-                {"title": "Roasted Beet Salad with Goat Cheese", "slug": "roasted-beet-salad-with-goat-cheese", "description": "Sweet roasted beets with tangy goat cheese and toasted walnuts.", "image_query": "roasted beet salad goat cheese"},
-                {"title": "Pickled Beets", "slug": "pickled-beets", "description": "Classic sweet-and-sour pickled beets, ready to can or refrigerate.", "image_query": "pickled beets"},
-                {"title": "Shaved Raw Beet Salad", "slug": "shaved-raw-beet-salad", "description": "Thinly shaved raw beets with a bright citrus vinaigrette.", "image_query": "raw beet salad"},
-                {"title": "Beet and Feta Hummus", "slug": "beet-and-feta-hummus", "description": "A vibrant pink hummus made by blending roasted beets into the base.", "image_query": "beet hummus"},
+                {"title": "Roasted Beet Salad with Goat Cheese", "slug": "roasted-beet-salad-with-goat-cheese", "description": "Sweet roasted beets with tangy goat cheese and toasted walnuts.", "image_query": "roasted beet salad goat cheese", "image_alt": "Sweet roasted beets with tangy goat cheese and toasted walnuts."},
+                {"title": "Pickled Beets", "slug": "pickled-beets", "description": "Classic sweet-and-sour pickled beets, ready to can or refrigerate.", "image_query": "pickled beets", "image_alt": "Classic sweet-and-sour pickled beets, ready to can or refrigerate."},
+                {"title": "Shaved Raw Beet Salad", "slug": "shaved-raw-beet-salad", "description": "Thinly shaved raw beets with a bright citrus vinaigrette.", "image_query": "raw beet salad", "image_alt": "Thinly shaved raw beets with a bright citrus vinaigrette."},
+                {"title": "Beet and Feta Hummus", "slug": "beet-and-feta-hummus", "description": "A vibrant pink hummus made by blending roasted beets into the base.", "image_query": "beet hummus", "image_alt": "A vibrant pink hummus made by blending roasted beets into the base."},
             ],
             "sub_categories": [
                 {"label": "Roasted", "items": ["Roasted Beet Salad with Goat Cheese"]},
@@ -5494,10 +5570,10 @@ SEED_PAGES = [
                 "recipes worth making with either."
             ),
             "recipe_cards": [
-                {"title": "Fig and Prosciutto Flatbread", "slug": "fig-and-prosciutto-flatbread", "description": "Fresh figs, salty prosciutto, and melted gorgonzola over a crisp flatbread.", "image_query": "fig prosciutto flatbread"},
-                {"title": "Honey-Roasted Figs", "slug": "honey-roasted-figs", "description": "Fresh figs halved and roasted with honey until caramelized, served with yogurt or ice cream.", "image_query": "honey roasted figs"},
-                {"title": "Fig Jam", "slug": "fig-jam", "description": "A simple preserve made from fresh or dried figs, sugar, and lemon.", "image_query": "fig jam"},
-                {"title": "Fig and Goat Cheese Salad", "slug": "fig-and-goat-cheese-salad", "description": "Fresh figs, creamy goat cheese, and arugula with a balsamic drizzle.", "image_query": "fig goat cheese salad"},
+                {"title": "Fig and Prosciutto Flatbread", "slug": "fig-and-prosciutto-flatbread", "description": "Fresh figs, salty prosciutto, and melted gorgonzola over a crisp flatbread.", "image_query": "fig prosciutto flatbread", "image_alt": "Fresh figs, salty prosciutto, and melted gorgonzola over a crisp flatbread."},
+                {"title": "Honey-Roasted Figs", "slug": "honey-roasted-figs", "description": "Fresh figs halved and roasted with honey until caramelized, served with yogurt or ice cream.", "image_query": "honey roasted figs", "image_alt": "Fresh figs halved and roasted with honey until caramelized, served with yogurt or ice cream."},
+                {"title": "Fig Jam", "slug": "fig-jam", "description": "A simple preserve made from fresh or dried figs, sugar, and lemon.", "image_query": "fig jam", "image_alt": "A simple preserve made from fresh or dried figs, sugar, and lemon."},
+                {"title": "Fig and Goat Cheese Salad", "slug": "fig-and-goat-cheese-salad", "description": "Fresh figs, creamy goat cheese, and arugula with a balsamic drizzle.", "image_query": "fig goat cheese salad", "image_alt": "Fresh figs, creamy goat cheese, and arugula with a balsamic drizzle."},
             ],
             "sub_categories": [
                 {"label": "Savory", "items": ["Fig and Prosciutto Flatbread", "Fig and Goat Cheese Salad"]},
@@ -5544,10 +5620,10 @@ SEED_PAGES = [
                 "both sides."
             ),
             "recipe_cards": [
-                {"title": "Roasted Radishes with Butter", "slug": "roasted-radishes-with-butter", "description": "Halved radishes roasted until tender and lightly caramelized, tossed with butter and herbs.", "image_query": "roasted radishes"},
-                {"title": "Quick-Pickled Radishes", "slug": "quick-pickled-radishes", "description": "Thinly sliced radishes pickled in a vinegar brine, ready in an hour.", "image_query": "pickled radishes"},
-                {"title": "Radishes with Butter and Salt", "slug": "radishes-with-butter-and-salt", "description": "The classic French bistro snack - crisp raw radishes, good butter, and flaky salt.", "image_query": "radishes with butter and salt"},
-                {"title": "Sautéed Radish Greens", "slug": "sauteed-radish-greens", "description": "The often-discarded radish tops, quickly sautéed like any other leafy green.", "image_query": "sauteed radish greens"},
+                {"title": "Roasted Radishes with Butter", "slug": "roasted-radishes-with-butter", "description": "Halved radishes roasted until tender and lightly caramelized, tossed with butter and herbs.", "image_query": "roasted radishes", "image_alt": "Halved radishes roasted until tender and lightly caramelized, tossed with butter and herbs."},
+                {"title": "Quick-Pickled Radishes", "slug": "quick-pickled-radishes", "description": "Thinly sliced radishes pickled in a vinegar brine, ready in an hour.", "image_query": "pickled radishes", "image_alt": "Thinly sliced radishes pickled in a vinegar brine, ready in an hour."},
+                {"title": "Radishes with Butter and Salt", "slug": "radishes-with-butter-and-salt", "description": "The classic French bistro snack - crisp raw radishes, good butter, and flaky salt.", "image_query": "radishes with butter and salt", "image_alt": "The classic French bistro snack - crisp raw radishes, good butter, and flaky salt."},
+                {"title": "Sautéed Radish Greens", "slug": "sauteed-radish-greens", "description": "The often-discarded radish tops, quickly sautéed like any other leafy green.", "image_query": "sauteed radish greens", "image_alt": "The often-discarded radish tops, quickly sautéed like any other leafy green."},
             ],
             "sub_categories": [
                 {"label": "Cooked", "items": ["Roasted Radishes with Butter", "Sautéed Radish Greens"]},
@@ -5591,10 +5667,10 @@ SEED_PAGES = [
                 "These recipes make the case for keeping them in rotation."
             ),
             "recipe_cards": [
-                {"title": "Roasted Turnips", "slug": "roasted-turnips", "description": "Cubed turnips roasted until caramelized at the edges and tender inside.", "image_query": "roasted turnips"},
-                {"title": "Mashed Turnips", "slug": "mashed-turnips", "description": "A lighter, slightly peppery alternative to mashed potatoes.", "image_query": "mashed turnips"},
-                {"title": "Turnip and Potato Gratin", "slug": "turnip-and-potato-gratin", "description": "Thinly sliced turnips layered with potatoes in a creamy baked gratin.", "image_query": "turnip potato gratin"},
-                {"title": "Turnip Soup", "slug": "turnip-soup", "description": "A simple, creamy pureed soup built on turnips and a light broth base.", "image_query": "turnip soup"},
+                {"title": "Roasted Turnips", "slug": "roasted-turnips", "description": "Cubed turnips roasted until caramelized at the edges and tender inside.", "image_query": "roasted turnips", "image_alt": "Cubed turnips roasted until caramelized at the edges and tender inside."},
+                {"title": "Mashed Turnips", "slug": "mashed-turnips", "description": "A lighter, slightly peppery alternative to mashed potatoes.", "image_query": "mashed turnips", "image_alt": "A lighter, slightly peppery alternative to mashed potatoes."},
+                {"title": "Turnip and Potato Gratin", "slug": "turnip-and-potato-gratin", "description": "Thinly sliced turnips layered with potatoes in a creamy baked gratin.", "image_query": "turnip potato gratin", "image_alt": "Thinly sliced turnips layered with potatoes in a creamy baked gratin."},
+                {"title": "Turnip Soup", "slug": "turnip-soup", "description": "A simple, creamy pureed soup built on turnips and a light broth base.", "image_query": "turnip soup", "image_alt": "A simple, creamy pureed soup built on turnips and a light broth base."},
             ],
             "sub_categories": [
                 {"label": "Roasted & Mashed", "items": ["Roasted Turnips", "Mashed Turnips"]},
@@ -5640,10 +5716,10 @@ SEED_PAGES = [
                 "ignoring it."
             ),
             "recipe_cards": [
-                {"title": "Pan-Seared Venison Backstrap", "slug": "pan-seared-venison-backstrap", "description": "Quick-seared venison loin, cooked no further than medium-rare to stay tender.", "image_query": "seared venison backstrap"},
-                {"title": "Venison Chili", "slug": "venison-chili", "description": "Ground venison chili, simmered long enough to stay tender despite its low fat content.", "image_query": "venison chili"},
-                {"title": "Braised Venison Shoulder", "slug": "braised-venison-shoulder", "description": "A tougher cut slow-braised in red wine and stock until fall-apart tender.", "image_query": "braised venison"},
-                {"title": "Venison Burgers", "slug": "venison-burgers", "description": "Ground venison mixed with a little added fat (bacon or butter) to keep the patties juicy.", "image_query": "venison burger"},
+                {"title": "Pan-Seared Venison Backstrap", "slug": "pan-seared-venison-backstrap", "description": "Quick-seared venison loin, cooked no further than medium-rare to stay tender.", "image_query": "seared venison backstrap", "image_alt": "Quick-seared venison loin, cooked no further than medium-rare to stay tender."},
+                {"title": "Venison Chili", "slug": "venison-chili", "description": "Ground venison chili, simmered long enough to stay tender despite its low fat content.", "image_query": "venison chili", "image_alt": "Ground venison chili, simmered long enough to stay tender despite its low fat content."},
+                {"title": "Braised Venison Shoulder", "slug": "braised-venison-shoulder", "description": "A tougher cut slow-braised in red wine and stock until fall-apart tender.", "image_query": "braised venison", "image_alt": "A tougher cut slow-braised in red wine and stock until fall-apart tender."},
+                {"title": "Venison Burgers", "slug": "venison-burgers", "description": "Ground venison mixed with a little added fat (bacon or butter) to keep the patties juicy.", "image_query": "venison burger", "image_alt": "Ground venison mixed with a little added fat (bacon or butter) to keep the patties juicy."},
             ],
             "sub_categories": [
                 {"label": "Quick-Cooked", "items": ["Pan-Seared Venison Backstrap", "Venison Burgers"]},
@@ -5693,10 +5769,10 @@ SEED_PAGES = [
                 "or blended, never eaten firm. These recipes cover both."
             ),
             "recipe_cards": [
-                {"title": "Sliced Fuyu Persimmon Salad", "slug": "sliced-fuyu-persimmon-salad", "description": "Crisp, raw fuyu persimmon slices with arugula, pomegranate, and a light vinaigrette.", "image_query": "fuyu persimmon salad"},
-                {"title": "Persimmon Bread", "slug": "persimmon-bread", "description": "A moist quick bread made from soft, fully ripe hachiya persimmon pulp.", "image_query": "persimmon bread"},
-                {"title": "Roasted Fuyu Persimmons", "slug": "roasted-fuyu-persimmons", "description": "Fuyu persimmon wedges roasted until caramelized at the edges.", "image_query": "roasted persimmons"},
-                {"title": "Persimmon Pudding", "slug": "persimmon-pudding", "description": "A traditional steamed or baked pudding made from hachiya persimmon pulp and warm spices.", "image_query": "persimmon pudding"},
+                {"title": "Sliced Fuyu Persimmon Salad", "slug": "sliced-fuyu-persimmon-salad", "description": "Crisp, raw fuyu persimmon slices with arugula, pomegranate, and a light vinaigrette.", "image_query": "fuyu persimmon salad", "image_alt": "Crisp, raw fuyu persimmon slices with arugula, pomegranate, and a light vinaigrette."},
+                {"title": "Persimmon Bread", "slug": "persimmon-bread", "description": "A moist quick bread made from soft, fully ripe hachiya persimmon pulp.", "image_query": "persimmon bread", "image_alt": "A moist quick bread made from soft, fully ripe hachiya persimmon pulp."},
+                {"title": "Roasted Fuyu Persimmons", "slug": "roasted-fuyu-persimmons", "description": "Fuyu persimmon wedges roasted until caramelized at the edges.", "image_query": "roasted persimmons", "image_alt": "Fuyu persimmon wedges roasted until caramelized at the edges."},
+                {"title": "Persimmon Pudding", "slug": "persimmon-pudding", "description": "A traditional steamed or baked pudding made from hachiya persimmon pulp and warm spices.", "image_query": "persimmon pudding", "image_alt": "A traditional steamed or baked pudding made from hachiya persimmon pulp and warm spices."},
             ],
             "sub_categories": [
                 {"label": "Raw (Fuyu)", "items": ["Sliced Fuyu Persimmon Salad", "Roasted Fuyu Persimmons"]},
@@ -5744,10 +5820,10 @@ SEED_PAGES = [
                 "to use up a carton before it goes to waste."
             ),
             "recipe_cards": [
-                {"title": "Buttermilk Biscuits", "slug": "buttermilk-biscuits", "description": "Flaky, tender biscuits leavened partly by buttermilk's acidity reacting with baking soda.", "image_query": "buttermilk biscuits"},
-                {"title": "Buttermilk Fried Chicken", "slug": "buttermilk-fried-chicken", "description": "Chicken marinated in buttermilk overnight for extra tenderness before frying.", "image_query": "buttermilk fried chicken"},
-                {"title": "Buttermilk Pancakes", "slug": "buttermilk-pancakes", "description": "Fluffier, tangier pancakes than the standard milk-based version.", "image_query": "buttermilk pancakes"},
-                {"title": "Buttermilk Ranch Dressing", "slug": "buttermilk-ranch-dressing", "description": "A classic tangy, herby ranch dressing built on a buttermilk base.", "image_query": "buttermilk ranch dressing"},
+                {"title": "Buttermilk Biscuits", "slug": "buttermilk-biscuits", "description": "Flaky, tender biscuits leavened partly by buttermilk's acidity reacting with baking soda.", "image_query": "buttermilk biscuits", "image_alt": "Flaky, tender biscuits leavened partly by buttermilk's acidity reacting with baking soda."},
+                {"title": "Buttermilk Fried Chicken", "slug": "buttermilk-fried-chicken", "description": "Chicken marinated in buttermilk overnight for extra tenderness before frying.", "image_query": "buttermilk fried chicken", "image_alt": "Chicken marinated in buttermilk overnight for extra tenderness before frying."},
+                {"title": "Buttermilk Pancakes", "slug": "buttermilk-pancakes", "description": "Fluffier, tangier pancakes than the standard milk-based version.", "image_query": "buttermilk pancakes", "image_alt": "Fluffier, tangier pancakes than the standard milk-based version."},
+                {"title": "Buttermilk Ranch Dressing", "slug": "buttermilk-ranch-dressing", "description": "A classic tangy, herby ranch dressing built on a buttermilk base.", "image_query": "buttermilk ranch dressing", "image_alt": "A classic tangy, herby ranch dressing built on a buttermilk base."},
             ],
             "sub_categories": [
                 {"label": "Baking", "items": ["Buttermilk Biscuits", "Buttermilk Pancakes"]},
@@ -5808,12 +5884,13 @@ SEED_PAGES = [
                     "slug": "parmesan-crusted-chicken",
                     "description": "A mayonnaise-and-parmesan crust that bakes deeply golden without deep-frying.",
                     "image_query": "parmesan crusted chicken",
+                    "image_alt": "A mayonnaise-and-parmesan crust that bakes deeply golden without deep-frying.",
                 },
-                {"title": "Classic Margherita Pizza", "slug": "margherita-pizza", "description": "San Marzano tomatoes, fresh mozzarella, and basil on a properly stretched dough.", "image_query": "margherita pizza"},
-                {"title": "Creamy Mushroom Risotto", "slug": "mushroom-risotto", "description": "Arborio rice slowly coaxed into a creamy texture with ladle after ladle of warm stock.", "image_query": "mushroom risotto"},
-                {"title": "Homemade Fettuccine Alfredo", "slug": "fettuccine-alfredo", "description": "Butter, parmesan, and pasta water emulsified into a real sauce, no cream needed.", "image_query": "fettuccine alfredo"},
-                {"title": "Eggplant Parmesan", "slug": "eggplant-parmesan", "description": "Breaded, fried eggplant layered with marinara and melted cheese, baked until bubbling.", "image_query": "eggplant parmesan"},
-                {"title": "Tiramisu", "slug": "tiramisu", "description": "Espresso-soaked ladyfingers layered with a mascarpone cream, no baking required.", "image_query": "tiramisu"},
+                {"title": "Classic Margherita Pizza", "slug": "margherita-pizza", "description": "San Marzano tomatoes, fresh mozzarella, and basil on a properly stretched dough.", "image_query": "margherita pizza", "image_alt": "San Marzano tomatoes, fresh mozzarella, and basil on a properly stretched dough."},
+                {"title": "Creamy Mushroom Risotto", "slug": "mushroom-risotto", "description": "Arborio rice slowly coaxed into a creamy texture with ladle after ladle of warm stock.", "image_query": "mushroom risotto", "image_alt": "Arborio rice slowly coaxed into a creamy texture with ladle after ladle of warm stock."},
+                {"title": "Homemade Fettuccine Alfredo", "slug": "fettuccine-alfredo", "description": "Butter, parmesan, and pasta water emulsified into a real sauce, no cream needed.", "image_query": "fettuccine alfredo", "image_alt": "Butter, parmesan, and pasta water emulsified into a real sauce, no cream needed."},
+                {"title": "Eggplant Parmesan", "slug": "eggplant-parmesan", "description": "Breaded, fried eggplant layered with marinara and melted cheese, baked until bubbling.", "image_query": "eggplant parmesan", "image_alt": "Breaded, fried eggplant layered with marinara and melted cheese, baked until bubbling."},
+                {"title": "Tiramisu", "slug": "tiramisu", "description": "Espresso-soaked ladyfingers layered with a mascarpone cream, no baking required.", "image_query": "tiramisu", "image_alt": "Espresso-soaked ladyfingers layered with a mascarpone cream, no baking required."},
             ],
             "sub_categories": [
                 {"label": "Pasta & Risotto", "items": ["Creamy Mushroom Risotto", "Homemade Fettuccine Alfredo"]},
@@ -5868,17 +5945,19 @@ SEED_PAGES = [
                     "slug": "chicken-al-pastor",
                     "description": "Achiote-and-pineapple marinated chicken, seared hard for a charred, sweet-spicy crust.",
                     "image_query": "chicken al pastor tacos",
+                    "image_alt": "Achiote-and-pineapple marinated chicken, seared hard for a charred, sweet-spicy crust.",
                 },
                 {
                     "title": "Arroz con Leche",
                     "slug": "arroz-con-leche",
                     "description": "Traditional cinnamon rice pudding, simmered low and slow until creamy.",
                     "image_query": "arroz con leche rice pudding",
+                    "image_alt": "Traditional cinnamon rice pudding, simmered low and slow until creamy.",
                 },
-                {"title": "Chiles Rellenos", "slug": "chiles-rellenos", "description": "Roasted poblano chiles stuffed with cheese, battered, and fried until golden.", "image_query": "chiles rellenos"},
-                {"title": "Pozole Rojo", "slug": "pozole-rojo", "description": "A deep red, chile-based hominy soup, traditionally slow-simmered with pork.", "image_query": "pozole rojo"},
-                {"title": "Elote (Mexican Street Corn)", "slug": "elote", "description": "Grilled corn slathered with crema, cotija, chile powder, and lime.", "image_query": "elote mexican street corn"},
-                {"title": "Tres Leches Cake", "slug": "tres-leches-cake", "description": "A light sponge cake soaked in three kinds of milk until soft and custardy.", "image_query": "tres leches cake"},
+                {"title": "Chiles Rellenos", "slug": "chiles-rellenos", "description": "Roasted poblano chiles stuffed with cheese, battered, and fried until golden.", "image_query": "chiles rellenos", "image_alt": "Roasted poblano chiles stuffed with cheese, battered, and fried until golden."},
+                {"title": "Pozole Rojo", "slug": "pozole-rojo", "description": "A deep red, chile-based hominy soup, traditionally slow-simmered with pork.", "image_query": "pozole rojo", "image_alt": "A deep red, chile-based hominy soup, traditionally slow-simmered with pork."},
+                {"title": "Elote (Mexican Street Corn)", "slug": "elote", "description": "Grilled corn slathered with crema, cotija, chile powder, and lime.", "image_query": "elote mexican street corn", "image_alt": "Grilled corn slathered with crema, cotija, chile powder, and lime."},
+                {"title": "Tres Leches Cake", "slug": "tres-leches-cake", "description": "A light sponge cake soaked in three kinds of milk until soft and custardy.", "image_query": "tres leches cake", "image_alt": "A light sponge cake soaked in three kinds of milk until soft and custardy."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Chicken Al Pastor", "Chiles Rellenos", "Pozole Rojo"]},
@@ -5929,12 +6008,12 @@ SEED_PAGES = [
                 "again, not a tourist-menu sampler."
             ),
             "recipe_cards": [
-                {"title": "Potato and Cheese Pierogi", "slug": "potato-cheese-pierogi", "description": "Hand-folded dumplings filled with mashed potato and farmer's cheese, pan-fried in butter.", "image_query": "potato pierogi"},
-                {"title": "Bigos (Hunter's Stew)", "slug": "bigos-hunters-stew", "description": "A slow-simmered stew of sauerkraut, fresh cabbage, and mixed meats, better the next day.", "image_query": "bigos hunters stew"},
-                {"title": "Kielbasa and Sauerkraut", "slug": "kielbasa-and-sauerkraut", "description": "Smoked kielbasa simmered with tangy sauerkraut, onion, and a touch of caraway.", "image_query": "kielbasa and sauerkraut"},
-                {"title": "Zurek (Sour Rye Soup)", "slug": "zurek-sour-rye-soup", "description": "A tangy, fermented rye-based soup, traditionally served with a hard-boiled egg and sausage.", "image_query": "zurek sour rye soup"},
-                {"title": "Placki Ziemniaczane (Potato Pancakes)", "slug": "placki-ziemniaczane-potato-pancakes", "description": "Crisp, pan-fried shredded potato pancakes, served with sour cream or applesauce.", "image_query": "polish potato pancakes"},
-                {"title": "Paczki (Polish Doughnuts)", "slug": "paczki-polish-doughnuts", "description": "Rich, yeasted doughnuts filled with fruit preserves and dusted with powdered sugar.", "image_query": "paczki polish doughnuts"},
+                {"title": "Potato and Cheese Pierogi", "slug": "potato-cheese-pierogi", "description": "Hand-folded dumplings filled with mashed potato and farmer's cheese, pan-fried in butter.", "image_query": "potato pierogi", "image_alt": "Hand-folded dumplings filled with mashed potato and farmer's cheese, pan-fried in butter."},
+                {"title": "Bigos (Hunter's Stew)", "slug": "bigos-hunters-stew", "description": "A slow-simmered stew of sauerkraut, fresh cabbage, and mixed meats, better the next day.", "image_query": "bigos hunters stew", "image_alt": "A slow-simmered stew of sauerkraut, fresh cabbage, and mixed meats, better the next day."},
+                {"title": "Kielbasa and Sauerkraut", "slug": "kielbasa-and-sauerkraut", "description": "Smoked kielbasa simmered with tangy sauerkraut, onion, and a touch of caraway.", "image_query": "kielbasa and sauerkraut", "image_alt": "Smoked kielbasa simmered with tangy sauerkraut, onion, and a touch of caraway."},
+                {"title": "Zurek (Sour Rye Soup)", "slug": "zurek-sour-rye-soup", "description": "A tangy, fermented rye-based soup, traditionally served with a hard-boiled egg and sausage.", "image_query": "zurek sour rye soup", "image_alt": "A tangy, fermented rye-based soup, traditionally served with a hard-boiled egg and sausage."},
+                {"title": "Placki Ziemniaczane (Potato Pancakes)", "slug": "placki-ziemniaczane-potato-pancakes", "description": "Crisp, pan-fried shredded potato pancakes, served with sour cream or applesauce.", "image_query": "polish potato pancakes", "image_alt": "Crisp, pan-fried shredded potato pancakes, served with sour cream or applesauce."},
+                {"title": "Paczki (Polish Doughnuts)", "slug": "paczki-polish-doughnuts", "description": "Rich, yeasted doughnuts filled with fruit preserves and dusted with powdered sugar.", "image_query": "paczki polish doughnuts", "image_alt": "Rich, yeasted doughnuts filled with fruit preserves and dusted with powdered sugar."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Bigos (Hunter's Stew)", "Kielbasa and Sauerkraut"]},
@@ -5985,12 +6064,12 @@ SEED_PAGES = [
                 "learning the real technique for, not a shortcut version."
             ),
             "recipe_cards": [
-                {"title": "Butter Chicken (Murgh Makhani)", "slug": "butter-chicken-murgh-makhani", "description": "Tandoori-charred chicken simmered in a rich, tomato-and-cream sauce.", "image_query": "butter chicken murgh makhani"},
-                {"title": "Chana Masala", "slug": "chana-masala", "description": "Chickpeas simmered in a tangy, spiced tomato gravy, a staple vegetarian main.", "image_query": "chana masala"},
-                {"title": "Chicken Biryani", "slug": "chicken-biryani", "description": "Layered, fragrant basmati rice and marinated chicken, cooked together under a sealed lid.", "image_query": "chicken biryani"},
-                {"title": "Saag Paneer", "slug": "saag-paneer", "description": "Firm paneer cheese simmered in a pureed, spiced spinach sauce.", "image_query": "saag paneer"},
-                {"title": "Homemade Naan", "slug": "homemade-naan", "description": "Pillowy, blistered flatbread, traditionally cooked against the wall of a tandoor.", "image_query": "homemade naan bread"},
-                {"title": "Gulab Jamun", "slug": "gulab-jamun", "description": "Fried milk-solid dumplings soaked in a cardamom-and-rosewater syrup.", "image_query": "gulab jamun"},
+                {"title": "Butter Chicken (Murgh Makhani)", "slug": "butter-chicken-murgh-makhani", "description": "Tandoori-charred chicken simmered in a rich, tomato-and-cream sauce.", "image_query": "butter chicken murgh makhani", "image_alt": "Tandoori-charred chicken simmered in a rich, tomato-and-cream sauce."},
+                {"title": "Chana Masala", "slug": "chana-masala", "description": "Chickpeas simmered in a tangy, spiced tomato gravy, a staple vegetarian main.", "image_query": "chana masala", "image_alt": "Chickpeas simmered in a tangy, spiced tomato gravy, a staple vegetarian main."},
+                {"title": "Chicken Biryani", "slug": "chicken-biryani", "description": "Layered, fragrant basmati rice and marinated chicken, cooked together under a sealed lid.", "image_query": "chicken biryani", "image_alt": "Layered, fragrant basmati rice and marinated chicken, cooked together under a sealed lid."},
+                {"title": "Saag Paneer", "slug": "saag-paneer", "description": "Firm paneer cheese simmered in a pureed, spiced spinach sauce.", "image_query": "saag paneer", "image_alt": "Firm paneer cheese simmered in a pureed, spiced spinach sauce."},
+                {"title": "Homemade Naan", "slug": "homemade-naan", "description": "Pillowy, blistered flatbread, traditionally cooked against the wall of a tandoor.", "image_query": "homemade naan bread", "image_alt": "Pillowy, blistered flatbread, traditionally cooked against the wall of a tandoor."},
+                {"title": "Gulab Jamun", "slug": "gulab-jamun", "description": "Fried milk-solid dumplings soaked in a cardamom-and-rosewater syrup.", "image_query": "gulab jamun", "image_alt": "Fried milk-solid dumplings soaked in a cardamom-and-rosewater syrup."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Butter Chicken (Murgh Makhani)", "Chana Masala", "Chicken Biryani", "Saag Paneer"]},
@@ -6041,12 +6120,12 @@ SEED_PAGES = [
                 "heat goes on) matter across nearly all of it."
             ),
             "recipe_cards": [
-                {"title": "Kung Pao Chicken", "slug": "kung-pao-chicken", "description": "Stir-fried chicken, peanuts, and dried chiles in a tangy, savory-sweet sauce.", "image_query": "kung pao chicken"},
-                {"title": "Pork and Chive Dumplings", "slug": "pork-and-chive-dumplings", "description": "Hand-folded dumplings, pan-fried until crisp on the bottom and steamed through.", "image_query": "pork chive dumplings"},
-                {"title": "Mapo Tofu", "slug": "mapo-tofu", "description": "Silken tofu simmered in a numbing, chile-and-fermented-bean sauce with ground pork.", "image_query": "mapo tofu"},
-                {"title": "Char Siu (Chinese BBQ Pork)", "slug": "char-siu", "description": "Pork shoulder marinated in a sweet, five-spice glaze and roasted until sticky.", "image_query": "char siu bbq pork"},
-                {"title": "Egg Fried Rice", "slug": "egg-fried-rice", "description": "Day-old rice, cold and dry enough to fry separately rather than clump into mush.", "image_query": "egg fried rice"},
-                {"title": "Scallion Pancakes", "slug": "scallion-pancakes", "description": "Flaky, layered flatbread laminated with scallion and oil, pan-fried until crisp.", "image_query": "scallion pancakes"},
+                {"title": "Kung Pao Chicken", "slug": "kung-pao-chicken", "description": "Stir-fried chicken, peanuts, and dried chiles in a tangy, savory-sweet sauce.", "image_query": "kung pao chicken", "image_alt": "Stir-fried chicken, peanuts, and dried chiles in a tangy, savory-sweet sauce."},
+                {"title": "Pork and Chive Dumplings", "slug": "pork-and-chive-dumplings", "description": "Hand-folded dumplings, pan-fried until crisp on the bottom and steamed through.", "image_query": "pork chive dumplings", "image_alt": "Hand-folded dumplings, pan-fried until crisp on the bottom and steamed through."},
+                {"title": "Mapo Tofu", "slug": "mapo-tofu", "description": "Silken tofu simmered in a numbing, chile-and-fermented-bean sauce with ground pork.", "image_query": "mapo tofu", "image_alt": "Silken tofu simmered in a numbing, chile-and-fermented-bean sauce with ground pork."},
+                {"title": "Char Siu (Chinese BBQ Pork)", "slug": "char-siu", "description": "Pork shoulder marinated in a sweet, five-spice glaze and roasted until sticky.", "image_query": "char siu bbq pork", "image_alt": "Pork shoulder marinated in a sweet, five-spice glaze and roasted until sticky."},
+                {"title": "Egg Fried Rice", "slug": "egg-fried-rice", "description": "Day-old rice, cold and dry enough to fry separately rather than clump into mush.", "image_query": "egg fried rice", "image_alt": "Day-old rice, cold and dry enough to fry separately rather than clump into mush."},
+                {"title": "Scallion Pancakes", "slug": "scallion-pancakes", "description": "Flaky, layered flatbread laminated with scallion and oil, pan-fried until crisp.", "image_query": "scallion pancakes", "image_alt": "Flaky, layered flatbread laminated with scallion and oil, pan-fried until crisp."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Kung Pao Chicken", "Mapo Tofu", "Char Siu (Chinese BBQ Pork)"]},
@@ -6102,12 +6181,13 @@ SEED_PAGES = [
                     "slug": "sushi-bake",
                     "description": "Seasoned sushi rice under a baked, creamy seafood topping, all the flavor, none of the rolling.",
                     "image_query": "sushi bake casserole",
+                    "image_alt": "Seasoned sushi rice under a baked, creamy seafood topping, all the flavor, none of the rolling.",
                 },
-                {"title": "Chicken Katsu", "slug": "chicken-katsu", "description": "Panko-breaded, fried chicken cutlet, sliced and served with a tangy tonkatsu sauce.", "image_query": "chicken katsu"},
-                {"title": "Miso Soup", "slug": "miso-soup", "description": "A simple, savory soup built on dashi and fermented miso paste.", "image_query": "miso soup"},
-                {"title": "Teriyaki Salmon", "slug": "teriyaki-salmon", "description": "Pan-glazed salmon in a sweet-savory soy, mirin, and sugar reduction.", "image_query": "teriyaki salmon"},
-                {"title": "Yaki Onigiri (Grilled Rice Balls)", "slug": "yaki-onigiri", "description": "Pan-seared rice balls brushed with soy sauce until the outside turns crisp and toasty.", "image_query": "yaki onigiri grilled rice balls"},
-                {"title": "Matcha Cheesecake", "slug": "matcha-cheesecake", "description": "A Japanese-style light, jiggly cheesecake with earthy matcha folded through it.", "image_query": "matcha cheesecake"},
+                {"title": "Chicken Katsu", "slug": "chicken-katsu", "description": "Panko-breaded, fried chicken cutlet, sliced and served with a tangy tonkatsu sauce.", "image_query": "chicken katsu", "image_alt": "Panko-breaded, fried chicken cutlet, sliced and served with a tangy tonkatsu sauce."},
+                {"title": "Miso Soup", "slug": "miso-soup", "description": "A simple, savory soup built on dashi and fermented miso paste.", "image_query": "miso soup", "image_alt": "A simple, savory soup built on dashi and fermented miso paste."},
+                {"title": "Teriyaki Salmon", "slug": "teriyaki-salmon", "description": "Pan-glazed salmon in a sweet-savory soy, mirin, and sugar reduction.", "image_query": "teriyaki salmon", "image_alt": "Pan-glazed salmon in a sweet-savory soy, mirin, and sugar reduction."},
+                {"title": "Yaki Onigiri (Grilled Rice Balls)", "slug": "yaki-onigiri", "description": "Pan-seared rice balls brushed with soy sauce until the outside turns crisp and toasty.", "image_query": "yaki onigiri grilled rice balls", "image_alt": "Pan-seared rice balls brushed with soy sauce until the outside turns crisp and toasty."},
+                {"title": "Matcha Cheesecake", "slug": "matcha-cheesecake", "description": "A Japanese-style light, jiggly cheesecake with earthy matcha folded through it.", "image_query": "matcha cheesecake", "image_alt": "A Japanese-style light, jiggly cheesecake with earthy matcha folded through it."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Sushi Bake", "Chicken Katsu", "Teriyaki Salmon"]},
@@ -6159,12 +6239,12 @@ SEED_PAGES = [
                 "onions) rather than a long list of specialty ingredients."
             ),
             "recipe_cards": [
-                {"title": "Coq au Vin", "slug": "coq-au-vin", "description": "Chicken braised slowly in red wine with mushrooms, pearl onions, and bacon.", "image_query": "coq au vin"},
-                {"title": "French Onion Soup", "slug": "french-onion-soup", "description": "Deeply caramelized onions in a rich beef broth, topped with broiled cheese and bread.", "image_query": "french onion soup"},
-                {"title": "Ratatouille", "slug": "ratatouille", "description": "A slow-cooked medley of summer vegetables, each cooked separately before combining.", "image_query": "ratatouille"},
-                {"title": "Quiche Lorraine", "slug": "quiche-lorraine", "description": "A custard tart filled with bacon and gruyère in a buttery, blind-baked crust.", "image_query": "quiche lorraine"},
-                {"title": "Beef Bourguignon", "slug": "beef-bourguignon", "description": "Beef chuck braised for hours in red wine until fall-apart tender.", "image_query": "beef bourguignon"},
-                {"title": "Crème Brûlée", "slug": "creme-brulee", "description": "A silky vanilla custard with a torched, crackling sugar shell on top.", "image_query": "creme brulee"},
+                {"title": "Coq au Vin", "slug": "coq-au-vin", "description": "Chicken braised slowly in red wine with mushrooms, pearl onions, and bacon.", "image_query": "coq au vin", "image_alt": "Chicken braised slowly in red wine with mushrooms, pearl onions, and bacon."},
+                {"title": "French Onion Soup", "slug": "french-onion-soup", "description": "Deeply caramelized onions in a rich beef broth, topped with broiled cheese and bread.", "image_query": "french onion soup", "image_alt": "Deeply caramelized onions in a rich beef broth, topped with broiled cheese and bread."},
+                {"title": "Ratatouille", "slug": "ratatouille", "description": "A slow-cooked medley of summer vegetables, each cooked separately before combining.", "image_query": "ratatouille", "image_alt": "A slow-cooked medley of summer vegetables, each cooked separately before combining."},
+                {"title": "Quiche Lorraine", "slug": "quiche-lorraine", "description": "A custard tart filled with bacon and gruyère in a buttery, blind-baked crust.", "image_query": "quiche lorraine", "image_alt": "A custard tart filled with bacon and gruyère in a buttery, blind-baked crust."},
+                {"title": "Beef Bourguignon", "slug": "beef-bourguignon", "description": "Beef chuck braised for hours in red wine until fall-apart tender.", "image_query": "beef bourguignon", "image_alt": "Beef chuck braised for hours in red wine until fall-apart tender."},
+                {"title": "Crème Brûlée", "slug": "creme-brulee", "description": "A silky vanilla custard with a torched, crackling sugar shell on top.", "image_query": "creme brulee", "image_alt": "A silky vanilla custard with a torched, crackling sugar shell on top."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Coq au Vin", "Beef Bourguignon", "Quiche Lorraine"]},
@@ -6215,12 +6295,12 @@ SEED_PAGES = [
                 "shortcut jarred paste."
             ),
             "recipe_cards": [
-                {"title": "Pad Thai", "slug": "pad-thai", "description": "Stir-fried rice noodles in a tamarind-based sauce with shrimp, egg, and peanuts.", "image_query": "pad thai"},
-                {"title": "Green Curry Chicken", "slug": "green-curry-chicken", "description": "Chicken simmered in a fragrant, coconut-milk-based curry with Thai basil.", "image_query": "green curry chicken"},
-                {"title": "Tom Yum Soup", "slug": "tom-yum-soup", "description": "A hot and sour shrimp soup built on lemongrass, galangal, and lime leaf.", "image_query": "tom yum soup"},
-                {"title": "Som Tum (Green Papaya Salad)", "slug": "som-tum-green-papaya-salad", "description": "Shredded unripe papaya pounded with chile, lime, and fish sauce in a mortar and pestle.", "image_query": "som tum green papaya salad"},
-                {"title": "Mango Sticky Rice", "slug": "mango-sticky-rice", "description": "Sweetened coconut sticky rice served alongside ripe mango slices.", "image_query": "mango sticky rice"},
-                {"title": "Thai Basil Chicken (Pad Kra Pao)", "slug": "thai-basil-chicken-pad-kra-pao", "description": "Quickly stir-fried ground chicken with garlic, chile, and Thai holy basil.", "image_query": "thai basil chicken pad kra pao"},
+                {"title": "Pad Thai", "slug": "pad-thai", "description": "Stir-fried rice noodles in a tamarind-based sauce with shrimp, egg, and peanuts.", "image_query": "pad thai", "image_alt": "Stir-fried rice noodles in a tamarind-based sauce with shrimp, egg, and peanuts."},
+                {"title": "Green Curry Chicken", "slug": "green-curry-chicken", "description": "Chicken simmered in a fragrant, coconut-milk-based curry with Thai basil.", "image_query": "green curry chicken", "image_alt": "Chicken simmered in a fragrant, coconut-milk-based curry with Thai basil."},
+                {"title": "Tom Yum Soup", "slug": "tom-yum-soup", "description": "A hot and sour shrimp soup built on lemongrass, galangal, and lime leaf.", "image_query": "tom yum soup", "image_alt": "A hot and sour shrimp soup built on lemongrass, galangal, and lime leaf."},
+                {"title": "Som Tum (Green Papaya Salad)", "slug": "som-tum-green-papaya-salad", "description": "Shredded unripe papaya pounded with chile, lime, and fish sauce in a mortar and pestle.", "image_query": "som tum green papaya salad", "image_alt": "Shredded unripe papaya pounded with chile, lime, and fish sauce in a mortar and pestle."},
+                {"title": "Mango Sticky Rice", "slug": "mango-sticky-rice", "description": "Sweetened coconut sticky rice served alongside ripe mango slices.", "image_query": "mango sticky rice", "image_alt": "Sweetened coconut sticky rice served alongside ripe mango slices."},
+                {"title": "Thai Basil Chicken (Pad Kra Pao)", "slug": "thai-basil-chicken-pad-kra-pao", "description": "Quickly stir-fried ground chicken with garlic, chile, and Thai holy basil.", "image_query": "thai basil chicken pad kra pao", "image_alt": "Quickly stir-fried ground chicken with garlic, chile, and Thai holy basil."},
             ],
             "sub_categories": [
                 {"label": "Mains", "items": ["Pad Thai", "Green Curry Chicken", "Thai Basil Chicken (Pad Kra Pao)"]},
@@ -6339,6 +6419,7 @@ SEED_PAGES = [
                 "and lime."
             ),
             "hero_image_query": "carne asada tacos",
+            "image_alt": "Grilled, citrus-marinated skirt steak tacos, sliced thin against the grain and served simply with onion, cilantro, and lime.",
             "why_it_works": (
                 "A short, acidic marinade tenderizes the outer layer of the "
                 "skirt steak without turning it mushy, and cooking it hot and "
@@ -6422,6 +6503,7 @@ SEED_PAGES = [
                 "and a creamy chipotle sauce, the Baja California original."
             ),
             "hero_image_query": "baja fish tacos",
+            "image_alt": "Crispy beer-battered fish tacos with a crunchy cabbage slaw and a creamy chipotle sauce, the Baja California original.",
             "why_it_works": (
                 "Cold beer batter fries up thin and shatteringly crisp rather "
                 "than doughy, and the acidic, crunchy slaw cuts through the "
@@ -6513,6 +6595,7 @@ SEED_PAGES = [
                 "crisp and served with their own rich consommé for dipping."
             ),
             "hero_image_query": "birria tacos consomme",
+            "image_alt": "Slow-braised, chile-spiced beef birria tacos, pan-fried until crisp and served with their own rich consommé for dipping.",
             "why_it_works": (
                 "A long braise in a dried-chile broth breaks down a tough, "
                 "well-marbled cut into meat that shreds effortlessly, and "
@@ -6603,6 +6686,7 @@ SEED_PAGES = [
                 "smoky black beans, no meat substitute needed."
             ),
             "hero_image_query": "black bean sweet potato tacos",
+            "image_alt": "A hearty vegetarian taco filling of roasted sweet potato and smoky black beans, no meat substitute needed.",
             "why_it_works": (
                 "Roasting the sweet potato at high heat concentrates its "
                 "natural sugars into real caramelization instead of steaming "
@@ -6684,6 +6768,7 @@ SEED_PAGES = [
                 "and cilantro slaw, ready in about 20 minutes."
             ),
             "hero_image_query": "shrimp tacos",
+            "image_alt": "Quick-seared chili-lime shrimp tacos with a bright cabbage and cilantro slaw, ready in about 20 minutes.",
             "why_it_works": (
                 "Shrimp cook in only a few minutes, so a hard sear over high "
                 "heat browns the outside before the inside has a chance to "
@@ -6765,6 +6850,7 @@ SEED_PAGES = [
                 "the vents."
             ),
             "hero_image_query": "apple pie",
+            "image_alt": "A double-crust apple pie with cinnamon-spiced filling, baked until the crust is golden and the filling bubbles through the vents.",
             "why_it_works": (
                 "Tossing the sliced apples with sugar and letting them sit "
                 "draws out excess liquid before baking, so the filling "
@@ -6847,6 +6933,7 @@ SEED_PAGES = [
                 "and clove, baked in a single crust."
             ),
             "hero_image_query": "pumpkin pie",
+            "image_alt": "A silky pumpkin custard pie spiced with cinnamon, ginger, and clove, baked in a single crust.",
             "why_it_works": (
                 "Baking the custard at a moderate, steady temperature sets it "
                 "gently all the way through, a too-hot oven cooks the edges "
@@ -6924,6 +7011,7 @@ SEED_PAGES = [
                 "baking required for the filling itself."
             ),
             "hero_image_query": "key lime pie",
+            "image_alt": "A tart, creamy key lime pie in a graham cracker crust, no baking required for the filling itself.",
             "why_it_works": (
                 "The acid in the lime juice reacts with the sweetened "
                 "condensed milk to thicken the filling on its own, a brief "
@@ -7003,6 +7091,7 @@ SEED_PAGES = [
                 "in a baked pie crust, made from scratch on the stovetop."
             ),
             "hero_image_query": "chocolate cream pie",
+            "image_alt": "A rich chocolate pudding filling topped with whipped cream in a baked pie crust, made from scratch on the stovetop.",
             "why_it_works": (
                 "Cooking the custard slowly over medium heat while whisking "
                 "constantly lets the cornstarch thicken it evenly, rushing "
@@ -7087,6 +7176,7 @@ SEED_PAGES = [
                 "packed with toasted pecans in a single crust."
             ),
             "hero_image_query": "pecan pie",
+            "image_alt": "A classic pecan pie with a gooey, deeply sweet filling packed with toasted pecans in a single crust.",
             "why_it_works": (
                 "Toasting the pecans before baking wakes up their natural "
                 "oils, so their flavor still comes through clearly after "
@@ -7167,6 +7257,7 @@ SEED_PAGES = [
                 "made with fresh or frozen sour cherries."
             ),
             "hero_image_query": "cherry pie",
+            "image_alt": "A double-crust cherry pie with a tart-sweet filling, best made with fresh or frozen sour cherries.",
             "why_it_works": (
                 "Sour (tart) cherries hold their shape and balance the "
                 "amount of sugar the filling needs, sweet cherries alone can "
@@ -7249,6 +7340,7 @@ SEED_PAGES = [
                 "flesh with tahini, lemon, and garlic."
             ),
             "hero_image_query": "baba ganoush",
+            "image_alt": "A smoky, creamy Levantine eggplant dip made by charring whole eggplants over an open flame, then blending the flesh with tahini, lemon, and garlic.",
             "why_it_works": (
                 "Charring the eggplant directly over a flame or under a "
                 "broiler until the skin blackens and the flesh collapses "
@@ -7317,6 +7409,7 @@ SEED_PAGES = [
                 "mozzarella and Parmesan, baked until bubbling."
             ),
             "hero_image_query": "eggplant parmesan",
+            "image_alt": "Layers of crisp breaded eggplant, marinara, and melted mozzarella and Parmesan, baked until bubbling.",
             "why_it_works": (
                 "Salting the eggplant slices first draws out excess "
                 "moisture so they crisp in the pan instead of steaming, "
@@ -7399,6 +7492,7 @@ SEED_PAGES = [
                 "oil, and fresh herbs until deeply caramelized and tender."
             ),
             "hero_image_query": "roasted eggplant with garlic and herbs",
+            "image_alt": "Cubed eggplant roasted at high heat with garlic, olive oil, and fresh herbs until deeply caramelized and tender.",
             "why_it_works": (
                 "Roasting at high heat on a single uncrowded layer lets "
                 "the eggplant's surface caramelize and dry out before the "
@@ -7466,6 +7560,7 @@ SEED_PAGES = [
                 "onion, tomato, and warm spices."
             ),
             "hero_image_query": "baingan bharta eggplant curry",
+            "image_alt": "A North Indian eggplant curry made by charring whole eggplant, mashing the smoky flesh, and simmering it with onion, tomato, and warm spices.",
             "why_it_works": (
                 "Charring the eggplant whole builds the same smoky base "
                 "as baba ganoush, and simmering the mashed flesh with a "
@@ -7542,6 +7637,7 @@ SEED_PAGES = [
                 "tender, finished with lemon and herbs."
             ),
             "hero_image_query": "grilled eggplant slices",
+            "image_alt": "Salted, oiled eggplant rounds grilled until charred and tender, finished with lemon and herbs.",
             "why_it_works": (
                 "A short salting rest pulls out enough moisture that the "
                 "cut sides sear instead of steaming on the grill, so the "
@@ -7609,6 +7705,7 @@ SEED_PAGES = [
                 "savory miso glaze until caramelized and tender."
             ),
             "hero_image_query": "miso glazed eggplant nasu dengaku",
+            "image_alt": "Japanese-style eggplant halves broiled with a sweet, savory miso glaze until caramelized and tender.",
             "why_it_works": (
                 "Scoring and pre-cooking the eggplant flesh before "
                 "broiling lets it soften all the way through, so the "
@@ -7681,6 +7778,7 @@ SEED_PAGES = [
                 "sear."
             ),
             "hero_image_query": "pan seared duck breast",
+            "image_alt": "Crisp-skinned duck breast seared low and slow starting in a cold pan, rendering the fat before a quick final sear.",
             "why_it_works": (
                 "Starting the duck skin-side down in a cold, dry pan and "
                 "bringing the heat up gradually renders the thick fat cap "
@@ -7749,6 +7847,7 @@ SEED_PAGES = [
                 "fall-off-the-bone tender."
             ),
             "hero_image_query": "duck confit",
+            "image_alt": "Classic French duck confit: duck legs salt-cured overnight, then slow-cooked submerged in fat until fall-off-the-bone tender.",
             "why_it_works": (
                 "Curing the duck legs in salt overnight seasons them deeply "
                 "and draws out moisture, and cooking them fully submerged "
@@ -7819,6 +7918,7 @@ SEED_PAGES = [
                 "rendered fat saved along the way."
             ),
             "hero_image_query": "whole roast duck",
+            "image_alt": "A whole duck roasted at a low, then high, oven temperature for deeply crisp skin and tender meat, with rendered fat saved along the way.",
             "why_it_works": (
                 "Pricking the skin and roasting low first gives the thick "
                 "layer of fat under a duck's skin time to render out "
@@ -7888,6 +7988,7 @@ SEED_PAGES = [
                 "until deeply golden with shatteringly crisp edges."
             ),
             "hero_image_query": "duck fat roasted potatoes",
+            "image_alt": "Parboiled potatoes roughed up and roasted in duck fat until deeply golden with shatteringly crisp edges.",
             "why_it_works": (
                 "Parboiling the potatoes until just tender, then shaking "
                 "them in the pot to rough up the edges, creates extra "
@@ -7954,6 +8055,7 @@ SEED_PAGES = [
                 "goat cheese, and toasted walnuts in a simple vinaigrette."
             ),
             "hero_image_query": "roasted beet salad with goat cheese",
+            "image_alt": "Oven-roasted beets tossed with peppery greens, creamy goat cheese, and toasted walnuts in a simple vinaigrette.",
             "why_it_works": (
                 "Roasting the beets whole and wrapped in foil steams them "
                 "gently in their own juices, concentrating their sweetness "
@@ -8024,6 +8126,7 @@ SEED_PAGES = [
                 "with warm spices, a simple refrigerator pickle."
             ),
             "hero_image_query": "pickled beets",
+            "image_alt": "Tender cooked beets steeped in a sweet-tart vinegar brine with warm spices, a simple refrigerator pickle.",
             "why_it_works": (
                 "Pouring the hot vinegar brine over still-warm cooked "
                 "beets lets the liquid penetrate the flesh far more "
@@ -8094,6 +8197,7 @@ SEED_PAGES = [
                 "vinaigrette with herbs, a crisp, no-cook salad."
             ),
             "hero_image_query": "shaved raw beet salad",
+            "image_alt": "Thin ribbons of raw beet tossed in a bright citrus vinaigrette with herbs, a crisp, no-cook salad.",
             "why_it_works": (
                 "Shaving the beets paper-thin on a mandoline exposes far "
                 "more surface area to the dressing than a chunkier cut "
@@ -8164,6 +8268,7 @@ SEED_PAGES = [
                 "feta, a colorful twist on the classic chickpea dip."
             ),
             "hero_image_query": "beet and feta hummus",
+            "image_alt": "Bright pink hummus blended with roasted beet and tangy feta, a colorful twist on the classic chickpea dip.",
             "why_it_works": (
                 "Blending a fully roasted, cooled beet into the hummus "
                 "base, rather than a raw one, keeps the dip's texture "
@@ -8236,6 +8341,7 @@ SEED_PAGES = [
                 "crust is crisp."
             ),
             "hero_image_query": "fig and prosciutto flatbread",
+            "image_alt": "A quick flatbread topped with melted cheese, fresh figs, salty prosciutto, and a honey drizzle, baked until the crust is crisp.",
             "why_it_works": (
                 "Baking the flatbread on a preheated pan or stone at high "
                 "heat crisps the crust quickly before the fig slices have "
@@ -8308,6 +8414,7 @@ SEED_PAGES = [
                 "balsamic, and roasted until soft and caramelized."
             ),
             "hero_image_query": "honey roasted figs",
+            "image_alt": "Fresh figs halved, drizzled with honey and a splash of balsamic, and roasted until soft and caramelized.",
             "why_it_works": (
                 "Roasting the figs cut-side up at high heat caramelizes "
                 "the honey on the exposed flesh into a sticky glaze while "
@@ -8377,6 +8484,7 @@ SEED_PAGES = [
                 "sugar until thick and spreadable, no pectin required."
             ),
             "hero_image_query": "fig jam",
+            "image_alt": "A simple small-batch fig jam simmered with lemon and sugar until thick and spreadable, no pectin required.",
             "why_it_works": (
                 "Figs are naturally high in pectin near their skins, so a "
                 "long, slow simmer that reduces the mixture and "
@@ -8445,6 +8553,7 @@ SEED_PAGES = [
                 "with toasted walnuts and a honey-balsamic vinaigrette."
             ),
             "hero_image_query": "fig and goat cheese salad",
+            "image_alt": "Fresh figs and creamy goat cheese over peppery greens with toasted walnuts and a honey-balsamic vinaigrette.",
             "why_it_works": (
                 "Warming the honey and balsamic dressing briefly before "
                 "tossing it with the greens softens its sharpness just "
@@ -8516,6 +8625,7 @@ SEED_PAGES = [
                 "tender, finished with melted butter and flaky salt."
             ),
             "hero_image_query": "roasted radishes with butter",
+            "image_alt": "High-heat roasting turns peppery raw radishes sweet and tender, finished with melted butter and flaky salt.",
             "why_it_works": (
                 "Roasting drives off the moisture that carries a raw "
                 "radish's sharp bite, and the sugars that remain caramelize "
@@ -8582,6 +8692,7 @@ SEED_PAGES = [
                 "crisp in under an hour, ready for tacos, salads, or sandwiches."
             ),
             "hero_image_query": "quick pickled radishes",
+            "image_alt": "A fast vinegar brine turns sliced radishes tangy and crisp in under an hour, ready for tacos, salads, or sandwiches.",
             "why_it_works": (
                 "A hot brine poured over thinly sliced radishes penetrates "
                 "quickly because the slices are thin and the vinegar is "
@@ -8648,6 +8759,7 @@ SEED_PAGES = [
                 "dragged through soft butter and flaky salt, no cooking required."
             ),
             "hero_image_query": "radishes with butter and salt",
+            "image_alt": "The classic French bistro snack: crisp raw radishes dragged through soft butter and flaky salt, no cooking required.",
             "why_it_works": (
                 "Cold, crisp radish against soft, fatty butter and coarse "
                 "salt is a study in contrast, the fat rounds off the "
@@ -8711,6 +8823,7 @@ SEED_PAGES = [
                 "thrown away, into a peppery, tender green side dish."
             ),
             "hero_image_query": "sauteed radish greens",
+            "image_alt": "A fast garlicky sauté that turns radish tops, usually thrown away, into a peppery, tender green side dish.",
             "why_it_works": (
                 "Radish greens are tender and slightly fuzzy, closer to "
                 "spinach than to a tough green like kale, so they need "
@@ -8777,6 +8890,7 @@ SEED_PAGES = [
                 "golden side dish that tastes far milder than the raw root."
             ),
             "hero_image_query": "roasted turnips",
+            "image_alt": "High-heat roasting caramelizes turnips into a sweet, golden side dish that tastes far milder than the raw root.",
             "why_it_works": (
                 "Turnips carry a sharp, mustardy edge raw, but sustained "
                 "dry heat breaks that down and caramelizes their natural "
@@ -8842,6 +8956,7 @@ SEED_PAGES = [
                 "until fork-tender."
             ),
             "hero_image_query": "mashed turnips",
+            "image_alt": "A lower-carb alternative to mashed potatoes, made creamy with butter and a splash of cream after simmering turnips until fork-tender.",
             "why_it_works": (
                 "Turnips hold more water than potatoes, so simmering them "
                 "until fully tender and then draining and drying them "
@@ -8906,6 +9021,7 @@ SEED_PAGES = [
                 "until tender and golden-crusted on top."
             ),
             "hero_image_query": "turnip and potato gratin",
+            "image_alt": "Thin layers of turnip and potato baked in garlicky cream until tender and golden-crusted on top.",
             "why_it_works": (
                 "Turnips break up the starchiness of an all-potato gratin "
                 "and add a faint mustardy edge, while the potato keeps the "
@@ -8979,6 +9095,7 @@ SEED_PAGES = [
                 "ingredients."
             ),
             "hero_image_query": "turnip soup",
+            "image_alt": "A creamy, blended turnip soup built on sautéed aromatics and stock, ready in under an hour with just a handful of ingredients.",
             "why_it_works": (
                 "Sweating the onion and turnips slowly before adding stock "
                 "builds a rounder base flavor than simply boiling the "
@@ -9049,6 +9166,7 @@ SEED_PAGES = [
                 "medium-rare without drying out this lean, tender cut."
             ),
             "hero_image_query": "pan-seared venison backstrap",
+            "image_alt": "A quick, hot sear cooks venison backstrap to a rosy medium-rare without drying out this lean, tender cut.",
             "why_it_works": (
                 "Backstrap is venison's most tender cut and, like beef "
                 "tenderloin, has almost no fat to render, so a very hot "
@@ -9120,6 +9238,7 @@ SEED_PAGES = [
                 "sacrificing flavor."
             ),
             "hero_image_query": "venison chili",
+            "image_alt": "A hearty ground venison chili built low and slow with beans, tomatoes, and warm spices, extra lean without sacrificing flavor.",
             "why_it_works": (
                 "Ground venison is much leaner than ground beef, so "
                 "browning it in a little added fat and simmering the chili "
@@ -9195,6 +9314,7 @@ SEED_PAGES = [
                 "fall-apart tender in a rich wine and stock sauce."
             ),
             "hero_image_query": "braised venison shoulder",
+            "image_alt": "A low, slow braise turns a tough venison shoulder cut fall-apart tender in a rich wine and stock sauce.",
             "why_it_works": (
                 "Shoulder is one of venison's toughest, most worked "
                 "cuts, full of connective tissue that only breaks down "
@@ -9272,6 +9392,7 @@ SEED_PAGES = [
                 "lean meat doesn't dry out."
             ),
             "hero_image_query": "venison burgers",
+            "image_alt": "Ground venison patties mixed with a little added fat and seasoning, grilled or pan-seared to a juicy medium so the lean meat doesn't dry out.",
             "why_it_works": (
                 "Ground venison has almost no fat of its own, so folding "
                 "in a portion of ground pork or beef fat before forming "
@@ -9341,6 +9462,7 @@ SEED_PAGES = [
                 "salad."
             ),
             "hero_image_query": "sliced fuyu persimmon salad",
+            "image_alt": "Thinly sliced Fuyu persimmons tossed with peppery greens, toasted nuts, and a light vinaigrette for a bright fall salad.",
             "why_it_works": (
                 "Fuyu persimmons, unlike Hachiya, are firm and non-"
                 "astringent even when not fully ripe, so they slice cleanly "
@@ -9409,6 +9531,7 @@ SEED_PAGES = [
                 "persimmon purée, similar in texture to banana bread."
             ),
             "hero_image_query": "persimmon bread",
+            "image_alt": "A moist, spiced quick bread made with fully ripe Hachiya persimmon purée, similar in texture to banana bread.",
             "why_it_works": (
                 "Only a fully soft, jammy Hachiya persimmon purée works "
                 "here, its natural pectin and sugar keep the loaf moist "
@@ -9484,6 +9607,7 @@ SEED_PAGES = [
                 "the edges, a simple warm side or dessert topping."
             ),
             "hero_image_query": "roasted fuyu persimmons",
+            "image_alt": "Firm Fuyu persimmon wedges roasted until caramelized at the edges, a simple warm side or dessert topping.",
             "why_it_works": (
                 "Fuyu holds its shape under heat the way Hachiya cannot, "
                 "so roasting concentrates its sugars and browns the cut "
@@ -9549,6 +9673,7 @@ SEED_PAGES = [
                 "spirit to a steamed date pudding."
             ),
             "hero_image_query": "persimmon pudding",
+            "image_alt": "A dense, spiced baked pudding made from fully ripe Hachiya persimmon pulp, a classic fall dessert similar in spirit to a steamed date pudding.",
             "why_it_works": (
                 "Only fully ripe, soft Hachiya pulp has the sweetness and "
                 "smooth texture this custardy baked pudding depends on, "
@@ -9624,6 +9749,7 @@ SEED_PAGES = [
                 "into flour and a hot oven, no rolling pin skill required."
             ),
             "hero_image_query": "buttermilk biscuits",
+            "image_alt": "Tall, flaky buttermilk biscuits made with cold butter cut into flour and a hot oven, no rolling pin skill required.",
             "why_it_works": (
                 "Buttermilk's acidity reacts with the baking powder and "
                 "soda for extra lift and tenderizes the gluten in the "
@@ -9695,6 +9821,7 @@ SEED_PAGES = [
                 "and juicy inside."
             ),
             "hero_image_query": "buttermilk fried chicken",
+            "image_alt": "Bone-in chicken marinated in seasoned buttermilk overnight, then dredged and fried until deeply crisp on the outside and juicy inside.",
             "why_it_works": (
                 "Buttermilk's mild acidity slowly tenderizes the chicken "
                 "over a long soak without turning the texture mushy the "
@@ -9766,6 +9893,7 @@ SEED_PAGES = [
                 "a simple batter that comes together in under 15 minutes."
             ),
             "hero_image_query": "buttermilk pancakes",
+            "image_alt": "Fluffy, tender buttermilk pancakes made from scratch with a simple batter that comes together in under 15 minutes.",
             "why_it_works": (
                 "Buttermilk's acidity reacts with baking soda to produce "
                 "extra lift right as the batter hits the hot griddle, and "
@@ -9837,6 +9965,7 @@ SEED_PAGES = [
                 "packet mix."
             ),
             "hero_image_query": "buttermilk ranch dressing",
+            "image_alt": "A creamy, tangy homemade ranch dressing built on real buttermilk and fresh herbs, ready in 10 minutes with no packet mix.",
             "why_it_works": (
                 "Buttermilk is what separates real ranch from a plain "
                 "mayonnaise-and-herb dressing, its tang and thinner "
@@ -9908,6 +10037,7 @@ SEED_PAGES = [
                 "cheese, boiled until tender and finished in butter."
             ),
             "hero_image_query": "potato and cheese pierogi",
+            "image_alt": "Homemade Polish pierogi filled with mashed potato and farmer's cheese, boiled until tender and finished in butter.",
             "why_it_works": (
                 "Resting the dough lets the gluten relax so it rolls out thin "
                 "without snapping back, and boiling the pierogi just until they "
@@ -9981,6 +10111,7 @@ SEED_PAGES = [
                 "and mixed meats, deeply savory and better the next day."
             ),
             "hero_image_query": "bigos hunters stew",
+            "image_alt": "A slow-simmered Polish hunter's stew of sauerkraut, cabbage, and mixed meats, deeply savory and better the next day.",
             "why_it_works": (
                 "A long, slow simmer melds the sauerkraut's tang with the "
                 "sweetness of fresh cabbage and the fat rendered from the "
@@ -10055,6 +10186,7 @@ SEED_PAGES = [
                 "caraway, a simple one-pan Polish weeknight dinner."
             ),
             "hero_image_query": "kielbasa and sauerkraut",
+            "image_alt": "Sliced kielbasa braised with tangy sauerkraut, onion, and caraway, a simple one-pan Polish weeknight dinner.",
             "why_it_works": (
                 "Browning the kielbasa first renders some of its fat right "
                 "into the pan, and that fat is what the sauerkraut braises in, "
@@ -10121,6 +10253,7 @@ SEED_PAGES = [
                 "starter, smoked sausage, and a soft-boiled egg."
             ),
             "hero_image_query": "zurek sour rye soup",
+            "image_alt": "A traditional Polish sour rye soup made with fermented rye starter, smoked sausage, and a soft-boiled egg.",
             "why_it_works": (
                 "The fermented rye starter (zakwas) is what gives żurek its "
                 "signature sourness, a flavor that can't be faked with vinegar "
@@ -10191,6 +10324,7 @@ SEED_PAGES = [
                 "onion, fried golden and served with sour cream."
             ),
             "hero_image_query": "polish potato pancakes",
+            "image_alt": "Crisp Polish potato pancakes made from grated potato and onion, fried golden and served with sour cream.",
             "why_it_works": (
                 "Squeezing as much liquid as possible out of the grated potato "
                 "keeps the batter from turning watery, which is what lets the "
@@ -10261,6 +10395,7 @@ SEED_PAGES = [
                 "fried golden and dusted with powdered sugar."
             ),
             "hero_image_query": "paczki polish doughnuts",
+            "image_alt": "Rich, yeasted Polish doughnuts filled with fruit preserves, fried golden and dusted with powdered sugar.",
             "why_it_works": (
                 "An enriched dough loaded with egg yolks and butter gives "
                 "paczki their signature dense, tender crumb, and a careful "
@@ -10337,6 +10472,7 @@ SEED_PAGES = [
                 "chicken simmered in a spiced, buttery sauce."
             ),
             "hero_image_query": "butter chicken murgh makhani",
+            "image_alt": "Creamy, tomato-based Indian butter chicken with yogurt-marinated chicken simmered in a spiced, buttery sauce.",
             "why_it_works": (
                 "Marinating the chicken in yogurt and spices tenderizes it and "
                 "lets the seasoning penetrate before it ever hits the pan, and "
@@ -10410,6 +10546,7 @@ SEED_PAGES = [
                 "onion-tomato base, tangy from amchur and dried pomegranate seed."
             ),
             "hero_image_query": "chana masala chickpea curry",
+            "image_alt": "A hearty North Indian chickpea curry simmered in a spiced onion-tomato base, tangy from amchur and dried pomegranate seed.",
             "why_it_works": (
                 "Cooking the onion down until it's truly browned, not just "
                 "softened, builds the deep savory base the whole curry rests "
@@ -10485,6 +10622,7 @@ SEED_PAGES = [
                 "over low heat."
             ),
             "hero_image_query": "chicken biryani",
+            "image_alt": "Layered Indian chicken biryani with marinated chicken, fragrant basmati rice, and fried onions, steamed together over low heat.",
             "why_it_works": (
                 "Cooking the rice only to about 70% doneness before layering "
                 "it over the chicken means it finishes cooking gently in the "
@@ -10561,6 +10699,7 @@ SEED_PAGES = [
                 "spiced with cumin, garlic, and ginger."
             ),
             "hero_image_query": "saag paneer spinach curry",
+            "image_alt": "A creamy North Indian spinach curry with pan-seared paneer, spiced with cumin, garlic, and ginger.",
             "why_it_works": (
                 "Searing the paneer before it goes into the sauce gives it a "
                 "light golden crust so it holds its shape and texture in the "
@@ -10636,6 +10775,7 @@ SEED_PAGES = [
                 "cooked in a hot skillet and brushed with garlic butter."
             ),
             "hero_image_query": "homemade naan bread",
+            "image_alt": "Soft, pillowy homemade naan leavened with yeast and yogurt, cooked in a hot skillet and brushed with garlic butter.",
             "why_it_works": (
                 "Yogurt in the dough adds tenderness and a light tang while "
                 "the yeast does the leavening, and cooking the naan in a "
@@ -10712,6 +10852,7 @@ SEED_PAGES = [
                 "milk powder, fried golden and steeped in cardamom syrup."
             ),
             "hero_image_query": "gulab jamun",
+            "image_alt": "Soft, syrup-soaked Indian milk dumplings made from khoya or milk powder, fried golden and steeped in cardamom syrup.",
             "why_it_works": (
                 "Frying the dumplings low and slow gives the dense milk dough "
                 "time to cook through evenly before the outside browns too "
@@ -10785,6 +10926,7 @@ SEED_PAGES = [
                 "and basil."
             ),
             "hero_image_query": "margherita pizza",
+            "image_alt": "A classic Neapolitan-style margherita pizza with a thin, chewy crust, San Marzano tomato sauce, fresh mozzarella, and basil.",
             "why_it_works": (
                 "Baking at the highest heat your oven can reach, ideally on a "
                 "preheated stone or steel, is what gets the crust properly "
@@ -10860,6 +11002,7 @@ SEED_PAGES = [
                 "rich, spoonable texture."
             ),
             "hero_image_query": "creamy mushroom risotto",
+            "image_alt": "A creamy Italian mushroom risotto made with Arborio rice, sautéed mushrooms, and warm stock added gradually for a rich, spoonable texture.",
             "why_it_works": (
                 "Adding the warm stock gradually, one ladle at a time, and "
                 "stirring frequently coaxes starch out of the Arborio rice "
@@ -10936,6 +11079,7 @@ SEED_PAGES = [
                 "sauce, no cream required."
             ),
             "hero_image_query": "fettuccine alfredo",
+            "image_alt": "Classic fettuccine Alfredo made simply, with butter, parmesan, and starchy pasta water emulsified into a silky sauce, no cream required.",
             "why_it_works": (
                 "The starchy pasta water is the real backbone of an "
                 "authentic Alfredo sauce, it's what lets butter and parmesan "
@@ -11003,6 +11147,7 @@ SEED_PAGES = [
                 "layered under a whipped mascarpone cream, dusted with cocoa."
             ),
             "hero_image_query": "tiramisu",
+            "image_alt": "Classic Italian tiramisu with espresso-soaked ladyfingers layered under a whipped mascarpone cream, dusted with cocoa.",
             "why_it_works": (
                 "A cooked egg yolk base (zabaglione-style) whips into a "
                 "stable, airy custard that folds into the mascarpone without "
@@ -11079,6 +11224,7 @@ SEED_PAGES = [
                 "sauce, built for a screaming-hot wok."
             ),
             "hero_image_query": "kung pao chicken",
+            "image_alt": "A Sichuan stir-fry of velveted chicken, roasted peanuts, and dried chilies in a tangy-sweet soy and black vinegar sauce, built for a screaming-hot wok.",
             "why_it_works": (
                 "A quick cornstarch-and-egg-white velveting marinade seals "
                 "the chicken so it stays juicy through the high heat the "
@@ -11156,6 +11302,7 @@ SEED_PAGES = [
                 "filling."
             ),
             "hero_image_query": "pork and chive dumplings",
+            "image_alt": "Homemade pork and garlic chive dumplings, pan-fried into potstickers with a crisp golden base and a juicy, savory filling.",
             "why_it_works": (
                 "Mixing the pork filling in one direction until it turns "
                 "slightly sticky builds a springy, cohesive texture, and "
@@ -11231,6 +11378,7 @@ SEED_PAGES = [
                 "hit of ground Sichuan peppercorn."
             ),
             "hero_image_query": "mapo tofu",
+            "image_alt": "A silky, fiery Sichuan classic of soft tofu and ground pork in a doubanjiang-based sauce, finished with a numbing hit of ground Sichuan peppercorn.",
             "why_it_works": (
                 "Simmering the tofu gently in the sauce rather than "
                 "stir-frying it lets the cubes absorb flavor without "
@@ -11307,6 +11455,7 @@ SEED_PAGES = [
                 "high heat for a caramelized, lacquered exterior."
             ),
             "hero_image_query": "char siu chinese bbq pork",
+            "image_alt": "Sticky, deeply glazed Cantonese roast pork, marinated overnight in a hoisin and honey mixture and finished under high heat for a caramelized, lacquered",
             "why_it_works": (
                 "An overnight marinade gives the pork time to actually "
                 "absorb the seasoning rather than just coat the surface, "
@@ -11381,6 +11530,7 @@ SEED_PAGES = [
                 "in a hot wok for separate, lightly crisped grains."
             ),
             "hero_image_query": "egg fried rice",
+            "image_alt": "Fast, restaurant-style egg fried rice made with day-old rice, scrambled egg, and scallions, tossed hard and fast in a hot wok for separate, lightly crisped",
             "why_it_works": (
                 "Cold, day-old rice has had time to dry out and firm up, "
                 "so the grains separate and fry rather than clumping into a "
@@ -11453,6 +11603,7 @@ SEED_PAGES = [
                 "pan-fried until crisp outside and chewy within."
             ),
             "hero_image_query": "scallion pancakes",
+            "image_alt": "Flaky, layered Chinese scallion pancakes made from a simple hot-water dough, rolled with oil and scallions and pan-fried until crisp outside and chewy within.",
             "why_it_works": (
                 "Using hot water to make the dough partially cooks the "
                 "flour's starches, producing a pliable, slightly chewy "
@@ -11525,6 +11676,7 @@ SEED_PAGES = [
                 "Japanese comfort food."
             ),
             "hero_image_query": "chicken katsu",
+            "image_alt": "Crisp, panko-crusted fried chicken cutlets served with a tangy-sweet katsu sauce and shredded cabbage, the classic Japanese comfort food.",
             "why_it_works": (
                 "Pounding the chicken to an even thickness means it cooks "
                 "through at the same rate the crust browns, and panko's "
@@ -11601,6 +11753,7 @@ SEED_PAGES = [
                 "scallions."
             ),
             "hero_image_query": "miso soup",
+            "image_alt": "A simple, comforting Japanese miso soup built on homemade kombu-katsuobushi dashi, with silken tofu, wakame, and scallions.",
             "why_it_works": (
                 "Pulling the kombu out just before the water boils avoids "
                 "the bitterness it releases at a hard boil, and whisking "
@@ -11673,6 +11826,7 @@ SEED_PAGES = [
                 "coating in the same pan."
             ),
             "hero_image_query": "teriyaki salmon",
+            "image_alt": "Pan-seared salmon glazed in a homemade soy, mirin, and sake teriyaki sauce that reduces to a glossy, sweet-savory coating in the same pan.",
             "why_it_works": (
                 "Searing the salmon skin-side down first renders the fat "
                 "and crisps the skin before the glaze goes in, and building "
@@ -11747,6 +11901,7 @@ SEED_PAGES = [
                 "forms around a warm, tender center."
             ),
             "hero_image_query": "yaki onigiri grilled rice balls",
+            "image_alt": "Grilled Japanese rice balls brushed with a savory soy and mirin glaze and pan-seared until a crisp, toasted crust forms around a warm, tender center.",
             "why_it_works": (
                 "Packing the rice firmly while it's still warm lets the "
                 "starches bind the grains into a shape that holds together "
@@ -11817,6 +11972,7 @@ SEED_PAGES = [
                 "gently in a water bath."
             ),
             "hero_image_query": "matcha cheesecake",
+            "image_alt": "A baked matcha cheesecake with a graham cracker crust and a smooth, lightly bittersweet green tea filling, baked gently in a water bath.",
             "why_it_works": (
                 "Sifting the matcha into the batter and blending it in "
                 "thoroughly at room temperature avoids the bitter, clumpy "
@@ -11892,6 +12048,7 @@ SEED_PAGES = [
                 "served with a simple tomato sauce."
             ),
             "hero_image_query": "chiles rellenos",
+            "image_alt": "Roasted poblano peppers stuffed with melty cheese, coated in a light, airy egg batter, and fried until golden, served with a simple tomato sauce.",
             "why_it_works": (
                 "Charring the poblanos until the skin blisters and then "
                 "steaming them in a covered bowl loosens that skin so it "
@@ -11967,6 +12124,7 @@ SEED_PAGES = [
                 "cabbage, radish, lime, and oregano."
             ),
             "hero_image_query": "pozole rojo",
+            "image_alt": "A deeply savory Mexican hominy and pork soup, built on a toasted dried chile broth and finished at the table with cabbage, radish, lime, and oregano.",
             "why_it_works": (
                 "Toasting the dried chiles briefly before soaking wakes up "
                 "their fruity, smoky notes without turning bitter, and "
@@ -12044,6 +12202,7 @@ SEED_PAGES = [
                 "Mexican street food."
             ),
             "hero_image_query": "elote mexican street corn",
+            "image_alt": "Grilled corn on the cob slathered in a creamy chile-lime mixture and coated in crumbled cotija cheese, the classic Mexican street food.",
             "why_it_works": (
                 "Grilling the corn directly over the flame until it's "
                 "lightly charred concentrates its natural sugars and adds "
@@ -12114,6 +12273,7 @@ SEED_PAGES = [
                 "cream, the classic Latin American dessert."
             ),
             "hero_image_query": "tres leches cake",
+            "image_alt": "A light sponge cake soaked in a three-milk mixture until meltingly moist, topped with lightly sweetened whipped cream, the classic Latin American dessert.",
             "why_it_works": (
                 "Whipping the egg whites separately and folding them into "
                 "the batter builds an airy, open sponge with enough "
@@ -12195,6 +12355,7 @@ SEED_PAGES = [
                 "tender."
             ),
             "hero_image_query": "coq au vin",
+            "image_alt": "A classic French braise of chicken cooked slowly in red wine with bacon, mushrooms, and pearl onions until deeply tender.",
             "why_it_works": (
                 "Browning the chicken and bacon first builds a fond that "
                 "carries through the whole braise, and a slow simmer in wine "
@@ -12274,6 +12435,7 @@ SEED_PAGES = [
                 "topped with a toasted baguette slice and melted gruyere."
             ),
             "hero_image_query": "french onion soup",
+            "image_alt": "Deeply caramelized onions simmered in beef broth and topped with a toasted baguette slice and melted gruyere.",
             "why_it_works": (
                 "A long, patient caramelization over low heat, not a quick "
                 "browning, is what develops the deep sweetness that gives "
@@ -12351,6 +12513,7 @@ SEED_PAGES = [
                 "keeps its own texture."
             ),
             "hero_image_query": "ratatouille",
+            "image_alt": "A rustic Provencal vegetable stew of eggplant, zucchini, peppers, and tomatoes, cooked in stages so each vegetable keeps its own texture.",
             "why_it_works": (
                 "Cooking each vegetable separately before combining them "
                 "keeps watery vegetables like zucchini and eggplant from "
@@ -12426,6 +12589,7 @@ SEED_PAGES = [
                 "crisp bacon baked in a buttery pastry shell."
             ),
             "hero_image_query": "quiche lorraine",
+            "image_alt": "A classic French custard tart of eggs, cream, gruyere, and crisp bacon baked in a buttery pastry shell.",
             "why_it_works": (
                 "Blind-baking the crust before it's filled keeps it from "
                 "turning soggy under the wet custard, and baking the "
@@ -12505,6 +12669,7 @@ SEED_PAGES = [
                 "fork-tender."
             ),
             "hero_image_query": "beef bourguignon",
+            "image_alt": "A slow-braised Burgundy classic of beef chuck simmered in red wine with bacon, mushrooms, and pearl onions until fork-tender.",
             "why_it_works": (
                 "A tough, well-marbled cut like chuck needs hours at a low, "
                 "steady simmer for its connective tissue to break down into "
@@ -12586,6 +12751,7 @@ SEED_PAGES = [
                 "with a crackling layer of caramelized sugar."
             ),
             "hero_image_query": "creme brulee",
+            "image_alt": "A silky vanilla custard baked in a water bath and topped with a crackling layer of caramelized sugar.",
             "why_it_works": (
                 "Baking the custard in a water bath insulates it from the "
                 "oven's direct heat, keeping the cooking gentle enough that "
@@ -12660,6 +12826,7 @@ SEED_PAGES = [
                 "Thai street stall."
             ),
             "hero_image_query": "pad thai",
+            "image_alt": "Stir-fried rice noodles in a tangy tamarind sauce with shrimp, egg, tofu, and crushed peanuts, made just like a Thai street stall.",
             "why_it_works": (
                 "Balancing tamarind's sourness against fish sauce's saltiness "
                 "and palm sugar's sweetness in the right proportions is what "
@@ -12742,6 +12909,7 @@ SEED_PAGES = [
                 "paste and Thai basil."
             ),
             "hero_image_query": "thai green curry chicken",
+            "image_alt": "A fragrant, spicy Thai green curry of chicken and vegetables simmered in coconut milk with green curry paste and Thai basil.",
             "why_it_works": (
                 "Frying the curry paste in the thick coconut cream that "
                 "rises to the top of an unshaken can blooms its aromatics "
@@ -12821,6 +12989,7 @@ SEED_PAGES = [
                 "of lemongrass, galangal, kaffir lime, and chili."
             ),
             "hero_image_query": "tom yum soup",
+            "image_alt": "A hot and sour Thai shrimp soup built on a fragrant broth of lemongrass, galangal, kaffir lime, and chili.",
             "why_it_works": (
                 "Bruising the lemongrass, galangal, and lime leaves before "
                 "simmering them, rather than leaving them whole and "
@@ -12899,6 +13068,7 @@ SEED_PAGES = [
                 "peanuts."
             ),
             "hero_image_query": "som tum green papaya salad",
+            "image_alt": "A pounded Thai green papaya salad balancing spicy, sour, salty, and sweet flavors with lime, fish sauce, and peanuts.",
             "why_it_works": (
                 "Pounding rather than just tossing the ingredients in a "
                 "mortar bruises the papaya, chilies, and garlic enough to "
@@ -12977,6 +13147,7 @@ SEED_PAGES = [
                 "and soaked in coconut milk."
             ),
             "hero_image_query": "mango sticky rice",
+            "image_alt": "Warm, sweet coconut sticky rice served with ripe sliced mango, a classic Thai dessert of glutinous rice steamed and soaked in coconut milk.",
             "why_it_works": (
                 "Steaming the glutinous rice rather than boiling it keeps "
                 "the grains from turning to mush, and letting the hot "
@@ -13051,6 +13222,7 @@ SEED_PAGES = [
                 "a fried egg."
             ),
             "hero_image_query": "thai basil chicken pad kra pao",
+            "image_alt": "A fast, fiery Thai stir-fry of ground chicken, garlic, and chilies tossed with holy basil, served over rice with a fried egg.",
             "why_it_works": (
                 "Pounding the garlic and chilies into a rough paste rather "
                 "than mincing them releases far more of their oils into "
@@ -13189,12 +13361,12 @@ def _check_no_double_dashes() -> None:
 # would force inventing content that doesn't exist, which is exactly what
 # this whole content model is built to avoid.
 _REQUIRED_CONTENT_FIELDS: dict[str, list[str]] = {
-    "recipe_or_dish": ["tips_and_variations", "storage_and_reheating", "reader_tips", "faqs", "step_notes"],
-    "ingredient_hub": ["buying_tips", "pairing_suggestions", "faqs"],
-    "howto_technique": ["intro", "common_mistakes", "equipment", "faqs"],
-    "definition": ["faqs"],
-    "comparison": ["faqs"],
-    "substitute": ["faqs"],
+    "recipe_or_dish": ["tips_and_variations", "storage_and_reheating", "reader_tips", "faqs", "step_notes", "image_alt"],
+    "ingredient_hub": ["buying_tips", "pairing_suggestions", "faqs", "image_alt"],
+    "howto_technique": ["intro", "common_mistakes", "equipment", "faqs", "image_alt"],
+    "definition": ["faqs", "image_alt"],
+    "comparison": ["faqs", "image_alt"],
+    "substitute": ["faqs", "image_alt"],
     "category_roundup": ["faqs", "sub_categories"],
 }
 
@@ -13214,6 +13386,16 @@ def _check_content_depth() -> None:
     "nutrition is represented" requirement, and the two are mutually
     exclusive by design, see the seed data's own comments on
     nutrition_note).
+
+    image_alt is required on every single-hero-image template (real,
+    specific alt text, not the bare search term reused as a caption -- see
+    the SEO audit that found every photo's alt text was literally just its
+    Unsplash/Pexels search query, e.g. "carne asada tacos" instead of an
+    actual description). category_roundup has no field of its own here
+    since it has no single hero image, only per-card ones -- each
+    recipe_cards entry needs its own image_alt instead, checked separately
+    below rather than added to _REQUIRED_CONTENT_FIELDS, which only checks
+    flat top-level content keys, not entries inside a list.
     """
     missing: list[tuple[str, str, str]] = []
     for page in SEED_PAGES:
@@ -13230,6 +13412,10 @@ def _check_content_depth() -> None:
             )
             if not has_nutrition:
                 missing.append((page["slug"], page["template_type"], "nutrition (note or per_unit)"))
+        if page["template_type"] == "category_roundup":
+            for card in content.get("recipe_cards", []):
+                if not card.get("image_alt"):
+                    missing.append((page["slug"], page["template_type"], f"image_alt on card {card.get('title')!r}"))
     if not missing:
         return
     shown = "\n".join(f"  [{tt}] {slug}: missing {field}" for slug, tt, field in missing[:20])

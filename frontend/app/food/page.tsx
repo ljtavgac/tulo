@@ -84,6 +84,7 @@ export default async function HomePage() {
                     href={pagePath(p.template_type, p.slug)}
                     title={p.title}
                     imageQuery={p.hero_image_query ?? p.title}
+                    imageAlt={p.image_alt}
                     imageUrl={p.image_url}
                     imageAttribution={p.image_attribution}
                   />

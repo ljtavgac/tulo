@@ -5,6 +5,9 @@ export interface PageSummary {
   image_url?: string;
   image_attribution?: ImageAttribution;
   hero_image_query?: string;
+  // Real, specific caption text, not hero_image_query reused as alt text --
+  // see StockPhotoSlot's `alt` prop.
+  image_alt?: string | null;
   // Only present for definition pages that have it (see DefinitionContent's
   // link_terms) -- the literal word forms other prose should auto-link to
   // this page with, distinct from its own question-style title.
@@ -96,6 +99,7 @@ export interface PanSize {
 export interface RecipeContent {
   meta_description?: string;
   hero_image_query: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
   why_it_works: string;
@@ -163,6 +167,7 @@ export interface IngredientSubstitute {
 export interface IngredientHubContent {
   meta_description?: string;
   hero_image_query: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
   description: string;
@@ -182,6 +187,7 @@ export interface IngredientHubContent {
 export interface HowToContent {
   meta_description?: string;
   hero_image_query: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
   intro: string;
@@ -196,6 +202,7 @@ export interface HowToContent {
 export interface DefinitionContent {
   meta_description?: string;
   hero_image_query: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
   direct_answer: string;
@@ -231,6 +238,7 @@ export interface ComparisonSection {
 export interface ComparisonContent {
   meta_description?: string;
   hero_image_query?: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
   item_a_name: string;
@@ -254,6 +262,7 @@ export interface RankedSubstitute {
 export interface SubstituteContent {
   meta_description?: string;
   hero_image_query?: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
   ranked_substitutes: RankedSubstitute[];
@@ -268,6 +277,7 @@ export interface RecipeCardData {
   slug: string | null;
   description: string;
   image_query: string;
+  image_alt?: string;
   image_url?: string;
   image_attribution?: ImageAttribution;
 }

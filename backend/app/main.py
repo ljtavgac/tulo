@@ -448,18 +448,24 @@ def get_page(slug: str, db: Session = Depends(get_db)):
     return page
 
 
-def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None]:
-    """image_url, image_attribution, hero_image_query for a page's summary
-    thumbnail. Category Roundup pages have no hero image of their own (only
-    per-card images on recipe_cards), so this falls back to the first
-    card's image as a representative thumbnail for the collection."""
+def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None, str | None]:
+    """image_url, image_attribution, hero_image_query, image_alt for a
+    page's summary thumbnail. Category Roundup pages have no hero image of
+    their own (only per-card images on recipe_cards), so this falls back to
+    the first card's image (and that card's own image_alt) as a
+    representative thumbnail for the collection."""
     if content.get("image_url"):
-        return content["image_url"], content.get("image_attribution"), content.get("hero_image_query")
+        return (
+            content["image_url"],
+            content.get("image_attribution"),
+            content.get("hero_image_query"),
+            content.get("image_alt"),
+        )
     cards = content.get("recipe_cards")
     if cards:
         first = cards[0]
-        return first.get("image_url"), first.get("image_attribution"), first.get("image_query")
-    return None, None, content.get("hero_image_query")
+        return first.get("image_url"), first.get("image_attribution"), first.get("image_query"), first.get("image_alt")
+    return None, None, content.get("hero_image_query"), content.get("image_alt")
 
 
 @app.get("/pages", response_model=list[PageSummary])
@@ -500,7 +506,7 @@ def list_pages(
 
     summaries = []
     for page in query.all():
-        image_url, image_attribution, hero_image_query = _summary_image(page.content)
+        image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
         summaries.append(
             PageSummary(
                 slug=page.slug,
@@ -509,6 +515,7 @@ def list_pages(
                 image_url=image_url,
                 image_attribution=image_attribution,
                 hero_image_query=hero_image_query,
+                image_alt=image_alt,
                 link_terms=page.content.get("link_terms") if page.template_type == "definition" else None,
             )
         )
@@ -536,7 +543,7 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
             term for term in terms if any(term in name or name in term for name in recipe_ingredients)
         ]
         if matched_terms:
-            image_url, image_attribution, hero_image_query = _summary_image(page.content)
+            image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
             matches.append(
                 {
                     "slug": page.slug,
@@ -547,6 +554,7 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
                     "image_url": image_url,
                     "image_attribution": image_attribution,
                     "hero_image_query": hero_image_query,
+                    "image_alt": image_alt,
                 }
             )
 

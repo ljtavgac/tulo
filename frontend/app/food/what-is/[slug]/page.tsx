@@ -65,6 +65,7 @@ export default async function DefinitionPage({
 
       <StockPhotoSlot
         query={content.hero_image_query}
+        alt={content.image_alt}
         imageUrl={content.image_url}
         attribution={content.image_attribution}
         className="mt-4"

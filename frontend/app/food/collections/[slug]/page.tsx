@@ -91,6 +91,7 @@ export default async function CategoryRoundupPage({
               title={card.title}
               description={card.description}
               imageQuery={card.image_query}
+              imageAlt={card.image_alt}
               imageUrl={card.image_url}
               imageAttribution={card.image_attribution}
               slug={card.slug}

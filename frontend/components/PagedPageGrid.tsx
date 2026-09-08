@@ -59,6 +59,7 @@ export default function PagedPageGrid({
                 href={pagePath(page.template_type, page.slug)}
                 title={page.title}
                 imageQuery={page.hero_image_query ?? page.title}
+                imageAlt={page.image_alt}
                 imageUrl={page.image_url}
                 imageAttribution={page.image_attribution}
               />

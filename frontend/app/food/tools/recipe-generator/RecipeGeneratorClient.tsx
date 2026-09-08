@@ -44,6 +44,7 @@ interface Match {
   image_url?: string;
   image_attribution?: ImageAttribution;
   hero_image_query?: string;
+  image_alt?: string | null;
 }
 
 // There's no LLM wired into this stack to generate a brand-new recipe from
@@ -140,6 +141,7 @@ export default function RecipeGeneratorClient() {
                 title={match.title}
                 description={`Uses ${match.matched_count} of your ${match.requested_count} ingredient${match.requested_count === 1 ? "" : "s"} (${match.total_ingredients} total)`}
                 imageQuery={match.hero_image_query ?? match.title}
+                imageAlt={match.image_alt}
                 imageUrl={match.image_url}
                 imageAttribution={match.image_attribution}
                 slug={match.slug}

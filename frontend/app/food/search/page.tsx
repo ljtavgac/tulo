@@ -66,6 +66,7 @@ export default async function SearchPage({
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
                   <StockPhotoSlot
                     query={page.hero_image_query ?? page.title}
+                    alt={page.image_alt}
                     imageUrl={page.image_url}
                     aspect="thumbnail"
                   />

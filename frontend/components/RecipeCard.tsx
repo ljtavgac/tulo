@@ -7,6 +7,7 @@ export default function RecipeCard({
   title,
   description,
   imageQuery,
+  imageAlt,
   imageUrl,
   imageAttribution,
   slug,
@@ -14,6 +15,7 @@ export default function RecipeCard({
   title: string;
   description?: string;
   imageQuery: string;
+  imageAlt?: string | null;
   imageUrl?: string;
   imageAttribution?: ImageAttribution;
   slug: string | null;
@@ -22,6 +24,7 @@ export default function RecipeCard({
     <>
       <StockPhotoSlot
         query={imageQuery}
+        alt={imageAlt}
         imageUrl={imageUrl}
         attribution={imageAttribution}
         aspect="thumbnail"

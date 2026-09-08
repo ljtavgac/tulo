@@ -12,7 +12,7 @@ Food Network) that this template is designed to directly counter.
 **Competitive gap addressed:** Competitor sites bury the actual recipe under long personal-story preambles — a pain point so widespread that third-party tools (RecipeStripper and similar) exist solely to strip competitor pages down to just the recipe. Sites are also called out repeatedly for heavy ad load and autoplay video sidebars hurting the cooking experience.
 
 **Recommended content sections:**
-- Recipe title + hero photo
+- Recipe title + hero photo, with real, specific `image_alt` text (e.g. "Sliced banana nut bread on a wire cooling rack," not the bare search term used to find the photo, e.g. "banana nut bread") -- required, mechanically enforced by `_check_content_depth()`
 - **Ingredients and instructions visible immediately — no scrolling past a story to reach them.** A short "why this recipe works" blurb can sit ABOVE the recipe card in 2-3 sentences max, with any longer narrative content collapsed below the recipe, never between the user and the instructions.
 - Recipe schema markup (Recipe, AggregateRating, NutritionInformation) for rich snippets
 - Prep time / cook time / total time / servings
@@ -38,7 +38,7 @@ Food Network) that this template is designed to directly counter.
 **Competitive gap addressed:** This is the core structural gap this entire project's research was built around — major competitor sites have thin or nonexistent dedicated pages for many ingredients (the "garlic confit," "cajeta," "pecorino" pattern found repeatedly). Building genuinely useful, complete ingredient pages at scale is a direct, evidenced opportunity.
 
 **Recommended content sections:**
-- Ingredient name + photo
+- Ingredient name + photo, with real, specific `image_alt` text (required, same standard as the Recipe page's)
 - What it is / brief description
 - Substitutes section (ranked, with ratios where relevant)
 - Storage / shelf-life section
@@ -57,7 +57,7 @@ Food Network) that this template is designed to directly counter.
 **Competitive gap addressed:** Same "buried under a story" problem as recipes, plus these pages benefit from clear step visuals that many competitor technique articles skip.
 
 **Recommended content sections:**
-- Technique name + hero image or short video/GIF if available
+- Technique name + hero image or short video/GIF if available, with real, specific `image_alt` text (required, same standard as the Recipe page's)
 - Numbered steps (not paragraph-form)
 - Common mistakes / troubleshooting section
 - Tools/equipment needed
@@ -73,6 +73,7 @@ Food Network) that this template is designed to directly counter.
 **Competitive gap addressed:** Competitor "what is X" pages often over-explain with long intros before answering the actual question — direct answer first wins featured snippets and respects the user's time.
 
 **Recommended content sections:**
+- Hero photo with real, specific `image_alt` text (required, same standard as the Recipe page's)
 - Direct 1-2 sentence answer at the very top (featured-snippet optimized)
 - Expanded explanation
 - How it's used / where it comes from
@@ -88,6 +89,7 @@ Food Network) that this template is designed to directly counter.
 **Competitive gap addressed:** Comparison content on competitor sites is often locked by global consumer brands (per this project's research — cappuccino vs. latte, for example, is dominated by Starbucks/Nescafé). Where genuinely open, a clean structured comparison beats a wall of prose.
 
 **Recommended content sections:**
+- Hero photo with real, specific `image_alt` text (required, same standard as the Recipe page's)
 - Side-by-side comparison table (key differences at a glance)
 - Verdict/summary — when to use which
 - Individual sections expanding on each item
@@ -102,6 +104,7 @@ Food Network) that this template is designed to directly counter.
 **Competitive gap addressed:** Same thin-coverage gap as Ingredient Hubs — many substitute pages on competitor sites cover only the most common ingredients, leaving specific/niche substitutions (verified repeatedly in this project's research) uncovered.
 
 **Recommended content sections:**
+- Hero photo with real, specific `image_alt` text (required, same standard as the Recipe page's)
 - Ranked list of substitutes with ratios/conversion notes
 - Best-for-baking vs. best-for-cooking distinctions where relevant
 - Link back to the main Ingredient Hub page
@@ -117,7 +120,7 @@ Food Network) that this template is designed to directly counter.
 
 **Recommended content sections:**
 - Short curatorial intro (why these recipes, what ties them together)
-- Grid/list of recipes with photos, linking to each Recipe page
+- Grid/list of recipes with photos, linking to each Recipe page -- each card needs its own real, specific `image_alt` text (required, mechanically enforced, same standard as the Recipe page's)
 - Sub-category filters if the roundup is large (e.g., "Italian Recipes" → appetizers/mains/desserts)
 - Link to related roundups
 - FAQ section (1-2 questions, only where genuinely useful -- ingredient prep/selection questions that apply across the whole roundup, not a forced addition on every page), marked up with FAQPage schema

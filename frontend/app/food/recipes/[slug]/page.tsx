@@ -117,6 +117,7 @@ export default async function RecipePage({
         <h1 className="text-3xl font-bold">{page.title}</h1>
         <StockPhotoSlot
           query={content.hero_image_query}
+          alt={content.image_alt}
           imageUrl={content.image_url}
           attribution={content.image_attribution}
           className="mt-4"

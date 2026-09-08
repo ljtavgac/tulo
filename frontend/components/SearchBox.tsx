@@ -142,6 +142,7 @@ export default function SearchBox() {
                 <div className="h-12 w-12 shrink-0 overflow-hidden rounded">
                   <StockPhotoSlot
                     query={page.hero_image_query ?? page.title}
+                    alt={page.image_alt}
                     imageUrl={page.image_url}
                     aspect="thumbnail"
                   />

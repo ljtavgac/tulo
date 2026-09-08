@@ -11,12 +11,14 @@ export default function PageTile({
   href,
   title,
   imageQuery,
+  imageAlt,
   imageUrl,
   imageAttribution,
 }: {
   href: string;
   title: string;
   imageQuery: string;
+  imageAlt?: string | null;
   imageUrl?: string;
   imageAttribution?: ImageAttribution;
 }) {
@@ -27,6 +29,7 @@ export default function PageTile({
     >
       <StockPhotoSlot
         query={imageQuery}
+        alt={imageAlt}
         imageUrl={imageUrl}
         attribution={imageAttribution}
         aspect="thumbnail"

@@ -34,6 +34,7 @@ import type { ImageAttribution } from "@/lib/types";
 // that don't need it.
 export default function StockPhotoSlot({
   query,
+  alt,
   imageUrl,
   attribution,
   aspect = "hero",
@@ -41,6 +42,14 @@ export default function StockPhotoSlot({
   reserveSpace = false,
 }: {
   query: string;
+  // Real, specific caption text (e.g. a recipe's own meta_description),
+  // distinct from `query` (the term used to search Unsplash/Pexels for
+  // this photo in the first place). Falls back to `query` when absent --
+  // every hero photo on the site has a real image_alt now (see the SEO
+  // audit that found every photo's alt text was literally just its search
+  // query), but this fallback keeps any caller that hasn't been threaded
+  // through yet (or a future one) from ending up with no alt text at all.
+  alt?: string | null;
   imageUrl?: string;
   attribution?: ImageAttribution;
   aspect?: "hero" | "thumbnail";
@@ -67,7 +76,7 @@ export default function StockPhotoSlot({
       <div className={`relative ${aspectClass} overflow-hidden rounded-lg bg-ink/5`}>
         <Image
           src={imageUrl}
-          alt={query}
+          alt={alt || query}
           fill
           unoptimized
           sizes="(min-width: 1024px) 640px, 100vw"
