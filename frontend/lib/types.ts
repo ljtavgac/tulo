@@ -100,6 +100,13 @@ export interface RecipeContent {
   tips_and_variations?: string[];
   storage_and_reheating?: string;
   nutrition_note?: string;
+  // Short, pre-written editorial tips (2-3 per recipe) -- kitchen-wisdom
+  // and troubleshooting notes distinct from tips_and_variations (which
+  // covers substitutions and format changes to the recipe itself). Not a
+  // public submission/moderation system -- that's a separate future
+  // project once there's real traffic worth moderating -- so rendered as
+  // a small distinct module, not comment-thread styling.
+  reader_tips?: string[];
   faqs?: Faq[];
   technique_link: LinkRef | null;
   related_recipe_slugs: string[];

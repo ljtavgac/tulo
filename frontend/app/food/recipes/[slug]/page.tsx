@@ -221,6 +221,22 @@ export default async function RecipePage({
           </>
         ) : null}
 
+        {content.reader_tips && content.reader_tips.length > 0 ? (
+          <div className="mt-8 rounded-lg border-l-4 border-accent bg-accent/5 p-4">
+            <h2 className="text-base font-bold">Tips from the Tulo kitchen</h2>
+            <ul className="mt-2 space-y-2 text-sm text-ink/80">
+              {content.reader_tips.map((tip, i) => (
+                <li key={i} className="flex gap-2">
+                  <span aria-hidden className="text-accent">
+                    •
+                  </span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
         <FaqSection faqs={content.faqs} />
 
         <RelatedLinks heading="More recipes" templateType="recipe_or_dish" slugs={content.related_recipe_slugs} />

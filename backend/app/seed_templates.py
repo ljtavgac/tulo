@@ -96,6 +96,10 @@ SEED_PAGES = [
                 "No walnuts on hand? Pecans work as a 1:1 swap, or leave nuts out entirely, the texture changes slightly but the recipe still holds together.",
                 "For extra moisture, add 2 tablespoons of sour cream or plain yogurt along with the wet ingredients.",
             ],
+            "reader_tips": [
+                "Room-temperature eggs and butter blend into the batter more evenly than cold ones straight from the fridge, since this one-bowl method has no creaming step to work out lumps.",
+                "If the top browns too fast before the center sets, tent it loosely with foil for the last 15 minutes rather than pulling the loaf early.",
+            ],
             "storage_and_reheating": (
                 "Store cooled bread tightly wrapped at room temperature for up to 4 "
                 "days, or in the refrigerator for up to a week. To freeze, wrap the "
@@ -677,6 +681,10 @@ SEED_PAGES = [
                 "Pound thicker breasts to an even ½-inch thickness first so they cook through at the same rate the crust browns.",
                 "For extra crunch, broil for the last 1-2 minutes, watch closely, panko browns fast under a broiler.",
             ],
+            "reader_tips": [
+                "A wire rack set inside the baking sheet keeps the bottom of the crust from steaming against the pan, so it stays crisp all the way around, not just on top.",
+                "Freshly grated parmesan from a block melts and browns better than the pre-shredded kind, which is coated in anti-caking starch.",
+            ],
             "storage_and_reheating": (
                 "Refrigerate leftovers up to 3 days. Reheat in a 350°F oven or air "
                 "fryer to re-crisp the topping, microwaving works but leaves the "
@@ -768,6 +776,10 @@ SEED_PAGES = [
                 "Rotisserie chicken makes this a genuine 20-minute-prep weeknight dish.",
                 "No gruyère on hand? Sharp cheddar or Swiss both melt similarly well here.",
             ],
+            "reader_tips": [
+                "Slightly undercook the rice compared to how you'd eat it plain, it finishes softening in the oven and can turn mushy if it's already fully tender going in.",
+                "Let the casserole sit for 5 minutes after it comes out of the oven, the sauce thickens slightly as it cools and holds together better when served.",
+            ],
             "storage_and_reheating": (
                 "Refrigerate up to 4 days. Reheat covered in a 350°F oven to keep "
                 "the rice from drying out, or microwave individual portions with a "
@@ -838,6 +850,10 @@ SEED_PAGES = [
             "tips_and_variations": [
                 "Don't crowd the pan, too many slices at once drops the oil temperature and the crust turns greasy instead of crisp.",
                 "A wire rack over a sheet pan keeps the bottom crust from steaming and going soft the way paper towels can.",
+            ],
+            "reader_tips": [
+                "Salt the sliced tomatoes lightly and let them sit on paper towels for 10 minutes before breading, it pulls out excess moisture that would otherwise make the coating soggy.",
+                "Keep the oil at a steady medium-high heat, testing it with a pinch of cornmeal, it should sizzle immediately without smoking.",
             ],
             "storage_and_reheating": (
                 "Best eaten fresh. Leftovers keep 1-2 days refrigerated; reheat in "
@@ -915,6 +931,10 @@ SEED_PAGES = [
                 "Real cooked crab or shrimp works in place of imitation crab for a more upscale version.",
                 "Add a thin layer of sliced avocado or cucumber under the topping for texture and freshness.",
             ],
+            "reader_tips": [
+                "Press the rice layer down firmly and evenly before topping it, gaps let the creamy topping sink through instead of baking to a golden finish on top.",
+                "Save a little furikake to sprinkle on after baking, not just before, so some of it stays crunchy instead of steaming soft under the topping.",
+            ],
             "storage_and_reheating": (
                 "Refrigerate up to 3 days. Reheat in the oven at 350°F until warmed "
                 "through, the topping can separate slightly in the microwave."
@@ -989,6 +1009,10 @@ SEED_PAGES = [
             "tips_and_variations": [
                 "Adjust the heat by seeding the chiles for a milder version, or adding an extra chile for more fire.",
                 "Spatchcocking a whole chicken instead of using pieces cooks more evenly and gets more skin surface charred.",
+            ],
+            "reader_tips": [
+                "Score the chicken pieces lightly before marinating, it helps the sauce reach past the skin instead of just coating the surface.",
+                "Baste only with reserved marinade set aside before the raw chicken went in, not the liquid it marinated in, unless that liquid is brought to a boil first.",
             ],
             "storage_and_reheating": (
                 "Refrigerate up to 3 days. Reheat in a 350°F oven to keep the skin "
@@ -1068,6 +1092,10 @@ SEED_PAGES = [
                 "Achiote paste is sold in Latin grocery stores and many supermarkets' international aisle, don't substitute plain paprika, it lacks achiote's distinct earthy flavor.",
                 "For tacos, warm corn tortillas and top with the chopped chicken, pineapple, chopped onion, and cilantro.",
             ],
+            "reader_tips": [
+                "Marinate the full time if you can, achiote's flavor is fairly mild until it's actually had time to penetrate the meat, not just coat it.",
+                "A hot, barely-oiled pan matters more than a long cook time here, the char comes from contact with high heat, not from cooking the thin-cut thighs longer.",
+            ],
             "storage_and_reheating": (
                 "Refrigerate up to 3 days. Reheat in a hot skillet to re-crisp the "
                 "edges, microwaving works but loses the char."
@@ -1141,6 +1169,10 @@ SEED_PAGES = [
                 "Frozen mango chunks, thawed, work fine when ripe fresh mango isn't in season.",
                 "A splash of coconut cream folded in alongside the whipped cream adds a tropical note.",
             ],
+            "reader_tips": [
+                "Chill the mixing bowl and beaters in the freezer for 10 minutes before whipping the cream, cold equipment whips air in faster and holds stiffer peaks.",
+                "Press a piece of plastic wrap directly onto the surface before the lid goes on, it keeps ice crystals from forming on top during the long freeze.",
+            ],
             "storage_and_reheating": (
                 "Keeps well frozen, tightly covered, for up to 2 months. Let sit "
                 "at room temperature 5-10 minutes before scooping if it's been "
@@ -1213,6 +1245,10 @@ SEED_PAGES = [
             "tips_and_variations": [
                 "Pasteurized egg whites (or the liquid egg white product sold in cartons) work fine and remove any raw-egg concern.",
                 "No egg white on hand? The drink is still good without it, just less foamy on top.",
+            ],
+            "reader_tips": [
+                "The dry shake (no ice) is what actually builds the foam, skipping straight to the wet shake with ice will still taste fine but won't foam properly no matter how hard you shake it.",
+                "Let the shaker sit for a few seconds after the wet shake before straining, it gives the foam a moment to stabilize instead of collapsing as soon as it hits the glass.",
             ],
             "storage_and_reheating": (
                 "Best made fresh and drunk right away, the whipped egg-white "
@@ -1292,6 +1328,10 @@ SEED_PAGES = [
                 "Don't move the fish while the skin-side sear is happening, it releases from the pan on its own once properly crisped.",
                 "Chilean sea bass is also sold as Patagonian toothfish, same fish, different market name.",
             ],
+            "reader_tips": [
+                "Score the skin in a few shallow slashes before cooking, it helps the fillet lie flat instead of curling as the skin contracts in the hot pan.",
+                "Spoon a little of the pan's butter-lemon sauce over the fish just before serving, it does more for flavor than adding extra butter to the pan itself.",
+            ],
             "storage_and_reheating": (
                 "Best eaten immediately. Leftovers keep a day refrigerated; reheat "
                 "gently to avoid drying out the delicate flesh."
@@ -1367,6 +1407,10 @@ SEED_PAGES = [
             "tips_and_variations": [
                 "Stir often once the milk goes in, rice pudding scorches on the bottom of the pot easily if left unstirred.",
                 "A strip of orange or lime zest simmered along with the cinnamon stick adds a traditional citrus note.",
+            ],
+            "reader_tips": [
+                "Use a heavy-bottomed pot, a thin one heats unevenly and makes scorching on the bottom much more likely during the long simmer.",
+                "It thickens quite a bit as it cools, so pull it off the heat while it still looks slightly thinner than you want the final texture to be.",
             ],
             "storage_and_reheating": (
                 "Refrigerate up to 5 days. It thickens further when cold, stir "
