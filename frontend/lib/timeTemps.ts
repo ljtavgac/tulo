@@ -56,7 +56,15 @@ const CATEGORY_KEYWORDS: { pattern: RegExp; category: string }[] = [
   // enough to keep.
   { pattern: /\b(steak|pork chop|lamb chop|veal chop|beef|pork|lamb|veal)\b/i, category: "Beef, pork, lamb, veal — steaks, roasts, chops" },
   { pattern: /\b(fish|salmon|shrimp|shellfish|bass|fillet)\b/i, category: "Fish & shellfish" },
-  { pattern: /\beggs?\b/i, category: "Egg dishes" },
+  // No bare "egg"/"eggs" pattern here, on purpose -- same class of problem
+  // as the excluded "roast" above. "Egg dishes" in SAFE_MINIMUM_TEMPS means
+  // an egg-centric dish (omelet, frittata, quiche, custard), but "egg" as a
+  // keyword would also match any recipe that merely uses egg as one of
+  // several ingredients (a loaf of banana bread, a cocktail's egg-white
+  // foam) -- none of which are being cooked to an egg-dish safe minimum.
+  // None of this site's current recipes is actually an egg-centric dish, so
+  // there's nothing to detect correctly yet; revisit with a more targeted
+  // signal (e.g. the page's own title/type) if one is added.
   { pattern: /\b(leftover|reheat|casserole)\b/i, category: "Leftovers & casseroles (reheating)" },
 ];
 

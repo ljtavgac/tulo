@@ -85,13 +85,16 @@ export interface RecipeContent {
   ingredients: RecipeIngredient[];
   instructions: string[];
   // Optional per-step technique explanation, keyed by the step's index in
-  // `instructions`. A parallel map rather than changing instructions'
-  // element shape to a union -- JSON-LD's recipeInstructions mapping (and
-  // every other consumer of `instructions`) needs plain step text either
-  // way, so this keeps them all untouched and the "why" purely additive.
-  // Collapsed by default in the UI; only populated for a pilot batch of
-  // recipes for now.
-  step_notes?: Record<number, string>;
+  // `instructions` (as a string -- Python's int-keyed dict round-trips
+  // through JSON with string keys; reading it with a number index still
+  // works since JS coerces the index to a string on property access, but
+  // the type should say what's actually there). A parallel map rather than
+  // changing instructions' element shape to a union -- JSON-LD's
+  // recipeInstructions mapping (and every other consumer of `instructions`)
+  // needs plain step text either way, so this keeps them all untouched and
+  // the "why" purely additive. Collapsed by default in the UI; only
+  // populated for a pilot batch of recipes for now.
+  step_notes?: Record<string, string>;
   // Depth added for SEO without violating the "no life story" positioning
   // (see PAGE_TEMPLATES.md): structured reference content, not narrative --
   // FAQs, tips, storage, and nutrition are all common real search intents
