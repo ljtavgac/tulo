@@ -36,9 +36,12 @@ export default async function CategoryRoundupPage({
 
   const { content } = page;
 
-  // In-feed ad, blended into the grid every 4 cards, per the roundup
-  // placement spec.
-  const IN_FEED_INTERVAL = 4;
+  // In-feed ad, blended into the grid every 6 cards -- two full rows at the
+  // grid's sm:grid-cols-3 breakpoint (three at the 2-column mobile
+  // breakpoint), so the ad always follows a complete row instead of
+  // landing mid-row. Matches PagedPageGrid's own IN_FEED_INTERVAL, which
+  // was already set to 6 to match this page -- this one had drifted to 4.
+  const IN_FEED_INTERVAL = 6;
 
   const section = sectionForTemplate(page.template_type)!;
   const breadcrumbItems = [
@@ -92,7 +95,7 @@ export default async function CategoryRoundupPage({
               imageAttribution={card.image_attribution}
               slug={card.slug}
             />
-            {(i + 1) % IN_FEED_INTERVAL === 0 && i !== content.recipe_cards.length - 1 ? (
+            {(i + 1) % IN_FEED_INTERVAL === 0 ? (
               <div className="col-span-2 sm:col-span-3">
                 <AdSlot variant="in-feed" />
               </div>

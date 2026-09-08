@@ -40,7 +40,20 @@ SEARCH_RESULTS_PER_PAGE = 10
 # from plus.unsplash.com instead of images.unsplash.com, so a URL-shape
 # check (not just trusting the API response) is what actually prevents a
 # result from silently breaking on the frontend.
-_ALLOWED_IMAGE_HOSTS = ("https://images.unsplash.com/", "https://images.pexels.com/")
+#
+# The single source of truth for this list -- main.py's /admin/image-audit
+# and fetch_stock_images.py's re-fetch logic both import it from here rather
+# than keeping their own copy, which is exactly how this list drifted out of
+# sync with fetch_stock_images.py's skip check in the first place (see
+# is_allowed_image_url's docstring).
+ALLOWED_IMAGE_HOSTS = ("https://images.unsplash.com/", "https://images.pexels.com/")
+
+
+def is_allowed_image_url(url: str | None) -> bool:
+    """True for a missing URL too -- callers that need to distinguish
+    "no photo yet" from "a photo, but a broken one" check `url` themselves
+    first (see fetch_stock_images.py and main.py's /admin/image-audit)."""
+    return url is None or url.startswith(ALLOWED_IMAGE_HOSTS)
 
 
 def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
@@ -53,7 +66,7 @@ def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> 
     r.raise_for_status()
     for photo in r.json().get("results", []):
         url = photo["urls"]["regular"]
-        if url in exclude_urls or not url.startswith(_ALLOWED_IMAGE_HOSTS):
+        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS):
             continue
         return ImageResult(
             url=url,
@@ -75,7 +88,7 @@ def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> Im
     r.raise_for_status()
     for photo in r.json().get("photos", []):
         url = photo["src"]["large"]
-        if url in exclude_urls or not url.startswith(_ALLOWED_IMAGE_HOSTS):
+        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS):
             continue
         return ImageResult(
             url=url,

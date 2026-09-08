@@ -25,7 +25,7 @@ import sys
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal
-from .images import search_image, ping_download, UNSPLASH_ACCESS_KEY, PEXELS_ACCESS_KEY
+from .images import is_allowed_image_url, search_image, ping_download, UNSPLASH_ACCESS_KEY, PEXELS_ACCESS_KEY
 from .models import Page
 
 # template_type -> the content key holding the search query for a single
@@ -153,7 +153,16 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
 
         query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
         if query_key and query_key in content:
-            if force_this_page or not content.get("image_url"):
+            # Treats an existing image_url pointing at a disallowed host
+            # (see is_allowed_image_url) the same as no image_url at all --
+            # both need a real fetch. Before this, a URL that slipped past
+            # images.py's own host filter (or was written before that
+            # filter existed) satisfied "already has *a* image_url" forever
+            # and never got a second look, so a page that once broke stayed
+            # broken through every future startup and every future
+            # /admin/fetch-images run until someone found it by hand via
+            # /admin/image-audit and re-ran with force=true.
+            if force_this_page or not is_allowed_image_url(content.get("image_url")):
                 query = content[query_key]
                 queries = [query]
                 if page.template_type == "comparison":
@@ -180,7 +189,13 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
 
         elif page.template_type == "category_roundup":
             for card in content.get("recipe_cards", []):
-                if force_this_page or not card.get("image_url"):
+                # Same broken-vs-missing distinction as the single-image
+                # branch above -- a card's image_url can end up on a
+                # disallowed host too (this is literally the case that
+                # motivated adding the host check to images.py in the first
+                # place: category cards' image_query terms are often niche
+                # enough to surface Unsplash+ results).
+                if force_this_page or not is_allowed_image_url(card.get("image_url")):
                     query = card.get("image_query")
                     if not query:
                         continue

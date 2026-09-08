@@ -12,18 +12,10 @@ from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, fetch_images
-from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY
+from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY, is_allowed_image_url
 from .models import Page
 from .schemas import PageOut, PageSummary
 from .seed_templates import resync_content, seed
-
-# The only two hosts next.config.mjs allows next/image to load from -- an
-# image_url outside these renders as a broken image on the site with
-# nothing else here to ever flag it. Kept in sync with the same check
-# images.py now applies before writing a URL in the first place; this list
-# lets /admin/image-audit also surface any URL that slipped through before
-# that filter existed.
-_ALLOWED_IMAGE_HOSTS = ("https://images.unsplash.com/", "https://images.pexels.com/")
 
 
 def _revalidate_frontend() -> bool:
@@ -370,17 +362,36 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         # recipe_cards is hand-curated editorial content -- it deliberately
         # includes aspirational cards for dishes the site hasn't written yet
         # (slug: None), which a purely computed list would wipe out. So this
-        # only ever adds: any real recipe whose own category_link already
-        # points here but isn't in the curated list yet (an editor forgot,
-        # or simply hasn't caught up to a recipe published after this page
-        # was last hand-edited) gets appended, never removed or reordered.
+        # only ever adds or fills in, never removes or reorders:
+        #
+        # - A real recipe whose own category_link already points here and
+        #   whose title matches an existing aspirational card (an editor
+        #   already described "Carne Asada Tacos" by name before it existed
+        #   as a page) fills that card in -- its slug and photo, so the
+        #   card becomes clickable -- rather than appending a second,
+        #   duplicate "Carne Asada Tacos" card next to the still-unlinked
+        #   placeholder. This is what actually makes an aspirational card
+        #   "come true" once its recipe is written; without it, publishing
+        #   the matching recipe alone wouldn't be enough, the placeholder
+        #   would sit there dead forever unless someone remembered to go
+        #   back and hand-edit this page too.
+        # - Any other real recipe whose category_link points here (no
+        #   matching placeholder title) is appended as a new card, same as
+        #   before.
         content = copy.deepcopy(page.content)
         cards = content.setdefault("recipe_cards", [])
         existing_slugs = {c.get("slug") for c in cards if c.get("slug")}
+        cards_by_title = {c.get("title", "").strip().lower(): c for c in cards}
         for recipe in _recipes_linking_to(db, "category_link", page.slug):
             if recipe.slug in existing_slugs:
                 continue
             rc = recipe.content
+            placeholder = cards_by_title.get(recipe.title.strip().lower())
+            if placeholder is not None and not placeholder.get("slug"):
+                placeholder["slug"] = recipe.slug
+                placeholder["image_url"] = rc.get("image_url")
+                placeholder["image_attribution"] = rc.get("image_attribution")
+                continue
             why = (rc.get("why_it_works") or "").strip()
             description = why.split(". ")[0].rstrip(".") + "." if why else ""
             cards.append(
@@ -595,13 +606,13 @@ def image_audit(token: str, db: Session = Depends(get_db)):
     - `broken`: pages/cards whose image_url is set but points at a host
       next.config.mjs doesn't allowlist for next/image -- these render as
       a broken image, not a placeholder, which is easy to miss since
-      nothing else in this pipeline currently detects it. (images.py now
-      refuses to write one of these going forward, but this catches any
-      that were already written before that check existed.)
-
-    Every entry in `broken` needs `/admin/fetch-images?...&force=true` to
-    get overwritten with a working URL -- force=false skips anything that
-    already has *a* image_url, broken or not.
+      nothing else in this pipeline currently detects it. (images.py
+      refuses to write one of these going forward, and fetch_images()
+      itself now treats an existing broken URL the same as a missing one,
+      so every entry here self-heals on the next startup or
+      /admin/fetch-images run with no `force` needed -- this endpoint is
+      now purely diagnostic, not a required step before a fix takes
+      effect.)
     """
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
@@ -612,7 +623,7 @@ def image_audit(token: str, db: Session = Depends(get_db)):
     def _check(url: str | None, **identity):
         if not url:
             missing.append(identity)
-        elif not url.startswith(_ALLOWED_IMAGE_HOSTS):
+        elif not is_allowed_image_url(url):
             broken.append({**identity, "image_url": url})
 
     for page in db.query(Page).order_by(Page.id).all():
