@@ -184,6 +184,22 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
                     if _apply_result(content, queries, page.template_type, used_urls):
                         images_written += 1
                         changed = True
+                    elif content.get("image_url"):
+                        # Every query came up empty (a thin free-tier catalog,
+                        # or every candidate already claimed by used_urls) --
+                        # without this, a URL that's broken (not missing)
+                        # stays parked here forever: the "does this need a
+                        # fetch" check above keeps re-triggering a search on
+                        # every future run, but a failed search on its own
+                        # never removes the stale value it was trying to
+                        # replace. Clearing it instead falls back to
+                        # StockPhotoSlot's "no imageUrl -> render nothing"
+                        # behavior, which beats a permanently broken <img>
+                        # even though it means no photo until a later run's
+                        # search actually succeeds.
+                        content.pop("image_url", None)
+                        content.pop("image_attribution", None)
+                        changed = True
                 except Exception as e:
                     print(f"    error: {e}")
 
@@ -210,6 +226,17 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
                     try:
                         if _apply_result(card, queries, page.template_type, used_urls):
                             images_written += 1
+                            changed = True
+                        elif card.get("image_url"):
+                            # Same "a failed search must not leave a broken
+                            # value behind" fix as the single-image branch
+                            # above -- a card's image_query is often the
+                            # niche part of the pair (queries tries it before
+                            # the broader category fallback), so this is the
+                            # more likely of the two branches to actually
+                            # exhaust every candidate.
+                            card.pop("image_url", None)
+                            card.pop("image_attribution", None)
                             changed = True
                     except Exception as e:
                         print(f"    error: {e}")
