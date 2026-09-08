@@ -81,9 +81,7 @@ export default function TimeTemperatureGuideClient() {
         </tbody>
       </table>
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       <h2 className="mt-8 text-xl font-bold">Cooking times by method</h2>
       <div className="mt-3 flex flex-wrap gap-3">

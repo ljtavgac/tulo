@@ -1,25 +1,16 @@
-// Placeholder ad unit. No network wired up -- account/network TBD (see
-// "Ad Unit Recommendations" in PAGE_TEMPLATES.md). Positioned per the
-// placement rules from that spec: two in-content slots, a desktop-only
-// sticky sidebar slot, and an in-feed slot blended into roundup grids.
-const LABELS: Record<Variant, string> = {
-  "in-content": "Ad unit (in-content)",
-  sidebar: "Ad unit (sticky sidebar, desktop only)",
-  "in-feed": "Ad unit (in-feed)",
-};
-
+// No ad network wired up yet (account/network TBD, see "Ad Unit
+// Recommendations" in PAGE_TEMPLATES.md) -- renders nothing rather than a
+// labeled gray placeholder box, since a visible "Ad unit (in-content)"
+// dashed box reads as an obviously unfinished part of the page to a real
+// visitor (and to anyone reviewing the site, e.g. for ad-network
+// approval), not as a subtle empty slot. Positions are still reserved per
+// the placement spec (two in-content slots, a desktop-only sticky sidebar
+// slot, an in-feed slot blended into roundup grids) -- this component is
+// just the one place all of them render through, so wiring in a real
+// network later (an <ins class="adsbygoogle"> element, sized per variant
+// the same way this placeholder was) only needs to happen here.
 type Variant = "in-content" | "sidebar" | "in-feed";
 
-export default function AdSlot({ variant }: { variant: Variant }) {
-  const sizeClass =
-    variant === "sidebar" ? "h-64 w-full" : variant === "in-feed" ? "h-40" : "h-24";
-  const visibilityClass = variant === "sidebar" ? "hidden lg:flex" : "flex";
-
-  return (
-    <div
-      className={`${visibilityClass} ${sizeClass} items-center justify-center rounded border border-dashed border-ink/15 bg-ink/[0.03] text-xs text-ink/40`}
-    >
-      {LABELS[variant]}
-    </div>
-  );
+export default function AdSlot({ variant: _variant }: { variant: Variant }) {
+  return null;
 }

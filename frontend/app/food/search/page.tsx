@@ -67,7 +67,6 @@ export default async function SearchPage({
                     query={page.hero_image_query ?? page.title}
                     imageUrl={page.image_url}
                     aspect="thumbnail"
-                    compact
                   />
                 </div>
                 <span className="min-w-0">

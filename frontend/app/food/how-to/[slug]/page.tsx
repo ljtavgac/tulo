@@ -92,9 +92,7 @@ export default async function HowToPage({
         ))}
       </ol>
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       <h2 className="mt-8 text-xl font-bold">Common mistakes</h2>
       <ul className="mt-3 space-y-2">

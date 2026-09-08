@@ -62,7 +62,20 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-cream/10">
-        <p className="mx-auto max-w-5xl px-4 py-6 text-xs text-cream/50">© {new Date().getFullYear()} Tulo</p>
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-cream/50">
+          <p>© {new Date().getFullYear()} Tulo</p>
+          <nav className="flex flex-wrap gap-4">
+            <Link href="/about" className="hover:text-accent">
+              About
+            </Link>
+            <Link href="/contact" className="hover:text-accent">
+              Contact
+            </Link>
+            <Link href="/privacy" className="hover:text-accent">
+              Privacy Policy
+            </Link>
+          </nav>
+        </div>
       </div>
     </footer>
   );

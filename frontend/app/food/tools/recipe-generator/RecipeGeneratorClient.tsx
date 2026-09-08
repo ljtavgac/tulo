@@ -149,9 +149,7 @@ export default function RecipeGeneratorClient() {
         </ul>
       ) : null}
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       <FaqSection faqs={FAQS} />
     </main>

@@ -84,9 +84,7 @@ export default async function SubstitutePage({
         <LinkifiedText text={content.baking_vs_cooking_note} terms={linkTerms} />
       </div>
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       <FaqSection faqs={content.faqs} />
 

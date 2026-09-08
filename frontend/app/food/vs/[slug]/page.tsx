@@ -82,9 +82,7 @@ export default async function ComparisonPage({
         <p className="mt-1 text-ink/80">{content.verdict}</p>
       </div>
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       {content.sections.map((section) => (
         <section key={section.heading} className="mt-8">

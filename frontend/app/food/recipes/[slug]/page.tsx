@@ -135,9 +135,7 @@ export default async function RecipePage({
         />
         <ToolCallout slug="conversion-calculator" label="Need different units or a different yield? Try our Conversion Calculator" />
 
-        <div className="my-6 print:hidden">
-          <AdSlot variant="in-content" />
-        </div>
+        <AdSlot variant="in-content" />
 
         <h2 className="text-xl font-bold">Instructions</h2>
         <ol className="mt-3 space-y-3">
@@ -155,9 +153,7 @@ export default async function RecipePage({
           ))}
         </ol>
 
-        <div className="my-6 print:hidden">
-          <AdSlot variant="in-content" />
-        </div>
+        <AdSlot variant="in-content" />
 
         <div className="flex flex-wrap gap-3 print:hidden">
           <PrintButton />

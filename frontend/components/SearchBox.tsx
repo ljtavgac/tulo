@@ -143,7 +143,6 @@ export default function SearchBox() {
                     query={page.hero_image_query ?? page.title}
                     imageUrl={page.image_url}
                     aspect="thumbnail"
-                    compact
                   />
                 </div>
                 <span className="min-w-0">

@@ -121,9 +121,7 @@ export default async function IngredientHubPage({
         </>
       ) : null}
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       <h2 className="mt-8 text-xl font-bold">Nutrition</h2>
       <p className="mt-2 text-ink/80">{content.nutrition_note}</p>

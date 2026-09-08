@@ -172,9 +172,7 @@ export default function ConversionCalculatorClient() {
         <UnitConverter units={WEIGHT_UNITS} defaultFrom="ounce" defaultTo="gram" />
       </div>
 
-      <div className="my-8">
-        <AdSlot variant="in-content" />
-      </div>
+      <AdSlot variant="in-content" />
 
       <h2 className="mt-8 text-xl font-bold">Oven Temperature</h2>
       <div className="mt-3">
