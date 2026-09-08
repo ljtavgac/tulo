@@ -12,11 +12,13 @@ import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
 import LinkifiedText from "@/components/LinkifiedText";
+import StepTempReference from "@/components/StepTempReference";
 import Link from "next/link";
 import { buildBreadcrumbList, buildPageMetadata, minutesToIso8601, pagePath } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import { getLinkTerms } from "@/lib/linkTerms";
 import { formatUsQuantity } from "@/lib/format";
+import { detectFoodCategory } from "@/lib/timeTemps";
 
 export async function generateMetadata({
   params,
@@ -48,6 +50,7 @@ export default async function RecipePage({
     { label: page.title },
   ];
   const linkTerms = await getLinkTerms(slug);
+  const tempReference = detectFoodCategory(content.ingredients.map((ing) => ing.name).join(" "));
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -127,7 +130,10 @@ export default async function RecipePage({
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-semibold text-cream">
                 {i + 1}
               </span>
-              <span className="pt-0.5">{step}</span>
+              <span className="pt-0.5">
+                {step}
+                <StepTempReference step={step} reference={tempReference} />
+              </span>
             </li>
           ))}
         </ol>

@@ -37,3 +37,52 @@ export const COOK_TIMES: CookRow[] = [
   { protein: "Pork chops (¾-inch, boneless)", method: "Grill", temp: "400°F", time: "4–5 min per side", internalTemp: "145°F" },
   { protein: "Shrimp", method: "Air Fryer", temp: "400°F", time: "6–8 min", internalTemp: "Opaque & firm (145°F)" },
 ];
+
+// Contextual reference for a doneness/temperature step on a Recipe or
+// How-To page. Deliberately matches against SAFE_MINIMUM_TEMPS (a food
+// *category*'s safe internal temperature) rather than COOK_TIMES: COOK_TIMES
+// rows are specific to Oven/Air Fryer/Grill, but real recipe steps also
+// simmer, sear, and boil -- surfacing an Oven time on a step that's actually
+// boiling chicken would be confidently wrong. The category-level safe
+// minimum holds regardless of method, so it's the one fact that's always
+// correct to show.
+const CATEGORY_KEYWORDS: { pattern: RegExp; category: string }[] = [
+  { pattern: /\b(chicken|turkey|duck|poultry)\b/i, category: "Poultry — whole, parts, or ground (chicken, turkey, duck)" },
+  { pattern: /\bground (beef|pork|lamb|veal|meat)\b/i, category: "Ground meat (beef, pork, lamb, veal)" },
+  // Deliberately excludes the bare word "roast" -- it's used constantly for
+  // vegetables (roasted spaghetti squash, roasted beets) and even coffee
+  // roast level, not just meat, so it would wrongly flag those pages as a
+  // meat category. "beef"/"pork"/"lamb"/"veal" and named cuts are specific
+  // enough to keep.
+  { pattern: /\b(steak|pork chop|lamb chop|veal chop|beef|pork|lamb|veal)\b/i, category: "Beef, pork, lamb, veal — steaks, roasts, chops" },
+  { pattern: /\b(fish|salmon|shrimp|shellfish|bass|fillet)\b/i, category: "Fish & shellfish" },
+  { pattern: /\beggs?\b/i, category: "Egg dishes" },
+  { pattern: /\b(leftover|reheat|casserole)\b/i, category: "Leftovers & casseroles (reheating)" },
+];
+
+// A step only gets a temp reference chip if it actually raises a doneness
+// or temperature question -- not just any step in a recipe that happens to
+// involve chicken (e.g. "season the chicken breasts with salt"), and not
+// every step with a temperature in it (an oven-preheat step like "Preheat
+// to 375°F" has a °F in it but isn't a doneness check). Requires both a
+// doneness-related word AND a numeric temperature in the same step.
+const DONENESS_WORD = /internal|thermometer|cooked through|no longer pink|juices run clear|opaque|safe minimum/i;
+const HAS_TEMP_NUMBER = /°[cf]|\d{2,3}\s?degrees/i;
+const DONENESS_SIGNAL = { test: (step: string) => DONENESS_WORD.test(step) && HAS_TEMP_NUMBER.test(step) };
+
+// Determines the food category for an entire recipe/how-to page from a
+// blob of context text (ingredient names, or title + intro + steps for a
+// How-To page, which has no ingredients list). Checked once per page, not
+// per step, since a single step rarely repeats the protein's name.
+export function detectFoodCategory(contextText: string): { category: string; temp: string } | null {
+  for (const { pattern, category } of CATEGORY_KEYWORDS) {
+    if (pattern.test(contextText)) {
+      return SAFE_MINIMUM_TEMPS.find((row) => row.category === category) ?? null;
+    }
+  }
+  return null;
+}
+
+export function stepHasDonenessSignal(step: string): boolean {
+  return DONENESS_SIGNAL.test(step);
+}

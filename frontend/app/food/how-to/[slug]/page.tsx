@@ -9,8 +9,10 @@ import FaqSection from "@/components/FaqSection";
 import RelatedLinks from "@/components/RelatedLinks";
 import ToolCallout from "@/components/ToolCallout";
 import AdSlot from "@/components/AdSlot";
+import StepTempReference from "@/components/StepTempReference";
 import { buildBreadcrumbList, buildPageMetadata } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
+import { detectFoodCategory } from "@/lib/timeTemps";
 
 export async function generateMetadata({
   params,
@@ -41,6 +43,7 @@ export default async function HowToPage({
     { label: section.label, href: section.path },
     { label: page.title },
   ];
+  const tempReference = detectFoodCategory([page.title, content.intro, ...content.steps].join(" "));
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -76,7 +79,10 @@ export default async function HowToPage({
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-semibold text-cream">
               {i + 1}
             </span>
-            <span className="pt-0.5">{step}</span>
+            <span className="pt-0.5">
+              {step}
+              <StepTempReference step={step} reference={tempReference} />
+            </span>
           </li>
         ))}
       </ol>
