@@ -14,7 +14,7 @@ export default function StepWhyNote({ note }: { note: string }) {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="text-xs font-medium text-accent hover:underline"
+        className="rounded border border-ink/15 bg-ink/[0.02] px-2 py-0.5 text-xs text-ink/60 hover:bg-ink/[0.05]"
       >
         {open ? "Hide why" : "Why this works"}
       </button>

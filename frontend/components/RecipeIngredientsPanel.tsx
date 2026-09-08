@@ -27,24 +27,30 @@ export default function RecipeIngredientsPanel({
 
   const scale = servings / baseServings;
 
-  // Live nutrition for the batch as currently configured -- same scale and
-  // swaps state as the ingredient list above, so it's derived from the same
-  // numbers on screen rather than a separately-authored total that could
-  // drift out of sync with them. Only ingredients with nutrition_per_unit
-  // data contribute (currently a pilot batch of recipes, not all of them);
-  // if none do, `hasData` stays false and no block is shown.
+  // Live nutrition PER SERVING, using the same swaps state as the
+  // ingredient list above -- but deliberately NOT the servings scale.
+  // Nutrition facts are conventionally a per-serving figure that doesn't
+  // move when you double a recipe (the whole batch doubles, but a serving
+  // is still a serving), so this always divides by baseServings rather
+  // than the current, user-adjustable `servings`. It only recalculates
+  // when a swap changes which ingredient's numbers are active -- not when
+  // the serving slider moves, which would otherwise read as the recipe
+  // itself getting more or less nutritious just from being scaled. Only
+  // ingredients with nutrition_per_unit data contribute (currently a pilot
+  // batch of recipes, not all of them); if none do, `hasData` stays false
+  // and no block is shown.
   const nutritionTotals = ingredients.reduce(
     (totals, ing) => {
       const activeSubstitute = ing.available_substitutes?.find((sub) => sub.name === swaps[ing.name]);
       const perUnit = activeSubstitute?.nutrition_per_unit ?? ing.nutrition_per_unit;
       if (!perUnit) return totals;
       const multiplier = activeSubstitute?.ratio_multiplier ?? 1;
-      const amount = ing.base_qty * scale * multiplier;
+      const amountPerServing = (ing.base_qty * multiplier) / baseServings;
       return {
-        calories: totals.calories + amount * perUnit.calories,
-        protein_g: totals.protein_g + amount * perUnit.protein_g,
-        carbs_g: totals.carbs_g + amount * perUnit.carbs_g,
-        fat_g: totals.fat_g + amount * perUnit.fat_g,
+        calories: totals.calories + amountPerServing * perUnit.calories,
+        protein_g: totals.protein_g + amountPerServing * perUnit.protein_g,
+        carbs_g: totals.carbs_g + amountPerServing * perUnit.carbs_g,
+        fat_g: totals.fat_g + amountPerServing * perUnit.fat_g,
         hasData: true,
       };
     },
@@ -124,9 +130,7 @@ export default function RecipeIngredientsPanel({
 
       {nutritionTotals.hasData ? (
         <div className="mt-4 rounded border border-ink/10 bg-ink/[0.02] p-3 text-sm">
-          <p className="font-medium">
-            Nutrition for this batch <span className="font-normal text-ink/60">(serves {servings})</span>
-          </p>
+          <p className="font-medium">Nutrition per serving</p>
           <dl className="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-ink/70 sm:grid-cols-4">
             <div className="flex justify-between gap-2 sm:block">
               <dt className="text-ink/50">Calories</dt>
@@ -146,7 +150,7 @@ export default function RecipeIngredientsPanel({
             </div>
           </dl>
           <p className="mt-1 text-xs text-ink/40">
-            Recalculates with servings and any ingredient swaps above. An estimate only, exact values depend on the specific ingredients used.
+            Based on the recipe as written, one serving. Recalculates if you swap an ingredient above. An estimate only, exact values depend on the specific ingredients used.
           </p>
         </div>
       ) : null}
