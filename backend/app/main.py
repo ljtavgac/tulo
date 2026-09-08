@@ -1,6 +1,7 @@
 import copy
 import io
 import os
+import re
 import secrets
 from contextlib import asynccontextmanager, redirect_stdout
 
@@ -182,6 +183,120 @@ def _recipes_linking_to(db: Session, field: str, target_slug: str) -> list[Page]
     return matches
 
 
+# Cap on how many *computed* related-content suggestions get merged into a
+# hand-curated related_* list (see _fill_related below). Keeps these lists
+# the same "a small, deliberate handful" size they'd be if an editor had
+# picked them, rather than dumping in every loose match.
+_RELATED_LIMIT = 4
+
+
+def _fill_related(curated: list[str], computed: list[str]) -> list[str]:
+    """Hand-picked entries always come first and are never dropped or
+    reordered -- a curator's specific pairing (this cocktail goes with that
+    dessert, say) can reflect a judgment call no similarity score would
+    reproduce. Computed suggestions only fill the remaining slots, and only
+    with slugs not already present. Recomputed on every request against the
+    full current catalog (not a stored, one-time snapshot), so an empty or
+    thin list left over from when there were only a couple of candidates to
+    choose from keeps discovering better matches as new content ships --
+    with nothing to run and no batch job to remember, "curation" naturally
+    improves as the pool of things to curate from grows.
+    """
+    filled = list(curated)
+    for slug in computed:
+        if len(filled) >= _RELATED_LIMIT:
+            break
+        if slug not in filled:
+            filled.append(slug)
+    return filled
+
+
+def _related_recipes(db: Session, page: Page, hub_titles: dict[str, str]) -> list[str]:
+    """Other recipes worth surfacing as "you might also like," scored by
+    concrete overlap rather than guessed at: sharing a cuisine collection
+    (category_link) or a headline technique (technique_link) is a strong
+    signal, sharing one or more real ingredients (via the same hub_slug
+    resolution used everywhere else) is a weaker one. Scores are summed and
+    ranked highest-first; recipes with a score of 0 (no signal at all)
+    never show up, since two recipes sharing nothing in common shouldn't be
+    called "related" just to fill a slot."""
+    content = page.content
+    category_slug = (content.get("category_link") or {}).get("slug")
+    technique_slug = (content.get("technique_link") or {}).get("slug")
+    my_hubs = {
+        _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles)
+        for ing in content.get("ingredients", [])
+    }
+    my_hubs.discard(None)
+
+    scored: list[tuple[int, str]] = []
+    for other in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+        if other.slug == page.slug:
+            continue
+        oc = other.content
+        score = 0
+        if category_slug and (oc.get("category_link") or {}).get("slug") == category_slug:
+            score += 2
+        if technique_slug and (oc.get("technique_link") or {}).get("slug") == technique_slug:
+            score += 2
+        other_hubs = {
+            _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles)
+            for ing in oc.get("ingredients", [])
+        }
+        other_hubs.discard(None)
+        score += min(len(my_hubs & other_hubs), 3)
+        if score > 0:
+            scored.append((score, other.slug))
+    scored.sort(key=lambda pair: (-pair[0], pair[1]))
+    return [slug for _, slug in scored]
+
+
+def _related_ingredients(db: Session, hub_slug: str, hub_titles: dict[str, str]) -> list[str]:
+    """Other ingredient hubs worth cross-linking, ranked by how often they
+    actually appear in the same recipe as this one -- ingredients cooked
+    together are the ones a reader shopping for this one would plausibly
+    also need, which is a more grounded notion of "related" here than any
+    property of the ingredients themselves."""
+    counts: dict[str, int] = {}
+    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+        hubs_in_recipe = {
+            _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles)
+            for ing in page.content.get("ingredients", [])
+        }
+        hubs_in_recipe.discard(None)
+        if hub_slug not in hubs_in_recipe:
+            continue
+        for other_hub in hubs_in_recipe:
+            if other_hub != hub_slug:
+                counts[other_hub] = counts.get(other_hub, 0) + 1
+    ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    return [slug for slug, _ in ranked]
+
+
+def _bare_term_from_definition_title(title: str) -> str:
+    """Mirrors frontend/lib/linkTerms.ts's bareTermFromDefinitionTitle: a
+    "What Is X?" title reduced to the bare term X, used as a fallback when a
+    definition page has no explicit link_terms of its own."""
+    return re.sub(r"\?.*$", "", re.sub(r"^What Is ", "", title, flags=re.IGNORECASE))
+
+
+def _recipes_demonstrating_terms(db: Session, terms: list[str]) -> list[str]:
+    """recipe_or_dish pages whose instructions actually contain one of these
+    terms (case-insensitive, whole-word) -- the same literal-term matching
+    LinkifiedText already does client-side to auto-link prose, reused here
+    server-side to find which recipes are worth surfacing as "see it in
+    action" from a technique's own glossary page."""
+    if not terms:
+        return []
+    patterns = [re.compile(r"\b" + re.escape(term) + r"\b", re.IGNORECASE) for term in terms]
+    slugs = []
+    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+        text = " ".join(page.content.get("instructions", []))
+        if any(p.search(text) for p in patterns):
+            slugs.append(page.slug)
+    return slugs
+
+
 def _swappable_substitutes_for(db: Session, hub_slug: str) -> list[dict]:
     """The ingredient swap tool on a recipe page needs `hub_slug`'s own
     substitutes -- name, display ratio, and the numeric ratio_multiplier
@@ -219,6 +334,11 @@ def get_page(slug: str, db: Session = Depends(get_db)):
     if page.template_type == "ingredient_hub":
         content = copy.deepcopy(page.content)
         content["recipe_slugs"] = _recipe_slugs_using_ingredient(db, page.slug)
+        hub_titles = _ingredient_hub_slugs_by_title(db)
+        content["related_ingredient_slugs"] = _fill_related(
+            content.get("related_ingredient_slugs", []),
+            _related_ingredients(db, page.slug, hub_titles),
+        )
         return _page_out(page, content)
 
     if page.template_type == "recipe_or_dish":
@@ -240,6 +360,10 @@ def get_page(slug: str, db: Session = Depends(get_db)):
                 substitutes = _swappable_substitutes_for(db, hub_slug)
                 if substitutes:
                     ing["available_substitutes"] = substitutes
+        content["related_recipe_slugs"] = _fill_related(
+            content.get("related_recipe_slugs", []),
+            _related_recipes(db, page, hub_titles),
+        )
         return _page_out(page, content)
 
     if page.template_type == "category_roundup":
@@ -280,6 +404,21 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         content = copy.deepcopy(page.content)
         linked = [r.slug for r in _recipes_linking_to(db, "technique_link", page.slug)]
         content["recipe_slugs"] = list(dict.fromkeys(content.get("recipe_slugs", []) + linked))
+        return _page_out(page, content)
+
+    if page.template_type == "definition":
+        # A glossary page's "related recipes" is filled the same way its own
+        # inline auto-linking already works (see frontend/lib/linkTerms.ts):
+        # any recipe whose instructions actually contain one of this term's
+        # link_terms (or, absent those, the bare term derived from the
+        # title) is a recipe that genuinely demonstrates the technique, not
+        # a guess.
+        content = copy.deepcopy(page.content)
+        terms = content.get("link_terms") or [_bare_term_from_definition_title(page.title)]
+        content["related_recipe_slugs"] = _fill_related(
+            content.get("related_recipe_slugs", []),
+            _recipes_demonstrating_terms(db, terms),
+        )
         return _page_out(page, content)
 
     if page.template_type == "substitute":
