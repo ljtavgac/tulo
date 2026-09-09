@@ -207,17 +207,30 @@ def main() -> None:
     )
 
     # Sanity check the insertion actually did what it should have, before
-    # writing anything to disk: exactly len(new_entries) more `"slug":` keys
-    # should exist afterward, no more, no less. Catches both the
+    # writing anything to disk: exactly len(new_entries) more top-level
+    # pages should exist afterward, no more, no less. Catches both the
     # insertion-anchor bug (wrong location silently duplicating or
     # dropping content) and a double-integration slipping past the
     # status-column guard above for any reason.
-    before_count = text.count('"slug":')
-    after_count = new_text.count('"slug":')
+    #
+    # Counts only a top-level page's own "slug": key (immediately
+    # followed by "template_type":, the same pattern
+    # build_batch_requests.extract_existing_pages() already uses) rather
+    # than every "slug": substring in the file -- a naive full-file count
+    # is a real false positive, found by actually running this against
+    # the 150-title batch: a recipe's own category_link/technique_link
+    # LinkRefs and a category_roundup's recipe_cards entries both carry
+    # their own nested "slug" keys, so 147 new pages legitimately added
+    # 190 "slug": occurrences (28 from LinkRefs, 15 from two collections'
+    # recipe_cards), not 147 -- the old count-everything check would have
+    # refused a perfectly good insertion.
+    top_level_pattern = re.compile(r'"slug":\s*"[^"]+",\s*\n\s*"template_type":')
+    before_count = len(top_level_pattern.findall(text))
+    after_count = len(top_level_pattern.findall(new_text))
     if after_count - before_count != len(new_entries):
         raise ValueError(
             f"Sanity check failed: expected exactly {len(new_entries)} new pages, but "
-            f'"slug": count went from {before_count} to {after_count} '
+            f"top-level page count went from {before_count} to {after_count} "
             f"(delta {after_count - before_count}). Not writing -- investigate before re-running."
         )
 
