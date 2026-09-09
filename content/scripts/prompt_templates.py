@@ -676,7 +676,14 @@ MAX_TOKENS_BY_TYPE = {
     # same title that had fit comfortably (4189 tokens) the first time.
     # Confirms output length varies enough attempt-to-attempt that a budget
     # needs real margin, not just enough for one successful sample.
-    "recipe_or_dish": 8192,
+    # Bumped again 8192 -> 12000 after the 150-title real-time-fallback
+    # run produced 2 genuinely truncated recipe_or_dish results
+    # (easy-middle-eastern-recipes, fennel-and-fennel-seeds, both at
+    # literally 8192/8192) plus 2 more sitting at 93-100% without quite
+    # truncating (sunday-dinner-ideas, gluten-free-snacks) -- confirms
+    # 8192 still wasn't real margin, the same lesson as every prior bump
+    # of this same field.
+    "recipe_or_dish": 12000,
     # The other 5 budgets below were bumped ~35-45% after
     # validate_batch_results.py's new max_tokens-headroom check (added
     # post-pilot) found 12 already-published pilot results that had used
@@ -686,7 +693,10 @@ MAX_TOKENS_BY_TYPE = {
     # history shows that's a matter of which attempt gets unlucky, not
     # whether the risk is real -- so these are fixed proactively here
     # rather than waiting for an actual truncated page to surface the gap.
-    "ingredient_hub": 3500,
+    # Bumped again 3500 -> 5000: the same 150-title run produced 4
+    # genuinely truncated ingredient_hub results (unagi, baking-tips,
+    # antipasto-salad, daniel-fast), all at literally 3500/3500.
+    "ingredient_hub": 5000,
     "howto_technique": 3500,
     "definition": 2200,
     "comparison": 3000,
