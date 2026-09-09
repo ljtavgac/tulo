@@ -16656,7 +16656,7 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What a Grinch meal is, the core green and red ingredients it's built from, easy substitutes, and how to build one for a holiday party without a recipe.",
-            "hero_image_query": "green Grinch themed holiday food platter with red garnish",
+            "hero_image_query": "green mashed potatoes with red pomegranate garnish",
             "image_alt": "A platter of green mashed potatoes, green deviled eggs, and green pasta salad arranged around a small bowl of red cherry tomatoes and pomegranate seeds for garnish.",
             "description": "A \"Grinch meal\" isn't a single dish, it's a color theme applied to an existing recipe: any savory food dyed or naturally colored bright green, plated with a small pop of red for contrast, referencing the Grinch's fur and the Christmas colors he steals. It became a viral food trend on TikTok and Pinterest around the holidays, usually built from mashed potatoes, pasta, deviled eggs, or dip tinted with food coloring or blended greens, topped with something red like cherry tomatoes, pomegranate arils, or red bell pepper.",
             "substitutes": [

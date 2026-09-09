@@ -8,7 +8,10 @@ import PagedPageGrid from "@/components/PagedPageGrid";
 
 const TITLE = "Collections";
 const DESCRIPTION = "Every curated recipe collection on Tulo, organized by category, not an auto-generated tag archive.";
-const PAGE_SIZE = 9;
+// Must be a multiple of both the mobile (2-col) and desktop (3-col) grid
+// widths from PagedPageGrid.tsx, or "Load more" leaves a partial last row on
+// whichever breakpoint 9 (divisible by 3 but not 2) used to break on mobile.
+const PAGE_SIZE = 12;
 
 export const metadata: Metadata = {
   title: TITLE,
