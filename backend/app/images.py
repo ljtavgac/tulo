@@ -31,29 +31,32 @@ class ImageResult:
     download_location: str | None = None
 
 
-def _is_relevant(alt_text: str, must_match: str | None) -> bool:
+def _is_relevant(alt_text: str, must_match: str | tuple[str, ...] | None) -> bool:
     """Both search APIs rank on loose keyword overlap, not actual subject
-    matching -- confirmed for real against two live results: the query
+    matching -- confirmed for real against multiple live results: the query
     "roasted beets whole on baking sheet" (how-to-cook-beets) returned a
     roasted TURKEY on a baking sheet as its top reachable match (overlapping
-    on "roasted"/"baking sheet", not the actual subject), and "stick of
-    butter next to margarine, coconut oil, and olive oil on a kitchen
-    counter" (best-substitutes-for-butter) returned an unrelated creatine
-    supplement photo. is_allowed_image_url()/_is_reachable() only check
-    that a URL is servable, not that the photo is actually of the right
-    thing -- neither catches this.
+    on "roasted"/"baking sheet", not the actual subject), "stick of butter
+    next to margarine, coconut oil, and olive oil on a kitchen counter"
+    (best-substitutes-for-butter) returned an unrelated creatine supplement
+    photo, and a comparison page's query ("ube and taro side by side raw
+    and mashed") returned a photo of neither ube nor taro. is_allowed_image_
+    url()/_is_reachable() only check that a URL is servable, not that the
+    photo is actually of the right thing -- neither catches this.
 
-    `must_match` is the page's single core subject noun (e.g. "beets",
-    "butter" -- see SINGLE_IMAGE_FALLBACKS in fetch_stock_images.py, which
-    already derives exactly this term for its own fallback query and is
-    reused here rather than re-deriving it). A candidate is accepted only
-    if that word actually appears in the API's own alt/description text
-    for the photo -- cheap (no extra request, this text comes back with
-    every search result already) and catches both real failures above,
-    since neither alt text ("roasted turkey...", a creatine product
-    description) contains the required term.
+    `must_match` is either the page's single core subject noun (e.g.
+    "beets", "butter" -- see SINGLE_IMAGE_FALLBACKS in
+    fetch_stock_images.py, which already derives exactly this term for its
+    own fallback query and is reused here rather than re-deriving it), or
+    a tuple of acceptable alternatives for a page with more than one valid
+    subject (a comparison's two item names -- a photo showing either one,
+    or both, is a legitimate match, not just a photo showing all of them).
+    A candidate is accepted if must_match is a plain string and that word
+    appears in the API's own alt/description text for the photo, or if
+    it's a tuple and *any* of its terms do -- cheap either way (no extra
+    request, this text comes back with every search result already).
 
-    Returns True (accept) when `must_match` is None (caller has no single
+    Returns True (accept) when `must_match` is None (caller has no
     reliable subject to check, e.g. recipe_or_dish's free-form dish names)
     or when `alt_text` is blank (some photos, mostly on Unsplash, have no
     description at all -- nothing to check against, and refusing every
@@ -61,7 +64,8 @@ def _is_relevant(alt_text: str, must_match: str | None) -> bool:
     """
     if not must_match or not alt_text:
         return True
-    return must_match.lower() in alt_text.lower()
+    terms = (must_match,) if isinstance(must_match, str) else must_match
+    return any(term.lower() in alt_text.lower() for term in terms if term)
 
 
 # How many candidates a single search API call asks for. Raising this
@@ -138,7 +142,7 @@ def _is_reachable(url: str) -> bool:
 
 
 def _search_unsplash(
-    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | None = None
+    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | tuple[str, ...] | None = None
 ) -> ImageResult | None:
     r = requests.get(
         "https://api.unsplash.com/search/photos",
@@ -168,7 +172,7 @@ def _search_unsplash(
 
 
 def _search_pexels(
-    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | None = None
+    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | tuple[str, ...] | None = None
 ) -> ImageResult | None:
     r = requests.get(
         "https://api.pexels.com/v1/search",
@@ -197,7 +201,7 @@ def _search_pexels(
 
 
 def search_image(
-    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | None = None
+    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | tuple[str, ...] | None = None
 ) -> ImageResult | None:
     """Unsplash first, Pexels as fallback. Returns None only if no keys are
     configured or neither provider has an unused, relevant match for this

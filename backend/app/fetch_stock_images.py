@@ -389,16 +389,20 @@ def fetch_images(
         queries = [query]
         if page.template_type == "comparison":
             # Already has two clean, broad item names on hand -- no need to
-            # derive anything from the title. No single must_match term
-            # fits here (a comparison photo can legitimately show either
-            # item, or both), so this template is deliberately left out of
-            # the relevance check rather than forcing a wrong one.
-            queries += [
-                name
-                for name in (content.get("item_a_name"), content.get("item_b_name"))
-                if name and name.lower() != query.lower()
-            ]
-            attempts = [(q, None) for q in queries]
+            # derive anything from the title. Used to skip the relevance
+            # check entirely here (reasoning: no single must_match term
+            # fits when either item, or both, is a legitimate photo) --
+            # but "no single term" isn't "no check at all", and skipping it
+            # let a photo of neither item through on ube-vs-taro with
+            # nothing to catch it. images.py's _is_relevant() accepts a
+            # tuple of alternatives for exactly this -- both item names as
+            # an OR check, so a photo showing either one (or both) passes,
+            # and only a photo matching neither gets rejected.
+            item_names = tuple(
+                name for name in (content.get("item_a_name"), content.get("item_b_name")) if name
+            )
+            queries += [name for name in item_names if name.lower() != query.lower()]
+            attempts = [(q, item_names or None) for q in queries]
         elif page.template_type == "recipe_or_dish":
             # No SINGLE_IMAGE_FALLBACKS entry for recipe_or_dish (see that
             # dict's comment: a dish name is already about as broad a query
@@ -444,9 +448,8 @@ def fetch_images(
                 if relaxed and relaxed.lower() != (must_match or "").lower():
                     attempts.append((relaxed, relaxed))
 
-        # Per-page escape hatch: comparison and recipe_or_dish are
-        # deliberately left out of the relevance check above (see their own
-        # comments -- a dish name or a comparison's two item names are
+        # Per-page escape hatch: recipe_or_dish is deliberately left out of
+        # the relevance check above (see its own comment -- a dish name is
         # usually broad enough that any photo the query returns is fine).
         # "Usually" isn't "always": homemade-turkey-feed's photo came back
         # of some other small bird, not a turkey, because turkey-feed is
@@ -454,10 +457,10 @@ def fetch_images(
         # an actual dish -- the query's own words don't guarantee the photo
         # is really of a turkey the way "chicken alfredo" effectively
         # guarantees a photo tagged for that query is alfredo. Rather than
-        # add a must_match derivation for every recipe_or_dish/comparison
-        # page (which would start rejecting perfectly good dish photos whose
-        # alt text just doesn't happen to repeat the dish name), individual
-        # pages can opt into a required term via this optional content key.
+        # add a must_match derivation for every recipe_or_dish page (which
+        # would start rejecting perfectly good dish photos whose alt text
+        # just doesn't happen to repeat the dish name), individual pages
+        # can opt into a required term via this optional content key.
         override_must_match = content.get("hero_image_must_match")
         if override_must_match:
             attempts = [(q, override_must_match) for q, _ in attempts]
