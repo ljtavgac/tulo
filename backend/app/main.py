@@ -55,28 +55,56 @@ def _revalidate_frontend() -> bool:
 _background_tasks: set[asyncio.Task] = set()
 
 
-async def _run_startup_image_fetch() -> None:
-    """Backfills real stock photos for any page still missing one, off the
-    request-serving startup path -- see lifespan()'s docstring for why this
-    used to run inline and why that became a real launch-day risk once the
-    content queue grew to ~2,000 pages. fetch_images() is synchronous
-    (blocking `requests` calls) so it runs in a worker thread via
-    asyncio.to_thread rather than blocking the event loop that's now also
-    serving real requests."""
-    db = SessionLocal()
-    try:
-        pages_updated, images_written = await asyncio.to_thread(fetch_images, db)
-        if images_written:
-            print(f"Background image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
-            _revalidate_frontend()
-    except Exception as e:
-        # A crash here must never take the task reference (or the process)
-        # down with it -- this is best-effort backfill, not request-critical
-        # path. The next deploy's background run, or a manual
-        # /admin/fetch-images call, picks up anything this run missed.
-        print(f"Background image fetch failed: {e}")
-    finally:
-        db.close()
+# How long to wait between backfill passes. Not tunable to "run constantly"
+# -- fetch_images() already stops a single pass early the moment any
+# provider rate-limits it (see fetch_stock_images.py's rate_limited
+# short-circuit), so a pass that starts again immediately would just get
+# rate-limited on its very first request again. An hour gives Pexels'
+# window real time to recover between attempts. Configurable via env var
+# only because "how long is Pexels' actual window" isn't something this
+# codebase has ever gotten a straight answer to -- it's an estimate.
+IMAGE_FETCH_INTERVAL_SECONDS = int(os.environ.get("IMAGE_FETCH_INTERVAL_SECONDS", 3600))
+
+
+async def _run_periodic_image_fetch() -> None:
+    """Backfills real stock photos for any page still missing one, on a
+    recurring schedule, off the request-serving path -- see lifespan()'s
+    docstring for why this runs as a background task instead of inline at
+    startup, and CONCURRENCY's docstring in fetch_stock_images.py for the
+    real incident behind starting conservative on concurrency.
+
+    Used to run exactly once, at startup, which meant fully backfilling a
+    large backlog (Pexels' rate limit only allows a small batch through
+    per pass) needed a human to keep manually hitting /admin/fetch-images
+    every so often -- not a real process. This loops for as long as the
+    app process is alive instead, sleeping IMAGE_FETCH_INTERVAL_SECONDS
+    between passes so each new pass gets a real shot at a recovered rate
+    limit rather than immediately re-hitting the same wall. Each pass is
+    cheap for pages that already have an image (a plain dict check, no
+    network call -- see fetch_images()'s _needs_fetch), so a pass that
+    finds nothing new to do finishes fast, not on a timer of its own.
+
+    fetch_images() is synchronous (blocking `requests` calls) so each pass
+    runs in a worker thread via asyncio.to_thread rather than blocking the
+    event loop that's also serving real requests -- confirmed non-blocking
+    locally (see 32b9c62)."""
+    while True:
+        db = SessionLocal()
+        try:
+            pages_updated, images_written = await asyncio.to_thread(fetch_images, db)
+            if images_written:
+                print(f"Background image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
+                _revalidate_frontend()
+        except Exception as e:
+            # A crash here must never take the loop (or the process) down
+            # with it -- this is best-effort backfill, not request-critical
+            # path. Logged and retried on the next scheduled pass rather
+            # than propagating, which would silently end the loop for the
+            # rest of the process's life with no error anywhere visible.
+            print(f"Background image fetch failed: {e}")
+        finally:
+            db.close()
+        await asyncio.sleep(IMAGE_FETCH_INTERVAL_SECONDS)
 
 
 @asynccontextmanager
@@ -100,31 +128,30 @@ async def lifespan(app: FastAPI):
     # Backfills real stock photos for any page still missing one --
     # previously only reachable via the standalone script or the
     # /admin/fetch-images endpoint, which meant every new batch of content
-    # needed a manual trigger to actually get photos. Was made to run
-    # automatically on every startup (see _run_startup_image_fetch) off the
-    # request-serving path, specifically to avoid blocking the app from
-    # accepting requests -- including Render's own health check -- while it
-    # ran. That non-blocking property is confirmed sound on its own (see
-    # 32b9c62's local verification). But at the site's current size
-    # (~2,000 pages, having 5x'd in one day) it's genuinely uncertain
-    # whether *any* extra concurrent work -- even a single background
-    # thread -- fits inside Render's free-tier 512MB, and this service hit
-    # that memory limit and got auto-restarted (by Render) TWICE in one
-    # afternoon: once during the 8-way-concurrent version (fixed in
-    # 8558669, dropped to 1 worker + a rate-limit stop), and once again
-    # after that fix deployed. A second crash after fixing the specific
-    # concurrency bug means the problem may not be (only) this task at
-    # all -- could be the app's now much larger baseline footprint (all
-    # ~2,000 pages' content, loaded at startup by seed()/resync_content()
-    # and again here) leaving too little headroom for anything extra.
-    # Disabled here entirely, by default, until that's actually measured
-    # (Render's Metrics tab, with this off, shows whether baseline usage
-    # alone is already tight) rather than guessed at through a third
-    # production crash. Set RUN_STARTUP_IMAGE_FETCH=true to re-enable once
-    # there's real headroom data -- /admin/fetch-images still works as a
-    # manual, explicitly-triggered alternative in the meantime.
-    if (UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY) and os.environ.get("RUN_STARTUP_IMAGE_FETCH") == "true":
-        task = asyncio.create_task(_run_startup_image_fetch())
+    # needed a human to keep manually re-triggering it, repeatedly, until
+    # Pexels' rate limit let a whole backlog through. Runs as a recurring
+    # background task (see _run_periodic_image_fetch) off the
+    # request-serving path instead, specifically to avoid blocking the app
+    # from accepting requests -- including Render's own health check --
+    # while it runs. That non-blocking property is confirmed sound on its
+    # own (see 32b9c62's local verification).
+    #
+    # This was disabled entirely for a while after two Render free-tier
+    # (0.1 CPU/512MB) memory-limit crashes in one afternoon: the first
+    # during the original 8-way-concurrent version (fixed in 8558669,
+    # dropped to 1 worker + a rate-limit short-circuit), the second even
+    # after that fix -- at the site's size that day (~2,000 pages, having
+    # 5x'd in a few hours) it was genuinely unclear whether the free tier
+    # had headroom for *any* extra concurrent work at all. The instance has
+    # since been upgraded to Render's 1 CPU/2GB tier specifically to give
+    # this task real headroom (10x the CPU, 4x the RAM of the tier that
+    # crashed), so it's back on by default -- see CONCURRENCY's docstring
+    # in fetch_stock_images.py for how that headroom translates into a
+    # concurrency value. Set RUN_STARTUP_IMAGE_FETCH=false to disable if a
+    # future crash ever points back at this task specifically;
+    # /admin/fetch-images still works as a manual override in the meantime.
+    if (UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY) and os.environ.get("RUN_STARTUP_IMAGE_FETCH", "true") == "true":
+        task = asyncio.create_task(_run_periodic_image_fetch())
         _background_tasks.add(task)
         task.add_done_callback(_background_tasks.discard)
 

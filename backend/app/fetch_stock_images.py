@@ -49,16 +49,26 @@ from .models import Page
 # through Pexels' free-tier rate limit almost immediately (confirmed via a
 # live 429 in the Render logs) -- and with only Pexels configured (no
 # Unsplash key), every one of ~1,900 pages needing a first-ever fetch hit
-# it at once. Render's free tier has very limited CPU; that many threads
-# doing simultaneous network I/O + JSON parsing was enough to starve the
-# single process's ability to serve real requests, surfacing as the whole
-# site returning server errors, not just a slow image backfill. Dropped to
-# 1 (fully sequential, the same throughput this had before concurrency was
-# added at all) until this has a tested, real-production-scale rate-limit
-# backoff -- see the rate_limited short-circuit in fetch_images() below,
-# which at minimum stops a run from continuing to hammer an API it's
-# already being throttled by.
-CONCURRENCY = 1
+# it at once. Render's free tier (0.1 CPU/512MB) has very limited CPU; that
+# many threads doing simultaneous network I/O + JSON parsing was enough to
+# starve the single process's ability to serve real requests, surfacing as
+# the whole site returning server errors, not just a slow image backfill.
+# Dropped to 1 (fully sequential) as an immediate stop-the-bleeding measure,
+# and paired with the rate_limited short-circuit in fetch_images() below --
+# once any worker sees a 429, every other worker bails instead of piling on
+# an API that's already throttling this process.
+#
+# Raised back up (still 2026-09-09) now that both of the conditions that
+# caused the incident have changed: the rate-limit short-circuit above
+# means a run that starts getting 429'd stops within one request per
+# worker instead of continuing to hammer Pexels, and the Render instance
+# has since been upgraded from the free tier to 1 CPU/2GB (10x the CPU, 4x
+# the RAM). 4 is a deliberately moderate step back up -- enough to clear
+# the ~1,150-page backlog in a fraction of the passes 1-at-a-time would
+# take, without returning straight to the 8 that caused the outage on
+# hardware with an order of magnitude less headroom than the incident
+# happened on.
+CONCURRENCY = 4
 
 # template_type -> the content key holding the search query for a single
 # hero image.
@@ -408,6 +418,24 @@ def fetch_images(
                 relaxed = _ingredient_hub_relaxed_term(page.title)
                 if relaxed and relaxed.lower() != (must_match or "").lower():
                     attempts.append((relaxed, relaxed))
+
+        # Per-page escape hatch: comparison and recipe_or_dish are
+        # deliberately left out of the relevance check above (see their own
+        # comments -- a dish name or a comparison's two item names are
+        # usually broad enough that any photo the query returns is fine).
+        # "Usually" isn't "always": homemade-turkey-feed's photo came back
+        # of some other small bird, not a turkey, because turkey-feed is
+        # really an animal-care topic wearing a recipe_or_dish template, not
+        # an actual dish -- the query's own words don't guarantee the photo
+        # is really of a turkey the way "chicken alfredo" effectively
+        # guarantees a photo tagged for that query is alfredo. Rather than
+        # add a must_match derivation for every recipe_or_dish/comparison
+        # page (which would start rejecting perfectly good dish photos whose
+        # alt text just doesn't happen to repeat the dish name), individual
+        # pages can opt into a required term via this optional content key.
+        override_must_match = content.get("hero_image_must_match")
+        if override_must_match:
+            attempts = [(q, override_must_match) for q, _ in attempts]
 
         print(f"  {page.slug}: searching '{query}'...")
         try:

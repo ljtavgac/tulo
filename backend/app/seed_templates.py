@@ -245263,6 +245263,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A balanced homemade turkey feed mix using cracked corn, oats, sunflower seeds, and dried mealworms, plus notes on what turkeys eat in the wild versus on a farm.",
             "hero_image_query": "turkeys eating grain feed mix outdoors",
+            "hero_image_must_match": "turkey",
             "image_alt": "A small flock of backyard turkeys pecking at a scattered mix of cracked corn, oats, and sunflower seeds on the ground.",
             "why_it_works": "Turkeys are omnivores that need a mix of grain carbohydrates, animal or insect protein, greens, and mineral grit to stay healthy, this blend covers all four so it works as a supplement to commercial feed or a treat mix for free-ranging birds rather than an empty scoop of straight corn.",
             "prep_time_minutes": 15,
