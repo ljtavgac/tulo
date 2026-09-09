@@ -58801,7 +58801,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What Milano cookies are, the best substitutes for baking and no-bake desserts, how to store them so they stay crisp, and how to use them beyond the cookie plate.",
-            "hero_image_query": "chocolate sandwich cookies stacked",
+            "hero_image_query": "oval butter cookies with chocolate filling stacked on plate",
+            "hero_image_must_match": "chocolate",
             "image_alt": "A stack of oval Milano cookies showing the thin dark chocolate filling sandwiched between two crisp golden cookie layers, with a few crumbs scattered on a plate.",
             "description": "Milano cookies are a thin, oval, crisp butter cookie sandwiched around a layer of dark chocolate, most widely known as a Pepperidge Farm product since the 1950s. Unlike a drop cookie or a soft sandwich cookie, the wafers are dense and snap cleanly rather than chew, which is what makes them useful for crushing into crusts or standing upright in no-bake desserts. Beyond the original, common flavors include mint, orange, and double chocolate, and the base recipe is a French-style sablé (langue de chat) rather than an American butter cookie.",
             "substitutes": [
