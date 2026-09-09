@@ -14,7 +14,7 @@ import { sectionForTemplate, TOOL_PAGES } from "@/lib/taxonomy";
 // Indices (into HOMEPAGE_SECTIONS) after which an in-content ad renders --
 // matches the "two in-content slots" placement used on Recipe pages,
 // spaced out between carousels instead of mid-article.
-const AD_AFTER_SECTION_INDEX = new Set([1, 3]);
+const AD_AFTER_SECTION_INDEX = new Set([1, 3, 5]);
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage<HomepageContent>("homepage");
@@ -35,6 +35,8 @@ const HOMEPAGE_SECTIONS = [
   "howto_technique",
   "category_roundup",
   "definition",
+  "comparison",
+  "substitute",
 ];
 
 export default async function HomePage() {
