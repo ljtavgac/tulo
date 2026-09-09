@@ -1014,7 +1014,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,how to boil sweet potatoes,howto_technique,14800.0,17.0,Tier 1,14800.0,Boil Sweet Potatoe Recipe,seo_target,
 3,published,neufchatel cheese,ingredient_hub,14800.0,27.0,Tier 1,14800.0,Neufchatel Cheese Recipe,seo_target,
 3,excluded_duplicate,egg noodle recipes,recipe_or_dish,14800.0,28.0,Tier 1,14800.0,egg noodle recipes,seo_target,allrecipes_mobile_find
-3,not_started,chicken recipes with chicken legs,recipe_or_dish,14800.0,23.0,Tier 1,14800.0,chicken recipes with chicken legs,seo_target,allrecipes_mobile_find
+3,excluded_duplicate,chicken recipes with chicken legs,recipe_or_dish,14800.0,23.0,Tier 1,14800.0,chicken recipes with chicken legs,seo_target,allrecipes_mobile_find
 3,published,pepsi starry astrophage burst,recipe_or_dish,14800.0,28.0,Tier 1,14800.0,pepsi starry astrophage burst,seo_target,brand_news_reactive
 3,published,palabok,ingredient_hub,14800.0,15.0,Tier 1,14800.0,Palabok Recipe,seo_target,
 3,published,how to cut pineapple,howto_technique,14800.0,22.0,Tier 1,14800.0,Cut Pineapple Recipe,seo_target,
@@ -1057,7 +1057,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,keto dinner ideas,recipe_or_dish,14800.0,22.0,Tier 1,14800.0,Keto Dinner Idea Recipe,seo_target,
 3,excluded_duplicate,How to Boil Chicken Breast,howto_technique,14800.0,29.0,Tier 1,14800.0,Boil Chicken Breast Recipe,seo_target,
 3,published,kafta,ingredient_hub,14800.0,23.0,Tier 1,14800.0,Kafta Recipe,seo_target,
-3,not_started,is red velvet chocolate,recipe_or_dish,14800.0,28.0,Tier 1,14800.0,Red Velvet Chocolate Recipe,seo_target,
+3,published,is red velvet chocolate,recipe_or_dish,14800.0,28.0,Tier 1,14800.0,Red Velvet Chocolate Recipe,seo_target,
 3,published,spider roll,ingredient_hub,14800.0,21.0,Tier 1,14800.0,Spider Roll Recipe,seo_target,
 3,published,chamoy pickle,ingredient_hub,14800.0,21.0,Tier 1,14800.0,Chamoy Pickle Recipe,seo_target,
 3,published,chicken saltimbocca,ingredient_hub,14800.0,23.0,Tier 1,14800.0,Chicken Saltimbocca Recipe,seo_target,
@@ -1151,7 +1151,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,ranch style beans,recipe_or_dish,12100.0,20.0,Tier 1,12100.0,Ranch Style Beans Recipe,seo_target,
 3,published,tea cakes,ingredient_hub,12100.0,27.0,Tier 1,12100.0,Tea Cake Recipe,seo_target,
 3,published,green peas,ingredient_hub,12100.0,20.0,Tier 1,12100.0,Green Pea Recipe,seo_target,
-3,not_started,fried pickles recipe,recipe_or_dish,12100.0,26.0,Tier 1,12100.0,Fried Pickles Recipe,seo_target,
+3,published,fried pickles recipe,recipe_or_dish,12100.0,26.0,Tier 1,12100.0,Fried Pickles Recipe,seo_target,
 3,published,crockpot chicken tacos,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,Crockpot Chicken Tacos Recipe,seo_target,
 3,published,Milk Bread Recipe,recipe_or_dish,12100.0,21.0,Tier 1,12100.0,Milk Bread Recipe,seo_target,
 3,published,pretzel sticks,ingredient_hub,12100.0,18.0,Tier 1,12100.0,Pretzel Stick Recipe,seo_target,
@@ -1163,7 +1163,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,thai peanut sauce,recipe_or_dish,12100.0,29.0,Tier 1,12100.0,Thai Peanut Sauce Recipe,seo_target,
 3,published,lunch ideas for kids,recipe_or_dish,12100.0,26.0,Tier 1,12100.0,Lunch Idea Kid Recipe,seo_target,
 3,published,smoked pork loin,recipe_or_dish,12100.0,25.0,Tier 1,12100.0,Smoked Pork Loin Recipe,seo_target,
-3,not_started,vegan chocolate cake,recipe_or_dish,12100.0,19.0,Tier 1,12100.0,Vegan Chocolate Cake Recipe,seo_target,
+3,published,vegan chocolate cake,recipe_or_dish,12100.0,19.0,Tier 1,12100.0,Vegan Chocolate Cake Recipe,seo_target,
 3,published,Breakfast Recipes Using Egg,recipe_or_dish,12100.0,27.0,Tier 1,12100.0,Breakfast Egg Recipe,seo_target,
 3,published,gazpachera,ingredient_hub,12100.0,14.0,Tier 1,12100.0,Gazpachera Recipe,seo_target,
 3,published,high protein meal prep,recipe_or_dish,12100.0,25.0,Tier 1,12100.0,High Protein Meal Prep Recipe,seo_target,
@@ -1189,7 +1189,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,acai bowl recipe,recipe_or_dish,12100.0,19.0,Tier 1,12100.0,Acai Bowl Recipe,seo_target,
 3,published,chocolate chunk muffins recipe,recipe_or_dish,12100.0,27.0,Tier 1,12100.0,Chocolate Chunk Muffin Recipe,seo_target,
 3,published,bacon bits,ingredient_hub,12100.0,28.0,Tier 1,12100.0,Bacon Bit Recipe,seo_target,
-3,not_started,chocolate flan cake,recipe_or_dish,12100.0,14.0,Tier 1,12100.0,Chocolate Flan Cake Recipe,seo_target,
+3,published,chocolate flan cake,recipe_or_dish,12100.0,14.0,Tier 1,12100.0,Chocolate Flan Cake Recipe,seo_target,
 3,published,Smoking a Turkey,recipe_or_dish,12100.0,26.0,Tier 1,12100.0,Smoking Turkey Recipe,seo_target,
 3,published,candy crescent,ingredient_hub,12100.0,23.0,Tier 1,12100.0,Candy Crescent Recipe,seo_target,
 3,published,flour glutinous,ingredient_hub,12100.0,19.0,Tier 1,12100.0,Flour Glutinous Recipe,seo_target,
@@ -1328,7 +1328,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,excluded_duplicate,buffalo chicken dip,recipe_or_dish,12100.0,19.0,Tier 1,12100.0,Buffalo Chicken Dip Recipe,seo_target,
 3,published,stuffed grape leaves,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,Stuffed Grape Leave Recipe,seo_target,
 3,published,high potassium foods to avoid,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,High Potassium Food Avoid Recipe,seo_target,
-3,not_started,peach fuzz,ingredient_hub,12100.0,28.0,Tier 1,12100.0,Peach Fuzz Recipe,seo_target,
+3,published,peach fuzz,ingredient_hub,12100.0,28.0,Tier 1,12100.0,Peach Fuzz Recipe,seo_target,
 3,published,how to cook steak on stove,howto_technique,12100.0,11.0,Tier 1,12100.0,Steak Stove Recipe,seo_target,
 3,published,turkish breakfast,ingredient_hub,12100.0,16.0,Tier 1,12100.0,Turkish Breakfast Recipe,seo_target,
 3,published,green juice recipe,recipe_or_dish,12100.0,24.0,Tier 1,12100.0,Green Juice Recipe,seo_target,
@@ -1358,7 +1358,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,hamburger patties,ingredient_hub,12100.0,25.0,Tier 1,12100.0,Hamburger Patty Recipe,seo_target,
 3,published,ermine frosting,ingredient_hub,12100.0,29.0,Tier 1,12100.0,Ermine Frosting Recipe,seo_target,
 3,published,sand dabs,ingredient_hub,12100.0,12.0,Tier 1,12100.0,Sand Dab Recipe,seo_target,
-3,not_started,self rising flour recipe,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,self rising flour recipe,seo_target,allrecipes_mobile_find
+3,published,self rising flour recipe,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,self rising flour recipe,seo_target,allrecipes_mobile_find
 3,published,vegan marshmallows,ingredient_hub,12100.0,27.0,Tier 1,12100.0,Vegan Marshmallow Recipe,seo_target,
 3,published,sweet corn corn,recipe_or_dish,12100.0,27.0,Tier 1,12100.0,Sweet Corn Corn Recipe,seo_target,
 3,published,lavender syrup,ingredient_hub,12100.0,20.0,Tier 1,12100.0,Lavender Syrup Recipe,seo_target,
@@ -1391,7 +1391,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,Fregola,ingredient_hub,12100.0,23.0,Tier 1,12100.0,Fregola Recipe,seo_target,
 3,published,nacho chips,ingredient_hub,12100.0,24.0,Tier 1,12100.0,Nacho Chips Recipe,seo_target,
 3,published,buttercup squash,ingredient_hub,12100.0,13.0,Tier 1,12100.0,Buttercup Squash Recipe,seo_target,
-3,not_started,Gallo Pinto Recipe,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,Gallo Pinto Recipe,seo_target,
+3,published,Gallo Pinto Recipe,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,Gallo Pinto Recipe,seo_target,
 3,published,guisado,ingredient_hub,12100.0,13.0,Tier 1,12100.0,Guisado Recipe,seo_target,
 3,published,peppermint schnapps,ingredient_hub,12100.0,19.0,Tier 1,12100.0,Peppermint Schnapp Recipe,seo_target,
 3,published,chipotle aioli,ingredient_hub,12100.0,28.0,Tier 1,12100.0,Chipotle Aioli Recipe,seo_target,
@@ -1460,7 +1460,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,sugar free desserts,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,Sugar Free Dessert Recipe,seo_target,
 3,published,fruit cups,ingredient_hub,12100.0,21.0,Tier 1,12100.0,Fruit Cup Recipe,seo_target,
 3,published,london dry gin for negroni,recipe_or_dish,12100.0,10.0,Tier 1,12100.0,London Dry Gin Negroni Recipe,seo_target,
-3,not_started,costco party platters,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,costco party platters,seo_target,brand_news_reactive
+3,published,costco party platters,recipe_or_dish,12100.0,28.0,Tier 1,12100.0,costco party platters,seo_target,brand_news_reactive
 3,published,Taco Meat Recipe,recipe_or_dish,12100.0,17.0,Tier 1,12100.0,Taco Meat Recipe,seo_target,
 3,published,french beans green,recipe_or_dish,12100.0,23.0,Tier 1,12100.0,French Beans Green Recipe,seo_target,
 3,published,how to cook a ham,howto_technique,12100.0,29.0,Tier 1,12100.0,Ham Recipe,seo_target,
@@ -1484,7 +1484,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,sorrel drink,ingredient_hub,9900.0,26.0,Tier 1,9900.0,Sorrel Drink Recipe,seo_target,
 3,published,chicharron prensado,ingredient_hub,9900.0,29.0,Tier 1,9900.0,Chicharron Prensado Recipe,seo_target,
 3,published,recetas saludables para niños,recipe_or_dish,9900.0,25.0,Tier 1,9900.0,Receta Saludable Para Nio Recipe,seo_target,
-3,not_started,cornmeal for hush puppies,recipe_or_dish,9900.0,13.0,Tier 1,9900.0,Cornmeal Hush Puppy Recipe,seo_target,
+3,published,cornmeal for hush puppies,recipe_or_dish,9900.0,13.0,Tier 1,9900.0,Cornmeal Hush Puppy Recipe,seo_target,
 3,excluded_duplicate,laulau,ingredient_hub,9900.0,26.0,Tier 1,9900.0,Laulau Recipe,seo_target,
 3,published,semolina bread,ingredient_hub,9900.0,27.0,Tier 1,9900.0,Semolina Bread Recipe,seo_target,
 3,published,sherry wine,ingredient_hub,9900.0,13.0,Tier 1,9900.0,Sherry Wine Recipe,seo_target,
@@ -1500,7 +1500,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 3,published,Bagel Chips,ingredient_hub,9900.0,27.0,Tier 1,9900.0,Bagel Chips Recipe,seo_target,
 3,published,chicago dog recipe,recipe_or_dish,9900.0,19.0,Tier 1,9900.0,chicago dog recipe,seo_target,allrecipes_mobile_find
 3,published,jaiba,ingredient_hub,9900.0,18.0,Tier 1,9900.0,Jaiba Recipe,seo_target,
-3,not_started,how long to smoke a pork butt,howto_technique,9900.0,25.0,Tier 1,9900.0,Smoke Pork Butt Recipe,seo_target,
+3,published,how long to smoke a pork butt,howto_technique,9900.0,25.0,Tier 1,9900.0,Smoke Pork Butt Recipe,seo_target,
 3,published,french press cold brew,recipe_or_dish,9900.0,28.0,Tier 1,9900.0,French Press Cold Brew Recipe,seo_target,
 3,published,coco bread,ingredient_hub,9900.0,29.0,Tier 1,9900.0,Coco Bread Recipe,seo_target,
 4,not_started,ground turkey recipe,recipe_or_dish,9900.0,25.0,Tier 1,9900.0,ground turkey recipe,seo_target,allrecipes_mobile_find
