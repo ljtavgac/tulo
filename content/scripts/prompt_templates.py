@@ -151,6 +151,45 @@ RECIPE_INGREDIENT_SCHEMA = {
     "required": ["name", "base_qty", "unit_us", "base_qty_metric", "unit_metric", "hub_slug"],
 }
 
+PAN_SIZE_OPTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "label": {"type": "string", "description": "e.g. '9x5-inch loaf pan', '9-inch round cake pan'."},
+        "area_sq_in": {
+            "type": "number",
+            "description": "Baking-surface area in square inches: length x width for a rectangular pan, or pi x radius^2 for a round one. Must be arithmetically correct for the stated dimensions -- this drives real bake-time scaling math, not just a label.",
+        },
+    },
+    "required": ["label", "area_sq_in"],
+}
+
+PAN_SIZE_SCHEMA = {
+    "type": ["object", "null"],
+    "description": (
+        "Only for a recipe actually baked in a shaped pan or dish where a reader "
+        "might reasonably substitute a different size (a loaf, cake, casserole, "
+        "tart, gratin, etc.) -- never for stovetop, grilled, no-bake/chilled, or "
+        "mixed-drink recipes, and never when the dish's exact shape doesn't matter "
+        "(e.g. a skillet sear). Leave null for every recipe that isn't baked in a "
+        "specific shaped vessel; do not force this field to be non-null."
+    ),
+    "properties": {
+        "current": {**PAN_SIZE_OPTION_SCHEMA, "description": "The pan size as written in the recipe's own instructions."},
+        "alternatives": {
+            "type": "array",
+            "description": (
+                "Only genuinely common substitute pans of the SAME shape family as "
+                "current (loaf-for-loaf, round-for-round, square/rectangular-for-"
+                "square/rectangular) -- the area-ratio scaling this feeds only makes "
+                "sense for a same-shape-of-bake swap. Empty array if no common "
+                "alternative exists; never fabricate one just to fill this."
+            ),
+            "items": PAN_SIZE_OPTION_SCHEMA,
+        },
+    },
+    "required": ["current", "alternatives"],
+}
+
 # ---------------------------------------------------------------------------
 # Per-template-type schemas, examples, and extra per-row context builders.
 # ---------------------------------------------------------------------------
@@ -194,13 +233,14 @@ RECIPE_OR_DISH_SCHEMA = {
             "description": "Set to one of the existing collections listed in the prompt context if this dish clearly belongs to it; otherwise null. Never invent a new collection.",
         },
         "related_recipe_slugs": ALWAYS_EMPTY_SLUGS_ARRAY,
+        "pan_size": PAN_SIZE_SCHEMA,
     },
     "required": [
         "title", "meta_description", "hero_image_query", "image_alt", "why_it_works",
         "prep_time_minutes", "cook_time_minutes", "total_time_minutes", "servings",
         "ingredients", "instructions", "step_notes", "tips_and_variations",
         "storage_and_reheating", "reader_tips", "faqs", "technique_link", "category_link",
-        "related_recipe_slugs",
+        "related_recipe_slugs", "pan_size",
     ],
 }
 
@@ -473,6 +513,14 @@ EXAMPLES = {
         ],
         "technique_link": None,
         "category_link": None,
+        "related_recipe_slugs": [],
+        "pan_size": {
+            "current": {"label": "9x5-inch loaf pan", "area_sq_in": 45},
+            "alternatives": [
+                {"label": "8x4-inch loaf pan", "area_sq_in": 32},
+                {"label": "9-inch round cake pan", "area_sq_in": 64},
+            ],
+        },
     },
     "ingredient_hub": {
         "title": "Chives",
@@ -613,7 +661,14 @@ SCHEMA_BY_TYPE = {
 }
 
 MAX_TOKENS_BY_TYPE = {
-    "recipe_or_dish": 4096,
+    # Bumped from 4096, then again from 6144, after real truncations
+    # (stop_reason: max_tokens, invalid cut-off JSON) hit during testing --
+    # once pan_size, related_recipe_slugs, and the step_notes array form
+    # were added, and again at 6144 on a length-variance retry of the exact
+    # same title that had fit comfortably (4189 tokens) the first time.
+    # Confirms output length varies enough attempt-to-attempt that a budget
+    # needs real margin, not just enough for one successful sample.
+    "recipe_or_dish": 8192,
     "ingredient_hub": 2500,
     "howto_technique": 2500,
     "definition": 1500,

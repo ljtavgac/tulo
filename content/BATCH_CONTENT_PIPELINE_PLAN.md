@@ -96,6 +96,89 @@ this plan got wrong or missed:
    title during Phase 2, checked for collisions against real pages at that
    point).
 
+## Post-pilot validation round: schema bugs found, pan_size added, and the
+## category_roundup coordination gap
+
+After the 48-page pilot shipped, direct questions about whether pan-size
+selection, ingredient substitutes, and collection auto-linking were
+actually working on the new pages (rather than assumed) surfaced real
+problems worth recording before the full batch ever runs:
+
+- **`step_notes`'s schema would have failed most of the real batch.** It
+  used `additionalProperties` as a value schema (an open-ended dict keyed
+  by arbitrary step indices) -- `output_config`'s strict mode categorically
+  rejects this. Every `recipe_or_dish` request (7,386 of 12,425 remaining
+  rows, the largest single category) would have 400'd outright. Found by
+  actually generating a real test recipe, not by re-reading the schema.
+  Fixed: `step_notes` now travels through generation as an array of
+  `{step_index, note}` objects (expressible in strict schema) and gets
+  converted back to the site's real int-keyed dict shape at integration
+  time (`integrate_batch_results.py`).
+- **`recipe_or_dish`'s `max_tokens` budget was too tight once the schema
+  grew.** Adding `pan_size` and `related_recipe_slugs` pushed some
+  generations into `stop_reason: max_tokens` (truncated, invalid JSON) --
+  including a retry of a title that had fit comfortably the first time,
+  confirming real attempt-to-attempt length variance, not just a one-time
+  fluke. Bumped 4096 -> 8192.
+- **`pan_size` was missing from the pipeline entirely** -- not a bug, an
+  unexamined scope decision that didn't hold up once questioned: pan
+  dimensions and area math (length x width, or pi x r^2) are exactly the
+  kind of factual domain knowledge the model handles reliably, and "not
+  every recipe needs it" is a conditional-instruction problem the same way
+  `technique_link`/`category_link` already are, not a reason to exclude it
+  outright. Added with an explicit instruction to only populate it for a
+  recipe genuinely baked in a shaped pan/dish, tested against a cake
+  (correct, geometrically accurate `pan_size` with a real alternative), a
+  stir-fry, and a cocktail (both correctly `null`). `validation.py`'s
+  `check_pan_size_math()` independently recomputes the expected area from
+  a label's stated dimensions and flags a mismatch -- the model is doing
+  real arithmetic here, worth verifying rather than trusting.
+- **Retroactively backfilled `pan_size`** onto the 3 already-published
+  pilot recipes genuinely baked in a shaped pan/dish
+  (`flourless-chocolate-cake`, `gluten-free-bread`,
+  `finnish-oven-pancake-pannukakku`), reading their own already-written
+  instructions for the real stated pan size rather than guessing.
+- **New collections shipped with zero real linked recipes.** Checked
+  directly: both `pinwheel-recipes` and `blackstone-recipes` (pilot-created
+  collections) have every `recipe_cards` entry at `slug: null`. The
+  category-roundup auto-fill (`main.py`, `_recipes_linking_to` +
+  title-matching) only connects a placeholder card once a real recipe page
+  exists whose own `category_link` points back at the collection *and*
+  whose title matches the card exactly -- and the pilot generated the
+  collection page describing 5-6 dishes by name without also generating
+  those dishes as real pages. Root cause: **the pipeline treats every
+  queue row as fully independent**; nothing coordinates "this new
+  collection references N specific dishes" with "therefore also write
+  those N dishes."
+
+  **Decision: generate matching recipes too.** For a `category_roundup`
+  row, after generating its content, also generate a real `recipe_or_dish`
+  page for each of its cards (or a subset), with `title` and
+  `category_link` force-set to the known-correct values after
+  generation (not left to the model's judgment the way an independent
+  recipe's category_link genuinely is -- there's no ambiguity here, the
+  card already states exactly which collection this recipe is for).
+  `title` must match the card's title exactly, case-insensitive, for the
+  live title-matching fill to find it -- forced rather than trusted, same
+  reasoning as `category_link`.
+
+  Implemented and proven on the two existing broken collections in
+  `content/scripts/generate_companion_recipes.py`: takes a collection
+  slug, finds its unlinked cards, generates a real recipe for each with
+  the card's title/description as inspiration, force-corrects `title` and
+  `category_link`, and requires nothing further -- the collection's
+  `recipe_cards` list itself is never touched; the live auto-fill finds
+  the new recipes by title match on its own, the same way it already
+  works for hand-authored content. For the real batch: a `category_roundup`
+  row's companion recipes need to be generated in a second pass once the
+  collection's own card list exists (Batch API can't chain "generate X,
+  then use X's output to build a follow-up request" within one
+  submission), so `category_roundup` rows should be submitted and
+  integrated slightly ahead of the general batch, not simultaneously with
+  it -- costs roughly one extra `recipe_or_dish`-priced request per
+  card (~5-6 per collection, ~112 collections in the real queue -- call it
+  ~550-650 extra requests, a meaningful but bounded addition).
+
 ## Why hybrid (recap)
 
 Batch API is cheap and fast for raw text generation but has no tool access,

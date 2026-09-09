@@ -15063,6 +15063,7 @@ SEED_PAGES = [
             "technique_link": None,
             "category_link": None,
             "related_recipe_slugs": [],
+            "pan_size": {"current": {"label": "9-inch springform pan", "area_sq_in": 64}, "alternatives": []},
         },
     },
     {
@@ -15768,6 +15769,7 @@ SEED_PAGES = [
             "technique_link": None,
             "category_link": None,
             "related_recipe_slugs": [],
+            "pan_size": {"current": {"label": "9x5-inch loaf pan", "area_sq_in": 45}, "alternatives": []},
         },
     },
     {
@@ -17940,6 +17942,7 @@ SEED_PAGES = [
             "technique_link": None,
             "category_link": None,
             "related_recipe_slugs": [],
+            "pan_size": {"current": {"label": "9x13-inch baking dish", "area_sq_in": 117}, "alternatives": []},
         },
     },
     {

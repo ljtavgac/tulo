@@ -11,6 +11,8 @@ it isn't the type the field is supposed to be.
 from __future__ import annotations
 
 import json
+import math
+import re
 
 from prompt_templates import SCHEMA_BY_TYPE
 
@@ -38,8 +40,47 @@ NULLABLE_OK_FIELDS = {
     "variety_notes", "link_terms", "technique_link", "category_link",
     "related_recipe_slugs", "substitute_page_slug", "recipe_slugs",
     "related_ingredient_slugs", "related_technique_slugs", "item_a_link",
-    "item_b_link", "hub_page_slug", "related_collection_slugs",
+    "item_b_link", "hub_page_slug", "related_collection_slugs", "pan_size",
 }
+
+# A pan's stated area must be within this fraction of what its label's
+# literal dimensions compute to, or it's flagged -- the model is doing real
+# arithmetic here (length x width, or pi x r^2) to drive actual bake-time
+# scaling math client-side, so a wrong number isn't just cosmetic the way a
+# slightly-off prose sentence would be.
+PAN_AREA_TOLERANCE = 0.05
+
+
+def _expected_pan_area_sq_in(label: str) -> float | None:
+    """Parses a pan label's literal dimensions and returns the geometrically
+    correct area, or None if the label doesn't contain a recognizable
+    rectangular ("9x13") or round ("9-inch", "9 inch") measurement -- e.g. a
+    label like "trifle bowl" or "tube pan" with no clean dimensions in it
+    isn't checked, since there's nothing to compute against."""
+    rect = re.search(r"(\d+(?:\.\d+)?)\s*x\s*(\d+(?:\.\d+)?)", label, re.IGNORECASE)
+    if rect:
+        return float(rect.group(1)) * float(rect.group(2))
+    round_ = re.search(r"(\d+(?:\.\d+)?)[\s-]*inch(?:es)?\b", label, re.IGNORECASE)
+    if round_ and "x" not in label.lower():
+        radius = float(round_.group(1)) / 2
+        return math.pi * radius * radius
+    return None
+
+
+def check_pan_size_math(pan_size: dict, path: str, issues: list) -> None:
+    for key in ("current", *(f"alternatives[{i}]" for i in range(len(pan_size.get("alternatives", []))))):
+        option = pan_size["current"] if key == "current" else pan_size["alternatives"][int(key.split("[")[1][:-1])]
+        if not isinstance(option, dict) or "label" not in option or "area_sq_in" not in option:
+            continue  # already reported by check_schema_types
+        expected = _expected_pan_area_sq_in(option["label"])
+        if expected is None:
+            continue
+        actual = option["area_sq_in"]
+        if not isinstance(actual, (int, float)) or abs(actual - expected) > expected * PAN_AREA_TOLERANCE:
+            issues.append(
+                f"{path}.{key}: area_sq_in={actual} doesn't match what "
+                f"{option['label']!r}'s stated dimensions compute to (~{expected:.1f})"
+            )
 
 
 def extract_content(message: dict) -> dict:
@@ -135,6 +176,9 @@ def validate_content(
         )
         if not has_nutrition:
             issues.append(f"[{custom_id}] no nutrition (note or per_unit)")
+        pan_size = content.get("pan_size")
+        if isinstance(pan_size, dict):
+            check_pan_size_math(pan_size, custom_id, issues)
 
     if template_type == "category_roundup":
         for card in content.get("recipe_cards", []):
