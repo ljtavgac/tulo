@@ -1,3 +1,4 @@
+import asyncio
 import copy
 import io
 import os
@@ -46,12 +47,45 @@ def _revalidate_frontend() -> bool:
     return True
 
 
+# Holds a reference to the background image-fetch task for as long as the
+# app is running -- asyncio only keeps a weak reference to a task created
+# via create_task(), so a "fire and forget" task with nothing else holding
+# it can get garbage-collected mid-run, silently killing the fetch partway
+# through with no error anywhere. This set is that "something else."
+_background_tasks: set[asyncio.Task] = set()
+
+
+async def _run_startup_image_fetch() -> None:
+    """Backfills real stock photos for any page still missing one, off the
+    request-serving startup path -- see lifespan()'s docstring for why this
+    used to run inline and why that became a real launch-day risk once the
+    content queue grew to ~2,000 pages. fetch_images() is synchronous
+    (blocking `requests` calls) so it runs in a worker thread via
+    asyncio.to_thread rather than blocking the event loop that's now also
+    serving real requests."""
+    db = SessionLocal()
+    try:
+        pages_updated, images_written = await asyncio.to_thread(fetch_images, db)
+        if images_written:
+            print(f"Background image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
+            _revalidate_frontend()
+    except Exception as e:
+        # A crash here must never take the task reference (or the process)
+        # down with it -- this is best-effort backfill, not request-critical
+        # path. The next deploy's background run, or a manual
+        # /admin/fetch-images call, picks up anything this run missed.
+        print(f"Background image fetch failed: {e}")
+    finally:
+        db.close()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
-    # Render's free-tier disk is ephemeral (resets on redeploy), so this
-    # keeps the small template-review dataset self-healing without a manual
-    # step. Real batch content will need a persistent database before launch.
+    # Render's free-tier disk is ephemeral (resets on redeploy) -- but
+    # DATABASE_URL is set to a real, persistent Postgres instance in
+    # production, so this seed/resync step is what keeps a *local* SQLite
+    # dev setup self-healing, not a workaround for data loss in production.
     db = SessionLocal()
     try:
         seed(db)
@@ -60,24 +94,31 @@ async def lifespan(app: FastAPI):
         # needs to reach already-seeded pages, not just freshly inserted
         # ones, without wiping out any photo already fetched for them.
         resync_content(db)
-
-        # Backfills real stock photos for any page still missing one --
-        # previously only reachable via the standalone script or the
-        # /admin/fetch-images endpoint, which meant every new batch of
-        # content needed a manual trigger to actually get photos. Safe to
-        # run on every startup: fetch_images() skips any page that already
-        # has an image with a plain dict check (no API call), so repeat
-        # deploys with no new content do effectively nothing here, and only
-        # genuinely new pages trigger a real Unsplash/Pexels search. Guarded
-        # the same way the standalone script is, so this is a complete
-        # no-op -- not even a page loop -- when no key is configured.
-        if UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY:
-            pages_updated, images_written = fetch_images(db)
-            if images_written:
-                print(f"Startup image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
-                _revalidate_frontend()
     finally:
         db.close()
+
+    # Backfills real stock photos for any page still missing one --
+    # previously only reachable via the standalone script or the
+    # /admin/fetch-images endpoint, which meant every new batch of content
+    # needed a manual trigger to actually get photos. Now runs
+    # automatically on every startup with zero manual step, AND (see
+    # _run_startup_image_fetch) off the request-serving path: at ~2,000
+    # pages this can take tens of minutes of real Unsplash/Pexels calls,
+    # and running it inline here (as it used to) would block the app from
+    # ever accepting a request -- including Render's own health check --
+    # until every image was fetched, risking a health-check timeout and a
+    # crash-looping deploy on exactly the kind of large batch this is
+    # built to publish. fetch_images() skips any page that already has an
+    # image with a plain dict check (no API call), so repeat deploys with
+    # no new content do effectively nothing here, and only genuinely new
+    # pages trigger a real search. Guarded the same way the standalone
+    # script is, so this is a complete no-op -- not even a task spawned --
+    # when no key is configured.
+    if UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY:
+        task = asyncio.create_task(_run_startup_image_fetch())
+        _background_tasks.add(task)
+        task.add_done_callback(_background_tasks.discard)
+
     yield
 
 
