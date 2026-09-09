@@ -4,7 +4,9 @@ import io
 import os
 import re
 import secrets
+import threading
 from contextlib import asynccontextmanager, redirect_stdout
+from typing import NamedTuple
 
 import requests
 from fastapi import Depends, FastAPI, HTTPException, Query
@@ -179,6 +181,79 @@ def health_check():
     return {"status": "ok"}
 
 
+class _PageRecord(NamedTuple):
+    """A plain, session-independent snapshot of one page's slug/title/content
+    -- deliberately not a live Page ORM instance. get_db() closes its session
+    at the end of every request, so anything meant to be cached and reused
+    across requests can't be a raw ORM object still bound to that session
+    (whether that would actually break depends on undefined,
+    driver-specific behavior around already-loaded columns on a detached
+    instance -- not something worth betting production correctness on when
+    a plain tuple sidesteps the question entirely)."""
+
+    slug: str
+    title: str
+    content: dict
+
+
+# Every relatedness/cross-linking computation below (recipe_slugs on an
+# ingredient hub, related_recipe_slugs, related_ingredient_slugs, a
+# category's linked-back recipes, a technique glossary's demonstrating
+# recipes) works by scanning *every* recipe_or_dish (or ingredient_hub)
+# page's content once per call -- fine at the "dozens to low hundreds" of
+# pages this was written against (see _recipe_slugs_using_ingredient's own
+# docstring), a genuine problem now that content has grown to real scale
+# (929 recipe_or_dish pages, 953 ingredient_hub pages as of the batch run
+# that shipped the 2,000-title queue). A single ingredient_hub page view
+# used to trigger two independent full scans of every recipe_or_dish page's
+# full content (_recipe_slugs_using_ingredient and _related_ingredients
+# each ran their own); a single recipe_or_dish page view triggered its own
+# full scan (_related_recipes) plus one extra DB round-trip per
+# ingredient with a resolved hub_slug. All of that runs synchronously, on
+# Render's single-CPU instance, on literally every page view -- the
+# frontend fetches every page with cache: "no-store" (see
+# frontend/lib/api.ts), so there is no caching layer anywhere upstream
+# absorbing this. Confirmed as the real cause behind 20+ second page loads
+# reported the same day the 2,000-title batch went live.
+#
+# The fix: cache each template_type's (slug, title, content) snapshot once
+# per process instead of re-querying and re-deserializing it on every
+# request. This is safe with no TTL or invalidation logic at all -- not a
+# staleness tradeoff, a genuine non-issue -- because nothing in this
+# codebase ever mutates a recipe's ingredients/instructions/category_link/
+# technique_link (the only fields any function below reads) after startup.
+# The only fields that DO change at runtime are image_url/image_attribution
+# (fetch_stock_images.py's _apply_result, and resync_content()'s runtime
+# image key exclusions -- see _RUNTIME_IMAGE_KEYS), and no function cached
+# through here ever reads those. Any content edit at all only ever reaches
+# a running process via seed()/resync_content() at startup, which already
+# means a fresh process (and therefore a cold, correct cache) either way.
+_page_cache_lock = threading.Lock()
+_page_cache: dict[str, list[_PageRecord]] = {}
+
+
+def _cached_pages(db: Session, template_type: str) -> list[_PageRecord]:
+    """Every page of this template_type, as plain (slug, title, content)
+    snapshots -- computed once per process and reused for its lifetime, see
+    the block comment above for why that's safe here. The lock only
+    guards against redundant (not incorrect -- recomputing is idempotent)
+    duplicate work from concurrent requests racing to populate a cold
+    entry; sync endpoints like this run in FastAPI's threadpool, not the
+    single-threaded event loop, so that race is real, just benign without
+    it."""
+    cached = _page_cache.get(template_type)
+    if cached is not None:
+        return cached
+    with _page_cache_lock:
+        cached = _page_cache.get(template_type)
+        if cached is not None:
+            return cached
+        rows = db.query(Page.slug, Page.title, Page.content).filter(Page.template_type == template_type).all()
+        records = [_PageRecord(slug=r.slug, title=r.title, content=r.content) for r in rows]
+        _page_cache[template_type] = records
+        return records
+
+
 def _ingredient_hub_slugs_by_title(db: Session) -> dict[str, str]:
     """Lowercased ingredient hub title -> that hub's slug. Lets a recipe
     ingredient resolve to its hub page by plain name matching when nobody's
@@ -192,10 +267,7 @@ def _ingredient_hub_slugs_by_title(db: Session) -> dict[str, str]:
     stays conservative and only ever creates a link a reader would recognize
     as obviously correct.
     """
-    return {
-        page.title.strip().lower(): page.slug
-        for page in db.query(Page).filter(Page.template_type == "ingredient_hub").all()
-    }
+    return {page.title.strip().lower(): page.slug for page in _cached_pages(db, "ingredient_hub")}
 
 
 def _resolve_hub_slug(name: str, explicit: str | None, hub_titles: dict[str, str]) -> str | None:
@@ -213,7 +285,7 @@ def _resolve_hub_slug(name: str, explicit: str | None, hub_titles: dict[str, str
     return None
 
 
-def _recipe_slugs_using_ingredient(db: Session, hub_slug: str) -> list[str]:
+def _recipe_slugs_using_ingredient(db: Session, hub_slug: str, hub_titles: dict[str, str]) -> list[str]:
     """Every recipe_or_dish page with an ingredient whose (explicit or
     name-matched, see _resolve_hub_slug) hub_slug matches this ingredient
     hub, computed live rather than hand-curated. The hand-curated version of
@@ -224,13 +296,15 @@ def _recipe_slugs_using_ingredient(db: Session, hub_slug: str) -> list[str]:
     with nothing left to forget, and a brand new hub page immediately picks
     up every recipe that already mentions that ingredient by name.
 
-    A plain full-table scan is fine at today's page count (dozens to low
-    hundreds); a real join/index is the right upgrade if the site reaches
-    thousands of recipes.
+    Iterates the process-lifetime page cache (see _cached_pages) rather than
+    re-querying and re-deserializing every recipe_or_dish page's content on
+    every call -- this genuinely is a full scan either way (there are
+    thousands of recipes now, not the "dozens to low hundreds" this was
+    first written against), but reusing the cached snapshot means paying
+    that cost once per process instead of once per page view.
     """
-    hub_titles = _ingredient_hub_slugs_by_title(db)
     slugs = []
-    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+    for page in _cached_pages(db, "recipe_or_dish"):
         for ing in page.content.get("ingredients", []):
             if _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles) == hub_slug:
                 slugs.append(page.slug)
@@ -252,14 +326,14 @@ def _normalize_dish_title(title: str) -> str:
     return re.sub(r"\s+recipe$", "", title)
 
 
-def _recipes_linking_to(db: Session, field: str, target_slug: str) -> list[Page]:
+def _recipes_linking_to(db: Session, field: str, target_slug: str) -> list[_PageRecord]:
     """recipe_or_dish pages whose content[field] (a singular LinkRef, e.g.
     category_link or technique_link) points at target_slug -- the reverse of
     a recipe's own forward link, computed live so a collection or a how-to
     guide always reflects every recipe that already points at it rather
     than needing a second, hand-maintained copy of the same fact."""
     matches = []
-    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+    for page in _cached_pages(db, "recipe_or_dish"):
         link = page.content.get(field)
         if link and link.get("slug") == target_slug:
             matches.append(page)
@@ -313,7 +387,7 @@ def _related_recipes(db: Session, page: Page, hub_titles: dict[str, str]) -> lis
     my_hubs.discard(None)
 
     scored: list[tuple[int, str]] = []
-    for other in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+    for other in _cached_pages(db, "recipe_or_dish"):
         if other.slug == page.slug:
             continue
         oc = other.content
@@ -341,7 +415,7 @@ def _related_ingredients(db: Session, hub_slug: str, hub_titles: dict[str, str])
     also need, which is a more grounded notion of "related" here than any
     property of the ingredients themselves."""
     counts: dict[str, int] = {}
-    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+    for page in _cached_pages(db, "recipe_or_dish"):
         hubs_in_recipe = {
             _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles)
             for ing in page.content.get("ingredients", [])
@@ -373,21 +447,30 @@ def _recipes_demonstrating_terms(db: Session, terms: list[str]) -> list[str]:
         return []
     patterns = [re.compile(r"\b" + re.escape(term) + r"\b", re.IGNORECASE) for term in terms]
     slugs = []
-    for page in db.query(Page).filter(Page.template_type == "recipe_or_dish").all():
+    for page in _cached_pages(db, "recipe_or_dish"):
         text = " ".join(page.content.get("instructions", []))
         if any(p.search(text) for p in patterns):
             slugs.append(page.slug)
     return slugs
 
 
-def _swappable_substitutes_for(db: Session, hub_slug: str) -> list[dict]:
-    """The ingredient swap tool on a recipe page needs `hub_slug`'s own
-    substitutes -- name, display ratio, and the numeric ratio_multiplier
-    that lets the swap be pure client-side math. Only substitutes with a
+def _ingredient_hub_pages_by_slug(db: Session) -> dict[str, _PageRecord]:
+    """ingredient_hub pages keyed by slug, from the same process-lifetime
+    cache as _cached_pages -- lets a recipe page's per-ingredient hub_slug
+    lookup (_swappable_substitutes_for) be a plain dict access instead of
+    its own DB round trip per ingredient. A recipe with a dozen ingredients
+    used to mean a dozen single-row queries on every page view; this is one
+    dict built from the already-cached hub list instead."""
+    return {page.slug: page for page in _cached_pages(db, "ingredient_hub")}
+
+
+def _swappable_substitutes_for(hub: _PageRecord | None) -> list[dict]:
+    """`hub`'s own substitutes -- name, display ratio, and the numeric
+    ratio_multiplier that lets the swap be pure client-side math -- for the
+    ingredient swap tool on a recipe page. Only substitutes with a
     ratio_multiplier are returned: an additive combo or a deliberately
     vague ratio ("slightly more") can't be swapped in by a multiply, so
     offering it as a one-click option would just be wrong."""
-    hub = db.query(Page).filter(Page.slug == hub_slug, Page.template_type == "ingredient_hub").first()
     if hub is None:
         return []
     return [sub for sub in hub.content.get("substitutes", []) if sub.get("ratio_multiplier") is not None]
@@ -416,8 +499,8 @@ def get_page(slug: str, db: Session = Depends(get_db)):
 
     if page.template_type == "ingredient_hub":
         content = copy.deepcopy(page.content)
-        content["recipe_slugs"] = _recipe_slugs_using_ingredient(db, page.slug)
         hub_titles = _ingredient_hub_slugs_by_title(db)
+        content["recipe_slugs"] = _recipe_slugs_using_ingredient(db, page.slug, hub_titles)
         content["related_ingredient_slugs"] = _fill_related(
             content.get("related_ingredient_slugs", []),
             _related_ingredients(db, page.slug, hub_titles),
@@ -436,11 +519,12 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         # someone remembers to go back and tag this recipe.
         content = copy.deepcopy(page.content)
         hub_titles = _ingredient_hub_slugs_by_title(db)
+        hubs_by_slug = _ingredient_hub_pages_by_slug(db)
         for ing in content.get("ingredients", []):
             hub_slug = _resolve_hub_slug(ing.get("name", ""), ing.get("hub_slug"), hub_titles)
             if hub_slug:
                 ing["hub_slug"] = hub_slug
-                substitutes = _swappable_substitutes_for(db, hub_slug)
+                substitutes = _swappable_substitutes_for(hubs_by_slug.get(hub_slug))
                 if substitutes:
                     ing["available_substitutes"] = substitutes
         content["related_recipe_slugs"] = _fill_related(
@@ -473,6 +557,15 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         cards = content.setdefault("recipe_cards", [])
         existing_slugs = {c.get("slug") for c in cards if c.get("slug")}
         cards_by_title = {_normalize_dish_title(c.get("title", "")): c for c in cards}
+        # _recipes_linking_to reads recipe_or_dish pages from the process
+        # cache (see _cached_pages) -- fine for category_link, title, and
+        # why_it_works, which never change once a process starts, but NOT
+        # for image_url/image_attribution, which the background image-fetch
+        # loop writes at runtime. So this loop deliberately leaves a new or
+        # newly-filled card's image fields unset rather than copying a
+        # cached (and potentially long-stale) rc.get("image_url") -- the
+        # cards_needing_image pass right below already does a fresh,
+        # uncached lookup for exactly that, for any card missing one.
         for recipe in _recipes_linking_to(db, "category_link", page.slug):
             if recipe.slug in existing_slugs:
                 continue
@@ -480,8 +573,6 @@ def get_page(slug: str, db: Session = Depends(get_db)):
             placeholder = cards_by_title.get(_normalize_dish_title(recipe.title))
             if placeholder is not None and not placeholder.get("slug"):
                 placeholder["slug"] = recipe.slug
-                placeholder["image_url"] = rc.get("image_url")
-                placeholder["image_attribution"] = rc.get("image_attribution")
                 continue
             why = (rc.get("why_it_works") or "").strip()
             description = why.split(". ")[0].rstrip(".") + "." if why else ""
@@ -491,8 +582,8 @@ def get_page(slug: str, db: Session = Depends(get_db)):
                     "slug": recipe.slug,
                     "description": description,
                     "image_query": rc.get("hero_image_query", recipe.title),
-                    "image_url": rc.get("image_url"),
-                    "image_attribution": rc.get("image_attribution"),
+                    "image_url": None,
+                    "image_attribution": None,
                 }
             )
         # A card can already carry a real slug from the moment it's authored
@@ -564,7 +655,8 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         content = copy.deepcopy(page.content)
         hub_page_slug = content.get("hub_page_slug")
         if hub_page_slug:
-            derived = _recipe_slugs_using_ingredient(db, hub_page_slug)
+            hub_titles = _ingredient_hub_slugs_by_title(db)
+            derived = _recipe_slugs_using_ingredient(db, hub_page_slug, hub_titles)
             content["recipe_slugs"] = list(dict.fromkeys(content.get("recipe_slugs", []) + derived))
         return _page_out(page, content)
 
