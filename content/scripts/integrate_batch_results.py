@@ -16,30 +16,35 @@ here -- this script does not re-fix anything, it only serializes and inserts.
 
 from __future__ import annotations
 
-import csv
 import json
 import re
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from build_batch_requests import extract_existing_pages, slugify as _slugify  # noqa: E402
-from prompt_templates import TOOL_NAME_BY_TYPE  # noqa: E402
+from build_batch_requests import (  # noqa: E402
+    build_id_to_row,
+    extract_existing_pages,
+    load_id_to_row_from_manifest,
+    slugify as _slugify,
+)
+from validation import extract_content  # noqa: E402
 
 
-def slugify(title: str, template_type: str | None = None) -> str:
+def slugify_for_page(title: str, template_type: str) -> str:
     """Wraps build_batch_requests.slugify to drop a trailing "recipe" from
     recipe_or_dish titles before slugifying -- every existing recipe slug
     (banana-nut-bread, parmesan-crusted-chicken, ...) omits that word even
     though the title itself always includes it (e.g. "Banana Nut Bread
     Recipe"); a naive slugify would produce "lomo-saltado-recipe" instead
-    of matching that established convention. template_type defaults to None
-    (no stripping) so this still exactly reproduces build_batch_requests.py's
-    original custom_id derivation when re-deriving the id_to_title mapping
-    below."""
+    of matching that established convention. Only for deriving the final
+    page slug from the model's generated title -- NOT used for custom_id
+    derivation (build_id_to_row's plain slugify, from the raw queue
+    keyword, is a separate, intentionally different mapping)."""
     if template_type == "recipe_or_dish":
         title = re.sub(r"\s+recipe$", "", title, flags=re.IGNORECASE)
     return _slugify(title)
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SEED_TEMPLATES_PATH = REPO_ROOT / "backend" / "app" / "seed_templates.py"
@@ -95,29 +100,19 @@ def main() -> None:
     if "--skip" in sys.argv:
         skip_ids = set(sys.argv[sys.argv.index("--skip") + 1:])
 
-    with csv_path.open() as f:
-        rows_by_title = {row["title"]: row for row in csv.DictReader(f)}
-
     with results_path.open() as f:
         results = [json.loads(l) for l in f]
 
     existing_slugs, _, _ = extract_existing_pages()
     taken_slugs = set(existing_slugs)
 
-    # Rebuild custom_id -> row title mapping the same way build_batch_requests
-    # did, so we know each result's original queue row (for batch_number).
-    id_to_title = {}
-    taken_for_ids = set(existing_slugs)
-    with csv_path.open() as f:
-        for row in csv.DictReader(f):
-            base = slugify(row["title"])
-            candidate = base
-            n = 2
-            while candidate in taken_for_ids:
-                candidate = f"{base}-{n}"
-                n += 1
-            taken_for_ids.add(candidate)
-            id_to_title[candidate] = row["title"]
+    manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"
+    if manifest_path.exists():
+        id_to_row = load_id_to_row_from_manifest(csv_path, manifest_path)
+    else:
+        print(f"WARNING: no manifest at {manifest_path}, re-deriving custom_ids -- "
+              "only safe if seed_templates.py hasn't changed since this batch was built.")
+        id_to_row = build_id_to_row(csv_path, existing_slugs)
 
     new_entries = []
     skipped = []
@@ -126,16 +121,16 @@ def main() -> None:
         if custom_id in skip_ids:
             skipped.append(custom_id)
             continue
-        message = r["result"]["message"]
-        tool_use = next(c for c in message["content"] if c["type"] == "tool_use")
-        template_type = next(t for t, n in TOOL_NAME_BY_TYPE.items() if n == tool_use["name"])
-        content = dict(tool_use["input"])
-        title = content.pop("title")
-
-        row = rows_by_title.get(id_to_title.get(custom_id, ""), {})
+        row = id_to_row.get(custom_id)
+        if row is None:
+            raise ValueError(f"[{custom_id}] no matching CSV row found -- can't determine template_type")
+        template_type = row["template_type"]
         batch_number = int(row.get("batch_number") or 1)
 
-        slug = slugify(title, template_type)
+        content = dict(extract_content(r["result"]["message"]))
+        title = content.pop("title")
+
+        slug = slugify_for_page(title, template_type)
         base = slug
         n = 2
         while slug in taken_slugs:

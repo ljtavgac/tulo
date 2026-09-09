@@ -87,16 +87,65 @@ Quality spot-check across template types (`diet-coke-vs-coke-zero`,
 `lomo-saltado` for the vague "easy peruvian recipes at home" queue title):
 genuinely specific, on-voice, correctly-titled content.
 
+### Update: root cause found and fixed properly -- all 48 now shipped
+
+The 4 persistently-corrupted rows turned out to have a real fix, not just
+more retries. Anthropic's Messages API has an `output_config` parameter
+(`{"format": {"type": "json_schema", "schema": {...}}}`) that constrains
+token decoding directly against a JSON Schema -- a real guarantee, unlike
+forced tool-choice, which only biases the model without strictly
+enforcing the schema. Tested directly: all 4 previously-stuck rows came
+back clean on the **first** attempt once switched to this mechanism.
+
+**The whole pipeline now uses `output_config` instead of tool-choice**
+(`prompt_templates.py`'s `to_strict_schema()` strips the two things
+`output_config` doesn't support -- `minItems` above 1 and anything but
+`additionalProperties: false` on objects -- from the richer SCHEMA_BY_TYPE
+dicts at request-build time). `validation.py`'s `extract_content()`
+handles both response shapes for backward compatibility with the
+already-downloaded tool-choice-based pilot results.
+
+**A second, separate, more serious bug was found and fixed while
+integrating those 4 pages**: every one of the 7 schemas was missing at
+least one field that `frontend/lib/types.ts` requires (all cross-linking
+fields: `related_recipe_slugs`, `recipe_slugs`, `related_technique_slugs`,
+`substitute_page_slug`, `hub_page_slug`, `item_a_link`/`item_b_link`,
+`related_collection_slugs`, `related_ingredient_slugs`). This caused two
+real production pages (`how-to-make-garlic-confit`,
+`how-to-saute-spinach`) to fail to load -- the frontend assumes these
+fields are always present as an empty array/null, and a genuinely
+*missing* key (not just an empty one) crashed rendering. Fixed two ways:
+1. `patch_missing_link_fields.py` mechanically added the correct default
+   (`[]` or `null` -- these are either computed live at serve time or left
+   for future human curation, never something the model should generate)
+   to all 48 already-integrated pages, verified against a live local
+   backend run hitting every one of the 48 `/pages/{slug}` endpoints
+   directly and checking every required field's presence.
+2. Every `SCHEMA_BY_TYPE` entry now declares these fields explicitly
+   (always `[]`/`null` by instruction). `check_schemas_match_types.py` is
+   a new permanent guard -- it parses `types.ts` directly (rather than
+   hand-maintaining a second required-fields list, which is exactly what
+   let the two lists drift apart the first time) and fails loudly if any
+   schema is ever missing a required field again. Run this before ever
+   submitting a real batch.
+
+**Final result: 48/50 pilot titles published** (193 -> 241 pages), the 2
+duplicate-topic exclusions (`corn-starch`, `gluten-free-desserts`) still
+excluded as documented above. `CONTENT_QUEUE.csv` fully reconciled.
+
 ### Not yet done
 
 - This only updated the repo (`backend/app/seed_templates.py` +
-  `CONTENT_QUEUE.csv`), committed and pushed to `main`. Getting these 44
+  `CONTENT_QUEUE.csv`), committed and pushed to `main`. Getting these 48
   pages actually live on the production site still requires the backend's
   normal deploy process to pick up the push and run `resync_content()` --
-  same as every previous content change this session.
-- Image backfill (`fetch_images()`) for the 44 new pages hasn't run --
+  same as every previous content change this session. If a page still
+  doesn't load after that deploy completes, it's worth re-checking rather
+  than assuming -- this pilot already found two real content bugs behind
+  an initial "probably just not deployed yet" instinct.
+- Image backfill (`fetch_images()`) for the 48 new pages hasn't run --
   they'll render without a photo until that runs, same self-healing
   behavior as the rest of the site.
-- The 4 persistently-corrupted `howto_technique` rows and the 2 excluded
-  duplicates are not queued for retry yet -- flagged here for a decision
-  once you've reviewed the 44 that did ship.
+- The 2 excluded duplicate-topic rows are not queued for retry --
+  flagged for a decision (e.g. using `corn-starch`'s generated content to
+  refresh the existing page instead of publishing a duplicate).

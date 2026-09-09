@@ -84,17 +84,62 @@ def unique_slug(title: str, taken: set[str]) -> str:
     return slug
 
 
+def build_id_to_row(csv_path: Path, existing_slugs: set[str]) -> dict[str, dict]:
+    """Re-derives custom_id -> CSV row by replaying the same slug-assignment
+    order main() uses. DO NOT use this once seed_templates.py has changed
+    since the request file was originally built (e.g. after any pages from
+    this same batch have already been integrated) -- existing_slugs would
+    then include this batch's own new slugs, silently producing different
+    custom_ids than the ones actually used when requests were built and
+    breaking every lookup. This bit twice already. Use
+    load_id_to_row_from_manifest() instead whenever a manifest from the
+    original build still exists; only fall back to this for a CSV that's
+    never been (partially) integrated yet."""
+    taken = set(existing_slugs)
+    id_to_row: dict[str, dict] = {}
+    with csv_path.open() as f:
+        for row in csv.DictReader(f):
+            candidate = unique_slug(row["title"], taken)
+            id_to_row[candidate] = row
+    return id_to_row
+
+
+def load_id_to_row_from_manifest(csv_path: Path, manifest_path: Path) -> dict[str, dict]:
+    """The robust alternative to build_id_to_row: reads the manifest
+    build_batch_requests.py wrote at request-build time (custom_id ->
+    title_hint, recorded once and never recomputed) and matches back to
+    full CSV rows by title. Immune to seed_templates.py changing shape
+    between building requests and integrating results, which is the normal
+    case once a batch starts integrating in stages."""
+    manifest = json.loads(manifest_path.read_text())
+    with csv_path.open() as f:
+        rows_by_title = {row["title"]: row for row in csv.DictReader(f)}
+    id_to_row: dict[str, dict] = {}
+    for entry in manifest["requests"]:
+        row = rows_by_title.get(entry["title_hint"])
+        if row is not None:
+            id_to_row[entry["custom_id"]] = row
+    return id_to_row
+
+
 def main() -> None:
     if len(sys.argv) != 2:
         print(f"Usage: python3 {sys.argv[0]} <content_queue_csv>")
         raise SystemExit(1)
 
     csv_path = Path(sys.argv[1])
-    with csv_path.open() as f:
-        rows = list(csv.DictReader(f))
 
     existing_slugs, collections, techniques = extract_existing_pages()
     print(f"Found {len(existing_slugs)} existing slugs, {len(collections)} collections, {len(techniques)} how-to pages.")
+
+    # custom_id is only a stable identifier for pairing a request with its
+    # result, based on the raw queue keyword -- NOT proposed_article_title
+    # (that column is a naive "keyword + Recipe" template that's wrong for
+    # anything but recipe_or_dish, e.g. "Nigiri" -> "Nigiri Recipe" for an
+    # ingredient_hub row) and not the final page slug either (that gets
+    # derived from the model's own generated `title` field during Phase 2
+    # integration, checked for collisions again at that point).
+    id_to_row = build_id_to_row(csv_path, existing_slugs)
 
     OUTPUT_DIR.mkdir(exist_ok=True)
     requests_path = OUTPUT_DIR / f"{csv_path.stem}_requests.jsonl"
@@ -106,18 +151,8 @@ def main() -> None:
     custom_ids: list[dict] = []
 
     with requests_path.open("w") as out:
-        for row in rows:
+        for slug, row in id_to_row.items():
             template_type = row["template_type"]
-            # Based on the raw queue keyword, not proposed_article_title --
-            # that column is a naive "keyword + Recipe" template that's wrong
-            # for anything but recipe_or_dish (e.g. "Nigiri" -> "Nigiri
-            # Recipe" for an ingredient_hub row). This custom_id is only a
-            # stable identifier for pairing a request with its result; the
-            # real slug gets derived from the model's own generated `title`
-            # field during Phase 2 integration, checked for collisions again
-            # at that point.
-            slug = unique_slug(row["title"], existing_slugs)
-
             params = build_request_params(row, collections, techniques)
             line = {"custom_id": slug, "params": params}
             out.write(json.dumps(line, ensure_ascii=False) + "\n")
@@ -135,7 +170,7 @@ def main() -> None:
 
     manifest = {
         "source_csv": str(csv_path),
-        "total_requests": len(rows),
+        "total_requests": len(id_to_row),
         "requests_per_template_type": per_type_counts,
         "estimated_input_tokens": round(est_input_tokens),
         "estimated_output_tokens_budget": round(est_output_tokens),
@@ -154,7 +189,7 @@ def main() -> None:
     }
     manifest_path.write_text(json.dumps(manifest, indent=2))
 
-    print(f"\nWrote {len(rows)} requests to {requests_path}")
+    print(f"\nWrote {len(id_to_row)} requests to {requests_path}")
     print(f"Wrote manifest to {manifest_path}")
     print(f"\nPer-template-type counts: {per_type_counts}")
     print(f"Estimated cost: ${est_total_cost:.2f} (input ${est_input_cost:.2f} + output budget ${est_output_cost:.2f})")

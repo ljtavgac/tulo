@@ -31,6 +31,28 @@ JSON_TYPE_TO_PYTHON = {
 NULLABLE_OK_FIELDS = {"variety_notes", "link_terms", "technique_link", "category_link"}
 
 
+def extract_content(message: dict) -> dict:
+    """Pulls the generated content dict out of a Messages API response,
+    supporting both response shapes this pipeline has used:
+    - output_config (current): a `text` content block holding a JSON string.
+    - forced tool-choice (the pilot's original mechanism, kept for backward
+      compatibility with already-downloaded historical results files): a
+      `tool_use` content block's `input`.
+    Raises ValueError if neither shape is found, or output_config's response
+    has more than one content block of a kind (a `thinking` block ahead of
+    the `text` block is normal and skipped)."""
+    tool_uses = [c for c in message["content"] if c["type"] == "tool_use"]
+    if tool_uses:
+        if len(tool_uses) != 1:
+            raise ValueError(f"expected exactly 1 tool_use block, got {len(tool_uses)}")
+        return tool_uses[0]["input"]
+
+    text_blocks = [c for c in message["content"] if c["type"] == "text"]
+    if len(text_blocks) != 1:
+        raise ValueError(f"expected exactly 1 text block, got {len(text_blocks)}")
+    return json.loads(text_blocks[0]["text"])
+
+
 def check_schema_types(value, schema: dict, path: str, issues: list) -> None:
     expected = schema.get("type")
     if expected is None:

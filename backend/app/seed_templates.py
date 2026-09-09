@@ -13514,6 +13514,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -13576,6 +13577,9 @@ SEED_PAGES = [
                     "answer": "Yes. Its smoky, dense texture works well in bean soups, pasta with greens, breakfast hash, or even pizza toppings anywhere you'd use a firm smoked sausage.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -13659,6 +13663,8 @@ SEED_PAGES = [
                     "body": "Lo mein noodles are thicker and rounder than chow mein noodles, and they skip the frying step entirely. After boiling, they go straight into the wok with sauce, vegetables, and protein and get tossed, not fried, just long enough to heat through and pick up color. The result is a soft, chewy noodle that's slick with sauce from edge to edge, which is why lo mein reads as the saucier, more noodle-forward dish of the two.",
                 },
             ],
+            "item_a_link": None,
+            "item_b_link": None,
         },
     },
     {
@@ -13733,6 +13739,8 @@ SEED_PAGES = [
                     "answer": "Yes. Spoon it into tablespoon-sized portions on a lined tray, freeze until solid, then transfer to a bag. It keeps for several months and thaws quickly for future recipes.",
                 },
             ],
+            "hub_page_slug": None,
+            "recipe_slugs": [],
         },
     },
     {
@@ -13787,6 +13795,8 @@ SEED_PAGES = [
                     "answer": "Yes, but they release more water as they thaw, so cut the steaming time by 1-2 minutes compared to fresh and check earlier to avoid mush.",
                 },
             ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
         },
     },
     {
@@ -13849,6 +13859,9 @@ SEED_PAGES = [
                     "answer": "Soak refrigerated or slightly dried tteok in warm water for 10-15 minutes before cooking to loosen the pieces and soften the exterior, then separate by hand before adding to the pan.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -14065,6 +14078,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -14121,6 +14135,9 @@ SEED_PAGES = [
                     "answer": "Yes, vegetable shortening or a neutral oil worked into the masa produces a similar texture, though lard gives a slightly richer flavor and a more tender crumb.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -14171,6 +14188,8 @@ SEED_PAGES = [
                     "answer": "Loose leaf generally brews a more nuanced cup because the leaves have room to unfurl fully, but a good quality pyramid-style tea bag with whole leaf pieces can come close.",
                 },
             ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
         },
     },
     {
@@ -14277,6 +14296,7 @@ SEED_PAGES = [
                     ],
                 },
             ],
+            "related_collection_slugs": [],
         },
     },
     {
@@ -14333,6 +14353,9 @@ SEED_PAGES = [
                     "answer": "A common build is 3 parts prosecco, 1 part elderflower syrup, and 1 part soda water, poured over ice in that order to preserve carbonation.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -14577,6 +14600,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -14615,6 +14639,8 @@ SEED_PAGES = [
                     "answer": "Yes, using a moka pot for concentrated coffee and a handheld or electric milk frother for the steamed milk, though the texture and crema won't fully match espresso made with a machine.",
                 },
             ],
+            "substitute_page_slug": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -14747,6 +14773,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -14815,6 +14842,9 @@ SEED_PAGES = [
                     "answer": "Ground beef needs to reach 160°F internal because grinding mixes surface bacteria throughout the meat, unlike a whole steak where searing the outside is enough. Use a meat thermometer rather than judging by color.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -14877,6 +14907,9 @@ SEED_PAGES = [
                     "answer": "That's typically a natural mold bloom (often Penicillium) that develops during aging and helps protect the meat and regulate moisture loss; it's harmless and can be eaten or wiped off before slicing.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -15024,6 +15057,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -15125,6 +15159,7 @@ SEED_PAGES = [
                     ],
                 },
             ],
+            "related_collection_slugs": [],
         },
     },
     {
@@ -15199,6 +15234,8 @@ SEED_PAGES = [
                 },
             ],
             "verdict": "Choose Diet Coke if you like its lighter, more citrusy, distinct cola taste on its own merits. Choose Coke Zero if you want something that tastes as close as possible to regular Coca-Cola without the sugar or calories.",
+            "item_a_link": None,
+            "item_b_link": None,
         },
     },
     {
@@ -15443,6 +15480,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -15498,6 +15536,8 @@ SEED_PAGES = [
                     "answer": "Olive oil or butter both work well at the medium-high heat spinach needs; butter adds richness while olive oil keeps it lighter and pairs well with garlic and lemon.",
                 },
             ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
         },
     },
     {
@@ -15722,6 +15762,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -15784,6 +15825,9 @@ SEED_PAGES = [
                     "answer": "Its protein structure and moderate fat content let it melt into a smooth, stretchy liquid rather than separating into an oily mess, which is why it's traditionally paired with Emmental and white wine in classic Swiss fondue recipes.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -16034,6 +16078,7 @@ SEED_PAGES = [
             ],
             "total_time_minutes": 45,
             "why_it_works": "Soaking breadcrumbs in cream before mixing keeps the meatballs moist even after browning, and building the gravy in the same skillet used to fry them means the pan drippings do double duty as flavor instead of getting scraped into the trash.",
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -16238,6 +16283,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -16305,6 +16351,8 @@ SEED_PAGES = [
                     "answer": "It gets close but won't be identical, since store-bought hoisin has a fermented depth that's hard to build quickly. The soy sauce, peanut butter, honey, and garlic version is the closest match for these dishes.",
                 },
             ],
+            "hub_page_slug": None,
+            "recipe_slugs": [],
         },
     },
     {
@@ -16342,6 +16390,8 @@ SEED_PAGES = [
                     "answer": "On its own it's mild and salty. Any heat comes from the chiles, like serrano or jalapeño, added when it's cooked into machaca con huevo or a burrito filling.",
                 },
             ],
+            "substitute_page_slug": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -16558,6 +16608,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -16594,6 +16645,8 @@ SEED_PAGES = [
                     "answer": "Cooked tapioca pearls are best eaten within 4 to 6 hours of cooking, since they lose their chewy texture and become stiff once they sit too long, even when kept in syrup.",
                 },
             ],
+            "substitute_page_slug": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -16656,6 +16709,9 @@ SEED_PAGES = [
                     "answer": "No, any savory dish with a pale base works, mashed potatoes, deviled eggs, mac and cheese, dip, or even soup, as long as it takes a green tint cleanly.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -16817,6 +16873,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -16879,6 +16936,9 @@ SEED_PAGES = [
                     "answer": "Not exactly. Fruit spread is a marketing term usually meaning lower sugar content, sweetened with fruit juice concentrate instead of straight sugar, while jam specifically implies a set consistency achieved with sugar and pectin.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -16935,6 +16995,9 @@ SEED_PAGES = [
                     "answer": "It can, but the cut has almost no marbling, so past medium it turns dry and loses the buttery texture that's the entire point of choosing tenderloin.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -17009,6 +17072,8 @@ SEED_PAGES = [
                     "body": "Raw fish or seafood sliced and plated with no rice at all, usually alongside garnishes like shiso leaf, daikon radish, or shredded cabbage. Slices are cut thicker than the fish used for nigiri since there's no rice to balance the bite, so the texture of the fish carries the whole dish. It's dipped in soy sauce, often with a small amount of wasabi mixed in, and eaten with chopsticks rather than by hand.",
                 },
             ],
+            "item_a_link": None,
+            "item_b_link": None,
         },
     },
     {
@@ -17059,6 +17124,8 @@ SEED_PAGES = [
                     "answer": "Yes, on the lowest setting with the lid slightly ajar to let excess moisture escape, though it typically takes closer to 2-3 hours since slow cookers run cooler than a stovetop or oven.",
                 },
             ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
         },
     },
     {
@@ -17115,6 +17182,9 @@ SEED_PAGES = [
                     "answer": "This usually means the heat was too high, causing the outside to seize before the fat fully rendered. Cook it low and slow, starting in a cold or barely warm pan, so the fat has time to melt out before the meat browns.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -17177,6 +17247,9 @@ SEED_PAGES = [
                     "answer": "Fish-side down. Dipping the rice causes it to absorb too much sauce and fall apart, and it oversalts the piece compared to dipping just the topping.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -17307,6 +17380,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -17349,6 +17423,8 @@ SEED_PAGES = [
                     "answer": "No, but it borrows from it. Knafeh is a warm, syrup-soaked dessert made with kataifi and cheese, while Dubai chocolate takes that same shredded, crispy pastry idea and reworks it as a cold, chocolate-covered bar filling.",
                 },
             ],
+            "substitute_page_slug": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -17411,6 +17487,9 @@ SEED_PAGES = [
                     "answer": "It can be softly whipped but won't hold stiff peaks the way heavy cream does on its own; mixing it with a little heavy cream before whipping gives more stable results.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -17614,6 +17693,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -17676,6 +17756,9 @@ SEED_PAGES = [
                     "answer": "Yes, once for a quick pickle. Pour it over cucumber slices, red onion, or hard-boiled eggs and refrigerate for at least a day, but discard after one reuse since the acidity weakens.",
                 },
             ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
         },
     },
     {
@@ -17851,6 +17934,7 @@ SEED_PAGES = [
             ],
             "technique_link": None,
             "category_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -17885,6 +17969,228 @@ SEED_PAGES = [
                     "answer": "Metal, especially silver, can react with the salt-cured eggs and impart a slightly metallic or fishy off-taste, which is why mother-of-pearl, bone, or plastic spoons are traditional.",
                 },
             ],
+            "substitute_page_slug": None,
+            "related_recipe_slugs": [],
+        },
+    },
+
+    # --- Batch API pilot (2026-09-09): 50-title cross-section, generated
+    # via content/scripts/build_batch_requests.py + Batch API, integrated via
+    # content/scripts/integrate_batch_results.py. See
+    # content/scripts/PILOT_BATCH_STATUS.md for the full pilot record.
+    {
+        "slug": "how-to-roast-sweet-peppers",
+        "template_type": "howto_technique",
+        "title": "How to Roast Sweet Peppers",
+        "batch_number": 1,
+        "content": {
+            "meta_description": "How to roast sweet peppers until the skins blister and the flesh turns sweet and tender, plus how to peel them cleanly once they're done.",
+            "hero_image_query": "roasted red and yellow sweet peppers on baking sheet",
+            "image_alt": "Halved red, yellow, and orange sweet peppers with blistered, charred skins on a baking sheet fresh from the oven.",
+            "intro": "Roasting sweet peppers concentrates their sugars and gives the flesh a smoky, silky texture that raw peppers never get. The whole process hinges on getting the skins properly charred, undercooked and the skin won't peel away; overcooked and the flesh turns to mush.",
+            "steps": [
+                "Preheat the broiler on high, or preheat the oven to 450°F (230°C) if roasting instead of broiling.",
+                "Halve the peppers lengthwise and remove the stems, seeds, and white ribs.",
+                "Lay the pepper halves cut-side down on a foil-lined baking sheet, pressing gently to flatten them.",
+                "If broiling, place the sheet 4-5 inches from the heat source and broil for 8-12 minutes, watching closely, until the skins are blackened and blistered in most spots.",
+                "If roasting instead, roast at 450°F (230°C) for 25-30 minutes, until the skins are wrinkled and charred in patches.",
+                "Transfer the hot peppers to a bowl and cover tightly with plastic wrap or a plate, or seal them in a paper bag, and let them steam for 10-15 minutes.",
+                "Once cool enough to handle, peel off the blackened skin with your fingers, it should slide off easily. Avoid rinsing them under water, which washes away the roasted flavor.",
+                "Slice the peeled peppers into strips and toss with olive oil and a pinch of salt, or use them as needed.",
+            ],
+            "common_mistakes": [
+                "Skipping the steaming step: without trapped steam, the skins stay stuck to the flesh and won't peel cleanly.",
+                "Rinsing the peppers to remove skin: water rinses off the smoky char flavor along with the bits of skin. Peel with fingers or a paper towel instead.",
+                "Broiling unevenly: peppers near the edges of the sheet char slower than the center, so rotate the pan halfway through if using a broiler.",
+                "Roasting whole peppers without flattening: whole peppers char unevenly and take much longer to soften all the way through.",
+            ],
+            "equipment": [
+                "Baking sheet",
+                "Aluminum foil",
+                "Heatproof bowl with plate or plastic wrap, or a paper bag",
+                "Chef's knife",
+            ],
+            "faqs": [
+                {
+                    "question": "Can I roast sweet peppers on a gas stovetop instead of in the oven?",
+                    "answer": "Yes, whole peppers can be charred directly over a gas flame using tongs, turning every minute or so until the entire skin is blackened, about 8-10 minutes total.",
+                },
+                {
+                    "question": "How long do roasted peppers keep in the fridge?",
+                    "answer": "Peeled and sliced roasted peppers keep for about 5 days in an airtight container, submerged in a little olive oil to help preserve them.",
+                },
+                {
+                    "question": "Can I freeze roasted peppers?",
+                    "answer": "Yes, peel and slice them first, then lay the strips flat on a tray to freeze individually before transferring to a bag. They keep for up to 6 months and thaw quickly.",
+                },
+                {
+                    "question": "Why are my roasted peppers watery instead of silky?",
+                    "answer": "This usually means they were pulled off the heat before the skins fully blistered, leaving underdeveloped flesh that releases excess liquid as it cools.",
+                },
+            ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
+        },
+    },
+    {
+        "slug": "how-to-make-a-matcha-latte",
+        "template_type": "howto_technique",
+        "title": "How to Make a Matcha Latte",
+        "batch_number": 1,
+        "content": {
+            "meta_description": "How to whisk matcha into a smooth, clump-free latte, including the right water temperature and the mistake that leaves it bitter or gritty.",
+            "hero_image_query": "matcha latte in glass cup",
+            "image_alt": "A pale green matcha latte with a thin layer of foam in a clear glass, next to a bamboo whisk and small bowl of matcha powder.",
+            "intro": "A good matcha latte comes down to two things most people skip: sifting the powder and whisking it into a paste before adding any liquid. Skip either step and you end up with clumps floating in milk instead of a smooth, uniformly green drink.",
+            "steps": [
+                "Sift 1-2 teaspoons of matcha powder into a bowl or mug using a fine-mesh strainer to break up clumps.",
+                "Add 2-3 tablespoons of water heated to 175°F (80°C), not boiling.",
+                "Whisk in a rapid W or M motion with a bamboo whisk (chasen) or a small milk frother until the matcha forms a smooth, frothy paste with no dry clumps, about 20-30 seconds.",
+                "Steam or heat 1 cup of milk (dairy or oat both work well) until warm but not scalded, around 150°F (65°C).",
+                "Froth the milk if you want foam, using a frother, French press, or by shaking it in a sealed jar for 30 seconds.",
+                "Pour the warm milk over the matcha paste, or pour the paste into the milk, and stir gently to combine.",
+                "Sweeten with honey, simple syrup, or sugar to taste, stirring it into the paste before adding milk so it dissolves evenly.",
+            ],
+            "common_mistakes": [
+                "Using boiling water: water above 175°F scorches matcha and pulls out bitter, astringent compounds.",
+                "Skipping the sift: unsifted matcha clumps and won't fully dissolve, leaving gritty bits at the bottom.",
+                "Whisking matcha directly into milk: fat and proteins in milk make it much harder to break up clumps, always make the paste with water first.",
+                "Using low-grade culinary matcha meant for baking: it's more bitter and dull in color, ceremonial or premium grade tastes noticeably smoother.",
+            ],
+            "equipment": [
+                "Bamboo whisk (chasen) or small milk frother",
+                "Fine-mesh strainer",
+                "Small bowl or wide mug",
+                "Milk frother or French press (optional, for foam)",
+            ],
+            "faqs": [
+                {
+                    "question": "What's the ideal matcha-to-water ratio for a latte?",
+                    "answer": "1-2 teaspoons of matcha to 2-3 tablespoons of water makes a concentrated paste strong enough to still taste through 1 cup of milk.",
+                },
+                {
+                    "question": "Can I use a regular whisk instead of a bamboo one?",
+                    "answer": "A small metal whisk or milk frother works fine, the bamboo whisk just has finer tines that break up clumps a bit faster.",
+                },
+                {
+                    "question": "Why does my matcha latte taste bitter?",
+                    "answer": "Water that's too hot (above 175°F) or matcha that's been whisked too long can both pull out bitter compounds, keep whisking under 30 seconds.",
+                },
+                {
+                    "question": "Hot or cold milk, which is better for a matcha latte?",
+                    "answer": "Both work. For iced versions, make the matcha paste with hot water as usual, then pour it over cold milk and ice so it doesn't clump.",
+                },
+                {
+                    "question": "How long does matcha powder stay fresh once opened?",
+                    "answer": "About 4-6 weeks in an airtight container in the fridge, away from light, before the color dulls and flavor fades.",
+                },
+            ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
+        },
+    },
+    {
+        "slug": "how-to-make-chai-tea",
+        "template_type": "howto_technique",
+        "title": "How to Make Chai Tea",
+        "batch_number": 1,
+        "content": {
+            "meta_description": "How to simmer spiced chai tea with whole spices, black tea, and milk so it turns deep amber and full-bodied, not weak or bitter.",
+            "hero_image_query": "masala chai being strained into a cup",
+            "image_alt": "Spiced milky chai tea being poured through a fine mesh strainer into a glass cup, with crushed cardamom pods and a cinnamon stick visible on the counter beside it.",
+            "intro": "Real chai gets its depth from simmering whole spices in water before the tea and milk go in, not from steeping a tea bag in hot milk. Skip that step or rush the simmer and the spices stay muted while the tea turns bitter.",
+            "steps": [
+                "Crush 4 green cardamom pods, 4 whole cloves, and 4 black peppercorns with a mortar and pestle or the flat side of a knife, along with a 1-inch piece of fresh ginger, sliced.",
+                "Combine the crushed spices, ginger, a 2-inch cinnamon stick, and 1.5 cups water in a small saucepan.",
+                "Bring to a boil, then reduce heat and simmer for 5 minutes so the water pulls flavor from the spices.",
+                "Add 2 teaspoons loose black tea (Assam or another strong CTC tea) or 2 tea bags and simmer for 2-3 minutes more.",
+                "Pour in 1 cup whole milk and raise the heat back to medium, watching closely as it comes to a simmer.",
+                "Once the milk starts to rise and bubble, reduce heat to low and simmer for 2-3 minutes, until the liquid turns a deep caramel brown.",
+                "Remove from heat and stir in 2-3 teaspoons sugar or honey to taste.",
+                "Strain through a fine mesh strainer into cups, pressing on the spices and tea leaves with a spoon to extract the last of the liquid.",
+            ],
+            "common_mistakes": [
+                "Letting the milk boil hard and unwatched: it rises fast and boils over within seconds, so keep the heat at medium-low once milk goes in.",
+                "Adding the tea before the spices have simmered: the tannins extract quickly and turn bitter if they sit in hot liquid too long without the spice flavor established first.",
+                "Using whole, uncrushed spices: cracking the cardamom pods and cloves open releases far more flavor than dropping them in whole.",
+                "Using a delicate tea like Darjeeling or green tea: it gets overpowered by the spices and milk, so stick with a strong black tea bred for milk tea, like Assam CTC.",
+            ],
+            "equipment": [
+                "Small saucepan",
+                "Fine mesh strainer",
+                "Mortar and pestle (or a knife to crush spices)",
+                "Measuring cups and spoons",
+            ],
+            "faqs": [
+                {
+                    "question": "Can I make chai without milk?",
+                    "answer": "Yes, simmer the spices and tea in water only and skip the milk step; this version is sometimes called kadha or black chai and tends to taste sharper and more concentrated.",
+                },
+                {
+                    "question": "What's the best tea to use for chai?",
+                    "answer": "A strong, robust black tea like Assam CTC (crush, tear, curl) holds up best against the milk and spices; loose leaf works better than tea bags because it releases more flavor during the simmer.",
+                },
+                {
+                    "question": "Can I make a bigger batch of chai at once?",
+                    "answer": "Yes, multiply the water, milk, and spice quantities directly, but add 2-3 extra minutes to the initial spice simmer so the larger volume of water has time to extract flavor before the tea goes in.",
+                },
+                {
+                    "question": "Why does my chai taste watery instead of spiced?",
+                    "answer": "This usually means the spices didn't simmer long enough before the tea and milk were added, or too few whole spices were used relative to the liquid; a 5-minute simmer with crushed spices before adding tea makes the biggest difference.",
+                },
+            ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
+        },
+    },
+    {
+        "slug": "how-to-make-cold-foam",
+        "template_type": "howto_technique",
+        "title": "How to Make Cold Foam",
+        "batch_number": 1,
+        "content": {
+            "meta_description": "How to make cold foam at home with just milk and a frother, plus why the wrong milk or over-frothing leaves it thin instead of thick and pourable.",
+            "hero_image_query": "cold foam on iced coffee",
+            "image_alt": "A glass of iced coffee topped with a thick layer of white cold foam that holds its shape before being stirred in",
+            "intro": "Cold foam is just cold milk whipped until it thickens and holds air, no steam required, but it only turns out thick and pourable if you use the right milk and stop frothing at the right point. Too little air and it's just milk; too much and it separates into foam and liquid instead of one cohesive layer.",
+            "steps": [
+                "Pour 1/2 cup cold milk into a jar or the cup of a handheld frother. Whole milk or oat milk labeled 'barista' gives the thickest, longest-lasting foam because of their fat and protein content.",
+                "If using a handheld frother, submerge the whisk head just below the surface of the milk and turn it on, tilting the container slightly so air gets pulled in.",
+                "If using a jar, screw on the lid and shake vigorously for 30-45 seconds, then remove the lid and microwave for 15-20 seconds if you want the foam to firm up further (this works for a cold-then-set foam, not a hot one).",
+                "Froth for about 20-30 seconds total, until the milk roughly doubles in volume and forms soft peaks that hold their shape on a spoon.",
+                "For sweetened cold foam, whisk 1-2 teaspoons of simple syrup or sweetened condensed milk into the milk before frothing.",
+                "Spoon or pour the foam over iced coffee, letting it sit on top rather than stirring it in immediately.",
+            ],
+            "common_mistakes": [
+                "Using skim milk: it has almost no fat, so it foams up fast but collapses within a minute or two instead of holding a thick layer.",
+                "Over-frothing: past the soft-peak stage, the foam starts to separate into stiff clumps and watery milk underneath.",
+                "Frothing warm milk: cold milk holds air bubbles longer because the proteins are less relaxed than in warm milk, which is why cold foam collapses faster if the milk isn't properly chilled first.",
+            ],
+            "equipment": [
+                "Handheld milk frother or a jar with a tight-fitting lid",
+                "Measuring cup",
+                "Spoon for layering the foam on top of the drink",
+            ],
+            "faqs": [
+                {
+                    "question": "What milk works best for cold foam?",
+                    "answer": "Whole milk gives the richest, most stable foam because of its fat content. Oat milk labeled specifically as a barista blend is the closest non-dairy substitute since it has added fats and stabilizers that regular oat milk lacks.",
+                },
+                {
+                    "question": "Can I make cold foam without a frother?",
+                    "answer": "Yes, shake cold milk in a tightly sealed jar for 30-45 seconds. It won't get quite as thick as a handheld frother produces, but it will still form a pourable, slightly thickened layer.",
+                },
+                {
+                    "question": "Why does my cold foam deflate so fast?",
+                    "answer": "It's usually skim or low-fat milk, which lacks the fat needed to stabilize air bubbles, or the milk wasn't cold enough going in. Milk straight from the fridge, around 40°F (4°C), froths up more stable than room-temperature milk.",
+                },
+                {
+                    "question": "How is cold foam different from whipped cream?",
+                    "answer": "Cold foam is just aerated milk with no added fat or stabilizers beyond what's naturally in the milk, so it's lighter and dissolves into the drink rather than sitting on top indefinitely like whipped cream does.",
+                },
+            ],
+            "recipe_slugs": [],
+            "related_technique_slugs": [],
         },
     },
 ]
