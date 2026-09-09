@@ -220,11 +220,19 @@ def fetch_images(
 
         if only_slugs is not None and not page_explicitly_requested and not requested_card_slugs:
             continue
-        # Force applies to the whole page when it (not just one of its
-        # cards) was named, or a site-wide force run is in effect --
-        # requested_card_slugs handles the narrower "just this one card"
-        # case on its own, inside the card loop below.
-        force_this_page = force or page_explicitly_requested
+        # Force applies to the whole page (every card on it, for a
+        # category_roundup) only for a genuinely unscoped site-wide force
+        # run (force=True with no only_slugs at all), or when this page's
+        # own slug -- not just one of its cards' -- was explicitly named.
+        # `force and only_slugs is not None` deliberately does NOT count:
+        # a real bug, found by actually running this against production,
+        # was `force=true&slugs=char-siu` re-rolling all 6 of
+        # chinese-recipes' cards instead of just char-siu's, because bare
+        # `force` used to cascade to every card the moment the page passed
+        # the filter above for any reason, including only one matching
+        # card. requested_card_slugs (below, in the card loop) is what
+        # correctly scopes a single-card request now.
+        force_this_page = (force and only_slugs is None) or page_explicitly_requested
 
         # A deep copy, not a reference: mutating page.content directly (or a
         # shallow copy of it, for category_roundup's nested recipe_cards)
