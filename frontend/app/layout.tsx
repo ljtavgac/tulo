@@ -57,11 +57,22 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Header />
         <div className="flex-1 pb-20">{children}</div>
         <Footer />
+        {/* afterInteractive (the default) rather than beforeInteractive --
+            beforeInteractive is meant for scripts a page can't function
+            without before hydration (bot detectors, cookie-consent
+            managers, per Next's own docs) and gets fetched ahead of
+            first-party code, competing for bandwidth with the page's own
+            LCP resources. AdSense doesn't need that: it was only set to
+            beforeInteractive earlier while chasing an AdSense "couldn't
+            validate" error, which turned out to be unrelated (fixed by
+            switching Google's verification method to a static meta tag,
+            see metadata.other above) -- so there's no reason left to pay
+            the performance cost. */}
         <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
           crossOrigin="anonymous"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
       </body>
       <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />

@@ -69,6 +69,7 @@ export default async function DefinitionPage({
         imageUrl={content.image_url}
         attribution={content.image_attribution}
         className="mt-4"
+        priority
       />
 
       <h2 className="mt-8 text-xl font-bold">More detail</h2>

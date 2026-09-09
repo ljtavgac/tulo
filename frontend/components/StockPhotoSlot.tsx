@@ -41,6 +41,7 @@ export default function StockPhotoSlot({
   className = "",
   reserveSpace = false,
   showAttribution = true,
+  priority = false,
 }: {
   query: string;
   // Real, specific caption text (e.g. a recipe's own meta_description),
@@ -62,6 +63,17 @@ export default function StockPhotoSlot({
   // on its own page has no row to stay aligned with, so it keeps the
   // original "nothing at all" behavior by default.
   reserveSpace?: boolean;
+  // Next's <Image> defaults to loading="lazy" (native intersection-observer
+  // based deferral) for every image, StockPhotoSlot included -- fine for a
+  // grid thumbnail below the fold, wrong for the single hero photo that
+  // sits right under <h1> on a recipe/ingredient/how-to/etc. page: that one
+  // is almost always the page's LCP element, and lazy-loading it means the
+  // browser doesn't even start the request until it's done parsing down to
+  // this element, instead of discovering and prioritizing it immediately.
+  // Callers that render the one hero image for a standalone content page
+  // should set this; grid/thumbnail call sites (PageTile-style contexts,
+  // search results) should leave it false.
+  priority?: boolean;
   // The attribution figcaption below renders a real <a> link to the
   // photographer's profile. PageTile and RecipeCard are themselves always
   // (or conditionally) wrapped in their own outer <Link> to the page --
@@ -96,6 +108,7 @@ export default function StockPhotoSlot({
           alt={alt || query}
           fill
           unoptimized
+          priority={priority}
           sizes="(min-width: 1024px) 640px, 100vw"
           className="object-cover"
           onError={() => setFailed(true)}

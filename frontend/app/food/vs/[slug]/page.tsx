@@ -55,6 +55,7 @@ export default async function ComparisonPage({
         imageUrl={content.image_url}
         attribution={content.image_attribution}
         className="mt-4"
+        priority
       />
 
       <div className="mt-6 overflow-x-auto">

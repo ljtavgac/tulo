@@ -59,6 +59,7 @@ export default async function IngredientHubPage({
         imageUrl={content.image_url}
         attribution={content.image_attribution}
         className="mt-4"
+        priority
       />
 
       <p className="mt-4 text-ink/80">
