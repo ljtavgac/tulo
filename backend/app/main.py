@@ -482,7 +482,15 @@ def list_pages(
     # and the next. Callers that want everything (the homepage carousels,
     # the sitemap, RelatedLinks) just omit limit/offset and get the full,
     # still-ordered list, unchanged from before this was added.
-    query = db.query(Page).order_by(Page.id)
+    #
+    # Descending by id (newest page first): id is an auto-increment primary
+    # key, so this is equivalent to newest-published-first without adding a
+    # separate timestamp column. Newest-first reads better on the homepage
+    # carousels and the section landing pages ("Load more" surfaces the
+    # freshest content first, not whatever happened to seed the site
+    # originally) and costs nothing on the sitemap/RelatedLinks callers,
+    # which don't care about order.
+    query = db.query(Page).order_by(Page.id.desc())
     if template_type is not None:
         query = query.filter(Page.template_type == template_type)
     if q:
