@@ -41,14 +41,24 @@ from .database import SessionLocal
 from .images import _is_reachable, is_allowed_image_url, search_image, ping_download, UNSPLASH_ACCESS_KEY, PEXELS_ACCESS_KEY
 from .models import Page
 
-# How many pages' worth of Unsplash/Pexels searches run at once. Kept lower
-# than the content-generation pipeline's proven-safe 15 (a different API,
-# untested at that concurrency here, and Unsplash's free tier in particular
-# has a real, fairly low hourly rate limit) -- a run that gets rate-limited
-# partway through just leaves the rest for the next run to pick up (see
-# _apply_result's per-page try/except), so this errs conservative rather
-# than fast.
-CONCURRENCY = 8
+# How many pages' worth of Unsplash/Pexels searches run at once.
+#
+# INCIDENT (2026-09-09): shipped at 8 for the first run against the full
+# ~2,000-page backlog and took production down. 8 concurrent workers, each
+# also doing a real GET per candidate via images._is_reachable(), blew
+# through Pexels' free-tier rate limit almost immediately (confirmed via a
+# live 429 in the Render logs) -- and with only Pexels configured (no
+# Unsplash key), every one of ~1,900 pages needing a first-ever fetch hit
+# it at once. Render's free tier has very limited CPU; that many threads
+# doing simultaneous network I/O + JSON parsing was enough to starve the
+# single process's ability to serve real requests, surfacing as the whole
+# site returning server errors, not just a slow image backfill. Dropped to
+# 1 (fully sequential, the same throughput this had before concurrency was
+# added at all) until this has a tested, real-production-scale rate-limit
+# backoff -- see the rate_limited short-circuit in fetch_images() below,
+# which at minimum stops a run from continuing to hammer an API it's
+# already being throttled by.
+CONCURRENCY = 1
 
 # template_type -> the content key holding the search query for a single
 # hero image.
@@ -282,6 +292,14 @@ def fetch_images(
     # Shared across the whole run so two different pages/cards never end up
     # with the literally same photo -- see search_image()'s exclude_urls.
     used_urls = _UsedUrls()
+    # Set the moment any worker sees a 429 from a provider -- every worker
+    # checks this before starting its own search and bails out immediately
+    # if it's set (see CONCURRENCY's incident note above). Without this, a
+    # run that starts getting rate-limited keeps right on submitting a
+    # request per remaining page anyway, each one doomed to fail the same
+    # way, for no reason but to burn time and process resources a real
+    # request could have used instead.
+    rate_limited = threading.Event()
 
     # A standalone recipe_or_dish page and its parent category_roundup's
     # card for that same dish (e.g. carne-asada-tacos and taco-recipes'
@@ -307,6 +325,8 @@ def fetch_images(
         any other SQLAlchemy state, so it's safe to run in a worker thread.
         Returns (page, new_content_or_None_if_unchanged, images_written_delta);
         the caller applies the result back onto `page` in the main thread."""
+        if rate_limited.is_set():
+            return page, None, 0
         if only_slugs is not None and page.slug not in only_slugs:
             return page, None, 0
         force_this_page = (force and only_slugs is None) or (only_slugs is not None)
@@ -409,11 +429,20 @@ def fetch_images(
                 return page, content, 0
         except Exception as e:
             print(f"    error: {e}")
+            # A plain string check, not exception-type introspection: every
+            # provider error already gets str()'d into this exact message
+            # by requests' own HTTPError, and matching on it here needs no
+            # new import or coupling to requests' exception internals for
+            # what's meant to be a blunt, reliable "stop" signal.
+            if "429" in str(e):
+                rate_limited.set()
         return page, None, 0
 
     def process_category_roundup_page(page: Page) -> tuple[Page, dict | None, int]:
         """Same not-touching-`db` contract as process_single_image_page --
         see that function's docstring."""
+        if rate_limited.is_set():
+            return page, None, 0
         # A card's slug lives inside its parent category_roundup page's own
         # row, so `page.slug in only_slugs` alone would miss a request
         # scoped to a card slug entirely -- check the page's own slug OR
@@ -484,6 +513,9 @@ def fetch_images(
                         changed = True
                 except Exception as e:
                     print(f"    error: {e}")
+                    if "429" in str(e):
+                        rate_limited.set()
+                        break  # this page's remaining cards too, not just future pages
         return page, (content if changed else None), images_written_delta
 
     def run_phase(pages: list[Page], worker) -> None:
