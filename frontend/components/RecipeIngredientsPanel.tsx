@@ -178,7 +178,7 @@ export default function RecipeIngredientsPanel({
           <UnitToggle unit={unit} onChange={setUnit} />
         </div>
 
-        {panSize ? (
+        {panSize && panSize.alternatives.length > 0 ? (
           <div className="border-b border-ink/10 py-3 text-sm">
             <label className="flex flex-wrap items-center gap-2">
               <span className="font-medium">Using a different pan?</span>

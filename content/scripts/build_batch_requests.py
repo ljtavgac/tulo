@@ -45,12 +45,19 @@ CHARS_PER_TOKEN = 4
 ASSUMED_OUTPUT_FRACTION = 0.75
 
 
-def extract_existing_pages() -> tuple[set[str], list[dict], list[dict]]:
+def extract_existing_pages() -> tuple[set[str], list[dict], list[dict], list[dict]]:
     """Regex-parses SEED_PAGES directly out of seed_templates.py rather than
     importing that module, since importing it would pull in the backend's
     SQLAlchemy dependencies for no reason this script needs. Returns
     (all existing slugs, category_roundup {title, slug} list,
-    howto_technique {title, slug} list)."""
+    howto_technique {title, slug} list, ingredient_hub {title, slug} list).
+
+    The ingredient_hub list exists to validate a recipe ingredient's
+    hub_slug against real pages (see validation.py's validate_content) --
+    added after a real bug shipped a recipe with 7 ingredients' hub_slug
+    set to invented slugs ("zucchini", "garlic", ...) that don't match any
+    actual hub page, despite the schema instructing the model to always
+    leave this field null."""
     text = SEED_TEMPLATES_PATH.read_text()
     pattern = re.compile(
         r'"slug":\s*"([^"]+)",\s*\n\s*"template_type":\s*"([^"]+)",\s*\n\s*"title":\s*"([^"]+)"'
@@ -58,13 +65,16 @@ def extract_existing_pages() -> tuple[set[str], list[dict], list[dict]]:
     all_slugs: set[str] = set()
     collections: list[dict] = []
     techniques: list[dict] = []
+    hubs: list[dict] = []
     for slug, template_type, title in pattern.findall(text):
         all_slugs.add(slug)
         if template_type == "category_roundup":
             collections.append({"title": title, "slug": slug})
         elif template_type == "howto_technique":
             techniques.append({"title": title, "slug": slug})
-    return all_slugs, collections, techniques
+        elif template_type == "ingredient_hub":
+            hubs.append({"title": title, "slug": slug})
+    return all_slugs, collections, techniques, hubs
 
 
 def slugify(title: str) -> str:
@@ -129,8 +139,9 @@ def main() -> None:
 
     csv_path = Path(sys.argv[1])
 
-    existing_slugs, collections, techniques = extract_existing_pages()
-    print(f"Found {len(existing_slugs)} existing slugs, {len(collections)} collections, {len(techniques)} how-to pages.")
+    existing_slugs, collections, techniques, hubs = extract_existing_pages()
+    print(f"Found {len(existing_slugs)} existing slugs, {len(collections)} collections, "
+          f"{len(techniques)} how-to pages, {len(hubs)} ingredient hubs.")
 
     # custom_id is only a stable identifier for pairing a request with its
     # result, based on the raw queue keyword -- NOT proposed_article_title

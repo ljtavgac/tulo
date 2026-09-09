@@ -178,11 +178,19 @@ PAN_SIZE_SCHEMA = {
         "alternatives": {
             "type": "array",
             "description": (
-                "Only genuinely common substitute pans of the SAME shape family as "
-                "current (loaf-for-loaf, round-for-round, square/rectangular-for-"
-                "square/rectangular) -- the area-ratio scaling this feeds only makes "
-                "sense for a same-shape-of-bake swap. Empty array if no common "
-                "alternative exists; never fabricate one just to fill this."
+                "At least one genuinely common substitute pan of the SAME shape "
+                "family as current (loaf-for-loaf, round-for-round, square/"
+                "rectangular-for-square/rectangular) -- the area-ratio scaling this "
+                "feeds only makes sense for a same-shape-of-bake swap. Most recipes "
+                "baked in a standard pan size DO have at least one common swap "
+                "(9x13 <-> 9x9 or 8x8 baking dish, 9x5 <-> 8x4 loaf pan, 9-inch <-> "
+                "8-inch or 10-inch round cake/springform/tart pan) -- actually look "
+                "for one before leaving this empty; an empty array here means the "
+                "'Using a different pan?' selector won't render at all, which should "
+                "be rare, not the default. Only leave empty for a genuinely unusual "
+                "pan/dish shape with no common substitute (a bundt pan, a specific "
+                "casserole dish shape, a trifle bowl). Never fabricate a size that "
+                "isn't a real, commonly stocked pan just to fill this."
             ),
             "items": PAN_SIZE_OPTION_SCHEMA,
         },

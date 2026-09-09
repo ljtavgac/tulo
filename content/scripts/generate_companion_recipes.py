@@ -104,9 +104,10 @@ def main() -> None:
         raise SystemExit(1)
 
     api_key = os.environ["PIPELINE_ANTHROPIC_API_KEY"]
-    existing_slugs, collections, techniques = extract_existing_pages()
+    existing_slugs, collections, techniques, hubs = extract_existing_pages()
     collection_slug_set = {c["slug"] for c in collections}
     technique_slug_set = {t["slug"] for t in techniques}
+    hub_slug_set = {h["slug"] for h in hubs}
 
     for collection_slug in collection_slugs:
         collection_title, cards = find_unlinked_cards(collection_slug)
@@ -139,7 +140,7 @@ def main() -> None:
                 content["title"] = card["title"]
                 content["category_link"] = {"title": collection_title, "slug": collection_slug}
 
-                problems = validate_content(custom_id, "recipe_or_dish", content, collection_slug_set, technique_slug_set)
+                problems = validate_content(custom_id, "recipe_or_dish", content, collection_slug_set, technique_slug_set, hub_slug_set)
                 if not problems:
                     print("  -> clean")
                     message["content"] = [{"type": "text", "text": json.dumps(content)}]

@@ -130,6 +130,53 @@ def extract_content(message: dict) -> dict:
     return json.loads(text_blocks[0]["text"])
 
 
+def _force_auto_resolved_fields(template_type: str, content: dict) -> None:
+    """Forces every "always empty/null, resolved automatically" field back
+    to its empty state, in place -- regardless of what the model actually
+    returned. Exists because of a real bug: hibachi-style-vegetables-and-
+    noodles shipped with 7 ingredients' `hub_slug` set to invented slugs
+    ("zucchini", "onion", "garlic", ...) that don't match any real
+    ingredient hub page, even though the schema's own description says
+    "Leave null; hub linking is resolved automatically after generation."
+    A schema instruction is not an enforcement mechanism -- output_config
+    guarantees the *type* is right (a string or null), never that the
+    *value* is a real slug, and this is proof the model can and does
+    ignore a "leave this empty" instruction even under strict-schema
+    generation. Rather than trust compliance and hope validation catches
+    every case, every field with this exact design contract gets forced
+    here, at the one choke point every integration path already calls
+    through for step_notes -- so a future non-compliant generation can
+    reach storage with a wrong type, but never with a wrong slug value in
+    one of these fields.
+
+    hub_slug isn't one of the shared ALWAYS_EMPTY_SLUGS_ARRAY/
+    ALWAYS_NULL_SLUG marker schemas (it's per-ingredient, not a top-level
+    content field), so it's handled by name here rather than picked up by
+    the schema walk below.
+
+    Rebuilds the ingredients list with fresh dicts rather than mutating
+    the existing ones in place -- `content` itself is already a copy (see
+    normalize_for_storage below), but that's only a shallow copy, so the
+    nested ingredient dicts and the list holding them are still the same
+    objects the caller's original content dict points to. Mutating those
+    in place would silently change data out from under any caller still
+    holding a reference to the pre-normalization content (e.g. code that
+    validates, then normalizes, then re-inspects the original for
+    comparison or logging)."""
+    if template_type == "recipe_or_dish" and "ingredients" in content:
+        content["ingredients"] = [
+            {**ingredient, "hub_slug": None} if isinstance(ingredient, dict) else ingredient
+            for ingredient in content["ingredients"]
+        ]
+
+    schema = SCHEMA_BY_TYPE[template_type]
+    for name, sub_schema in schema.get("properties", {}).items():
+        if sub_schema is ALWAYS_EMPTY_SLUGS_ARRAY:
+            content[name] = []
+        elif sub_schema is ALWAYS_NULL_SLUG:
+            content[name] = None
+
+
 def normalize_for_storage(template_type: str, content: dict) -> dict:
     """Converts generation-time-only shapes back to what seed_templates.py
     actually stores, at the one shared choke point every integration path
@@ -148,6 +195,7 @@ def normalize_for_storage(template_type: str, content: dict) -> dict:
     content = dict(content)
     if template_type == "recipe_or_dish" and isinstance(content.get("step_notes"), list):
         content["step_notes"] = {entry["step_index"]: entry["note"] for entry in content["step_notes"]}
+    _force_auto_resolved_fields(template_type, content)
     return content
 
 
@@ -187,11 +235,20 @@ def validate_content(
     content: dict,
     collection_slugs: set,
     technique_slugs: set,
+    hub_slugs: set = frozenset(),
 ) -> list[str]:
     """Full validation for one page's content: schema-required-key presence,
     type conformance (recursive), non-emptiness for depth-check-required
-    fields, double-dash ban, and category_link/technique_link slug
-    existence. Returns a list of issue strings; empty means clean."""
+    fields, double-dash ban, and category_link/technique_link/hub_slug
+    existence. Returns a list of issue strings; empty means clean.
+
+    Runs before normalize_for_storage() at every real call site, so this
+    is what actually surfaces a hub_slug violation like the one on
+    hibachi-style-vegetables-and-noodles for a human to see -- normalize_
+    for_storage() will force it back to null regardless either way, but
+    silently, which would hide that the model didn't follow the "leave
+    null" instruction rather than surfacing it as a real signal worth
+    noticing (e.g. to tighten the prompt)."""
     issues: list[str] = []
     schema = SCHEMA_BY_TYPE[template_type]
 
@@ -225,6 +282,16 @@ def validate_content(
         pan_size = content.get("pan_size")
         if isinstance(pan_size, dict):
             check_pan_size_math(pan_size, custom_id, issues)
+        for ing in content.get("ingredients", []):
+            if not isinstance(ing, dict):
+                continue
+            hub_slug = ing.get("hub_slug")
+            if hub_slug and hub_slug not in hub_slugs:
+                issues.append(
+                    f"[{custom_id}] ingredient {ing.get('name')!r} has hub_slug "
+                    f"{hub_slug!r}, which doesn't match any real ingredient hub page "
+                    "(schema says leave this null -- the model didn't)"
+                )
 
     if template_type == "category_roundup":
         for card in content.get("recipe_cards", []):

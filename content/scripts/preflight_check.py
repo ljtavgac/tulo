@@ -109,9 +109,10 @@ def main() -> None:
               "that static schema review missed) and should not be skipped before a real batch.")
         failures.append("live generation check skipped -- no API key")
     else:
-        existing_slugs, collections, techniques = extract_existing_pages()
+        existing_slugs, collections, techniques, hubs = extract_existing_pages()
         collection_slugs = {c["slug"] for c in collections}
         technique_slugs = {t["slug"] for t in techniques}
+        hub_slugs = {h["slug"] for h in hubs}
         sample_rows = pick_sample_row_per_type(csv_path)
 
         for template_type in SCHEMA_BY_TYPE:
@@ -136,7 +137,7 @@ def main() -> None:
                 failures.append(f"[{template_type}] couldn't extract content: {e}")
                 continue
 
-            issues = validate_content(row["title"], template_type, content, collection_slugs, technique_slugs)
+            issues = validate_content(row["title"], template_type, content, collection_slugs, technique_slugs, hub_slugs)
             if issues:
                 print(f"  -> {len(issues)} validation issue(s):")
                 for issue in issues:

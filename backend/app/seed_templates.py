@@ -9032,7 +9032,7 @@ SEED_PAGES = [
             "cook_time_minutes": 70,
             "total_time_minutes": 90,
             "servings": 6,
-            "pan_size": {"current": {"label": "9x13-inch baking dish", "area_sq_in": 117}, "alternatives": []},
+            "pan_size": {"current": {"label": "9x13-inch baking dish", "area_sq_in": 117}, "alternatives": [{"label": "9x9-inch square baking dish", "area_sq_in": 81}, {"label": "8x8-inch square baking dish", "area_sq_in": 64}]},
             "ingredients": [
                 {"name": "turnips, peeled and thinly sliced", "base_qty": 1, "unit_us": "lb", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
                 {"name": "russet potatoes, peeled and thinly sliced", "base_qty": 1.5, "unit_us": "lb", "base_qty_metric": 680, "unit_metric": "g", "hub_slug": None},
@@ -9543,7 +9543,7 @@ SEED_PAGES = [
             "cook_time_minutes": 60,
             "total_time_minutes": 90,
             "servings": 10,
-            "pan_size": {"current": {"label": "9x5-inch loaf pan", "area_sq_in": 45}, "alternatives": []},
+            "pan_size": {"current": {"label": "9x5-inch loaf pan", "area_sq_in": 45}, "alternatives": [{"label": "8x4-inch loaf pan", "area_sq_in": 32}]},
             "ingredients": [
                 {"name": "Hachiya persimmons, fully soft and ripe, pulp scooped", "base_qty": 2, "unit_us": "large", "base_qty_metric": 2, "unit_metric": "large", "hub_slug": None},
                 {"name": "all-purpose flour", "base_qty": 2, "unit_us": "cups", "base_qty_metric": 250, "unit_metric": "g", "hub_slug": None},
@@ -11986,7 +11986,7 @@ SEED_PAGES = [
             "cook_time_minutes": 60,
             "total_time_minutes": 360,
             "servings": 10,
-            "pan_size": {"current": {"label": "8-inch (20cm) springform pan", "area_sq_in": 50}, "alternatives": []},
+            "pan_size": {"current": {"label": "8-inch (20cm) springform pan", "area_sq_in": 50}, "alternatives": [{"label": "9-inch springform pan", "area_sq_in": 64}]},
             "ingredients": [
                 {"name": "graham cracker crumbs", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 170, "unit_metric": "g", "hub_slug": None},
                 {"name": "unsalted butter, melted", "base_qty": 5, "unit_us": "tbsp", "base_qty_metric": 70, "unit_metric": "g", "hub_slug": None},
@@ -12288,7 +12288,7 @@ SEED_PAGES = [
             "cook_time_minutes": 30,
             "total_time_minutes": 300,
             "servings": 12,
-            "pan_size": {"current": {"label": "9x13-inch baking pan", "area_sq_in": 117}, "alternatives": []},
+            "pan_size": {"current": {"label": "9x13-inch baking pan", "area_sq_in": 117}, "alternatives": [{"label": "9x9-inch square baking pan", "area_sq_in": 81}]},
             "ingredients": [
                 {"name": "all-purpose flour", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 190, "unit_metric": "g", "hub_slug": None},
                 {"name": "baking powder", "base_qty": 1.5, "unit_us": "tsp", "base_qty_metric": 7, "unit_metric": "g", "hub_slug": None},
@@ -15063,7 +15063,7 @@ SEED_PAGES = [
             "technique_link": None,
             "category_link": None,
             "related_recipe_slugs": [],
-            "pan_size": {"current": {"label": "9-inch springform pan", "area_sq_in": 64}, "alternatives": []},
+            "pan_size": {"current": {"label": "9-inch springform pan", "area_sq_in": 64}, "alternatives": [{"label": "8-inch springform pan", "area_sq_in": 50}]},
         },
     },
     {
@@ -15769,7 +15769,7 @@ SEED_PAGES = [
             "technique_link": None,
             "category_link": None,
             "related_recipe_slugs": [],
-            "pan_size": {"current": {"label": "9x5-inch loaf pan", "area_sq_in": 45}, "alternatives": []},
+            "pan_size": {"current": {"label": "9x5-inch loaf pan", "area_sq_in": 45}, "alternatives": [{"label": "8x4-inch loaf pan", "area_sq_in": 32}]},
         },
     },
     {
@@ -17942,7 +17942,7 @@ SEED_PAGES = [
             "technique_link": None,
             "category_link": None,
             "related_recipe_slugs": [],
-            "pan_size": {"current": {"label": "9x13-inch baking dish", "area_sq_in": 117}, "alternatives": []},
+            "pan_size": {"current": {"label": "9x13-inch baking dish", "area_sq_in": 117}, "alternatives": [{"label": "9x9-inch square baking dish", "area_sq_in": 81}]},
         },
     },
     {
@@ -20113,7 +20113,7 @@ SEED_PAGES = [
                     "unit_us": "medium",
                     "base_qty_metric": 2,
                     "unit_metric": "medium",
-                    "hub_slug": "zucchini",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 33,
                         "protein_g": 2.4,
@@ -20127,7 +20127,7 @@ SEED_PAGES = [
                     "unit_us": "large",
                     "base_qty_metric": 1,
                     "unit_metric": "large",
-                    "hub_slug": "onion",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 44,
                         "protein_g": 1.2,
@@ -20141,7 +20141,7 @@ SEED_PAGES = [
                     "unit_us": "cups",
                     "base_qty_metric": 210,
                     "unit_metric": "g",
-                    "hub_slug": "cabbage",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 25,
                         "protein_g": 1.3,
@@ -20155,7 +20155,7 @@ SEED_PAGES = [
                     "unit_us": "large",
                     "base_qty_metric": 1,
                     "unit_metric": "large",
-                    "hub_slug": "carrot",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 41,
                         "protein_g": 0.9,
@@ -20169,7 +20169,7 @@ SEED_PAGES = [
                     "unit_us": "tbsp",
                     "base_qty_metric": 70,
                     "unit_metric": "g",
-                    "hub_slug": "butter",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 102,
                         "protein_g": 0.1,
@@ -20197,7 +20197,7 @@ SEED_PAGES = [
                     "unit_us": "cloves",
                     "base_qty_metric": 3,
                     "unit_metric": "cloves",
-                    "hub_slug": "garlic",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 4,
                         "protein_g": 0.2,
@@ -20239,7 +20239,7 @@ SEED_PAGES = [
                     "unit_us": "stalks",
                     "base_qty_metric": 3,
                     "unit_metric": "stalks",
-                    "hub_slug": "green-onion",
+                    "hub_slug": None,
                     "nutrition_per_unit": {
                         "calories": 5,
                         "protein_g": 0.3,

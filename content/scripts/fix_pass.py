@@ -59,9 +59,10 @@ def main() -> None:
 
     api_key = os.environ["PIPELINE_ANTHROPIC_API_KEY"]
 
-    existing_slugs, collections, techniques = extract_existing_pages()
+    existing_slugs, collections, techniques, hubs = extract_existing_pages()
     collection_slugs = {c["slug"] for c in collections}
     technique_slugs = {t["slug"] for t in techniques}
+    hub_slugs = {h["slug"] for h in hubs}
 
     manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"
     if manifest_path.exists():
@@ -91,7 +92,7 @@ def main() -> None:
             except (ValueError, json.JSONDecodeError) as e:
                 print(f"  -> couldn't extract content ({e}), retrying")
                 continue
-            problems = validate_content(custom_id, template_type, content, collection_slugs, technique_slugs)
+            problems = validate_content(custom_id, template_type, content, collection_slugs, technique_slugs, hub_slugs)
             if not problems:
                 print(f"  -> clean")
                 fixed_lines.append({

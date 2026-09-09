@@ -104,7 +104,7 @@ def main() -> None:
     with results_path.open() as f:
         results = [json.loads(l) for l in f]
 
-    existing_slugs, _, _ = extract_existing_pages()
+    existing_slugs, _, _, _ = extract_existing_pages()
     taken_slugs = set(existing_slugs)
 
     manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"

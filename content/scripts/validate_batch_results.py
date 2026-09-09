@@ -49,9 +49,10 @@ def main() -> None:
     with results_path.open() as f:
         results = [json.loads(l) for l in f]
 
-    existing_slugs, collections, techniques = extract_existing_pages()
+    existing_slugs, collections, techniques, hubs = extract_existing_pages()
     collection_slugs = {c["slug"] for c in collections}
     technique_slugs = {t["slug"] for t in techniques}
+    hub_slugs = {h["slug"] for h in hubs}
 
     manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"
     if manifest_path.exists():
@@ -67,6 +68,7 @@ def main() -> None:
     clean_ids: list[str] = []
     bad_ids: set[str] = set()
     high_headroom: list[tuple[str, int, int]] = []  # (custom_id, output_tokens, budget)
+    empty_pan_alternatives: list[tuple[str, str]] = []  # (custom_id, current pan label)
 
     for r in results:
         custom_id = r["custom_id"]
@@ -99,12 +101,16 @@ def main() -> None:
             bad_ids.add(custom_id)
             continue
 
-        row_issues = validate_content(custom_id, template_type, content, collection_slugs, technique_slugs)
+        row_issues = validate_content(custom_id, template_type, content, collection_slugs, technique_slugs, hub_slugs)
 
         title = content.get("title", "") if isinstance(content.get("title"), str) else ""
         pattern = TITLE_PATTERN_BY_TYPE.get(template_type)
         if pattern and not pattern.search(title):
             row_issues.append(f"[{custom_id}] title {title!r} doesn't match expected {template_type} convention")
+
+        pan_size = content.get("pan_size")
+        if isinstance(pan_size, dict) and not pan_size.get("alternatives"):
+            empty_pan_alternatives.append((custom_id, pan_size.get("current", {}).get("label", "?")))
 
         if row_issues:
             bad_ids.add(custom_id)
@@ -134,6 +140,15 @@ def main() -> None:
               "truncation. Consider raising that template type's MAX_TOKENS_BY_TYPE entry before the next batch:")
         for custom_id, output_tokens, budget in high_headroom:
             print(f"  - [{custom_id}] {output_tokens}/{budget} tokens ({output_tokens / budget:.0%})")
+    print()
+    if empty_pan_alternatives:
+        print(f"NOTE: {len(empty_pan_alternatives)} recipe(s) have a pan_size but zero alternatives -- "
+              "not a failure (some pan shapes genuinely have no common swap, e.g. a bundt pan), but "
+              "the \"Using a different pan?\" selector won't render on these pages at all (see "
+              "RecipeIngredientsPanel.tsx), so worth a quick human glance: is there really no common "
+              "same-shape-family swap for this pan (9x13<->9x9/8x8, 9x5<->8x4 loaf, round<->round)?")
+        for custom_id, current_label in empty_pan_alternatives:
+            print(f"  - [{custom_id}] current: {current_label!r}")
     else:
         print(f"No result used >={TOKEN_HEADROOM_WARN_THRESHOLD:.0%} of its max_tokens budget.")
 
