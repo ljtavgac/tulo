@@ -10,6 +10,13 @@ Usage:
         content/pilot_batch_50.csv content/scripts/output/pilot_batch_50_final.jsonl \
         --skip custom_id_1 custom_id_2
 
+    # A companion-recipe results file (see generate_companion_recipes.py)
+    # has no CSV row to look up a template_type from -- every entry in one
+    # is always recipe_or_dish by that script's own design, so pass it
+    # directly instead of a CSV path:
+    python3 content/scripts/integrate_batch_results.py \
+        --template-type recipe_or_dish content/scripts/output/companion_dip-recipes.jsonl
+
 Only rows that pass validate_batch_results.py's checks should be passed in
 here -- this script does not re-fix anything, it only serializes and inserts.
 """
@@ -95,11 +102,28 @@ def format_page_entry(slug: str, template_type: str, title: str, batch_number: i
 
 
 def main() -> None:
-    csv_path = Path(sys.argv[1])
-    results_path = Path(sys.argv[2])
     skip_ids = set()
     if "--skip" in sys.argv:
         skip_ids = set(sys.argv[sys.argv.index("--skip") + 1:])
+
+    # A companion-recipe results file (see generate_companion_recipes.py)
+    # has no queue CSV row behind it at all -- every entry is always
+    # recipe_or_dish, forced by that script's own design, not something
+    # that needs (or can have) a per-row lookup. --template-type skips the
+    # CSV/manifest path entirely rather than asking a caller to fabricate
+    # a fake CSV row just to satisfy this script -- a real gap found by
+    # hitting it twice (the original pinwheel/blackstone companions, then
+    # again for dip-recipes/juicing-recipes) with no clean way to do it.
+    forced_template_type = None
+    if "--template-type" in sys.argv:
+        idx = sys.argv.index("--template-type")
+        forced_template_type = sys.argv[idx + 1]
+        positional = [a for i, a in enumerate(sys.argv[1:], start=1) if i not in (idx, idx + 1) and a not in skip_ids and a != "--skip"]
+        results_path = Path(positional[0])
+        csv_path = None
+    else:
+        csv_path = Path(sys.argv[1])
+        results_path = Path(sys.argv[2])
 
     with results_path.open() as f:
         results = [json.loads(l) for l in f]
@@ -107,13 +131,16 @@ def main() -> None:
     existing_slugs, _, _, _ = extract_existing_pages()
     taken_slugs = set(existing_slugs)
 
-    manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"
-    if manifest_path.exists():
-        id_to_row = load_id_to_row_from_manifest(csv_path, manifest_path)
+    if forced_template_type is not None:
+        id_to_row = {r["custom_id"]: {"template_type": forced_template_type, "batch_number": 0} for r in results}
     else:
-        print(f"WARNING: no manifest at {manifest_path}, re-deriving custom_ids -- "
-              "only safe if seed_templates.py hasn't changed since this batch was built.")
-        id_to_row = build_id_to_row(csv_path, existing_slugs)
+        manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"
+        if manifest_path.exists():
+            id_to_row = load_id_to_row_from_manifest(csv_path, manifest_path)
+        else:
+            print(f"WARNING: no manifest at {manifest_path}, re-deriving custom_ids -- "
+                  "only safe if seed_templates.py hasn't changed since this batch was built.")
+            id_to_row = build_id_to_row(csv_path, existing_slugs)
 
     # Snapshot of slugs that existed BEFORE this run -- distinct from
     # taken_slugs below, which gets mutated as this run assigns slugs to
@@ -194,8 +221,9 @@ def main() -> None:
     # a hardcoded "pilot" description here would silently mislabel every
     # later real batch, which reuses this same script.
     today = date.today().isoformat()
+    source_label = csv_path.name if csv_path is not None else results_path.name
     header = (
-        f"\n    # --- Batch: {csv_path.name} ({today}), generated via\n"
+        f"\n    # --- Batch: {source_label} ({today}), generated via\n"
         "    # content/scripts/build_batch_requests.py + Batch API, integrated via\n"
         "    # content/scripts/integrate_batch_results.py.\n"
     )
