@@ -25,7 +25,7 @@ import sys
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal
-from .images import is_allowed_image_url, search_image, ping_download, UNSPLASH_ACCESS_KEY, PEXELS_ACCESS_KEY
+from .images import _is_reachable, is_allowed_image_url, search_image, ping_download, UNSPLASH_ACCESS_KEY, PEXELS_ACCESS_KEY
 from .models import Page
 
 # template_type -> the content key holding the search query for a single
@@ -101,6 +101,19 @@ SINGLE_IMAGE_FALLBACKS = {
 }
 
 
+def _needs_fetch(url: str | None, revalidate: bool) -> bool:
+    """False only for a URL that's present, on an allowed host, and (when
+    revalidate is on) still actually loads -- true for everything else:
+    missing, wrong host, or (revalidate only) dead at the source. The one
+    check every "does this page/card need a fetch" decision in this module
+    should go through, so `force`/`revalidate` semantics stay identical
+    between the single-image branch and the category_roundup card branch
+    rather than each reimplementing its own version and drifting apart."""
+    if not is_allowed_image_url(url):
+        return True
+    return revalidate and not _is_reachable(url)
+
+
 def _apply_result(content: dict, queries: list[str], template_type: str, used_urls: set[str]) -> bool:
     """Tries each query in `queries`, in order, and writes
     image_url/image_attribution into `content` in place from the first one
@@ -124,14 +137,49 @@ def _apply_result(content: dict, queries: list[str], template_type: str, used_ur
     return False
 
 
-def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None = None) -> tuple[int, int]:
+def fetch_images(
+    db: Session,
+    force: bool = False,
+    only_slugs: set[str] | None = None,
+    revalidate: bool = False,
+) -> tuple[int, int]:
     """Returns (pages_updated, images_written).
 
     `only_slugs`, when given, restricts the run to exactly those pages and
     always re-fetches them (as if `force` were true just for them) -- for
     redoing a specific page whose photo is wrong (not missing, not broken,
     just a bad match) without touching, and risking re-rolling, every other
-    page's already-correct photo the way a site-wide force run would.
+    page's already-correct photo the way a site-wide force run would. A
+    slug in this set also matches a category_roundup *card* by its own
+    slug, not just a top-level Page.slug -- a card's photo is nested
+    inside its parent collection page's own row, so without this a caller
+    asking to redo one specific dish's card (as opposed to its standalone
+    recipe page, a different row entirely) would silently no-op: the
+    collection page's own slug wouldn't be in only_slugs, so the whole
+    page -- card included -- would get skipped by the top-level filter
+    below before ever reaching the card loop. Confirmed as a real bug via
+    char-siu's chinese-recipes card: an admin re-fetch scoped to
+    `slugs=char-siu` refreshed the standalone recipe page (a real, useful
+    photo) while leaving the card's own separately-fetched, since-dead
+    photo completely untouched, because the two live in different Page
+    rows and only one of those rows matched the filter.
+
+    `revalidate`, when true, treats an existing image_url as needing a
+    fresh fetch if it's simply no longer reachable, not just missing or on
+    a disallowed host. images.py's own _is_reachable() already guards
+    against writing a dead URL in the first place (checked once, at the
+    moment a candidate is selected) -- but a photo can still be taken down
+    at the source *after* it was fetched and validated, with nothing to
+    catch that later than a human noticing a missing photo (StockPhotoSlot
+    hides a failed image load rather than showing a broken-image icon).
+    Off by default since it costs one real network request per
+    already-valid image already in the database, unlike the cheap
+    string-only check every other run does -- meant to be run
+    periodically (e.g. a scheduled weekly call to
+    /admin/fetch-images?revalidate=true) as the actual mechanism that
+    catches this class of decay without requiring a bug report first, the
+    same way `force` costs more than the default run and is used
+    deliberately rather than on every call.
     """
     pages_updated = 0
     images_written = 0
@@ -157,9 +205,26 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
     pages.sort(key=lambda p: p.template_type == "category_roundup")
 
     for page in pages:
-        if only_slugs is not None and page.slug not in only_slugs:
+        # A card's slug lives inside its parent category_roundup page's own
+        # row, so `page.slug in only_slugs` alone would miss a request
+        # scoped to a card slug entirely -- check the page's own slug OR
+        # any of its cards' slugs before deciding to skip it. Recomputed
+        # per page rather than once up front since only category_roundup
+        # pages have cards to check.
+        page_explicitly_requested = only_slugs is not None and page.slug in only_slugs
+        requested_card_slugs: set[str] = set()
+        if only_slugs is not None and page.template_type == "category_roundup":
+            requested_card_slugs = {
+                c.get("slug") for c in page.content.get("recipe_cards", []) if c.get("slug")
+            } & only_slugs
+
+        if only_slugs is not None and not page_explicitly_requested and not requested_card_slugs:
             continue
-        force_this_page = force or only_slugs is not None
+        # Force applies to the whole page when it (not just one of its
+        # cards) was named, or a site-wide force run is in effect --
+        # requested_card_slugs handles the narrower "just this one card"
+        # case on its own, inside the card loop below.
+        force_this_page = force or page_explicitly_requested
 
         # A deep copy, not a reference: mutating page.content directly (or a
         # shallow copy of it, for category_roundup's nested recipe_cards)
@@ -179,7 +244,7 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
             # second look, so a page that once broke stayed broken through
             # every future startup until someone found it by hand via
             # /admin/image-audit and re-ran with force=true.
-            if force_this_page or not is_allowed_image_url(content.get("image_url")):
+            if force_this_page or _needs_fetch(content.get("image_url"), revalidate):
                 query = content[query_key]
                 queries = [query]
                 if page.template_type == "comparison":
@@ -250,8 +315,14 @@ def fetch_images(db: Session, force: bool = False, only_slugs: set[str] | None =
                 # disallowed host too (this is literally the case that
                 # motivated adding the host check to images.py in the first
                 # place: category cards' image_query terms are often niche
-                # enough to surface Unsplash+ results).
-                if force_this_page or not is_allowed_image_url(card.get("image_url")):
+                # enough to surface Unsplash+ results). force_this_card
+                # covers a request scoped to just this one card's own slug
+                # (see requested_card_slugs above) as well as force_this_page
+                # (force=true, or the whole collection page's own slug was
+                # named), so `slugs=char-siu` reaches this specific card's
+                # photo without touching its 5 siblings.
+                force_this_card = force_this_page or card.get("slug") in requested_card_slugs
+                if force_this_card or _needs_fetch(card.get("image_url"), revalidate):
                     query = card.get("image_query")
                     if not query:
                         continue

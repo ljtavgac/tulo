@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, fetch_images
-from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY, is_allowed_image_url
+from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY, _is_reachable, is_allowed_image_url
 from .models import Page
 from .schemas import PageOut, PageSummary
 from .seed_templates import resync_content, seed
@@ -618,7 +618,29 @@ ADMIN_TASK_TOKEN = os.environ.get("ADMIN_TASK_TOKEN")
 def trigger_fetch_images(
     token: str,
     force: bool = False,
-    slugs: str | None = Query(default=None, description="Comma-separated page slugs to re-fetch, ignoring every other page. Always re-fetches the given slugs regardless of `force`."),
+    slugs: str | None = Query(
+        default=None,
+        description=(
+            "Comma-separated slugs to re-fetch, ignoring every other page. Always "
+            "re-fetches the given slugs regardless of `force`. Matches a "
+            "category_roundup card by its own slug too, not just a top-level "
+            "page's slug -- e.g. `slugs=char-siu` redoes both the standalone "
+            "char-siu recipe page and (if it's linked into one) its card on a "
+            "collection page, without touching that collection's other cards."
+        ),
+    ),
+    revalidate: bool = Query(
+        default=False,
+        description=(
+            "Also treat an existing image_url as needing a fresh fetch if it no "
+            "longer actually loads (not just missing or on a disallowed host) -- "
+            "one real network request per already-valid image, so this is "
+            "noticeably slower than a normal run. Meant to be run periodically "
+            "(e.g. a scheduled weekly call) as the actual self-healing mechanism "
+            "for a photo that was live when fetched but has since been taken "
+            "down at the source -- see fetch_images()'s own docstring."
+        ),
+    ),
     db: Session = Depends(get_db),
 ):
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
@@ -628,7 +650,7 @@ def trigger_fetch_images(
 
     log = io.StringIO()
     with redirect_stdout(log):
-        pages_updated, images_written = fetch_images(db, force=force, only_slugs=only_slugs)
+        pages_updated, images_written = fetch_images(db, force=force, only_slugs=only_slugs, revalidate=revalidate)
 
     frontend_revalidated = _revalidate_frontend() if images_written else False
 
@@ -643,11 +665,26 @@ def trigger_fetch_images(
 
 
 @app.get("/admin/image-audit")
-def image_audit(token: str, db: Session = Depends(get_db)):
-    """A full-site image report with no external API calls -- a pure read
-    of what's already in the database, gated behind the same
-    ADMIN_TASK_TOKEN as /admin/fetch-images. Two kinds of problems this
-    surfaces that clicking through pages one at a time can't:
+def image_audit(
+    token: str,
+    check_reachability: bool = Query(
+        default=False,
+        description=(
+            "Also live-check (GET, not just a host-string check) every "
+            "image_url that already looks valid. Off by default -- this "
+            "endpoint is otherwise a pure DB read with no external calls, "
+            "and this option trades that for the one check that actually "
+            "catches a URL that was reachable when fetched but has since "
+            "died at the source (see `dead` below); runs one request per "
+            "image, so it's slower and worth reserving for an actual "
+            "periodic check, not every casual call."
+        ),
+    ),
+    db: Session = Depends(get_db),
+):
+    """A full-site image report, gated behind the same ADMIN_TASK_TOKEN as
+    /admin/fetch-images. Three kinds of problems this surfaces that
+    clicking through pages one at a time can't:
 
     - `missing`: pages/cards with no image_url at all (shows as the
       placeholder box on the site).
@@ -659,20 +696,36 @@ def image_audit(token: str, db: Session = Depends(get_db)):
       itself now treats an existing broken URL the same as a missing one,
       so every entry here self-heals on the next startup or
       /admin/fetch-images run with no `force` needed -- this endpoint is
-      now purely diagnostic, not a required step before a fix takes
-      effect.)
+      purely diagnostic for this case, not a required step before a fix
+      takes effect.)
+    - `dead` (only checked when check_reachability=true): a URL that looks
+      fine (real host, real shape) but the photo itself no longer loads --
+      taken down at the source after being fetched, going stale in a way
+      images.py's own write-time _is_reachable() check can't catch, since
+      that only runs once, at the moment a photo is first selected. This
+      is exactly the class of bug that shipped silently on char-siu's
+      chinese-recipes card: a photo valid when written, dead by the time a
+      reader actually saw the page, with nothing surfacing it except a
+      user noticing the missing photo (StockPhotoSlot's onError hides a
+      failed load rather than showing a broken-image icon, by design --
+      see its own docstring). Same remediation as `broken`: an
+      /admin/fetch-images run (force=true, scoped via `slugs` to just the
+      affected pages) replaces it with a fresh, currently-live photo.
     """
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
     missing = []
     broken = []
+    dead = []
 
     def _check(url: str | None, **identity):
         if not url:
             missing.append(identity)
         elif not is_allowed_image_url(url):
             broken.append({**identity, "image_url": url})
+        elif check_reachability and not _is_reachable(url):
+            dead.append({**identity, "image_url": url})
 
     for page in db.query(Page).order_by(Page.id).all():
         content = page.content
@@ -688,4 +741,6 @@ def image_audit(token: str, db: Session = Depends(get_db)):
         "missing": missing,
         "broken_count": len(broken),
         "broken": broken,
+        "dead_count": len(dead) if check_reachability else None,
+        "dead": dead,
     }
