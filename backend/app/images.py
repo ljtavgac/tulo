@@ -31,6 +31,39 @@ class ImageResult:
     download_location: str | None = None
 
 
+def _is_relevant(alt_text: str, must_match: str | None) -> bool:
+    """Both search APIs rank on loose keyword overlap, not actual subject
+    matching -- confirmed for real against two live results: the query
+    "roasted beets whole on baking sheet" (how-to-cook-beets) returned a
+    roasted TURKEY on a baking sheet as its top reachable match (overlapping
+    on "roasted"/"baking sheet", not the actual subject), and "stick of
+    butter next to margarine, coconut oil, and olive oil on a kitchen
+    counter" (best-substitutes-for-butter) returned an unrelated creatine
+    supplement photo. is_allowed_image_url()/_is_reachable() only check
+    that a URL is servable, not that the photo is actually of the right
+    thing -- neither catches this.
+
+    `must_match` is the page's single core subject noun (e.g. "beets",
+    "butter" -- see SINGLE_IMAGE_FALLBACKS in fetch_stock_images.py, which
+    already derives exactly this term for its own fallback query and is
+    reused here rather than re-deriving it). A candidate is accepted only
+    if that word actually appears in the API's own alt/description text
+    for the photo -- cheap (no extra request, this text comes back with
+    every search result already) and catches both real failures above,
+    since neither alt text ("roasted turkey...", a creatine product
+    description) contains the required term.
+
+    Returns True (accept) when `must_match` is None (caller has no single
+    reliable subject to check, e.g. recipe_or_dish's free-form dish names)
+    or when `alt_text` is blank (some photos, mostly on Unsplash, have no
+    description at all -- nothing to check against, and refusing every
+    such photo would throw away many good matches over a false negative).
+    """
+    if not must_match or not alt_text:
+        return True
+    return must_match.lower() in alt_text.lower()
+
+
 SEARCH_RESULTS_PER_PAGE = 10
 
 # next.config.mjs only allowlists these two hosts for next/image -- any photo
@@ -92,7 +125,9 @@ def _is_reachable(url: str) -> bool:
         return False
 
 
-def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
+def _search_unsplash(
+    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | None = None
+) -> ImageResult | None:
     r = requests.get(
         "https://api.unsplash.com/search/photos",
         headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
@@ -102,7 +137,13 @@ def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> 
     r.raise_for_status()
     for photo in r.json().get("results", []):
         url = photo["urls"]["regular"]
-        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS) or not _is_reachable(url):
+        alt_text = " ".join(filter(None, (photo.get("alt_description"), photo.get("description"))))
+        if (
+            url in exclude_urls
+            or not url.startswith(ALLOWED_IMAGE_HOSTS)
+            or not _is_relevant(alt_text, must_match)
+            or not _is_reachable(url)
+        ):
             continue
         return ImageResult(
             url=url,
@@ -114,7 +155,9 @@ def _search_unsplash(query: str, exclude_urls: frozenset[str] = frozenset()) -> 
     return None
 
 
-def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
+def _search_pexels(
+    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | None = None
+) -> ImageResult | None:
     r = requests.get(
         "https://api.pexels.com/v1/search",
         headers={"Authorization": PEXELS_ACCESS_KEY},
@@ -124,7 +167,13 @@ def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> Im
     r.raise_for_status()
     for photo in r.json().get("photos", []):
         url = photo["src"]["large"]
-        if url in exclude_urls or not url.startswith(ALLOWED_IMAGE_HOSTS) or not _is_reachable(url):
+        alt_text = photo.get("alt") or ""
+        if (
+            url in exclude_urls
+            or not url.startswith(ALLOWED_IMAGE_HOSTS)
+            or not _is_relevant(alt_text, must_match)
+            or not _is_reachable(url)
+        ):
             continue
         return ImageResult(
             url=url,
@@ -135,10 +184,12 @@ def _search_pexels(query: str, exclude_urls: frozenset[str] = frozenset()) -> Im
     return None
 
 
-def search_image(query: str, exclude_urls: frozenset[str] = frozenset()) -> ImageResult | None:
+def search_image(
+    query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | None = None
+) -> ImageResult | None:
     """Unsplash first, Pexels as fallback. Returns None only if no keys are
-    configured or neither provider has an unused match for this query -- a
-    real API failure (bad key, rate limit, network error) raises
+    configured or neither provider has an unused, relevant match for this
+    query -- a real API failure (bad key, rate limit, network error) raises
     requests.RequestException instead of silently masquerading as "no
     result," so callers (see fetch_stock_images.py, which already catches
     and logs per-page errors) can tell "nothing found" apart from
@@ -148,17 +199,23 @@ def search_image(query: str, exclude_urls: frozenset[str] = frozenset()) -> Imag
     same run -- without it, a thin catalog for a niche query (e.g. a
     specific regional dish name) can return the same "best match" photo
     for several different searches, showing up as the same picture on
-    multiple recipes."""
+    multiple recipes.
+
+    `must_match`, when given, is passed straight through to _is_relevant()
+    on both providers -- see that function for why this exists (a search
+    API ranks on loose keyword overlap, not actual subject matching, and
+    already produced two live wrong-photo results with no other check in
+    this pipeline catching it)."""
     if UNSPLASH_ACCESS_KEY:
         try:
-            result = _search_unsplash(query, exclude_urls)
+            result = _search_unsplash(query, exclude_urls, must_match)
             if result:
                 return result
         except requests.RequestException as e:
             print(f"    Unsplash request failed ({e}), falling back to Pexels")
 
     if PEXELS_ACCESS_KEY:
-        return _search_pexels(query, exclude_urls)
+        return _search_pexels(query, exclude_urls, must_match)
 
     return None
 

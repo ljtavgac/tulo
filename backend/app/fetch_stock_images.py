@@ -114,13 +114,22 @@ def _needs_fetch(url: str | None, revalidate: bool) -> bool:
     return revalidate and not _is_reachable(url)
 
 
-def _apply_result(content: dict, queries: list[str], template_type: str, used_urls: set[str]) -> bool:
+def _apply_result(
+    content: dict, queries: list[str], template_type: str, used_urls: set[str], must_match: str | None = None
+) -> bool:
     """Tries each query in `queries`, in order, and writes
     image_url/image_attribution into `content` in place from the first one
-    that finds a result. Returns True if it found and wrote one."""
+    that finds a result. Returns True if it found and wrote one.
+
+    `must_match`, when given, is checked against every query attempt (not
+    just a fallback query) -- see images.py's _is_relevant() for why: a
+    search API can return a wrong-subject photo for the *primary* query
+    just as easily as for a fallback one (that's exactly what happened for
+    how-to-cook-beets, where "roasted beets whole on baking sheet" itself,
+    not a fallback, returned a roasted turkey)."""
     for query in queries:
         search_query = _search_query_for(template_type, query)
-        result = search_image(search_query, exclude_urls=frozenset(used_urls))
+        result = search_image(search_query, exclude_urls=frozenset(used_urls), must_match=must_match)
         if result is None:
             print(f"    no result for '{search_query}'")
             continue
@@ -257,12 +266,17 @@ def fetch_images(
                 queries = [query]
                 if page.template_type == "comparison":
                     # Already has two clean, broad item names on hand --
-                    # no need to derive anything from the title.
+                    # no need to derive anything from the title. No single
+                    # must_match term fits here (a comparison photo can
+                    # legitimately show either item, or both), so this
+                    # template is deliberately left out of the relevance
+                    # check rather than forcing a wrong one.
                     queries += [
                         name
                         for name in (content.get("item_a_name"), content.get("item_b_name"))
                         if name and name.lower() != query.lower()
                     ]
+                    must_match = None
                 elif page.template_type == "recipe_or_dish":
                     # No SINGLE_IMAGE_FALLBACKS entry for recipe_or_dish
                     # (see that dict's comment: a dish name is already about
@@ -286,15 +300,23 @@ def fetch_images(
                         fallback = _category_fallback_query(category_title)
                         if fallback and fallback.lower() != query.lower():
                             queries.append(fallback)
+                    must_match = None
                 else:
                     fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
-                    if fallback_fn:
-                        fallback = fallback_fn(page.title)
-                        if fallback and fallback.lower() != query.lower():
-                            queries.append(fallback)
+                    # Also the required subject term for every query tried
+                    # for this page, not just used to build the fallback
+                    # query itself -- see _apply_result's must_match. Every
+                    # template in SINGLE_IMAGE_FALLBACKS reduces to exactly
+                    # one core noun (the ingredient/term/technique subject
+                    # itself), which is what a photo for this page actually
+                    # needs to be of, whether it was found via the specific
+                    # hero_image_query or the broader fallback.
+                    must_match = fallback_fn(page.title) if fallback_fn else None
+                    if must_match and must_match.lower() != query.lower():
+                        queries.append(must_match)
                 print(f"  {page.slug}: searching '{query}'...")
                 try:
-                    if _apply_result(content, queries, page.template_type, used_urls):
+                    if _apply_result(content, queries, page.template_type, used_urls, must_match):
                         images_written += 1
                         changed = True
                     elif content.get("image_url"):
