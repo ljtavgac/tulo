@@ -101,6 +101,20 @@ def _ingredient_hub_fallback_query(page_title: str) -> str:
     return page_title
 
 
+def _ingredient_hub_relaxed_term(page_title: str) -> str:
+    """Last word of the title -- the head noun ("Milano Cookies" ->
+    "Cookies", "Celtic Salt" -> "Salt", "Bread Flour" -> "Flour") -- a
+    last-resort, looser query+must_match pair tried only after the exact
+    title itself comes up with nothing. Confirmed necessary for real: even
+    after the identity fallback above, milano-cookies found no match for
+    "Milano Cookies" on Pexels (the only provider configured at the time)
+    -- a specific branded product name genuinely isn't tagged on a generic
+    stock site the way a plain ingredient name is. A representative
+    "cookies" photo beats no photo at all for a page like this."""
+    words = page_title.strip().split()
+    return words[-1] if words else page_title
+
+
 # template_type -> a function deriving the page's single core-subject term,
 # used two ways: as a broader fallback query when the template's own
 # hero_image_query (a specific shot description) has no stock match, AND
@@ -135,23 +149,27 @@ def _needs_fetch(url: str | None, revalidate: bool) -> bool:
 
 
 def _apply_result(
-    content: dict, queries: list[str], template_type: str, used_urls: set[str], must_match: str | None = None
+    content: dict, attempts: list[tuple[str, str | None]], template_type: str, used_urls: set[str]
 ) -> bool:
-    """Tries each query in `queries`, in order, and writes
-    image_url/image_attribution into `content` in place from the first one
-    that finds a result. Returns True if it found and wrote one.
+    """Tries each (query, must_match) pair in `attempts`, in order, and
+    writes image_url/image_attribution into `content` in place from the
+    first one that finds a result. Returns True if it found and wrote one.
 
-    `must_match`, when given, is checked against every query attempt (not
-    just a fallback query) -- see images.py's _is_relevant() for why: a
-    search API can return a wrong-subject photo for the *primary* query
-    just as easily as for a fallback one (that's exactly what happened for
-    how-to-cook-beets, where "roasted beets whole on baking sheet" itself,
-    not a fallback, returned a roasted turkey)."""
-    for query in queries:
+    Each attempt carries its own must_match rather than one fixed term for
+    the whole call, so a caller can progressively relax the required
+    subject term across attempts (see _ingredient_hub_relaxed_term) instead
+    of only ever trying alternate query text at one fixed strictness.
+    must_match, when not None, is checked by images.py's _is_relevant() --
+    see its docstring for why this exists: a search API can return a
+    wrong-subject photo for the *primary* query just as easily as for a
+    fallback one (that's exactly what happened for how-to-cook-beets,
+    where "roasted beets whole on baking sheet" itself, not a fallback,
+    returned a roasted turkey)."""
+    for query, must_match in attempts:
         search_query = _search_query_for(template_type, query)
         result = search_image(search_query, exclude_urls=frozenset(used_urls), must_match=must_match)
         if result is None:
-            print(f"    no result for '{search_query}'")
+            print(f"    no result for '{search_query}'" + (f" (must mention {must_match!r})" if must_match else ""))
             continue
         content["image_url"] = result.url
         content["image_attribution"] = {
@@ -296,7 +314,7 @@ def fetch_images(
                         for name in (content.get("item_a_name"), content.get("item_b_name"))
                         if name and name.lower() != query.lower()
                     ]
-                    must_match = None
+                    attempts = [(q, None) for q in queries]
                 elif page.template_type == "recipe_or_dish":
                     # No SINGLE_IMAGE_FALLBACKS entry for recipe_or_dish
                     # (see that dict's comment: a dish name is already about
@@ -320,7 +338,7 @@ def fetch_images(
                         fallback = _category_fallback_query(category_title)
                         if fallback and fallback.lower() != query.lower():
                             queries.append(fallback)
-                    must_match = None
+                    attempts = [(q, None) for q in queries]
                 else:
                     fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
                     # Also the required subject term for every query tried
@@ -334,9 +352,18 @@ def fetch_images(
                     must_match = fallback_fn(page.title) if fallback_fn else None
                     if must_match and must_match.lower() != query.lower():
                         queries.append(must_match)
+                    attempts = [(q, must_match) for q in queries]
+                    # ingredient_hub only: a last-resort relaxed attempt
+                    # once the exact title itself has been tried and failed
+                    # -- see _ingredient_hub_relaxed_term's docstring for
+                    # the real case (milano-cookies) that motivated this.
+                    if page.template_type == "ingredient_hub":
+                        relaxed = _ingredient_hub_relaxed_term(page.title)
+                        if relaxed and relaxed.lower() != (must_match or "").lower():
+                            attempts.append((relaxed, relaxed))
                 print(f"  {page.slug}: searching '{query}'...")
                 try:
-                    if _apply_result(content, queries, page.template_type, used_urls, must_match):
+                    if _apply_result(content, attempts, page.template_type, used_urls):
                         images_written += 1
                         changed = True
                     elif content.get("image_url"):
@@ -383,9 +410,10 @@ def fetch_images(
                     # too niche to have stock photos of its own.
                     fallback = _category_fallback_query(page.title)
                     queries = [query] if fallback.lower() == query.lower() else [query, fallback]
+                    attempts = [(q, None) for q in queries]
                     print(f"  {page.slug} / {card.get('title')}: searching '{query}'...")
                     try:
-                        if _apply_result(card, queries, page.template_type, used_urls):
+                        if _apply_result(card, attempts, page.template_type, used_urls):
                             images_written += 1
                             changed = True
                         elif card.get("image_url"):
