@@ -64,7 +64,19 @@ def _is_relevant(alt_text: str, must_match: str | None) -> bool:
     return must_match.lower() in alt_text.lower()
 
 
-SEARCH_RESULTS_PER_PAGE = 10
+# How many candidates a single search API call asks for. Raising this
+# doesn't cost anything extra against a provider's rate limit -- it's
+# still exactly one API request either way -- but _is_relevant()/
+# _is_reachable() filtering (both run client-side, after the response,
+# with no further API calls) get more candidates to find a real match
+# among. A query that used to need a second, separate fallback API call
+# because none of the first 10 candidates were relevant/reachable now has
+# a real shot at succeeding on attempt one instead, which is what
+# actually stretches a rate-limited backlog run further, not just faster
+# individual requests. 30 rather than Pexels' documented max of 80: large
+# enough to meaningfully help, not so large the response itself becomes
+# the slow part.
+SEARCH_RESULTS_PER_PAGE = 30
 
 # next.config.mjs only allowlists these two hosts for next/image -- any photo
 # URL outside them renders as a broken image on the site with no error

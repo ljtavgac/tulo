@@ -64,12 +64,21 @@ from .models import Page
 # means a run that starts getting 429'd stops within one request per
 # worker instead of continuing to hammer Pexels, and the Render instance
 # has since been upgraded from the free tier to 1 CPU/2GB (10x the CPU, 4x
-# the RAM). 4 is a deliberately moderate step back up -- enough to clear
-# the ~1,150-page backlog in a fraction of the passes 1-at-a-time would
-# take, without returning straight to the 8 that caused the outage on
-# hardware with an order of magnitude less headroom than the incident
-# happened on.
-CONCURRENCY = 4
+# the RAM). Went to 4 first as a deliberately moderate step, short of the
+# 8 that caused the outage on hardware with an order of magnitude less
+# headroom.
+#
+# Raised again to 6, same day, after the two things that made 4 the
+# cautious choice both got addressed separately: the site-wide "still
+# laggy at times" investigation found and fixed the real per-request CPU
+# cost this concurrency lever was competing against (full, uncached
+# full-table scans on every page view -- see main.py's _cached_pages and
+# the /pages `lean` mode), so there's now real, confirmed headroom on the
+# same request-serving path this once threatened to starve. Still short
+# of 8 -- there's no need to return all the way to the exact number that
+# caused a real production incident just because the two root causes are
+# fixed; 6 clears the backlog faster with a smaller step.
+CONCURRENCY = 6
 
 # template_type -> the content key holding the search query for a single
 # hero image.
