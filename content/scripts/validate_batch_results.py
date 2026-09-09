@@ -1,8 +1,9 @@
-"""Validates a downloaded batch results file against the same depth/schema
-bar seed_templates.py enforces, plus a few pipeline-specific checks (title
-convention per type, category_link/technique_link slug existence, no
-double-dashes). Read-only, no network calls, no repo writes -- a Phase 2
-precursor to decide whether the fix-pass is needed and how big it is.
+"""Validates a downloaded batch results file: schema-required-field
+presence, real recursive type-checking against the schema (not just
+presence/non-emptiness -- see validation.py's docstring for why that
+distinction matters), the site's depth-check bar, double-dashes, title
+convention per type, and category_link/technique_link slug existence.
+Read-only, no network calls, no repo writes.
 
 Usage:
     python3 content/scripts/validate_batch_results.py <results.jsonl>
@@ -15,19 +16,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from build_batch_requests import extract_existing_pages  # noqa: E402
-from prompt_templates import SCHEMA_BY_TYPE, TOOL_NAME_BY_TYPE  # noqa: E402
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-
-DEPTH_FIELDS_BY_TYPE = {
-    "recipe_or_dish": ["tips_and_variations", "storage_and_reheating", "reader_tips", "faqs", "step_notes", "image_alt"],
-    "ingredient_hub": ["buying_tips", "pairing_suggestions", "faqs", "image_alt"],
-    "howto_technique": ["intro", "common_mistakes", "equipment", "faqs", "image_alt"],
-    "definition": ["faqs", "image_alt"],
-    "comparison": ["faqs", "image_alt"],
-    "substitute": ["faqs", "image_alt"],
-    "category_roundup": ["faqs", "sub_categories"],
-}
+from prompt_templates import TOOL_NAME_BY_TYPE  # noqa: E402
+from validation import validate_content  # noqa: E402
 
 TITLE_PATTERN_BY_TYPE = {
     "howto_technique": re.compile(r"^How to ", re.IGNORECASE),
@@ -36,18 +26,6 @@ TITLE_PATTERN_BY_TYPE = {
     "substitute": re.compile(r"^Best Substitutes for ", re.IGNORECASE),
     "category_roundup": re.compile(r"Recipes$", re.IGNORECASE),
 }
-
-
-def find_double_dashes(value, location: str, hits: list) -> None:
-    if isinstance(value, str):
-        if "--" in value:
-            hits.append((location, value[:80]))
-    elif isinstance(value, dict):
-        for k, v in value.items():
-            find_double_dashes(v, f"{location}.{k}", hits)
-    elif isinstance(value, list):
-        for i, v in enumerate(value):
-            find_double_dashes(v, f"{location}[{i}]", hits)
 
 
 def main() -> None:
@@ -62,14 +40,14 @@ def main() -> None:
     total_input_tokens = 0
     total_output_tokens = 0
     issues: list[str] = []
-    template_type_by_custom_id = {}
+    clean_ids: list[str] = []
+    bad_ids: set[str] = set()
 
-    # We don't have the row->template_type mapping in the results file itself
-    # (custom_id only), so infer it from which tool was called.
     for r in results:
         custom_id = r["custom_id"]
         if r["result"]["type"] != "succeeded":
             issues.append(f"[{custom_id}] request-level error: {r['result']}")
+            bad_ids.add(custom_id)
             continue
 
         message = r["result"]["message"]
@@ -80,67 +58,34 @@ def main() -> None:
         tool_uses = [c for c in message["content"] if c["type"] == "tool_use"]
         if len(tool_uses) != 1:
             issues.append(f"[{custom_id}] expected exactly 1 tool_use block, got {len(tool_uses)}")
+            bad_ids.add(custom_id)
             continue
         tool_use = tool_uses[0]
-        tool_name = tool_use["name"]
         content = tool_use["input"]
-
-        template_type = next((t for t, n in TOOL_NAME_BY_TYPE.items() if n == tool_name), None)
+        template_type = next((t for t, n in TOOL_NAME_BY_TYPE.items() if n == tool_use["name"]), None)
         if template_type is None:
-            issues.append(f"[{custom_id}] unrecognized tool name {tool_name!r}")
+            issues.append(f"[{custom_id}] unrecognized tool name {tool_use['name']!r}")
+            bad_ids.add(custom_id)
             continue
-        template_type_by_custom_id[custom_id] = template_type
 
-        schema = SCHEMA_BY_TYPE[template_type]
-        # technique_link/category_link are nullable LinkRefs -- null is the
-        # correct value whenever no genuine match exists, not a gap. Only
-        # check the key is present at all, not that it's non-null.
-        nullable_ok_fields = {"step_notes", "variety_notes", "link_terms", "technique_link", "category_link"}
-        for field in schema["required"]:
-            if field not in content:
-                issues.append(f"[{custom_id}] missing required key: {field}")
-            elif field not in nullable_ok_fields and content[field] in (None, "", [], {}):
-                issues.append(f"[{custom_id}] empty required field: {field}")
+        row_issues = validate_content(custom_id, template_type, content, collection_slugs, technique_slugs)
 
-        for field in DEPTH_FIELDS_BY_TYPE[template_type]:
-            if field == "image_alt":
-                continue  # already covered by schema-required check above
-            if not content.get(field):
-                issues.append(f"[{custom_id}] fails depth check (would fail _check_content_depth): {field}")
-
-        dash_hits: list = []
-        find_double_dashes(content, custom_id, dash_hits)
-        for location, snippet in dash_hits:
-            issues.append(f"[{custom_id}] double-dash found at {location}: {snippet!r}")
-
-        title = content.get("title", "")
+        title = content.get("title", "") if isinstance(content.get("title"), str) else ""
         pattern = TITLE_PATTERN_BY_TYPE.get(template_type)
         if pattern and not pattern.search(title):
-            issues.append(f"[{custom_id}] title {title!r} doesn't match expected {template_type} convention")
+            row_issues.append(f"[{custom_id}] title {title!r} doesn't match expected {template_type} convention")
 
-        if template_type == "recipe_or_dish":
-            cat_link = content.get("category_link")
-            if cat_link and cat_link.get("slug") not in collection_slugs:
-                issues.append(f"[{custom_id}] category_link points to nonexistent slug: {cat_link}")
-            tech_link = content.get("technique_link")
-            if tech_link and tech_link.get("slug") not in technique_slugs:
-                issues.append(f"[{custom_id}] technique_link points to nonexistent slug: {tech_link}")
-            has_nutrition = content.get("nutrition_note") or any(
-                ing.get("nutrition_per_unit") for ing in content.get("ingredients", [])
-            )
-            if not has_nutrition:
-                issues.append(f"[{custom_id}] no nutrition (note or per_unit)")
-
-        if template_type == "category_roundup":
-            for card in content.get("recipe_cards", []):
-                if not card.get("image_alt"):
-                    issues.append(f"[{custom_id}] recipe_card {card.get('title')!r} missing image_alt")
+        if row_issues:
+            bad_ids.add(custom_id)
+            issues.extend(row_issues)
+        else:
+            clean_ids.append(custom_id)
 
     INPUT_COST = 1.0
     OUTPUT_COST = 5.0
     actual_cost = (total_input_tokens / 1_000_000 * INPUT_COST) + (total_output_tokens / 1_000_000 * OUTPUT_COST)
 
-    print(f"Total results: {len(results)}")
+    print(f"Total results: {len(results)} | clean: {len(clean_ids)} | with issues: {len(bad_ids)}")
     print(f"Actual usage: {total_input_tokens} input tokens, {total_output_tokens} output tokens")
     print(f"Actual cost (batch pricing): ${actual_cost:.4f}")
     print()
@@ -148,7 +93,9 @@ def main() -> None:
     for issue in issues:
         print(f"  - {issue}")
     if not issues:
-        print("  (none -- all 50 results pass schema + depth-check + convention checks)")
+        print("  (none -- all results pass schema + type + depth-check + convention checks)")
+    print()
+    print(f"custom_ids needing a fix-pass: {sorted(bad_ids)}")
 
 
 if __name__ == "__main__":

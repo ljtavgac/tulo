@@ -57,7 +57,14 @@ default to appending "Recipe" to a title unless the page is actually a \
 recipe_or_dish page.
 
 Return your answer only by calling the provided tool with a complete, valid \
-argument object. Do not write any prose outside the tool call."""
+argument object. Do not write any prose outside the tool call.
+
+Every array field (steps, faqs, ingredients, tips_and_variations, etc.) must be \
+a real, properly nested JSON array value in the tool call's input, e.g. \
+["first item", "second item"] or [{"question": "...", "answer": "..."}, ...]. \
+Never represent a list as a plain string, and never use any XML-like \
+<parameter name="..."> tags anywhere in the input -- that syntax belongs to a \
+different tool-calling format and must not appear in this tool's arguments."""
 
 
 def _example_block(example: dict) -> str:
