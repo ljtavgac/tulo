@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -15,6 +16,12 @@ import "./globals.css";
 // first hard page load, and would silently miss every subsequent
 // navigation on a Next.js site.
 const GA_MEASUREMENT_ID = "G-GBJWXCM8SQ";
+
+// AdSense publisher ID. The ads.txt file (public/ads.txt) and the
+// google-adsense-account meta tag below (see `metadata.other`) are both
+// deterministically derived from this same ID per Google's own documented
+// formats -- no separate value to track down for either.
+const ADSENSE_PUBLISHER_ID = "ca-pub-3064163087707472";
 
 const DEFAULT_DESCRIPTION =
   "Tulo is a no-clutter recipe site, ingredients and instructions up front, plus native serving-size scaling and unit conversion built into every recipe.";
@@ -34,6 +41,13 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  // Renders as <meta name="google-adsense-account" content="ca-pub-..."> --
+  // AdSense's site-ownership verification tag, per Next's documented
+  // `other` metadata option (any key not covered by a built-in metadata
+  // field renders as a plain <meta name=KEY content=VALUE>).
+  other: {
+    "google-adsense-account": ADSENSE_PUBLISHER_ID,
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -45,6 +59,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Footer />
       </body>
       <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+      <Script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+        crossOrigin="anonymous"
+      />
     </html>
   );
 }
