@@ -33,13 +33,20 @@ function bareTermFromDefinitionTitle(title: string): string {
   return title.replace(/^What Is /i, "").replace(/\?.*$/, "");
 }
 
-// Builds the dictionary of page names inline prose can auto-link to.
-// listPages() is cached for an hour (see lib/api.ts), so this is a
-// handful of cached fetches, not a per-render cost.
+// Builds the dictionary of page names inline prose can auto-link to. This
+// genuinely needs every page of these template types (unlike RelatedLinks
+// or the homepage carousels, it can't safely sample a subset -- an older
+// recipe or ingredient dropped from the source list would silently stop
+// being auto-linked). `lean: true` is what makes running this on every
+// single content page view affordable anyway: it skips image_url/
+// image_attribution (never used here) and serves from the backend's
+// process-lifetime cache instead of a live, full-table query each time --
+// see /pages's `lean` param docs for why that's safe with no staleness
+// risk (title/slug/link_terms never change at runtime, unlike photos).
 export async function getLinkTerms(excludeSlug?: string): Promise<LinkTerm[]> {
   const [pageLists, definitionPages] = await Promise.all([
-    Promise.all(LINKABLE_TEMPLATE_TYPES.map((t) => listPages(t))),
-    listPages("definition"),
+    Promise.all(LINKABLE_TEMPLATE_TYPES.map((t) => listPages(t, { lean: true }))),
+    listPages("definition", { lean: true }),
   ]);
   const terms = pageLists
     .flat()

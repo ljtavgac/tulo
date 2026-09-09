@@ -66,13 +66,18 @@ _background_tasks: set[asyncio.Task] = set()
 # rather than risky, though: a pass that starts before Pexels' window has
 # actually recovered just fails fast on its first request and goes back to
 # sleep, at negligible cost, rather than hammering an API that's still
-# throttling it. Lowered from 3600 to 900 given the real backlog (~1,000
-# pages, one hour between attempts) was visibly too slow -- still purely a
-# guess at Pexels' real window (never confirmed, see fetch_stock_images.py
-# for the same admission), just a less conservative one now that there's a
-# cheap way to find out if it's wrong. Configurable via env var for the
-# same reason.
-IMAGE_FETCH_INTERVAL_SECONDS = int(os.environ.get("IMAGE_FETCH_INTERVAL_SECONDS", 900))
+# throttling it. Lowered from 3600 to 900, then to 300, given the real
+# backlog (~1,000 pages) was visibly clearing too slowly at each prior
+# value -- still purely a guess at Pexels' real window (never confirmed,
+# see fetch_stock_images.py for the same admission), just a less
+# conservative one now that there's a cheap way to find out if it's wrong.
+# Every pass -- rate-limited or not -- still does a full scan of the whole
+# page catalog to find what needs a fetch (see fetch_images()'s own
+# all_pages query), so going much lower than this starts trading Pexels
+# throughput for a real, separate, recurring DB/CPU cost that scales with
+# how often this wakes up; worth optimizing that query before going lower
+# than 300. Configurable via env var for the same reason.
+IMAGE_FETCH_INTERVAL_SECONDS = int(os.environ.get("IMAGE_FETCH_INTERVAL_SECONDS", 300))
 
 
 async def _run_periodic_image_fetch() -> None:
@@ -704,10 +709,39 @@ def list_pages(
             "side used to mean a full scan of up to ~950 rows to find 4."
         ),
     ),
+    lean: bool = Query(
+        default=False,
+        description=(
+            "Skip image_url/image_attribution entirely (always null) and "
+            "serve from the same process-lifetime cache _cached_pages() "
+            "uses for /pages/{slug}'s cross-linking, instead of a live "
+            "query -- for a caller that only needs slug/title/link_terms "
+            "and never touches photo data, e.g. the site-wide auto-linking "
+            "dictionary (getLinkTerms), which used to run 4 full, "
+            "uncached template_type scans on every single content page "
+            "view. Safe with no staleness risk for the same reason "
+            "_cached_pages() is: title/slug/link_terms never change at "
+            "runtime, unlike image_url. Requires template_type (the cache "
+            "is keyed per template_type); ignores q/slugs/limit/offset."
+        ),
+    ),
     limit: int | None = Query(default=None, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ):
+    if lean:
+        if template_type is None:
+            raise HTTPException(status_code=400, detail="lean requires template_type")
+        return [
+            PageSummary(
+                slug=page.slug,
+                template_type=template_type,
+                title=page.title,
+                link_terms=page.content.get("link_terms") if template_type == "definition" else None,
+            )
+            for page in _cached_pages(db, template_type)
+        ]
+
     # Ordered explicitly so pagination is stable across requests -- without
     # an order_by, a database is free to return rows in whatever order it
     # finds convenient, which could reshuffle between one "load more" call

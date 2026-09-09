@@ -29,7 +29,7 @@ export async function getPage<T = Record<string, unknown>>(
 
 export async function listPages(
   templateType?: string,
-  options?: { limit?: number; offset?: number; slugs?: string[] }
+  options?: { limit?: number; offset?: number; slugs?: string[]; lean?: boolean }
 ): Promise<PageSummary[]> {
   const url = new URL(`${API_URL}/pages`);
   if (templateType) url.searchParams.set("template_type", templateType);
@@ -42,6 +42,13 @@ export async function listPages(
   // filtering client-side for a handful of known slugs.
   if (options?.slugs && options.slugs.length > 0) {
     url.searchParams.set("slugs", options.slugs.join(","));
+  }
+  // For a caller that never touches image_url/image_attribution (see
+  // getLinkTerms) -- serves from the backend's process-lifetime cache
+  // instead of a live, full-table query. Only meaningful with
+  // templateType set (the backend requires it in lean mode).
+  if (options?.lean) {
+    url.searchParams.set("lean", "true");
   }
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
