@@ -100,21 +100,30 @@ async def lifespan(app: FastAPI):
     # Backfills real stock photos for any page still missing one --
     # previously only reachable via the standalone script or the
     # /admin/fetch-images endpoint, which meant every new batch of content
-    # needed a manual trigger to actually get photos. Now runs
-    # automatically on every startup with zero manual step, AND (see
-    # _run_startup_image_fetch) off the request-serving path: at ~2,000
-    # pages this can take tens of minutes of real Unsplash/Pexels calls,
-    # and running it inline here (as it used to) would block the app from
-    # ever accepting a request -- including Render's own health check --
-    # until every image was fetched, risking a health-check timeout and a
-    # crash-looping deploy on exactly the kind of large batch this is
-    # built to publish. fetch_images() skips any page that already has an
-    # image with a plain dict check (no API call), so repeat deploys with
-    # no new content do effectively nothing here, and only genuinely new
-    # pages trigger a real search. Guarded the same way the standalone
-    # script is, so this is a complete no-op -- not even a task spawned --
-    # when no key is configured.
-    if UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY:
+    # needed a manual trigger to actually get photos. Was made to run
+    # automatically on every startup (see _run_startup_image_fetch) off the
+    # request-serving path, specifically to avoid blocking the app from
+    # accepting requests -- including Render's own health check -- while it
+    # ran. That non-blocking property is confirmed sound on its own (see
+    # 32b9c62's local verification). But at the site's current size
+    # (~2,000 pages, having 5x'd in one day) it's genuinely uncertain
+    # whether *any* extra concurrent work -- even a single background
+    # thread -- fits inside Render's free-tier 512MB, and this service hit
+    # that memory limit and got auto-restarted (by Render) TWICE in one
+    # afternoon: once during the 8-way-concurrent version (fixed in
+    # 8558669, dropped to 1 worker + a rate-limit stop), and once again
+    # after that fix deployed. A second crash after fixing the specific
+    # concurrency bug means the problem may not be (only) this task at
+    # all -- could be the app's now much larger baseline footprint (all
+    # ~2,000 pages' content, loaded at startup by seed()/resync_content()
+    # and again here) leaving too little headroom for anything extra.
+    # Disabled here entirely, by default, until that's actually measured
+    # (Render's Metrics tab, with this off, shows whether baseline usage
+    # alone is already tight) rather than guessed at through a third
+    # production crash. Set RUN_STARTUP_IMAGE_FETCH=true to re-enable once
+    # there's real headroom data -- /admin/fetch-images still works as a
+    # manual, explicitly-triggered alternative in the meantime.
+    if (UNSPLASH_ACCESS_KEY or PEXELS_ACCESS_KEY) and os.environ.get("RUN_STARTUP_IMAGE_FETCH") == "true":
         task = asyncio.create_task(_run_startup_image_fetch())
         _background_tasks.add(task)
         task.add_done_callback(_background_tasks.discard)
