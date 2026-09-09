@@ -170,9 +170,16 @@ RECIPE_OR_DISH_SCHEMA = {
         "ingredients": {"type": "array", "items": RECIPE_INGREDIENT_SCHEMA, "minItems": 3},
         "instructions": {"type": "array", "items": {"type": "string"}, "minItems": 4},
         "step_notes": {
-            "type": "object",
-            "description": "Map of instruction step index (as a string, 0-based) to a short 'why this step matters' technique note. Include at least 2 entries for the most technique-relevant steps.",
-            "additionalProperties": {"type": "string"},
+            "type": "array",
+            "description": "A short 'why this step matters' technique note for at least 2 of the most technique-relevant steps. Each entry names one instruction's 0-based index. seed_templates.py stores this as a step-index-keyed map (Record<string, string> in frontend/lib/types.ts) -- an open-ended dictionary keyed by arbitrary step numbers can't be expressed as a strict JSON schema (no fixed property names), so this array form is converted back to that map shape at integration time.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "step_index": {"type": "integer", "description": "0-based index into the instructions array this note explains."},
+                    "note": {"type": "string"},
+                },
+                "required": ["step_index", "note"],
+            },
         },
         "tips_and_variations": {"type": "array", "items": {"type": "string"}, "minItems": 3},
         "storage_and_reheating": {"type": "string"},
@@ -445,10 +452,10 @@ EXAMPLES = {
             "Fold in the chopped walnuts.",
             "Bake for 55-65 minutes, until a toothpick inserted into the center comes out clean.",
         ],
-        "step_notes": {
-            "2": "Overmixing once the flour is added develops gluten, which is what makes quick breads turn dense and tough instead of tender.",
-            "4": "The toothpick test in the very center, not near the edge, is what actually confirms doneness; the edges bake through well before the center does.",
-        },
+        "step_notes": [
+            {"step_index": 2, "note": "Overmixing once the flour is added develops gluten, which is what makes quick breads turn dense and tough instead of tender."},
+            {"step_index": 4, "note": "The toothpick test in the very center, not near the edge, is what actually confirms doneness; the edges bake through well before the center does."},
+        ],
         "tips_and_variations": [
             "Very ripe, heavily spotted (almost black) bananas give noticeably more flavor than yellow ones, don't toss bananas just because they've browned.",
             "Swap up to half the flour for whole wheat flour for a heartier crumb.",

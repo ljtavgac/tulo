@@ -28,7 +28,18 @@ JSON_TYPE_TO_PYTHON = {
 # field that only applies to some pages) -- NOT the same as "optional in
 # TypeScript", since some of these (step_notes) are still required non-empty
 # by seed_templates.py's _REQUIRED_CONTENT_FIELDS depth check.
-NULLABLE_OK_FIELDS = {"variety_notes", "link_terms", "technique_link", "category_link"}
+#
+# The ALWAYS_EMPTY_SLUGS_ARRAY / ALWAYS_NULL_SLUG fields (see
+# prompt_templates.py) belong here too -- their whole design is "always []
+# or null, resolved automatically after generation or curated by hand
+# later" -- treating one as a validation failure would be flagging the
+# schema working exactly as intended.
+NULLABLE_OK_FIELDS = {
+    "variety_notes", "link_terms", "technique_link", "category_link",
+    "related_recipe_slugs", "substitute_page_slug", "recipe_slugs",
+    "related_ingredient_slugs", "related_technique_slugs", "item_a_link",
+    "item_b_link", "hub_page_slug", "related_collection_slugs",
+}
 
 
 def extract_content(message: dict) -> dict:
