@@ -14,7 +14,7 @@ import json
 import math
 import re
 
-from prompt_templates import SCHEMA_BY_TYPE
+from prompt_templates import ALWAYS_EMPTY_SLUGS_ARRAY, ALWAYS_NULL_SLUG, SCHEMA_BY_TYPE
 
 JSON_TYPE_TO_PYTHON = {
     "object": dict,
@@ -31,17 +31,42 @@ JSON_TYPE_TO_PYTHON = {
 # TypeScript", since some of these (step_notes) are still required non-empty
 # by seed_templates.py's _REQUIRED_CONTENT_FIELDS depth check.
 #
-# The ALWAYS_EMPTY_SLUGS_ARRAY / ALWAYS_NULL_SLUG fields (see
-# prompt_templates.py) belong here too -- their whole design is "always []
-# or null, resolved automatically after generation or curated by hand
-# later" -- treating one as a validation failure would be flagging the
-# schema working exactly as intended.
-NULLABLE_OK_FIELDS = {
-    "variety_notes", "link_terms", "technique_link", "category_link",
-    "related_recipe_slugs", "substitute_page_slug", "recipe_slugs",
-    "related_ingredient_slugs", "related_technique_slugs", "item_a_link",
-    "item_b_link", "hub_page_slug", "related_collection_slugs", "pan_size",
-}
+# Derived from the schemas themselves (any field whose type accepts "null",
+# plus the shared ALWAYS_EMPTY_SLUGS_ARRAY / ALWAYS_NULL_SLUG marker
+# objects) rather than hand-maintained: a hand-typed version of this set
+# drifted out of sync with prompt_templates.py's actual schemas twice
+# (once missing the newly-added slug/LinkRef fields, once missing
+# pan_size), both only caught by a validator false-positive after the
+# fact. A field that's nullable in the schema is nullable-OK here
+# automatically, with no second list to remember to update.
+#
+# The one thing that genuinely can't be derived this way: a field with no
+# "null" in its type at all, that's still allowed to be an empty
+# string/array by deliberate content design (an empty string is a valid
+# value, not a missing one). Kept as a small, explicit residual set --
+# if a new nullable LinkRef/slug field is added to a schema, it needs no
+# update here; only a new *non-nullable-typed* optional-content field does.
+_NON_STRUCTURAL_NULLABLE_FIELDS = {"variety_notes", "link_terms"}
+
+
+def _is_nullable_schema(schema: dict) -> bool:
+    if schema is ALWAYS_NULL_SLUG or schema is ALWAYS_EMPTY_SLUGS_ARRAY:
+        return True
+    node_type = schema.get("type")
+    types = [node_type] if isinstance(node_type, str) else (node_type or [])
+    return "null" in types
+
+
+def _compute_nullable_ok_fields() -> set[str]:
+    fields = set(_NON_STRUCTURAL_NULLABLE_FIELDS)
+    for schema in SCHEMA_BY_TYPE.values():
+        for name, sub_schema in schema.get("properties", {}).items():
+            if _is_nullable_schema(sub_schema):
+                fields.add(name)
+    return fields
+
+
+NULLABLE_OK_FIELDS = _compute_nullable_ok_fields()
 
 # A pan's stated area must be within this fraction of what its label's
 # literal dimensions compute to, or it's flagged -- the model is doing real

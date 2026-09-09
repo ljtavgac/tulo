@@ -1,13 +1,19 @@
-# Hybrid Content Pipeline — Design Doc (Planning Only)
+# Hybrid Content Pipeline — Design Doc
 
-**Status: not started.** Nothing in this document has been built or run. This
-is the blueprint for scaling past the ~193 pages published so far to the
-first 2,000 `CONTENT_QUEUE.csv` titles (batches 1-4, 1,947 rows remaining),
-using the hybrid approach agreed on: Batch API for bulk first-draft
-generation, interactive/agentic Claude Code for integration, cross-linking,
-and QA. See the cost/timeline discussion earlier in this project's session
-history for the numbers behind this plan; this doc is the "how," not the
-"how much."
+**Status: pilot complete, real batch not yet submitted.** The pipeline
+described below is built and has run for real: a 50-title pilot (48
+published, 2 excluded as duplicates) plus 12 companion recipes for two
+broken collections, taking the site from 193 to 253 pages. That run
+surfaced 11 real bugs, all now either fixed at the root or turned into a
+running script — see "Bulletproofing the next batch" further down for the
+complete accounting and the mandatory pre-flight gate before the real
+batch runs. This doc is the blueprint for scaling past 253 pages to the
+first 2,000 `CONTENT_QUEUE.csv` titles (batches 1-4, ~1,897 rows
+remaining after the pilot + duplicates found), using the hybrid approach
+agreed on: Batch API for bulk first-draft generation, interactive/agentic
+Claude Code for integration, cross-linking, and QA. See the cost/timeline
+discussion earlier in this project's session history for the numbers
+behind this plan; this doc is the "how," not the "how much."
 
 **Plan owner is on a Claude Max 5x subscription.** This changes where the
 two phases' cost actually lands, without changing the phases themselves.
@@ -179,6 +185,259 @@ problems worth recording before the full batch ever runs:
   card (~5-6 per collection, ~112 collections in the real queue -- call it
   ~550-650 extra requests, a meaningful but bounded addition).
 
+## Bulletproofing the next batch: every issue found, and what now prevents it
+
+The 48-page pilot (plus the 12 companion recipes generated afterward for
+the two broken collections) surfaced 11 distinct bugs. This section is
+the complete accounting asked for after that pilot: what broke, why, and
+-- for each one -- whether a real, running safeguard now exists or the
+fix was one-time manual cleanup with no mechanism stopping a recurrence.
+**"Documented" is not a safeguard.** Every item below either has a script
+that runs and fails loudly, or is explicitly flagged as still needing
+human judgment every time -- nothing here relies on a person remembering
+to re-check something by hand.
+
+### The mandatory pre-flight gate
+
+**`content/scripts/preflight_check.py` -- run this before submitting any
+real batch, full stop.** It runs, in order:
+1. `check_schemas_match_types.py` -- every schema still covers every
+   field `frontend/lib/types.ts` actually requires (parses the .ts file
+   directly, not a second hand-maintained list).
+2. `check_queue_duplicates.py` -- no queue row collides with another
+   queue row or an already-published page (see below).
+3. **One real generation per template type, against the live Messages
+   API with `output_config`** -- not a schema re-read, an actual call,
+   for every one of the 7 template types. Each result gets
+   `extract_content()`'d, `validate_content()`'d, and checked for
+   `max_tokens` headroom, exactly like a real batch result would be.
+
+Step 3 is the one that matters most and is easiest to skip under time
+pressure: it's the only check in this whole pipeline that would have
+caught the step_notes/`output_config` 400 error *before* it reached a
+real batch, because that bug was invisible to schema re-reading -- it
+only showed up against the real API. `preflight_check.py` exits non-zero
+if `PIPELINE_ANTHROPIC_API_KEY` isn't set specifically so this step can't
+be silently skipped by omission.
+
+Verified: `check_schemas_match_types.py` and `check_queue_duplicates.py`
+both ran for real against the current schemas and the full 12,425-row
+`CONTENT_QUEUE.csv` (not a sample) as part of writing this section --
+schemas came back clean, but the duplicate checker found **55 exact
+topic collisions never caught before** (see below), proving the tool
+works before ever being relied on. Step 3's live-generation path reuses
+the exact `call_messages_api` / `extract_content` / `validate_content`
+sequence already proven correct by real calls this session (the
+companion-recipe generations, the original pilot batch) -- but hasn't
+itself been executed in this session (no API key was available while
+writing this section). Run it for real with a key before the next batch,
+the same way every other claim in this pipeline has been verified against
+a real run rather than trusted from code review alone.
+
+### Issue-by-issue accounting
+
+1. **`step_notes`'s schema was incompatible with `output_config`'s strict
+   mode** (would have 400'd ~60% of a real batch -- `recipe_or_dish` is
+   7,386/12,425 rows). Found by a real test generation, not schema
+   review. **Fixed at the root**: `step_notes` now travels as an array of
+   `{step_index, note}` objects during generation, converted back to the
+   site's int-keyed dict at `normalize_for_storage()` (`validation.py`),
+   the one shared choke point every integration path calls.
+   **Safeguard: preflight_check.py step 3, every template type, every
+   batch.**
+2. **`max_tokens` too tight, causing real truncated/invalid JSON.**
+   `recipe_or_dish` bumped 4096 -> 6144 -> 8192 after a retry of the same
+   title failed twice, proving real attempt-to-attempt variance. Then,
+   while writing this section, `validate_batch_results.py`'s new
+   headroom check (below) found the *other 5* template types' budgets
+   had the identical latent problem -- 12 already-published pilot
+   results had used 85-100% of their budget, including one page
+   (`what-is-dubai-chocolate`) that finished at literally 100% of
+   `definition`'s old 1500-token cap without actually truncating this
+   time. **Fixed**: `ingredient_hub`/`howto_technique` 2500 -> 3500,
+   `definition` 1500 -> 2200, `comparison` 2200 -> 3000, `substitute`
+   2000 -> 2800. **Safeguard**: `TOKEN_HEADROOM_WARN_THRESHOLD` (85%) is
+   now checked in both `validate_batch_results.py` (post-hoc, every real
+   batch) and `preflight_check.py` step 3 (pre-flight, before spend
+   commitment) -- a budget drifting tight again gets flagged before it
+   silently truncates a real batch, not after.
+3. **Manifest/custom_id mapping bug**: re-deriving `custom_id -> CSV row`
+   from the *current* `seed_templates.py` silently produced wrong
+   mappings on any re-run after partial integration. **Fixed**:
+   `load_id_to_row_from_manifest()` reads the frozen manifest written at
+   request-build time instead. **Safeguard**: both
+   `integrate_batch_results.py` and `validate_batch_results.py` prefer
+   the manifest automatically and print a loud `WARNING` if it's missing
+   and they have to fall back to the fragile re-derivation.
+4. **Double-integration risk**: re-running integration against a results
+   file already (fully or partially) integrated would silently insert
+   the same pages again under a `-2`-suffixed slug, since the old
+   collision-resolution loop treated *any* taken slug as "a different
+   page happens to collide." Caught once by a manual page-count check
+   before committing; **now structurally fixed**:
+   `integrate_batch_results.py` snapshots the slug set that existed
+   *before* the run starts and skips (without writing) any candidate
+   slug already in that snapshot, printing which custom_ids were
+   skipped and why. Verified end to end against three real scenarios
+   while writing this section: an already-published slug gets skipped
+   with zero write to `seed_templates.py`; a genuinely new page inserts
+   normally; re-running the exact same results file a second time
+   correctly no-ops. A true within-this-run collision (two NEW pages
+   generating the same slug) now prints a loud `WARNING` naming the
+   corn-starch/Flourless-Chocolate-Cake precedent instead of silently
+   renaming and moving on.
+5. **Insertion-anchor fragility**: a naive `"]\n"` search matched nested
+   list closings and even a `list[tuple[str,str]] = []` type-hint line
+   instead of `SEED_PAGES`'s real closing bracket. Fixed with an exact
+   anchor string. **New safeguard added while writing this section**: a
+   sanity check now counts `"slug":` occurrences before and after every
+   insertion and raises (refusing to write) if the delta isn't exactly
+   the number of new entries -- catches both a wrong insertion point and
+   a double-integration slipping past guard #4 for any reason, before
+   anything touches disk. Also fixed a related bug this sanity check
+   surfaced immediately: a fully-skipped run (0 new entries) used to
+   still write the pilot's hardcoded header comment into the file with
+   nothing under it; it now writes nothing at all when there's nothing
+   to insert, and the header itself is now generated from the actual CSV
+   filename and today's date instead of a copy-pasted "Batch API pilot
+   (2026-09-09)" string that would have silently mislabeled every future
+   batch that reused this script.
+6. **CSV line-ending corruption**: `csv.writer`'s default `\r\n` made a
+   44-row status change look like a full-file rewrite in `git diff`.
+   Fixed via explicit `lineterminator='\n'`. No dedicated safeguard
+   beyond remembering this on the next CSV-writing script -- low risk
+   since it's a one-line, well-understood fix, not worth automating
+   further.
+7. **Schema-completeness gap**: all 7 schemas were missing fields
+   `frontend/lib/types.ts` actually requires (`recipe_slugs`,
+   `related_technique_slugs`, `substitute_page_slug`, `item_a_link`/
+   `item_b_link`, `related_collection_slugs`, `related_ingredient_slugs`,
+   `related_recipe_slugs`) -- found because two real pages 404'd on a
+   missing, not just empty, required key. **Safeguard**:
+   `check_schemas_match_types.py`, parsing `types.ts` directly (no second
+   hand-maintained field list to drift), run as preflight step 1.
+8. **`pan_size` type mismatch** on 7 hand-authored (pre-pipeline) pages --
+   a truthy string crashing `RecipeIngredientsPanel.tsx`'s unconditional
+   `panSize?.alternatives.find(...)`. Fixed on all 7 (6 corrected, 1
+   removed where the field doesn't apply). **Safeguard for anything
+   generated going forward**: `pan_size` is now a real schema field with
+   its own type/shape enforcement via `check_schema_types()` plus
+   `check_pan_size_math()` independently recomputing expected area from
+   the label's stated dimensions -- a type mismatch or bad arithmetic
+   both fail validation before integration, not after a page ships.
+9. **`NULLABLE_OK_FIELDS` validator false positives** (twice: once
+   missing new slug/LinkRef fields, once missing `pan_size`) -- a
+   hand-maintained list drifting out of sync with the schemas it was
+   supposed to validate against, the exact same class of bug as #7 one
+   level down. **Fixed at the root, not patched again**: `validation.py`
+   now *derives* this set from the schemas themselves (any field whose
+   JSON-schema type includes `"null"`, plus the shared
+   `ALWAYS_EMPTY_SLUGS_ARRAY`/`ALWAYS_NULL_SLUG` marker objects) instead
+   of a third copy of the list. Verified the derived set is byte-for-byte
+   identical to the old hand-maintained one before replacing it. Only two
+   fields (`variety_notes`, `link_terms`) aren't structurally derivable
+   this way (legitimately-empty free text/arrays with no `null` in their
+   type) and stay in a small, explicitly-documented residual set -- any
+   new nullable LinkRef or slug field added in the future needs no update
+   here at all.
+10. **Companion-recipe integration regression** (self-caught): an ad hoc
+    one-off script for generating companion recipes skipped the
+    `step_notes` list-to-dict conversion, crashing the backend the exact
+    same way the original garlic-confit bug did. Caught immediately by
+    the established "run a real local backend before trusting a fix"
+    discipline. **Fixed at the root**: `normalize_for_storage()` pulled
+    into `validation.py` as the one shared choke point; both
+    `integrate_batch_results.py` and `generate_companion_recipes.py` call
+    it now instead of each re-deriving the conversion. Any future
+    integration path that skips this call and ships a raw `step_notes`
+    list will crash the same way -- there's no schema-level guard against
+    a *new* script forgetting to call it, so this is a "know the pattern"
+    risk, not a fully closed one. If a third integration path gets
+    built, route it through `normalize_for_storage()` from the start.
+11. **Category_roundup/companion-recipe coordination gap**: new
+    collections (`pinwheel-recipes`, `blackstone-recipes`) shipped with
+    every `recipe_cards` entry at `slug: null` because the pipeline
+    treated every queue row as fully independent -- nothing connected "a
+    new collection names N specific dishes" to "therefore also generate
+    those N dishes." **Decision (user-confirmed): generate matching
+    recipes too**, not deprioritize new collections or ship them
+    unlinked. Built and proven on both broken collections via
+    `generate_companion_recipes.py`. **Process safeguard, not yet a
+    script**: for the real batch, `category_roundup` rows must be
+    submitted and integrated *before* the general batch (not
+    simultaneously), since their companion recipes are a second,
+    dependent generation pass -- Batch API can't chain "generate a
+    collection, then use its own card list to build follow-up requests"
+    within one submission. Budget roughly one extra `recipe_or_dish`-
+    priced request per card (~5-6 per collection x ~112 real-queue
+    collections = ~550-650 extra requests). This sequencing requirement
+    is documented here and in the Rollout sequencing section below, but
+    nothing currently *enforces* running `category_roundup` rows first
+    other than following this doc -- worth a build-time check
+    (`check_queue_duplicates.py`-style script that fails if any
+    `category_roundup` row is in the same submission batch as its own
+    dependent recipes) if this trips someone up in practice.
+
+### CONTENT_QUEUE.csv-wide duplicate detection (new)
+
+The pilot's two duplicate collisions (`corn-starch` vs. the
+already-published `Cornstarch` hub; two different queue rows both
+generating "Flourless Chocolate Cake") were found by chance in a 50-row
+sample -- there was no mechanism checking the other 12,375 rows.
+**`content/scripts/check_queue_duplicates.py`** now exists and runs in
+under a second against the full queue (verified: 0.16s for 12,377
+`not_started` rows against 253 published pages). It normalizes each
+title by stripping *all* non-alphanumeric characters (not just replacing
+them with hyphens) specifically so "corn starch" and "Cornstarch" collide
+in the check the same way they collide in reality, and reports two tiers:
+
+- **Exact collisions (block submission)**: run for real against the
+  actual current queue while writing this section and found **55 real
+  collisions never caught before** -- 44 queue-row-vs-queue-row (mostly
+  spacing/hyphenation variants like "crock pot" vs. "crockpot", "pani
+  puri" vs. "panipuri") and 11 queue-row-vs-already-published (including
+  the known `corn-starch`/`Cornstarch` case, plus 7 more `what-is-X`
+  definition pages and `gruyère cheese` vs. the existing `gruyere-cheese`
+  hub that had never been flagged before). These need to be excluded or
+  merged in `CONTENT_QUEUE.csv` before any of batches 1-25 (whichever
+  the real batch actually spans) is submitted.
+- **Near-duplicates (human judgment, not auto-excluded)**: a looser
+  singular/plural-insensitive pass, reported separately since it also
+  produces some correct non-duplicates (a `recipe_or_dish` "swordfish
+  recipe" next to a `category_roundup` "swordfish recipes" are two
+  legitimately different pages, not a collision) -- flagged for a person
+  to glance over, not something a script should silently resolve either
+  way.
+
+This does **not** catch the "two different topics independently generate
+the same specific dish" class (`gluten-free-desserts` vs.
+`gluten-free-dessert-recipes` both landing on "Flourless Chocolate
+Cake") -- that's emergent from generation, invisible in the queue's own
+title text before any request is even sent. That class is caught
+downstream instead: `integrate_batch_results.py`'s guard #4 above will
+at minimum flag it loudly as a same-run slug collision rather than
+silently shipping both under different slugs, though a validate-time
+check (comparing every result's generated title against every other
+result's in the same batch, before integration ever runs) would catch it
+earlier and is a reasonable next addition if this recurs at real-batch
+scale.
+
+### What this leaves genuinely open
+
+Being direct about what's still a process rule rather than an enforced
+mechanism, so it doesn't get mistaken for "fully closed":
+- The `category_roundup`-before-general-batch sequencing (#11) is
+  written down, not enforced by any script.
+- `normalize_for_storage()` prevents the exact companion-recipe
+  regression from recurring in the two paths that call it today, but a
+  hypothetical third integration path that forgets to call it would
+  reproduce the same crash -- there's no schema-level or import-time
+  guard forcing every integration path through it.
+- The queue-wide duplicate scan's near-duplicate tier is intentionally
+  left to human review; scaling that judgment call across however many
+  near-duplicates the real ~12,377-row scan turns up (50 in this run)
+  hasn't been tried yet.
+
 ## Why hybrid (recap)
 
 Batch API is cheap and fast for raw text generation but has no tool access,
@@ -336,16 +595,38 @@ plus an interactive Claude Code pass, in this order:
 
 ## Rollout sequencing
 
+**Updated post-pilot: step 0 is now mandatory and non-negotiable** — see
+"Bulletproofing the next batch" above for exactly what it catches and why
+each check exists.
+
+0. **Run `content/scripts/preflight_check.py` against the real batch's
+   CSV.** Must pass clean — schema completeness, zero exact queue/queue
+   or queue/published collisions, and a real live generation + validation
+   for every template type actually present in this batch, with healthy
+   `max_tokens` headroom. Do not proceed to step 1 (or, for the real
+   batch, step 3 below) on a failing or skipped pre-flight.
 1. **Pilot batch first** (~50 rows, a real cross-section of template
    types) — validates the prompt templates actually produce valid,
    schema-passing JSON at the expected quality bar, and gives a real
    measured cost/token number to replace the estimate from planning.
    Nothing beyond the pilot runs until this is reviewed together.
+   (Already done once — this step reruns for any future pilot-scale
+   change to the prompts/schemas themselves.)
 2. Fix whatever the pilot reveals (prompt wording, schema mismatches,
    category_link accuracy) — expect at least one iteration here.
-3. Submit the remaining ~1,897 rows as the real batch.
-4. Run the full Phase 2 integration pipeline once results are back.
-5. Reconcile the queue, ship, verify live.
+3. **Submit `category_roundup` rows first, as their own smaller batch,
+   ahead of the general batch** — their companion recipes (see issue #11
+   above) are a second, dependent generation pass that needs the
+   collection's own card list to exist first; Batch API can't chain that
+   within one submission. Integrate these and their companion recipes
+   before moving on.
+4. Submit the remaining rows as the real batch.
+5. Run the full Phase 2 integration pipeline once results are back —
+   `validate_batch_results.py` (including its `max_tokens`-headroom
+   warning) before `integrate_batch_results.py`, never the reverse.
+6. Reconcile the queue, ship, verify live — a real local backend run and
+   a handful of spot-checked pages in an actual browser, not just
+   `import app.seed_templates` succeeding.
 
 ## Cost safeguards (answering the "exorbitant bill" question directly)
 

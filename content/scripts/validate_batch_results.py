@@ -24,7 +24,15 @@ from build_batch_requests import (  # noqa: E402
     extract_existing_pages,
     load_id_to_row_from_manifest,
 )
+from prompt_templates import MAX_TOKENS_BY_TYPE  # noqa: E402
 from validation import extract_content, validate_content  # noqa: E402
+
+# A result that used most of its max_tokens budget is one length-variance
+# retry away from a real truncation (stop_reason: max_tokens, invalid
+# cut-off JSON) -- exactly what happened to recipe_or_dish before its
+# budget was bumped 4096 -> 6144 -> 8192. Flag it here, before that
+# variance actually bites on a future run of the same template type.
+TOKEN_HEADROOM_WARN_THRESHOLD = 0.85
 
 TITLE_PATTERN_BY_TYPE = {
     "howto_technique": re.compile(r"^How to ", re.IGNORECASE),
@@ -58,6 +66,7 @@ def main() -> None:
     issues: list[str] = []
     clean_ids: list[str] = []
     bad_ids: set[str] = set()
+    high_headroom: list[tuple[str, int, int]] = []  # (custom_id, output_tokens, budget)
 
     for r in results:
         custom_id = r["custom_id"]
@@ -76,7 +85,12 @@ def main() -> None:
         message = r["result"]["message"]
         usage = message.get("usage", {})
         total_input_tokens += usage.get("input_tokens", 0)
-        total_output_tokens += usage.get("output_tokens", 0)
+        output_tokens = usage.get("output_tokens", 0)
+        total_output_tokens += output_tokens
+
+        budget = MAX_TOKENS_BY_TYPE.get(template_type)
+        if budget and output_tokens / budget >= TOKEN_HEADROOM_WARN_THRESHOLD:
+            high_headroom.append((custom_id, output_tokens, budget))
 
         try:
             content = extract_content(message)
@@ -113,6 +127,15 @@ def main() -> None:
         print("  (none -- all results pass schema + type + depth-check + convention checks)")
     print()
     print(f"custom_ids needing a fix-pass: {sorted(bad_ids)}")
+    print()
+    if high_headroom:
+        print(f"WARNING: {len(high_headroom)} result(s) used >={TOKEN_HEADROOM_WARN_THRESHOLD:.0%} "
+              "of their max_tokens budget -- one attempt-to-attempt length variance away from a real "
+              "truncation. Consider raising that template type's MAX_TOKENS_BY_TYPE entry before the next batch:")
+        for custom_id, output_tokens, budget in high_headroom:
+            print(f"  - [{custom_id}] {output_tokens}/{budget} tokens ({output_tokens / budget:.0%})")
+    else:
+        print(f"No result used >={TOKEN_HEADROOM_WARN_THRESHOLD:.0%} of its max_tokens budget.")
 
 
 if __name__ == "__main__":

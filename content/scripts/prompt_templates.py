@@ -669,11 +669,20 @@ MAX_TOKENS_BY_TYPE = {
     # Confirms output length varies enough attempt-to-attempt that a budget
     # needs real margin, not just enough for one successful sample.
     "recipe_or_dish": 8192,
-    "ingredient_hub": 2500,
-    "howto_technique": 2500,
-    "definition": 1500,
-    "comparison": 2200,
-    "substitute": 2000,
+    # The other 5 budgets below were bumped ~35-45% after
+    # validate_batch_results.py's new max_tokens-headroom check (added
+    # post-pilot) found 12 already-published pilot results that had used
+    # 85-100% of these exact budgets -- including what-is-dubai-chocolate
+    # finishing at literally 100% of definition's old 1500-token budget.
+    # None of these had actually truncated yet, but recipe_or_dish's own
+    # history shows that's a matter of which attempt gets unlucky, not
+    # whether the risk is real -- so these are fixed proactively here
+    # rather than waiting for an actual truncated page to surface the gap.
+    "ingredient_hub": 3500,
+    "howto_technique": 3500,
+    "definition": 2200,
+    "comparison": 3000,
+    "substitute": 2800,
     "category_roundup": 2800,
 }
 

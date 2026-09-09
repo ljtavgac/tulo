@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -114,6 +115,14 @@ def main() -> None:
               "only safe if seed_templates.py hasn't changed since this batch was built.")
         id_to_row = build_id_to_row(csv_path, existing_slugs)
 
+    # Snapshot of slugs that existed BEFORE this run -- distinct from
+    # taken_slugs below, which gets mutated as this run assigns slugs to
+    # its own new entries. Needed to tell apart the two collision cases:
+    # "this exact page is already live" (skip, don't reinsert) vs. "two
+    # different pages in this run happen to slugify the same" (a real new
+    # duplicate-topic collision, not a re-run).
+    originally_existing_slugs = set(existing_slugs)
+
     new_entries = []
     skipped = []
     for r in results:
@@ -129,16 +138,46 @@ def main() -> None:
 
         content = normalize_for_storage(template_type, extract_content(r["result"]["message"]))
         title = content.pop("title")
+        candidate_slug = slugify_for_page(title, template_type)
 
-        slug = slugify_for_page(title, template_type)
+        # Guards against a real regression: re-running this script against
+        # a results file that's already been (fully or partially)
+        # integrated used to silently insert the same page again under a
+        # "-2"-suffixed slug (the collision-resolution loop below treats
+        # ANY taken slug as "a different page happens to collide," which
+        # is wrong for this specific case). Checking against the slug set
+        # as it existed before this run started -- not the mutated
+        # taken_slugs below -- catches "this exact page is already live"
+        # directly, with no dependence on any particular CSV having a
+        # status column (pilot_batch_50.csv, e.g., never had one).
+        if candidate_slug in originally_existing_slugs:
+            print(f"SKIPPING [{custom_id}]: slug {candidate_slug!r} already exists in "
+                  "seed_templates.py -- already integrated in a prior run, not inserting again.")
+            skipped.append(custom_id)
+            continue
+
+        slug = candidate_slug
         base = slug
         n = 2
+        if slug in taken_slugs:
+            print(f"WARNING [{custom_id}]: slug {slug!r} collides with another NEW page in this "
+                  "same run (or a pre-existing page under a different title) -- this may be the "
+                  "same real-world topic generated twice (see the corn-starch / "
+                  "Flourless-Chocolate-Cake collisions found in the pilot). Assigning a suffixed "
+                  "slug rather than silently merging, but review this pair before trusting both.")
         while slug in taken_slugs:
             slug = f"{base}-{n}"
             n += 1
         taken_slugs.add(slug)
 
         new_entries.append(format_page_entry(slug, template_type, title, batch_number, content))
+
+    if not new_entries:
+        print(f"Nothing to insert -- all {len(results)} result(s) were already published or skipped. "
+              f"{SEED_TEMPLATES_PATH} left untouched.")
+        if skipped:
+            print(f"Skipped (as requested or already published): {skipped}")
+        return
 
     text = SEED_TEMPLATES_PATH.read_text()
     # Anchor on the exact text following SEED_PAGES's closing bracket, not a
@@ -151,11 +190,14 @@ def main() -> None:
         raise ValueError("Expected SEED_PAGES closing-bracket anchor not found -- file structure changed")
     closing_bracket = text.index(anchor) + 1  # +1 to land right after the leading \n, at the "]"
 
+    # Dynamic, not hand-copied from the original pilot's header comment --
+    # a hardcoded "pilot" description here would silently mislabel every
+    # later real batch, which reuses this same script.
+    today = date.today().isoformat()
     header = (
-        "\n    # --- Batch API pilot (2026-09-09): 50-title cross-section, generated\n"
-        "    # via content/scripts/build_batch_requests.py + Batch API, integrated via\n"
-        "    # content/scripts/integrate_batch_results.py. See\n"
-        "    # content/scripts/PILOT_BATCH_STATUS.md for the full pilot record.\n"
+        f"\n    # --- Batch: {csv_path.name} ({today}), generated via\n"
+        "    # content/scripts/build_batch_requests.py + Batch API, integrated via\n"
+        "    # content/scripts/integrate_batch_results.py.\n"
     )
     new_text = (
         text[:closing_bracket]
@@ -163,11 +205,28 @@ def main() -> None:
         + "".join(new_entries)
         + text[closing_bracket:]
     )
+
+    # Sanity check the insertion actually did what it should have, before
+    # writing anything to disk: exactly len(new_entries) more `"slug":` keys
+    # should exist afterward, no more, no less. Catches both the
+    # insertion-anchor bug (wrong location silently duplicating or
+    # dropping content) and a double-integration slipping past the
+    # status-column guard above for any reason.
+    before_count = text.count('"slug":')
+    after_count = new_text.count('"slug":')
+    if after_count - before_count != len(new_entries):
+        raise ValueError(
+            f"Sanity check failed: expected exactly {len(new_entries)} new pages, but "
+            f'"slug": count went from {before_count} to {after_count} '
+            f"(delta {after_count - before_count}). Not writing -- investigate before re-running."
+        )
+
     SEED_TEMPLATES_PATH.write_text(new_text)
 
-    print(f"Inserted {len(new_entries)} new pages into {SEED_TEMPLATES_PATH}")
+    print(f"Inserted {len(new_entries)} new pages into {SEED_TEMPLATES_PATH} "
+          f"({before_count} -> {after_count} total pages)")
     if skipped:
-        print(f"Skipped (as requested): {skipped}")
+        print(f"Skipped (as requested or already published): {skipped}")
 
 
 if __name__ == "__main__":
