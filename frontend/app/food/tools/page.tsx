@@ -21,7 +21,6 @@ export default function ToolsIndexPage() {
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Food", href: "/food" },
     { label: section.label },
   ];
 

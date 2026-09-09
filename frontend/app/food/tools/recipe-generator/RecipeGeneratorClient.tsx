@@ -12,7 +12,6 @@ import type { ImageAttribution } from "@/lib/types";
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Food", href: "/food" },
   { label: "Tools", href: "/food/tools" },
   { label: "Custom Recipe Generator" },
 ];

@@ -22,10 +22,15 @@ SEED_PAGES = [
         "title": "Homepage",
         "batch_number": 0,
         "content": {
+            # Brand-level, not food-specific -- the homepage is now the
+            # permanent multi-vertical root (see the /food landing page
+            # removal), and a food-only description here would need to be
+            # undone the moment a second vertical launches. Food is still
+            # the only live vertical today, so it's named as a starting
+            # point rather than pretended away entirely.
             "meta_description": (
-                "Tulo is a no-clutter recipe site, ingredients and instructions up "
-                "front, plus native serving-size scaling and unit conversion built "
-                "into every recipe."
+                "Tulo is made for you: clear, no-clutter guides and tools for "
+                "real life, starting with food."
             ),
             "featured_recipe_slugs": ["banana-nut-bread"],
             "category_links": [

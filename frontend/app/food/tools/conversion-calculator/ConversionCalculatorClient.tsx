@@ -10,7 +10,6 @@ import { GAS_MARKS, VOLUME_UNITS, WEIGHT_UNITS, round } from "@/lib/conversions"
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Food", href: "/food" },
   { label: "Tools", href: "/food/tools" },
   { label: "Kitchen Measurement Conversion Calculator" },
 ];

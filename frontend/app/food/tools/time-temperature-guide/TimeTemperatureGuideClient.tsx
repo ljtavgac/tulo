@@ -10,7 +10,6 @@ import { COOK_TIMES, SAFE_MINIMUM_TEMPS, type Method } from "@/lib/timeTemps";
 
 const BREADCRUMB_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Food", href: "/food" },
   { label: "Tools", href: "/food/tools" },
   { label: "Cooking Time & Temperature Guide" },
 ];

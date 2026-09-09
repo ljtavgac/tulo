@@ -21,10 +21,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = page?.content.meta_description;
 
   return {
-    title: { absolute: SITE_NAME },
+    // Brand-level, not food-specific -- this is now the permanent
+    // multi-vertical root (see the / -> /food removal this replaced), and
+    // a food-specific title would need to be undone the moment a second
+    // vertical launches. The tagline lives here rather than in SITE_NAME
+    // itself since every other page's title still wants the bare "Tulo"
+    // (via layout.tsx's title.template), not this longer form.
+    title: { absolute: "Tulo — Made for You" },
     description,
-    alternates: { canonical: "/food" },
-    openGraph: { title: SITE_NAME, description, url: "/food" },
+    alternates: { canonical: "/" },
+    openGraph: { title: SITE_NAME, description, url: "/" },
   };
 }
 

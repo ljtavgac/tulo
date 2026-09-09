@@ -46,7 +46,6 @@ export default async function RecipePage({
   const section = sectionForTemplate(page.template_type)!;
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Food", href: "/food" },
     { label: section.label, href: section.path },
     { label: page.title },
   ];

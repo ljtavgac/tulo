@@ -26,7 +26,6 @@ export default async function ComparisonsIndexPage() {
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Food", href: "/food" },
     { label: section.label },
   ];
 

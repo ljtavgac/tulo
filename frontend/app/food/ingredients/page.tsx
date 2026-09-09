@@ -26,7 +26,6 @@ export default async function IngredientsIndexPage() {
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Food", href: "/food" },
     { label: section.label },
   ];
 

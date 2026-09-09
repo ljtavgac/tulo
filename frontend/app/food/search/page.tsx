@@ -35,7 +35,6 @@ export default async function SearchPage({
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Food", href: "/food" },
     { label: "Search" },
   ];
 

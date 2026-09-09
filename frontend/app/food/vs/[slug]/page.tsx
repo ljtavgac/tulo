@@ -38,7 +38,6 @@ export default async function ComparisonPage({
   const section = sectionForTemplate(page.template_type)!;
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Food", href: "/food" },
     { label: section.label, href: section.hasIndex ? section.path : undefined },
     { label: page.title },
   ];

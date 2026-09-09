@@ -43,7 +43,13 @@ export const TEMPLATE_ROUTES: Record<string, string> = {
 // place that prefix is defined; everything else (nav, breadcrumbs,
 // sitemap, canonical URLs) composes through this function.
 export function pagePath(templateType: string, slug: string): string {
-  if (templateType === "homepage") return "/food";
+  // The homepage used to live at /food (the site's root redirected there).
+  // Now the reverse: / is the real homepage and /food redirects to it (see
+  // next.config.mjs) -- removing /food as its own landing page now that
+  // there's only one vertical live, reintroducible once a second one
+  // launches and there's an actual reason to distinguish "food" from
+  // "everything."
+  if (templateType === "homepage") return "/";
   // static_page (About, Contact, ...) lives at the site root, not under
   // /food/ -- these are hand-coded routes (frontend/app/about,
   // frontend/app/contact), not content-driven [slug] templates, and their
