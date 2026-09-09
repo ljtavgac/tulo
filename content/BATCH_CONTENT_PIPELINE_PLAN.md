@@ -65,6 +65,37 @@ Corrected below.
   pilot's failure rate) that turns "probably a couple of days" into
   "reliably a couple of days."
 
+## Phase 1 built: two corrections found while actually writing it
+
+`content/scripts/prompt_templates.py` and `content/scripts/build_batch_requests.py`
+are written (Phase 1a/1b done). Building them for real surfaced two things
+this plan got wrong or missed:
+
+1. **Batch API does support tool-enforced structured output.** The line
+   above about "no tool-enforced structured output" was wrong -- each batch
+   request is an ordinary Messages API call, so it can carry `tools` and a
+   forced `tool_choice` exactly like an interactive request. The actual
+   implementation forces a per-template-type tool call with a strict
+   `input_schema` (matching `frontend/lib/types.ts` field-for-field) instead
+   of just prompting for raw JSON text. This should substantially cut the
+   Phase 2 fix-pass rate, since a malformed/missing-field response becomes
+   much harder for the model to produce at all, rather than something a
+   validation pass has to catch after the fact.
+2. **`CONTENT_QUEUE.csv`'s `proposed_article_title` column is unreliable for
+   anything but `recipe_or_dish`.** It's a naive "keyword + Recipe" template:
+   an `ingredient_hub` row like "Nigiri" becomes "Nigiri Recipe", a
+   `howto_technique` row like "how to make matcha latte" becomes "Matcha
+   Latte Recipe". Using it verbatim at scale would have put a wrong,
+   recipe-shaped title on every non-recipe page in the batch. Fixed by
+   having the model generate the page's own `title` field itself, following
+   the real per-type convention shown in that type's calibration example
+   (bare ingredient name, "How to ___", "What Is ___?", etc.) -- the prompt
+   never passes `proposed_article_title` through at all. The request file's
+   `custom_id` is built from the raw `title` keyword column instead (still
+   not the final slug -- that gets derived from the model's actual generated
+   title during Phase 2, checked for collisions against real pages at that
+   point).
+
 ## Why hybrid (recap)
 
 Batch API is cheap and fast for raw text generation but has no tool access,
