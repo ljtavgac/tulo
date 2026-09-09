@@ -28,6 +28,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// A carousel is a horizontally-scrolling teaser, not a full listing -- the
+// section index pages (linked via "See all") already exist for that. This
+// used to fetch every page of a section's template_type with no limit at
+// all (up to ~950 rows for ingredient_hub), rendering every one of them
+// into the carousel's DOM on every single homepage view -- one of the
+// heaviest single page loads on the whole site, on what's likely its most
+// visited page. Newest-first ordering (already the list endpoint's
+// default) means a bounded fetch still surfaces genuinely new content.
+const CAROUSEL_SIZE = 20;
+
 // One carousel per content template type, in the order they should appear.
 const HOMEPAGE_SECTIONS = [
   "recipe_or_dish",
@@ -50,7 +60,9 @@ export default async function HomePage() {
     );
   }
 
-  const sectionPages = await Promise.all(HOMEPAGE_SECTIONS.map((templateType) => listPages(templateType)));
+  const sectionPages = await Promise.all(
+    HOMEPAGE_SECTIONS.map((templateType) => listPages(templateType, { limit: CAROUSEL_SIZE, offset: 0 }))
+  );
 
   return (
     <main>

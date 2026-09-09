@@ -7,11 +7,12 @@ import PageTile from "./PageTile";
 // {title, slug, image} data -- rendering them used to guess a title by
 // turning hyphens into spaces ("banana-nut-bread" -> "banana nut bread"),
 // which doesn't match the page's real title or capitalization, and gave no
-// visual sense of what the linked page actually is. listPages() is cached
-// for an hour (see lib/api.ts) and already returns each page's real title
-// and image data, so filtering it down to the requested slugs here is one
-// cached fetch instead of one round trip per link, and it's enough to
-// render real photo tiles instead of a flat bulleted text list.
+// visual sense of what the linked page actually is. listPages() already
+// returns each page's real title and image data, and (via its `slugs`
+// filter) fetches only these specific pages -- not every page of
+// templateType, which at today's content scale (hundreds of pages per
+// template) would mean scanning nearly all of them just to find the
+// handful actually being linked to here.
 export default async function RelatedLinks({
   heading,
   templateType,
@@ -23,7 +24,7 @@ export default async function RelatedLinks({
 }) {
   if (slugs.length === 0) return null;
 
-  const pages = await listPages(templateType);
+  const pages = await listPages(templateType, { slugs });
   const bySlug = new Map(pages.map((p) => [p.slug, p]));
   const matched = slugs.map((s) => bySlug.get(s)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 

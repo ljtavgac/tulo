@@ -687,6 +687,16 @@ def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None, 
 def list_pages(
     template_type: str | None = Query(default=None),
     q: str | None = Query(default=None),
+    slugs: str | None = Query(
+        default=None,
+        description=(
+            "Comma-separated slugs to restrict the result to. For a caller "
+            "that already knows exactly which pages it wants (RelatedLinks "
+            "resolving a handful of related_recipe_slugs, say) -- fetching "
+            "every page of a template_type just to filter it down client-"
+            "side used to mean a full scan of up to ~950 rows to find 4."
+        ),
+    ),
     limit: int | None = Query(default=None, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
@@ -708,6 +718,8 @@ def list_pages(
     query = db.query(Page).order_by(Page.id.desc())
     if template_type is not None:
         query = query.filter(Page.template_type == template_type)
+    if slugs is not None:
+        query = query.filter(Page.slug.in_([s for s in slugs.split(",") if s]))
     if q:
         # Title-only for now: ilike() is portable across SQLite/Postgres,
         # unlike JSON-field queries (Postgres' ->> operator has no SQLite

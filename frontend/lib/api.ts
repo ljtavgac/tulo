@@ -29,12 +29,20 @@ export async function getPage<T = Record<string, unknown>>(
 
 export async function listPages(
   templateType?: string,
-  options?: { limit?: number; offset?: number }
+  options?: { limit?: number; offset?: number; slugs?: string[] }
 ): Promise<PageSummary[]> {
   const url = new URL(`${API_URL}/pages`);
   if (templateType) url.searchParams.set("template_type", templateType);
   if (options?.limit != null) url.searchParams.set("limit", String(options.limit));
   if (options?.offset != null) url.searchParams.set("offset", String(options.offset));
+  // Lets a caller that already knows exactly which pages it wants (see
+  // RelatedLinks) fetch just those instead of every page of a
+  // template_type -- a full ingredient_hub or recipe_or_dish listing is
+  // hundreds of rows now, most of it thrown away immediately after
+  // filtering client-side for a handful of known slugs.
+  if (options?.slugs && options.slugs.length > 0) {
+    url.searchParams.set("slugs", options.slugs.join(","));
+  }
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
   return res.json();
