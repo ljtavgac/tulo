@@ -16,17 +16,39 @@ Recipe, Ingredient Hub, How-To, Definition, Comparison, and Substitute
 (single hero image) and Category Roundup (one image per recipe card) have
 an image slot in their template -- Homepage and Tool pages don't, so
 they're skipped entirely.
+
+Searches run concurrently across pages (see CONCURRENCY below) -- this used
+to be a strict for-loop, one page at a time, which was fine at a couple
+hundred pages but became a real problem once the content queue reached
+~2,000: a single-threaded pass could take hours, and (run as a background
+task from main.py's startup hook, see lifespan()) kept getting restarted
+from zero by the next deploy before it ever finished a pass. Each worker
+does only network calls and pure Python (never touches the SQLAlchemy
+session, which isn't thread-safe) -- the main thread is the only place
+that ever reads or writes to `db`, applying each worker's already-computed
+result after the fact.
 """
 
 import copy
 import re
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal
 from .images import _is_reachable, is_allowed_image_url, search_image, ping_download, UNSPLASH_ACCESS_KEY, PEXELS_ACCESS_KEY
 from .models import Page
+
+# How many pages' worth of Unsplash/Pexels searches run at once. Kept lower
+# than the content-generation pipeline's proven-safe 15 (a different API,
+# untested at that concurrency here, and Unsplash's free tier in particular
+# has a real, fairly low hourly rate limit) -- a run that gets rate-limited
+# partway through just leaves the rest for the next run to pick up (see
+# _apply_result's per-page try/except), so this errs conservative rather
+# than fast.
+CONCURRENCY = 8
 
 # template_type -> the content key holding the search query for a single
 # hero image.
@@ -148,8 +170,31 @@ def _needs_fetch(url: str | None, revalidate: bool) -> bool:
     return revalidate and not _is_reachable(url)
 
 
+class _UsedUrls:
+    """Thread-safe wrapper around the set of photo URLs already claimed in
+    this run -- see fetch_images()'s used_urls docstring for why this needs
+    to be shared across pages at all. Plain set() isn't safe to read
+    (snapshot for exclude_urls) and write (add on a match) from multiple
+    worker threads at once without this: two threads racing between the
+    snapshot and the add could both claim the literal same photo for two
+    different pages, the exact bug used_urls exists to prevent, just
+    reintroduced by concurrency instead of by a missing set."""
+
+    def __init__(self) -> None:
+        self._urls: set[str] = set()
+        self._lock = threading.Lock()
+
+    def snapshot(self) -> frozenset[str]:
+        with self._lock:
+            return frozenset(self._urls)
+
+    def add(self, url: str) -> None:
+        with self._lock:
+            self._urls.add(url)
+
+
 def _apply_result(
-    content: dict, attempts: list[tuple[str, str | None]], template_type: str, used_urls: set[str]
+    content: dict, attempts: list[tuple[str, str | None]], template_type: str, used_urls: "_UsedUrls"
 ) -> bool:
     """Tries each (query, must_match) pair in `attempts`, in order, and
     writes image_url/image_attribution into `content` in place from the
@@ -164,10 +209,14 @@ def _apply_result(
     wrong-subject photo for the *primary* query just as easily as for a
     fallback one (that's exactly what happened for how-to-cook-beets,
     where "roasted beets whole on baking sheet" itself, not a fallback,
-    returned a roasted turkey)."""
+    returned a roasted turkey).
+
+    Called from within a worker thread (see fetch_images) -- touches only
+    `content` (a deep copy local to this page, per-worker, never shared)
+    and `used_urls` (its own internal lock), never the SQLAlchemy session."""
     for query, must_match in attempts:
         search_query = _search_query_for(template_type, query)
-        result = search_image(search_query, exclude_urls=frozenset(used_urls), must_match=must_match)
+        result = search_image(search_query, exclude_urls=used_urls.snapshot(), must_match=must_match)
         if result is None:
             print(f"    no result for '{search_query}'" + (f" (must mention {must_match!r})" if must_match else ""))
             continue
@@ -232,7 +281,7 @@ def fetch_images(
     images_written = 0
     # Shared across the whole run so two different pages/cards never end up
     # with the literally same photo -- see search_image()'s exclude_urls.
-    used_urls: set[str] = set()
+    used_urls = _UsedUrls()
 
     # A standalone recipe_or_dish page and its parent category_roundup's
     # card for that same dish (e.g. carne-asada-tacos and taco-recipes'
@@ -245,194 +294,213 @@ def fetch_images(
     # recipe page is the primary content people land on and share and
     # needs a real hero photo; a card missing one just renders without an
     # image (see StockPhotoSlot) -- not a broken page. So single-hero-image
-    # pages are processed, and get first claim on scarce matches, before
-    # category_roundup pages, regardless of each one's position in
-    # SEED_PAGES / insertion order.
-    pages = db.query(Page).all()
-    pages.sort(key=lambda p: p.template_type == "category_roundup")
+    # pages are run to completion, and get first claim on scarce matches,
+    # as their own concurrent phase before category_roundup pages' phase
+    # starts -- not just sorted within one shared pool, which concurrency
+    # would let race against each other and defeat this ordering.
+    all_pages = db.query(Page).all()
+    single_image_pages = [p for p in all_pages if SINGLE_IMAGE_TEMPLATES.get(p.template_type)]
+    category_roundup_pages = [p for p in all_pages if p.template_type == "category_roundup"]
 
-    for page in pages:
+    def process_single_image_page(page: Page) -> tuple[Page, dict | None, int]:
+        """Pure computation + network calls only -- never touches `db` or
+        any other SQLAlchemy state, so it's safe to run in a worker thread.
+        Returns (page, new_content_or_None_if_unchanged, images_written_delta);
+        the caller applies the result back onto `page` in the main thread."""
+        if only_slugs is not None and page.slug not in only_slugs:
+            return page, None, 0
+        force_this_page = (force and only_slugs is None) or (only_slugs is not None)
+
+        # A deep copy, not a reference: mutating page.content directly would
+        # change the "before" value SQLAlchemy compares against too, since
+        # it'd be the same object -- then the reassignment in the main
+        # thread looks like a no-op and it silently never emits the UPDATE.
+        content = copy.deepcopy(page.content)
+        query_key = SINGLE_IMAGE_TEMPLATES[page.template_type]
+        if query_key not in content:
+            return page, None, 0
+        # is_allowed_image_url is false for both a missing image_url and one
+        # pointing at a disallowed host -- both need a real fetch. Before
+        # this existed, a URL that slipped past images.py's own host filter
+        # (or was written before that filter existed) satisfied "already
+        # has *a* image_url" forever and never got a second look, so a page
+        # that once broke stayed broken through every future startup until
+        # someone found it by hand via /admin/image-audit and re-ran with
+        # force=true.
+        if not (force_this_page or _needs_fetch(content.get("image_url"), revalidate)):
+            return page, None, 0
+
+        query = content[query_key]
+        queries = [query]
+        if page.template_type == "comparison":
+            # Already has two clean, broad item names on hand -- no need to
+            # derive anything from the title. No single must_match term
+            # fits here (a comparison photo can legitimately show either
+            # item, or both), so this template is deliberately left out of
+            # the relevance check rather than forcing a wrong one.
+            queries += [
+                name
+                for name in (content.get("item_a_name"), content.get("item_b_name"))
+                if name and name.lower() != query.lower()
+            ]
+            attempts = [(q, None) for q in queries]
+        elif page.template_type == "recipe_or_dish":
+            # No SINGLE_IMAGE_FALLBACKS entry for recipe_or_dish (see that
+            # dict's comment: a dish name is already about as broad a query
+            # as makes sense) -- but that leaves a recipe page with a single
+            # query and nothing to fall back on if that exact search comes
+            # up empty. In practice it usually isn't empty: a matching
+            # category_roundup card (e.g. taco-recipes' "Carne Asada Tacos")
+            # searches this exact same query text and, being in the earlier
+            # phase, gets first claim via used_urls -- so if only one good
+            # match exists for a niche dish name, the card claims it and
+            # this page's own identical search comes up with nothing left.
+            # The category name from category_link (e.g. "Taco") is the
+            # same broadening the card itself already falls back to, so
+            # this recipe gets a real second shot instead of ending up bare
+            # just because a card elsewhere on the site happened to search
+            # first.
+            category_title = (content.get("category_link") or {}).get("title")
+            if category_title:
+                fallback = _category_fallback_query(category_title)
+                if fallback and fallback.lower() != query.lower():
+                    queries.append(fallback)
+            attempts = [(q, None) for q in queries]
+        else:
+            fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
+            # Also the required subject term for every query tried for this
+            # page, not just used to build the fallback query itself -- see
+            # _apply_result's must_match. Every template in
+            # SINGLE_IMAGE_FALLBACKS reduces to exactly one core noun (the
+            # ingredient/term/technique subject itself), which is what a
+            # photo for this page actually needs to be of, whether it was
+            # found via the specific hero_image_query or the broader
+            # fallback.
+            must_match = fallback_fn(page.title) if fallback_fn else None
+            if must_match and must_match.lower() != query.lower():
+                queries.append(must_match)
+            attempts = [(q, must_match) for q in queries]
+            # ingredient_hub only: a last-resort relaxed attempt once the
+            # exact title itself has been tried and failed -- see
+            # _ingredient_hub_relaxed_term's docstring for the real case
+            # (milano-cookies) that motivated this.
+            if page.template_type == "ingredient_hub":
+                relaxed = _ingredient_hub_relaxed_term(page.title)
+                if relaxed and relaxed.lower() != (must_match or "").lower():
+                    attempts.append((relaxed, relaxed))
+
+        print(f"  {page.slug}: searching '{query}'...")
+        try:
+            if _apply_result(content, attempts, page.template_type, used_urls):
+                return page, content, 1
+            elif content.get("image_url"):
+                # Every query came up empty (a thin free-tier catalog, or
+                # every candidate already claimed by used_urls) -- without
+                # this, a URL that's broken (not missing) stays parked here
+                # forever: the "does this need a fetch" check above keeps
+                # re-triggering a search on every future run, but a failed
+                # search on its own never removes the stale value it was
+                # trying to replace. Clearing it instead falls back to
+                # StockPhotoSlot's "no imageUrl -> render nothing" behavior,
+                # which beats a permanently broken <img> even though it
+                # means no photo until a later run's search succeeds.
+                content.pop("image_url", None)
+                content.pop("image_attribution", None)
+                return page, content, 0
+        except Exception as e:
+            print(f"    error: {e}")
+        return page, None, 0
+
+    def process_category_roundup_page(page: Page) -> tuple[Page, dict | None, int]:
+        """Same not-touching-`db` contract as process_single_image_page --
+        see that function's docstring."""
         # A card's slug lives inside its parent category_roundup page's own
         # row, so `page.slug in only_slugs` alone would miss a request
         # scoped to a card slug entirely -- check the page's own slug OR
-        # any of its cards' slugs before deciding to skip it. Recomputed
-        # per page rather than once up front since only category_roundup
-        # pages have cards to check.
+        # any of its cards' slugs before deciding to skip it.
         page_explicitly_requested = only_slugs is not None and page.slug in only_slugs
         requested_card_slugs: set[str] = set()
-        if only_slugs is not None and page.template_type == "category_roundup":
+        if only_slugs is not None:
             requested_card_slugs = {
                 c.get("slug") for c in page.content.get("recipe_cards", []) if c.get("slug")
             } & only_slugs
-
         if only_slugs is not None and not page_explicitly_requested and not requested_card_slugs:
-            continue
-        # Force applies to the whole page (every card on it, for a
-        # category_roundup) only for a genuinely unscoped site-wide force
-        # run (force=True with no only_slugs at all), or when this page's
-        # own slug -- not just one of its cards' -- was explicitly named.
-        # `force and only_slugs is not None` deliberately does NOT count:
-        # a real bug, found by actually running this against production,
-        # was `force=true&slugs=char-siu` re-rolling all 6 of
-        # chinese-recipes' cards instead of just char-siu's, because bare
-        # `force` used to cascade to every card the moment the page passed
-        # the filter above for any reason, including only one matching
-        # card. requested_card_slugs (below, in the card loop) is what
-        # correctly scopes a single-card request now.
+            return page, None, 0
+        # Force applies to every card on the page only for a genuinely
+        # unscoped site-wide force run (force=True with no only_slugs at
+        # all), or when this page's own slug -- not just one of its cards'
+        # -- was explicitly named. `force and only_slugs is not None`
+        # deliberately does NOT count: a real bug, found by actually
+        # running this against production, was `force=true&slugs=char-siu`
+        # re-rolling all 6 of chinese-recipes' cards instead of just
+        # char-siu's, because bare `force` used to cascade to every card
+        # the moment the page passed the filter above for any reason,
+        # including only one matching card. requested_card_slugs (below) is
+        # what correctly scopes a single-card request now.
         force_this_page = (force and only_slugs is None) or page_explicitly_requested
 
-        # A deep copy, not a reference: mutating page.content directly (or a
-        # shallow copy of it, for category_roundup's nested recipe_cards)
-        # would change the "before" value SQLAlchemy compares against too,
-        # since it'd be the same object -- then the reassignment below looks
-        # like a no-op and it silently never emits the UPDATE.
         content = copy.deepcopy(page.content)
+        images_written_delta = 0
         changed = False
-
-        query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
-        if query_key and query_key in content:
-            # is_allowed_image_url is false for both a missing image_url and
-            # one pointing at a disallowed host -- both need a real fetch.
-            # Before this existed, a URL that slipped past images.py's own
-            # host filter (or was written before that filter existed)
-            # satisfied "already has *a* image_url" forever and never got a
-            # second look, so a page that once broke stayed broken through
-            # every future startup until someone found it by hand via
-            # /admin/image-audit and re-ran with force=true.
-            if force_this_page or _needs_fetch(content.get("image_url"), revalidate):
-                query = content[query_key]
-                queries = [query]
-                if page.template_type == "comparison":
-                    # Already has two clean, broad item names on hand --
-                    # no need to derive anything from the title. No single
-                    # must_match term fits here (a comparison photo can
-                    # legitimately show either item, or both), so this
-                    # template is deliberately left out of the relevance
-                    # check rather than forcing a wrong one.
-                    queries += [
-                        name
-                        for name in (content.get("item_a_name"), content.get("item_b_name"))
-                        if name and name.lower() != query.lower()
-                    ]
-                    attempts = [(q, None) for q in queries]
-                elif page.template_type == "recipe_or_dish":
-                    # No SINGLE_IMAGE_FALLBACKS entry for recipe_or_dish
-                    # (see that dict's comment: a dish name is already about
-                    # as broad a query as makes sense) -- but that leaves a
-                    # recipe page with a single query and nothing to fall
-                    # back on if that exact search comes up empty. In
-                    # practice it usually isn't empty: a matching
-                    # category_roundup card (e.g. taco-recipes' "Carne Asada
-                    # Tacos") searches this exact same query text and, being
-                    # defined earlier in SEED_PAGES, gets processed first in
-                    # this loop -- so if only one good match exists for a
-                    # niche dish name, the card claims it via used_urls and
-                    # this page's own identical search comes up with nothing
-                    # left. The category name from category_link (e.g.
-                    # "Taco") is the same broadening the card itself already
-                    # falls back to, so this recipe gets a real second shot
-                    # instead of ending up bare just because a card
-                    # elsewhere on the site happened to search first.
-                    category_title = (content.get("category_link") or {}).get("title")
-                    if category_title:
-                        fallback = _category_fallback_query(category_title)
-                        if fallback and fallback.lower() != query.lower():
-                            queries.append(fallback)
-                    attempts = [(q, None) for q in queries]
-                else:
-                    fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
-                    # Also the required subject term for every query tried
-                    # for this page, not just used to build the fallback
-                    # query itself -- see _apply_result's must_match. Every
-                    # template in SINGLE_IMAGE_FALLBACKS reduces to exactly
-                    # one core noun (the ingredient/term/technique subject
-                    # itself), which is what a photo for this page actually
-                    # needs to be of, whether it was found via the specific
-                    # hero_image_query or the broader fallback.
-                    must_match = fallback_fn(page.title) if fallback_fn else None
-                    if must_match and must_match.lower() != query.lower():
-                        queries.append(must_match)
-                    attempts = [(q, must_match) for q in queries]
-                    # ingredient_hub only: a last-resort relaxed attempt
-                    # once the exact title itself has been tried and failed
-                    # -- see _ingredient_hub_relaxed_term's docstring for
-                    # the real case (milano-cookies) that motivated this.
-                    if page.template_type == "ingredient_hub":
-                        relaxed = _ingredient_hub_relaxed_term(page.title)
-                        if relaxed and relaxed.lower() != (must_match or "").lower():
-                            attempts.append((relaxed, relaxed))
-                print(f"  {page.slug}: searching '{query}'...")
+        for card in content.get("recipe_cards", []):
+            # Same broken-vs-missing distinction as the single-image path
+            # -- a card's image_url can end up on a disallowed host too
+            # (this is literally the case that motivated adding the host
+            # check to images.py in the first place: category cards'
+            # image_query terms are often niche enough to surface
+            # Unsplash+ results). force_this_card covers a request scoped
+            # to just this one card's own slug (see requested_card_slugs
+            # above) as well as force_this_page (force=true, or the whole
+            # collection page's own slug was named), so `slugs=char-siu`
+            # reaches this specific card's photo without touching its 5
+            # siblings.
+            force_this_card = force_this_page or card.get("slug") in requested_card_slugs
+            if force_this_card or _needs_fetch(card.get("image_url"), revalidate):
+                query = card.get("image_query")
+                if not query:
+                    continue
+                # A specific dish name (e.g. "nasu dengaku") often has no
+                # match in a free-tier catalog -- fall back to the page's
+                # own category (e.g. "Eggplant") so a card isn't left
+                # permanently blank just because its exact dish is too
+                # niche to have stock photos of its own.
+                fallback = _category_fallback_query(page.title)
+                queries = [query] if fallback.lower() == query.lower() else [query, fallback]
+                attempts = [(q, None) for q in queries]
+                print(f"  {page.slug} / {card.get('title')}: searching '{query}'...")
                 try:
-                    if _apply_result(content, attempts, page.template_type, used_urls):
-                        images_written += 1
+                    if _apply_result(card, attempts, page.template_type, used_urls):
+                        images_written_delta += 1
                         changed = True
-                    elif content.get("image_url"):
-                        # Every query came up empty (a thin free-tier catalog,
-                        # or every candidate already claimed by used_urls) --
-                        # without this, a URL that's broken (not missing)
-                        # stays parked here forever: the "does this need a
-                        # fetch" check above keeps re-triggering a search on
-                        # every future run, but a failed search on its own
-                        # never removes the stale value it was trying to
-                        # replace. Clearing it instead falls back to
-                        # StockPhotoSlot's "no imageUrl -> render nothing"
-                        # behavior, which beats a permanently broken <img>
-                        # even though it means no photo until a later run's
-                        # search actually succeeds.
-                        content.pop("image_url", None)
-                        content.pop("image_attribution", None)
+                    elif card.get("image_url"):
+                        # Same "a failed search must not leave a broken
+                        # value behind" fix as the single-image path -- a
+                        # card's image_query is often the niche part of the
+                        # pair (queries tries it before the broader
+                        # category fallback), so this is the more likely of
+                        # the two to actually exhaust every candidate.
+                        card.pop("image_url", None)
+                        card.pop("image_attribution", None)
                         changed = True
                 except Exception as e:
                     print(f"    error: {e}")
+        return page, (content if changed else None), images_written_delta
 
-        elif page.template_type == "category_roundup":
-            for card in content.get("recipe_cards", []):
-                # Same broken-vs-missing distinction as the single-image
-                # branch above -- a card's image_url can end up on a
-                # disallowed host too (this is literally the case that
-                # motivated adding the host check to images.py in the first
-                # place: category cards' image_query terms are often niche
-                # enough to surface Unsplash+ results). force_this_card
-                # covers a request scoped to just this one card's own slug
-                # (see requested_card_slugs above) as well as force_this_page
-                # (force=true, or the whole collection page's own slug was
-                # named), so `slugs=char-siu` reaches this specific card's
-                # photo without touching its 5 siblings.
-                force_this_card = force_this_page or card.get("slug") in requested_card_slugs
-                if force_this_card or _needs_fetch(card.get("image_url"), revalidate):
-                    query = card.get("image_query")
-                    if not query:
-                        continue
-                    # A specific dish name (e.g. "nasu dengaku") often has no
-                    # match in a free-tier catalog -- fall back to the
-                    # page's own category (e.g. "Eggplant") so a card isn't
-                    # left permanently blank just because its exact dish is
-                    # too niche to have stock photos of its own.
-                    fallback = _category_fallback_query(page.title)
-                    queries = [query] if fallback.lower() == query.lower() else [query, fallback]
-                    attempts = [(q, None) for q in queries]
-                    print(f"  {page.slug} / {card.get('title')}: searching '{query}'...")
-                    try:
-                        if _apply_result(card, attempts, page.template_type, used_urls):
-                            images_written += 1
-                            changed = True
-                        elif card.get("image_url"):
-                            # Same "a failed search must not leave a broken
-                            # value behind" fix as the single-image branch
-                            # above -- a card's image_query is often the
-                            # niche part of the pair (queries tries it before
-                            # the broader category fallback), so this is the
-                            # more likely of the two branches to actually
-                            # exhaust every candidate.
-                            card.pop("image_url", None)
-                            card.pop("image_attribution", None)
-                            changed = True
-                    except Exception as e:
-                        print(f"    error: {e}")
+    def run_phase(pages: list[Page], worker) -> None:
+        nonlocal pages_updated, images_written
+        if not pages:
+            return
+        with ThreadPoolExecutor(max_workers=CONCURRENCY) as pool:
+            futures = [pool.submit(worker, page) for page in pages]
+            for future in as_completed(futures):
+                page, new_content, delta = future.result()
+                images_written += delta
+                if new_content is not None:
+                    page.content = new_content
+                    pages_updated += 1
 
-        if changed:
-            page.content = content  # already an independent object -- see the deepcopy above
-            pages_updated += 1
+    run_phase(single_image_pages, process_single_image_page)
+    run_phase(category_roundup_pages, process_category_roundup_page)
 
     db.commit()
     return pages_updated, images_written
