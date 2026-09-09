@@ -161,6 +161,20 @@ def _recipe_slugs_using_ingredient(db: Session, hub_slug: str) -> list[str]:
     return slugs
 
 
+def _normalize_dish_title(title: str) -> str:
+    """Lowercases and strips a trailing "recipe" before comparing a
+    collection card's title against a real recipe page's title -- every
+    standalone recipe_or_dish page's title carries that suffix by
+    convention ("Baba Ganoush Recipe"), while a collection card never
+    does ("Baba Ganoush"), so a bare .strip().lower() comparison would
+    never match the two for the exact same dish. Confirmed as a real
+    miss: dip-recipes' "Baba Ganoush" card sat unlinked to the
+    already-published baba-ganoush recipe until this was added, even
+    though nothing about the dish itself was actually missing."""
+    title = title.strip().lower()
+    return re.sub(r"\s+recipe$", "", title)
+
+
 def _recipes_linking_to(db: Session, field: str, target_slug: str) -> list[Page]:
     """recipe_or_dish pages whose content[field] (a singular LinkRef, e.g.
     category_link or technique_link) points at target_slug -- the reverse of
@@ -381,12 +395,12 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         content = copy.deepcopy(page.content)
         cards = content.setdefault("recipe_cards", [])
         existing_slugs = {c.get("slug") for c in cards if c.get("slug")}
-        cards_by_title = {c.get("title", "").strip().lower(): c for c in cards}
+        cards_by_title = {_normalize_dish_title(c.get("title", "")): c for c in cards}
         for recipe in _recipes_linking_to(db, "category_link", page.slug):
             if recipe.slug in existing_slugs:
                 continue
             rc = recipe.content
-            placeholder = cards_by_title.get(recipe.title.strip().lower())
+            placeholder = cards_by_title.get(_normalize_dish_title(recipe.title))
             if placeholder is not None and not placeholder.get("slug"):
                 placeholder["slug"] = recipe.slug
                 placeholder["image_url"] = rc.get("image_url")
