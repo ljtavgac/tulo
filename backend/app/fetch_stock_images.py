@@ -88,16 +88,36 @@ def _substitute_fallback_query(page_title: str) -> str:
     return re.sub(r"^best substitutes?\s+for\s+", "", page_title, flags=re.IGNORECASE).strip()
 
 
-# template_type -> a function deriving a broader fallback query from the
-# page's title, tried when the template's own hero_image_query (a specific
-# shot description) has no stock match. recipe_or_dish and ingredient_hub
-# aren't here: hero_image_query for those is already about as broad as a
-# useful query gets (a dish or ingredient name), so there's no meaningfully
-# broader term left to fall back to.
+def _ingredient_hub_fallback_query(page_title: str) -> str:
+    """The page's title IS already the bare ingredient name (e.g. "Milano
+    Cookies", "Chives") -- unlike the other three below, there's no
+    boilerplate framing to strip. Kept here anyway (as the identity
+    function) purely so this template type gets a must_match term wired
+    up through the exact same path as the others -- see
+    images._is_relevant()'s docstring: a real wrong-subject photo (an
+    unrelated stock image) got written for milano-cookies the same way it
+    did for how-to-cook-beets and best-substitutes-for-butter, just
+    without a fallback function to hang the fix on until now."""
+    return page_title
+
+
+# template_type -> a function deriving the page's single core-subject term,
+# used two ways: as a broader fallback query when the template's own
+# hero_image_query (a specific shot description) has no stock match, AND
+# (via _apply_result's must_match, checked against every query attempt, not
+# just the fallback) as the term a candidate photo's own alt/description
+# text must actually contain -- see images._is_relevant(). recipe_or_dish
+# isn't here: a specific dish name (e.g. "lomo saltado") often genuinely
+# doesn't appear in a real, correct photo's own alt text the way an
+# ingredient's bare name does, so requiring it risks false-rejecting
+# already-good matches rather than catching bad ones -- unlike the four
+# template types below, where the term is either exactly the page's own
+# title (ingredient_hub) or a short, mechanical strip of fixed boilerplate.
 SINGLE_IMAGE_FALLBACKS = {
     "definition": _definition_fallback_query,
     "howto_technique": _howto_fallback_query,
     "substitute": _substitute_fallback_query,
+    "ingredient_hub": _ingredient_hub_fallback_query,
 }
 
 
