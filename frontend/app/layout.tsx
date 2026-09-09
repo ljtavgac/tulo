@@ -57,13 +57,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Header />
         <div className="flex-1 pb-20">{children}</div>
         <Footer />
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
       </body>
       <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
-      <Script
-        async
-        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
-        crossOrigin="anonymous"
-      />
     </html>
   );
 }
