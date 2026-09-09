@@ -30,6 +30,7 @@ result after the fact.
 """
 
 import copy
+import random
 import re
 import sys
 import threading
@@ -329,6 +330,21 @@ def fetch_images(
     all_pages = db.query(Page).all()
     single_image_pages = [p for p in all_pages if SINGLE_IMAGE_TEMPLATES.get(p.template_type)]
     category_roundup_pages = [p for p in all_pages if p.template_type == "category_roundup"]
+    # db.query(Page).all() with no order_by comes back in a stable order
+    # (insertion/primary-key order in practice) every single call -- so
+    # every recurring pass (see main.py's _run_periodic_image_fetch) hit
+    # the same pages first, in the same order, every time. Harmless once
+    # the backlog is small, but at today's ~1,000-page backlog and a
+    # provider rate limit that caps how many pages one pass can even
+    # attempt, that meant whichever pages happened to sort first got every
+    # pass's full attempt budget while pages further back never got a
+    # single try. Shuffled within each phase (never across the two -- see
+    # the phase-ordering comment above) so a genuinely fixable page isn't
+    # permanently starved by sorting behind a page that keeps failing for
+    # reasons no retry fixes (see fetch_images()'s own docstring on thin
+    # free-tier catalogs).
+    random.shuffle(single_image_pages)
+    random.shuffle(category_roundup_pages)
 
     def process_single_image_page(page: Page) -> tuple[Page, dict | None, int]:
         """Pure computation + network calls only -- never touches `db` or

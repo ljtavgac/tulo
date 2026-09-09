@@ -61,11 +61,18 @@ _background_tasks: set[asyncio.Task] = set()
 # -- fetch_images() already stops a single pass early the moment any
 # provider rate-limits it (see fetch_stock_images.py's rate_limited
 # short-circuit), so a pass that starts again immediately would just get
-# rate-limited on its very first request again. An hour gives Pexels'
-# window real time to recover between attempts. Configurable via env var
-# only because "how long is Pexels' actual window" isn't something this
-# codebase has ever gotten a straight answer to -- it's an estimate.
-IMAGE_FETCH_INTERVAL_SECONDS = int(os.environ.get("IMAGE_FETCH_INTERVAL_SECONDS", 3600))
+# rate-limited on its very first request again, uselessly. That
+# short-circuit is exactly what makes a shorter interval safe to try
+# rather than risky, though: a pass that starts before Pexels' window has
+# actually recovered just fails fast on its first request and goes back to
+# sleep, at negligible cost, rather than hammering an API that's still
+# throttling it. Lowered from 3600 to 900 given the real backlog (~1,000
+# pages, one hour between attempts) was visibly too slow -- still purely a
+# guess at Pexels' real window (never confirmed, see fetch_stock_images.py
+# for the same admission), just a less conservative one now that there's a
+# cheap way to find out if it's wrong. Configurable via env var for the
+# same reason.
+IMAGE_FETCH_INTERVAL_SECONDS = int(os.environ.get("IMAGE_FETCH_INTERVAL_SECONDS", 900))
 
 
 async def _run_periodic_image_fetch() -> None:
