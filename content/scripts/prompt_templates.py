@@ -690,7 +690,13 @@ MAX_TOKENS_BY_TYPE = {
     "howto_technique": 3500,
     "definition": 2200,
     "comparison": 3000,
-    "substitute": 2800,
+    # Bumped again 2800 -> 3800 after preflight_check.py's real
+    # pre-batch generation (ahead of the 150-title test run) hit 86%
+    # of the 2800 budget on a single real "sesame oil substitute"
+    # generation -- proof the 2000 -> 2800 bump wasn't enough margin,
+    # caught before any real batch spend rather than after a truncated
+    # page shipped.
+    "substitute": 3800,
     "category_roundup": 2800,
 }
 
