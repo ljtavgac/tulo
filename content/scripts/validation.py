@@ -105,6 +105,27 @@ def extract_content(message: dict) -> dict:
     return json.loads(text_blocks[0]["text"])
 
 
+def normalize_for_storage(template_type: str, content: dict) -> dict:
+    """Converts generation-time-only shapes back to what seed_templates.py
+    actually stores, at the one shared choke point every integration path
+    must call. This exists because of a real regression: a one-off
+    integration script (generate_companion_recipes.py) reimplemented
+    insertion without this step and shipped step_notes as a raw list,
+    crashing resync_content() the same way the original garlic-confit bug
+    did. Both integrate_batch_results.py and generate_companion_recipes.py
+    call this now instead of each re-deriving it.
+
+    step_notes travels through generation as a list of {step_index, note}
+    objects (output_config's strict schema can't express an open-ended
+    dict keyed by arbitrary step numbers -- see prompt_templates.py's
+    RECIPE_OR_DISH_SCHEMA comment) but is stored as an int-keyed dict
+    (frontend/lib/types.ts's Record<string, string>)."""
+    content = dict(content)
+    if template_type == "recipe_or_dish" and isinstance(content.get("step_notes"), list):
+        content["step_notes"] = {entry["step_index"]: entry["note"] for entry in content["step_notes"]}
+    return content
+
+
 def check_schema_types(value, schema: dict, path: str, issues: list) -> None:
     expected = schema.get("type")
     if expected is None:

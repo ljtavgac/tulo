@@ -28,7 +28,7 @@ from build_batch_requests import (  # noqa: E402
     load_id_to_row_from_manifest,
     slugify as _slugify,
 )
-from validation import extract_content  # noqa: E402
+from validation import extract_content, normalize_for_storage  # noqa: E402
 
 
 def slugify_for_page(title: str, template_type: str) -> str:
@@ -127,20 +127,8 @@ def main() -> None:
         template_type = row["template_type"]
         batch_number = int(row.get("batch_number") or 1)
 
-        content = dict(extract_content(r["result"]["message"]))
+        content = normalize_for_storage(template_type, extract_content(r["result"]["message"]))
         title = content.pop("title")
-
-        # step_notes travels through generation as a list of {step_index,
-        # note} objects (output_config's strict schema can't express an
-        # open-ended dict keyed by arbitrary step numbers -- see
-        # prompt_templates.py's RECIPE_OR_DISH_SCHEMA comment) but
-        # seed_templates.py stores it the way it always has: an int-keyed
-        # dict (frontend/lib/types.ts's Record<string, string>). Convert
-        # back here, at the one place generation output becomes stored
-        # content, so nothing downstream needs to know generation ever used
-        # a different shape.
-        if template_type == "recipe_or_dish" and isinstance(content.get("step_notes"), list):
-            content["step_notes"] = {entry["step_index"]: entry["note"] for entry in content["step_notes"]}
 
         slug = slugify_for_page(title, template_type)
         base = slug
