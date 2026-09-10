@@ -243107,9 +243107,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A pantry-staple onion soup mix recipe made from dried minced onion, onion powder, and beef bouillon, ready in 5 minutes with no MSG or anti-caking agents.",
             "hero_image_query": "dried minced onion flakes seasoning",
-            "hero_image_must_match": ["dried onion", "onion flakes", "seasoning", "onion powder"],
+            "hero_image_must_match": ["brown onion on white paper"],
             "salient_ingredient_query": "dried minced onion flakes",
-            "salient_ingredient_must_match": ["dried onion", "onion flakes", "dehydrated onion", "onion powder"],
+            "salient_ingredient_must_match": ["brown onion on white paper"],
             "image_alt": "A small glass jar filled with a tan, flaky homemade onion soup mix blend of dried minced onion and bouillon granules, with a wooden spoon and loose dried onion flakes scattered beside it.",
             "why_it_works": "Dried minced onion and onion powder give two layers of onion flavor, one flaky and one fine, while beef bouillon granules supply the savory depth that store-bought packets get from hydrolyzed protein and MSG. Mixing your own means full control over sodium and no anti-caking additives, and it whisks into dips, gravies, and roasts exactly like the envelope version.",
             "prep_time_minutes": 5,
