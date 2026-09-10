@@ -210,6 +210,66 @@ def _howto_relaxed_terms(must_match_term: str | None) -> tuple[str, ...] | None:
     return tuple(words) if len(words) > 1 else None
 
 
+# Container/vessel words that are themselves common, legitimate stock-photo
+# subjects in their own right -- a search engine can rank a photo of just
+# the empty pan/bowl/skillet as a strong keyword match for a query that
+# only mentions it as *how* the dish is served, not what it visually is.
+# Confirmed live: one-pan-mexican-chicken-and-rice's query ("mexican
+# chicken skillet with rice and melted cheese") returned a photo the user
+# reported as showing the pan, not the chicken and rice -- and 252 of 929
+# recipe_or_dish hero_image_query strings contain a word from this list, so
+# this isn't a one-off. Excluded from _recipe_dish_must_match_terms' result
+# below so a container-only photo can't satisfy the relevance check just
+# because the query happens to mention "skillet"/"bowl"/etc -- distinct
+# from _HOWTO_MUST_MATCH_STOPWORDS (generic function words), used alongside
+# it there.
+_DISH_VESSEL_STOPWORDS = frozenset({
+    "skillet", "pan", "pot", "casserole", "dish", "bowl", "tray", "sheet",
+    "baking", "dutch", "oven", "cast", "iron", "instant", "slow", "cooker",
+    "crock", "crockpot", "wok", "saucepan", "griddle", "mason", "jar",
+    "glass", "plate", "platter", "cutting", "board", "container",
+    "containers", "foil", "table",
+})
+
+
+def _recipe_dish_must_match_terms(query: str) -> tuple[str, ...] | None:
+    """Derives a lenient OR-tuple of required content words from a recipe's
+    own hero_image_query, for use as images.py's must_match.
+
+    recipe_or_dish otherwise has no relevance check at all (see
+    SINGLE_IMAGE_FALLBACKS' own comment on why it's deliberately left out
+    of that dict -- requiring the *exact* dish name risks false-rejecting a
+    perfectly good photo whose alt text just doesn't happen to repeat it).
+    That blanket skip is also what let a real bug through uncaught: nothing
+    ever checked a candidate photo's alt text actually mentioned the food
+    itself, only the search engine's own loose keyword ranking (see
+    images._is_relevant()'s docstring for other, previously-confirmed live
+    examples of that same failure mode on other templates).
+
+    This isn't the exact-dish-name check that comment warns against: after
+    stripping _HOWTO_MUST_MATCH_STOPWORDS (generic function words) and
+    _DISH_VESSEL_STOPWORDS (pan/skillet/bowl/etc, themselves common
+    stock-photo subjects a container-only photo could otherwise satisfy),
+    what's left is returned as an OR-tuple, not a required exact phrase --
+    a genuine photo of the dish only needs its alt text to mention *any
+    one* of these words (e.g. just "chicken", or just "rice"), the same
+    low-risk, broad-match reasoning _howto_relaxed_terms already relies on.
+
+    Returns None (skip the check entirely, same as recipe_or_dish's
+    existing default) when nothing usable survives -- e.g. a query that
+    reduces to only container/stopwords."""
+    words: list[str] = []
+    seen: set[str] = set()
+    for word in re.findall(r"[a-z']+", query.lower()):
+        word = word.strip("'")
+        if not word or word in _HOWTO_MUST_MATCH_STOPWORDS or word in _DISH_VESSEL_STOPWORDS:
+            continue
+        if word not in seen:
+            seen.add(word)
+            words.append(word)
+    return tuple(words) if words else None
+
+
 def _substitute_fallback_query(page_title: str) -> str:
     """"Best Substitutes for Baking Soda" -> "Baking Soda"."""
     return re.sub(r"^best substitutes?\s+for\s+", "", page_title, flags=re.IGNORECASE).strip()
@@ -250,10 +310,14 @@ def _ingredient_hub_relaxed_term(page_title: str) -> str:
 # text must actually contain -- see images._is_relevant(). recipe_or_dish
 # isn't here: a specific dish name (e.g. "lomo saltado") often genuinely
 # doesn't appear in a real, correct photo's own alt text the way an
-# ingredient's bare name does, so requiring it risks false-rejecting
-# already-good matches rather than catching bad ones -- unlike the four
-# template types below, where the term is either exactly the page's own
-# title (ingredient_hub) or a short, mechanical strip of fixed boilerplate.
+# ingredient's bare name does, so requiring the exact title risks
+# false-rejecting already-good matches rather than catching bad ones --
+# unlike the four template types below, where the term is either exactly
+# the page's own title (ingredient_hub) or a short, mechanical strip of
+# fixed boilerplate. recipe_or_dish still gets a relevance check (see its
+# own branch in fetch_images(), using _recipe_dish_must_match_terms), just
+# not this single-term-per-title shape: a lenient OR-tuple of the query's
+# own content words instead of one required exact phrase.
 SINGLE_IMAGE_FALLBACKS = {
     "definition": _definition_fallback_query,
     "howto_technique": _howto_fallback_query,
@@ -513,7 +577,14 @@ def fetch_images(
                 fallback = _category_fallback_query(category_title)
                 if fallback and fallback.lower() != query.lower():
                     queries.append(fallback)
-            attempts = [(q, None) for q in queries]
+            # A real, lenient relevance check -- see
+            # _recipe_dish_must_match_terms' own docstring for why this
+            # isn't the exact-dish-name requirement recipe_or_dish was
+            # deliberately built without, just a check that a candidate's
+            # alt text mentions *some* real food-content word from the
+            # query, not only a vessel/container word it happens to share.
+            must_match = _recipe_dish_must_match_terms(query)
+            attempts = [(q, must_match) for q in queries]
         else:
             fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
             # Also the required subject term for every query tried for this
