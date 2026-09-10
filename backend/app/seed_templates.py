@@ -115087,7 +115087,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What candied salmon is, the best substitutes with ratios, how to store it so the glaze doesn't turn sticky or spoil, and how to use it in recipes.",
-            "hero_image_query": "candied salmon strips",
+            "hero_image_query": "glazed smoked salmon strips",
+            "hero_image_must_match": ["candied salmon", "salmon candy", "smoked salmon", "salmon jerky"],
             "image_alt": "Glossy amber strips of candied salmon with a sticky maple-brown sugar glaze, cracked black pepper, and smoke rings visible on the cut edges, arranged on a wooden board.",
             "description": "Candied salmon, sometimes called salmon candy, is salmon that's been cured in salt and sugar, glazed with maple syrup or brown sugar, and then smoked or slow-dried until the outside turns dark, sticky, and slightly chewy while the inside stays moist and flaky. It originated as a Pacific Northwest and Alaskan way to use up smaller or less premium cuts, and it sits somewhere between smoked salmon and jerky in texture. The sugar in the glaze caramelizes during smoking, giving it a glossy, almost lacquered surface.",
             "substitutes": [
