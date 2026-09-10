@@ -162346,6 +162346,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a traditional Turkish breakfast (kahvaltı) includes, how to substitute hard-to-find components, how to store leftovers, and how to build the spread at home.",
             "hero_image_query": "traditional turkish breakfast spread with cheese olives tomatoes and tea",
+            "hero_image_must_match": ["turkish breakfast", "kahvalti"],
             "image_alt": "A low round table set with small dishes of white cheese, kalamata-style olives, sliced tomatoes and cucumbers, honey with kaymak, jars of jam, a basket of bread and simit, and glasses of black tea.",
             "description": "Turkish breakfast, or kahvaltı, is not a single dish but a spread of many small plates eaten together, meant to stretch out over an hour rather than be finished in five minutes. A full spread typically includes beyaz peynir (a brined white cheese similar to feta), kaşar (a firmer yellow cheese), tomatoes, cucumbers, olives, butter, honey, kaymak (clotted cream), several jams, sucuk (spiced beef sausage) or menemen (eggs scrambled with tomato and pepper), fresh bread or simit, and glass after glass of black tea poured from a çaydanlık.",
             "substitutes": [
