@@ -195981,6 +195981,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What raclette cheese is, the best substitutes with ratios, how to store it, and how to melt and serve it the traditional way.",
             "hero_image_query": "raclette cheese melting",
+            "hero_image_must_match": ["raclette", "melted cheese", "melting cheese"],
             "image_alt": "A half wheel of raclette cheese with its rind scraped and the melted layer scooped onto a plate of boiled potatoes and cornichons.",
             "description": "Raclette is a semi-firm cow's milk cheese from the Swiss and French Alps, named after the French verb racler, meaning to scrape. It has a washed rind, a supple pale-yellow interior, and a smell that's much stronger than its actual flavor, which is nutty, buttery, and mildly tangy. It's made specifically to be melted, either under a broiler, on a tabletop raclette grill, or against a heated cheese wheel, and scraped off in warm layers.",
             "substitutes": [
@@ -208521,7 +208522,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a Clark Bar is, the best substitutes for baking and topping recipes, how to store one so it stays crisp, and answers to common questions about this peanut butter crunch candy bar.",
-            "hero_image_query": "unwrapped Clark Bar candy showing crunchy peanut butter center",
+            "hero_image_query": "unwrapped chocolate covered crunchy peanut butter candy bar",
+            "hero_image_must_match": ["peanut butter candy", "candy bar", "chocolate bar"],
             "image_alt": "A Clark Bar cut in half showing the tan, crumbly peanut butter crunch center surrounded by a milk chocolate coating, with the gold and red wrapper beside it.",
             "description": "A Clark Bar is a candy bar built around a dense, crunchy peanut butter flavored center coated in milk chocolate. The center isn't smooth peanut butter but a compressed, honeycomb-like crumble that snaps rather than chews, which is what separates it from softer peanut butter candy bars. It was first made in Pittsburgh in 1917 by the Clark Candy Company and is one of the older mass-market candy bars still in production.",
             "substitutes": [
@@ -213333,7 +213335,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What bonet is, how to substitute its key ingredients like amaretti cookies and rum, how to store it, and how to serve this Piedmontese baked custard.",
-            "hero_image_query": "bonet piedmontese chocolate amaretti custard dessert",
+            "hero_image_query": "chocolate amaretti custard dessert with caramel sauce, slice on a plate",
+            "hero_image_must_match": ["custard", "flan", "pudding"],
             "image_alt": "A slice of dark brown bonet custard on a white plate, showing its dense flan-like texture and a pool of caramel sauce around the base.",
             "description": "Bonet is a baked custard dessert from the Piedmont region of Italy, made from eggs, milk, sugar, cocoa powder, crushed amaretti cookies, and often a splash of rum, poured over a layer of caramel and baked in a bain-marie like a flan. The amaretti give it a slightly grainy, almond-scented texture that sets it apart from a plain chocolate custard, and it's traditionally unmolded so the caramel runs down the sides.",
             "substitutes": [
@@ -213405,6 +213408,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a taco bake is, the best ingredient swaps for beef, tortillas, and cheese, how to store and reheat leftovers, and how to keep it from turning soggy.",
             "hero_image_query": "taco bake casserole",
+            "hero_image_must_match": ["taco bake", "taco casserole", "mexican casserole"],
             "image_alt": "A baking dish of taco bake with melted cheddar and Monterey Jack bubbling on top, layered tortilla pieces visible at the edges, garnished with sour cream, diced tomato, and sliced jalapeño.",
             "description": "A taco bake is a layered casserole that takes the flavors of a taco (seasoned ground meat, cheese, salsa, and tortillas or chips) and bakes them together in one dish instead of assembling individual tacos. Most versions layer tortillas or crushed chips with taco-seasoned beef, beans, and shredded cheese, then bake until the cheese melts and the edges crisp slightly.",
             "substitutes": [
@@ -219953,6 +219957,7 @@ SEED_PAGES = [
         "title": "Baoding Balls",
         "batch_number": 4,
         "content": {
+            "unpublished": True,
             "meta_description": "What baoding balls are, how they're used for hand exercise and stress relief, what to look for when buying a set, and how to keep them from tarnishing.",
             "hero_image_query": "chrome baoding balls held in open palm",
             "image_alt": "A pair of chrome baoding balls resting in an open palm, with the small sound holes visible on their surface.",
@@ -221747,6 +221752,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What Colby Jack cheese is, the best substitutes with ratios, how to store it so it doesn't dry out or sweat, and how to use it for the best melt.",
             "hero_image_query": "marbled colby jack cheese block sliced",
+            "hero_image_must_match": ["colby jack", "marbled cheese"],
             "image_alt": "A block of Colby Jack cheese sliced open to show the orange and white marbled pattern, with a few shredded pieces beside it.",
             "description": "Colby Jack is a marbled American cheese made by blending curds from Colby (a mild, orange cheddar-style cheese) and Monterey Jack (a soft, pale white cheese) before pressing them into one wheel. The result is the familiar orange-and-white swirled cheese with a mild, slightly buttery flavor and a soft, very meltable texture.",
             "substitutes": [
