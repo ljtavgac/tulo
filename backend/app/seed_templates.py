@@ -78799,7 +78799,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What a Charleston Chew is, the best substitutes for baking or snacking, how to store it so the nougat stays chewy instead of rock-hard, and how it's used in recipes.",
-            "hero_image_query": "charleston chew candy bar sliced open showing nougat",
+            "hero_image_query": "chocolate covered nougat candy bar sliced open",
+            "hero_image_must_match": ["nougat candy", "candy bar", "nougat"],
             "image_alt": "A vanilla Charleston Chew bar sliced into rounds, showing the pale chewy nougat center inside its thin chocolate-flavored coating",
             "description": "A Charleston Chew is a long, rectangular nougat candy bar made by Tootsie Roll Industries, coated in a thin layer of chocolate-flavored coating. The nougat itself is dense and stretchy, made from sugar, corn syrup, and whipped egg whites rather than the airier marshmallow nougat found in bars like 3 Musketeers. It comes in vanilla, chocolate, and strawberry versions, with vanilla being the original and most widely sold.",
             "substitutes": [
