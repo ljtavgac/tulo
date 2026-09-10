@@ -1304,16 +1304,23 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
     salient_query = content.get("salient_ingredient_query")
     override_must_match = content.get("hero_image_must_match")
 
-    # Mirrors fetch_images()'s real attempt order: salient tier first (with
-    # its own derived must_match, never the override -- see
-    # `protected_attempts` in fetch_stock_images.py), then the dish/primary
-    # query (with the override applied if set, else the derived term for
-    # recipe_or_dish, else None for every other template -- this debug view
-    # only covers recipe_or_dish and ingredient_hub-style override usage,
-    # the two template types actually in question this round).
+    # Mirrors fetch_images()'s real attempt order: salient tier first, using
+    # its own explicit salient_ingredient_must_match override when the page
+    # sets one (never hero_image_must_match -- see `protected_attempts` in
+    # fetch_stock_images.py) and falling back to the derived term only when
+    # no override is set, then the dish/primary query (with
+    # hero_image_must_match applied if set, else the derived term for
+    # recipe_or_dish, else None for every other template). This used to
+    # always show the derived term for the salient tier regardless of
+    # whether the page had its own override -- confirmed live on
+    # black-sesame-paste and homemade-onion-soup-mix, both of which do set
+    # salient_ingredient_must_match: the real fetch was already using the
+    # tighter, correct term, but this view showed the loose auto-derived
+    # one instead, making a correctly-working search look broken.
     attempts: list[tuple[str, object]] = []
     if salient_query:
-        attempts.append((f"{salient_query} (salient)", _recipe_dish_must_match_terms(salient_query)))
+        salient_must_match = content.get("salient_ingredient_must_match") or _recipe_dish_must_match_terms(salient_query)
+        attempts.append((f"{salient_query} (salient)", salient_must_match))
     dish_must_match = override_must_match if override_must_match else _recipe_dish_must_match_terms(query)
     attempts.append((query, dish_must_match))
 
