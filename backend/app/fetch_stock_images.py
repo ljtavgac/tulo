@@ -224,7 +224,11 @@ class _UsedUrls:
 
 
 def _apply_result(
-    content: dict, attempts: list[tuple[str, str | None]], template_type: str, used_urls: "_UsedUrls"
+    content: dict,
+    attempts: list[tuple[str, str | None]],
+    template_type: str,
+    used_urls: "_UsedUrls",
+    extra_exclude: frozenset[str] = frozenset(),
 ) -> bool:
     """Tries each (query, must_match) pair in `attempts`, in order, and
     writes image_url/image_attribution into `content` in place from the
@@ -241,12 +245,22 @@ def _apply_result(
     where "roasted beets whole on baking sheet" itself, not a fallback,
     returned a roasted turkey).
 
+    `extra_exclude` is separate from `used_urls` (which tracks photos
+    claimed by *other* pages this run): it's for excluding this same
+    page's own current, presumably-wrong photo on a targeted re-fetch --
+    see the caller for why that's needed. must_match alone doesn't
+    reliably prevent re-selecting it: _is_relevant() intentionally accepts
+    a photo with blank alt/description text regardless of must_match (see
+    its own docstring), so a low-effort stock photo with no description
+    can keep winning the same search on every re-run even with a required
+    subject term set, exactly what happened on what-is-boudin.
+
     Called from within a worker thread (see fetch_images) -- touches only
     `content` (a deep copy local to this page, per-worker, never shared)
     and `used_urls` (its own internal lock), never the SQLAlchemy session."""
     for query, must_match in attempts:
         search_query = _search_query_for(template_type, query)
-        result = search_image(search_query, exclude_urls=used_urls.snapshot(), must_match=must_match)
+        result = search_image(search_query, exclude_urls=used_urls.snapshot() | extra_exclude, must_match=must_match)
         if result is None:
             print(f"    no result for '{search_query}'" + (f" (must mention {must_match!r})" if must_match else ""))
             continue
@@ -465,9 +479,22 @@ def fetch_images(
         if override_must_match:
             attempts = [(q, override_must_match) for q, _ in attempts]
 
+        # Only exclude the page's own current photo when it was explicitly
+        # named (slugs=...) -- not for the passive background loop, which
+        # never re-touches an already-set image_url in the first place
+        # (see _needs_fetch above), and not for a bare site-wide force run,
+        # where re-selecting the same still-good photo for most pages is
+        # the expected, harmless outcome. This is specifically for "someone
+        # asked to fix this one page's wrong photo" -- see _apply_result's
+        # own docstring for why must_match alone doesn't already cover it.
+        self_exclude = (
+            frozenset({content["image_url"]})
+            if only_slugs is not None and content.get("image_url")
+            else frozenset()
+        )
         print(f"  {page.slug}: searching '{query}'...")
         try:
-            if _apply_result(content, attempts, page.template_type, used_urls):
+            if _apply_result(content, attempts, page.template_type, used_urls, extra_exclude=self_exclude):
                 return page, content, 1
             elif content.get("image_url"):
                 # Every query came up empty (a thin free-tier catalog, or
@@ -552,9 +579,15 @@ def fetch_images(
                 fallback = _category_fallback_query(page.title)
                 queries = [query] if fallback.lower() == query.lower() else [query, fallback]
                 attempts = [(q, None) for q in queries]
+                card_explicitly_requested = card.get("slug") in requested_card_slugs
+                self_exclude = (
+                    frozenset({card["image_url"]})
+                    if (page_explicitly_requested or card_explicitly_requested) and card.get("image_url")
+                    else frozenset()
+                )
                 print(f"  {page.slug} / {card.get('title')}: searching '{query}'...")
                 try:
-                    if _apply_result(card, attempts, page.template_type, used_urls):
+                    if _apply_result(card, attempts, page.template_type, used_urls, extra_exclude=self_exclude):
                         images_written_delta += 1
                         changed = True
                     elif card.get("image_url"):
