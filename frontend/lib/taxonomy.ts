@@ -48,7 +48,7 @@ export const VERTICALS: Vertical[] = [
       { key: "collections", label: "Collections", templateType: "category_roundup", path: `/food/${TEMPLATE_ROUTES.category_roundup}`, hasIndex: true, primaryNav: true },
       { key: "tools", label: "Tools", templateType: "tool_page", path: `/food/${TEMPLATE_ROUTES.tool_page}`, hasIndex: true, primaryNav: true },
       { key: "what-is", label: "Definitions", templateType: "definition", path: `/food/${TEMPLATE_ROUTES.definition}`, hasIndex: true, primaryNav: false },
-      { key: "vs", label: "Comparisons", templateType: "comparison", path: `/food/${TEMPLATE_ROUTES.comparison}`, hasIndex: true, primaryNav: false },
+      { key: "comparisons", label: "Comparisons", templateType: "comparison", path: `/food/${TEMPLATE_ROUTES.comparison}`, hasIndex: true, primaryNav: false },
       { key: "substitutes", label: "Substitutes", templateType: "substitute", path: `/food/${TEMPLATE_ROUTES.substitute}`, hasIndex: true, primaryNav: false },
     ],
   },

@@ -32,7 +32,7 @@ export const TEMPLATE_ROUTES: Record<string, string> = {
   ingredient_hub: "ingredients",
   howto_technique: "how-to",
   definition: "what-is",
-  comparison: "vs",
+  comparison: "comparisons",
   substitute: "substitutes",
   category_roundup: "collections",
   tool_page: "tools",

@@ -16,8 +16,8 @@ const PAGE_SIZE = 12;
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/food/vs" },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: "/food/vs" },
+  alternates: { canonical: "/food/comparisons" },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: "/food/comparisons" },
 };
 
 export default async function ComparisonsIndexPage() {

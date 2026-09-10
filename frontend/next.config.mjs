@@ -17,6 +17,22 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      // /food/vs -> /food/comparisons: the comparison template's URL
+      // segment was renamed for clearer wording. Kept as a real redirect
+      // rather than just letting the old path 404 -- these pages have
+      // been live and in the sitemap, so any existing bookmark, external
+      // link, or search-engine-cached URL should still resolve rather
+      // than dead-end, and a redirect costs nothing to keep around.
+      {
+        source: "/food/vs",
+        destination: "/food/comparisons",
+        permanent: true,
+      },
+      {
+        source: "/food/vs/:slug",
+        destination: "/food/comparisons/:slug",
+        permanent: true,
+      },
     ];
   },
   images: {
