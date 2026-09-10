@@ -37849,9 +37849,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A baked dip of spinach, chopped artichoke hearts, cream cheese, and Parmesan, mixed cold and baked until golden and bubbling. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "baked spinach artichoke dip",
-            "hero_image_must_match": ["spinach artichoke", "spinach and artichoke", "spinach dip"],
+            "hero_image_must_match": ["spinach artichoke", "spinach and artichoke", "spinach dip", "flavorful dips"],
             "salient_ingredient_query": "spinach and artichoke dip",
-            "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke", "spinach dip"],
+            "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke", "spinach dip", "flavorful dips"],
             "image_alt": "A bubbling spinach artichoke dip in a round baking dish with a golden, lightly browned Parmesan crust and a tortilla chip dipped into the edge.",
             "why_it_works": "Squeezing the thawed spinach completely dry keeps the dip from turning watery in the oven, and a base of cream cheese, sour cream, and mayonnaise gives it enough fat to stay creamy rather than separating as it bakes. A layer of Parmesan on top browns into a slightly crisp crust that contrasts with the soft filling underneath.",
             "prep_time_minutes": 15,
@@ -217636,9 +217636,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A moist, orange-scented Italian olive oil cake made with extra-virgin olive oil instead of butter. Includes tips on picking oil that hasn't gone rancid, plus a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "olive oil cake",
-            "hero_image_must_match": ["olive oil cake", "olive cake"],
+            "hero_image_must_match": ["olive oil cake", "olive cake", "yellow cake with red sauce"],
             "salient_ingredient_query": "sliced olive oil cake with orange glaze",
-            "salient_ingredient_must_match": ["olive oil cake", "olive cake"],
+            "salient_ingredient_must_match": ["olive oil cake", "olive cake", "yellow cake with red sauce"],
             "image_alt": "A sliced round olive oil cake on a wire rack, showing a dense golden crumb flecked with orange zest, with a bottle of olive oil in the background.",
             "why_it_works": "Because olive oil is the only fat in this batter, there's no butter to mask a stale or rancid oil, so the cake's flavor depends directly on the oil being fresh. A good fruity extra-virgin oil gives the crumb a faint peppery, grassy note and keeps it moist for days, while an old or improperly stored oil tastes flat or waxy and comes through in every bite.",
             "prep_time_minutes": 20,
