@@ -9,6 +9,7 @@ automatically on API startup if the pages table is empty (see main.py).
 """
 
 import copy
+import re
 
 from sqlalchemy.orm import Session
 
@@ -245601,8 +245602,58 @@ def _check_content_depth() -> None:
     )
 
 
+_TITLE_DEDUP_STOPWORDS = {"a", "an", "the", "of", "to", "for", "how", "what", "s", "vs"}
+
+
+def _normalize_title_for_dedup(title: str) -> str:
+    """Collapses a title to a sorted bag of its meaningful words, so two
+    pages covering the same topic under superficially different titles
+    ("How to Cut a Watermelon" / "How to Cut Watermelon", "Cappuccino vs.
+    Latte" / "Latte vs. Cappuccino: What's the Difference?") still
+    collide. Used only by _check_no_duplicate_titles below."""
+    words = re.findall(r"[a-z0-9]+", title.lower())
+    words = [w for w in words if w not in _TITLE_DEDUP_STOPWORDS]
+    return " ".join(sorted(words))
+
+
+def _check_no_duplicate_titles() -> None:
+    """Two published pages of the same template_type that reduce to the
+    same bag of title words are the same topic covered twice by
+    independent writers -- exactly the bug a 2026-09-10 site-wide audit
+    found across 11 pairs (recipes, ingredient hubs, definitions,
+    comparisons, and substitutes all had at least one), most surfaced by a
+    "-2" slug suffix from a naming collision at seed time that nothing
+    caught before it shipped. Raises immediately at import time for the
+    same reason as the checks above: resync_content() ships a new batch
+    straight to production, so a collision needs to be caught before it
+    goes live, not found later by another manual audit.
+
+    Skips any page with content["unpublished"] set -- that's the
+    resolution to a caught collision (keep one, unpublish the other), not
+    a new one to flag, and it needs to stay silent going forward so the
+    kept/unpublished pair doesn't re-trip this on every future import.
+    """
+    seen: dict[tuple[str, str], list[str]] = {}
+    for page in SEED_PAGES:
+        if page["content"].get("unpublished"):
+            continue
+        key = (page["template_type"], _normalize_title_for_dedup(page["title"]))
+        seen.setdefault(key, []).append(page["slug"])
+    dupes = {key: slugs for key, slugs in seen.items() if len(slugs) > 1}
+    if not dupes:
+        return
+    shown = "\n".join(f"  [{tt}] {', '.join(slugs)}" for (tt, _norm), slugs in list(dupes.items())[:15])
+    more = f"\n  ...and {len(dupes) - 15} more" if len(dupes) > 15 else ""
+    raise ValueError(
+        f"Found {len(dupes)} duplicate-title page group(s) in SEED_PAGES -- these "
+        f"look like the same topic covered twice under different slugs. Keep one "
+        f"and set content[\"unpublished\"] = True on the other(s):\n{shown}{more}"
+    )
+
+
 _check_no_double_dashes()
 _check_content_depth()
+_check_no_duplicate_titles()
 
 
 def seed(db: Session) -> int:
