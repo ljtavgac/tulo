@@ -583,27 +583,47 @@ def fetch_images(
             # deliberately built without, just a check that a candidate's
             # alt text mentions *some* real food-content word from the
             # query, not only a vessel/container word it happens to share.
+            # "Some" is doing a lot of work here, though: for a dish whose
+            # query has a common single-word ingredient in it at all
+            # ("cheese", "chicken", "soup", "tea"), that one word alone is
+            # enough to pass -- lenient by design (see that function's
+            # docstring), but it means the primary query can still "succeed"
+            # on a technically-passing, actually-wrong photo (some unrelated
+            # cheese, or the wrong style of soup) well before ever finding
+            # out the salient-ingredient tier below exists.
             must_match = _recipe_dish_must_match_terms(query)
-            attempts = [(q, must_match) for q in queries]
-            # Last-resort tier, opt-in per page via this content key: a
-            # generic, raw/plain shot of the dish's single most
-            # recognizable ingredient, for dishes a general-purpose stock
-            # library is unlikely to have actually photographed as a
-            # finished, correctly-labeled plate -- a branded product name
-            # ("Sonic Ocean Water"), a dish whose name reads as something
-            # else entirely to a keyword search ("chocolate gravy" as a
-            # savory brown gravy; "onion soup mix" as an actual bowl of
-            # soup, not the dry seasoning blend it is; "Manhattan clam
-            # chowder" as the far more commonly-photographed cream-based
-            # New England style), or a regional/foreign dish name with no
-            # real stock coverage at all. Its own must_match is derived
-            # from *this* query, not the dish's -- a raw-ingredient photo's
-            # alt text will say "chia seeds" or "clams", never the dish's
-            # own name, so reusing the dish-level must_match here would
-            # reject the very photos this tier exists to find.
+            dish_attempts = [(q, must_match) for q in queries]
+            # Opt-in per page via this content key: a generic, raw/plain
+            # shot of the dish's single most recognizable ingredient, for
+            # dishes a general-purpose stock library is unlikely to have
+            # actually photographed as a finished, correctly-labeled plate
+            # -- a branded product name ("Sonic Ocean Water"), a dish whose
+            # name reads as something else entirely to a keyword search
+            # ("chocolate gravy" as a savory brown gravy; "onion soup mix"
+            # as an actual bowl of soup, not the dry seasoning blend it is;
+            # "Manhattan clam chowder" as the far more commonly-photographed
+            # cream-based New England style), or a regional/foreign dish
+            # name with no real stock coverage at all. Its own must_match is
+            # derived from *this* query, not the dish's -- a raw-ingredient
+            # photo's alt text will say "chia seeds" or "clams", never the
+            # dish's own name, so reusing the dish-level must_match here
+            # would reject the very photos this tier exists to find.
+            #
+            # Tried FIRST, not last, when present -- a page only gets this
+            # field curated because the dish-name search was already found
+            # to be unreliable for it (see the comment above must_match), so
+            # trusting that curated answer over a lenient, easily-satisfied
+            # dish-name search is the whole point. Originally shipped as a
+            # last-resort tier instead, which meant it only ever ran for a
+            # page whose dish-name search returned literally nothing --
+            # for a page where that search instead "succeeds" on a weak,
+            # wrong match (exactly the failure case this tier exists for),
+            # the curated fallback never got a chance to run at all.
             salient_query = content.get("salient_ingredient_query")
-            if salient_query:
-                attempts.append((salient_query, _recipe_dish_must_match_terms(salient_query)))
+            salient_attempts = (
+                [(salient_query, _recipe_dish_must_match_terms(salient_query))] if salient_query else []
+            )
+            attempts = salient_attempts + dish_attempts
         else:
             fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
             # Also the required subject term for every query tried for this

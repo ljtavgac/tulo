@@ -229779,6 +229779,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A one-skillet Mexican chicken and rice recipe with black beans, corn, and melted cheese, ready in under an hour. Includes a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "mexican chicken skillet with rice and melted cheese",
+            "hero_image_must_match": ["chicken and rice", "chicken rice"],
             "image_alt": "A cast iron skillet of Mexican chicken and rice with black beans, corn, and melted Monterey Jack cheese, topped with cilantro and lime wedges.",
             "why_it_works": "Searing the chicken thighs first builds a browned crust and leaves fond in the pan that flavors the rice as it simmers, so the whole dish, chicken, rice, beans, and corn, cooks in one skillet and the rice finishes fully seasoned instead of bland.",
             "prep_time_minutes": 15,
@@ -230074,6 +230075,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A cheesy, protein-packed low carb breakfast casserole with sausage, spinach, and eggs, baked in one dish with no flour, potatoes, or added sugar.",
             "hero_image_query": "low carb breakfast casserole with eggs and sausage",
+            "hero_image_must_match": ["egg casserole", "breakfast casserole", "sausage and eggs"],
             "image_alt": "A baked egg and sausage casserole in a white 9x13 dish, cut into squares, showing melted cheddar and flecks of spinach and red bell pepper throughout.",
             "why_it_works": "Cooking the sausage and vegetables first drives off excess moisture so the casserole sets firm instead of turning watery, and a mix of whole eggs and heavy cream gives a custardy texture without any flour or potato filler to add carbs.",
             "prep_time_minutes": 15,
@@ -230567,6 +230569,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A copycat Starbucks medicine ball tea recipe with green tea, chamomile-mint tea, honey, and lemon, ready in 10 minutes. Includes a serving-size scaler and US/metric toggle.",
             "hero_image_query": "honey lemon tea in glass mug with mint",
+            "hero_image_must_match": ["lemon tea", "honey lemon"],
             "image_alt": "A steaming glass mug of golden medicine ball tea with a lemon wheel and fresh mint leaves floating on top, steam rising against a light background.",
             "why_it_works": "Steeping a green tea bag alongside a peach-and-herbal or chamomile-mint tea bag in the same hot water pulls out both the gentle caffeine and menthol brightness at once, and stirring in honey and fresh lemon juice after steeping (not during) keeps the honey's flavor from turning bitter and the lemon's vitamin C from breaking down in prolonged heat.",
             "prep_time_minutes": 3,
@@ -230894,7 +230897,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a cheesecake ball is, how it differs from cheesecake bites and cheesecake fudge, the best substitutes if you're short on ingredients or time, and how to store one so it doesn't get grainy or weep.",
             "hero_image_query": "cheese ball appetizer coated in crushed pecans with crackers",
-            "hero_image_must_match": ["cheese ball", "cheeseball", "cheese"],
+            "hero_image_must_match": ["cheese ball", "cheeseball"],
             "image_alt": "A round cheesecake ball rolled in crushed pecans and graham cracker crumbs, sitting on a wood board surrounded by graham crackers and pretzels for dipping.",
             "description": "A cheesecake ball is a no-bake dessert made by beating softened cream cheese with butter, powdered sugar, and flavorings into a stiff, spreadable dough, then chilling it and rolling it into one large ball (or several small ones) before coating the outside in crushed nuts, graham cracker crumbs, mini chocolate chips, or crushed cookies. It's built to be served like a cheese ball appetizer but eaten as a sweet dip with graham crackers, vanilla wafers, pretzels, or fruit. Because there's no baking involved, texture depends entirely on getting the cream cheese fully softened and the sugar fully incorporated before chilling.",
             "substitutes": [
@@ -236098,6 +236101,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A build-your-own taco bowl recipe with seasoned beef, cilantro-lime rice, black beans, and all the toppings, ready in about 35 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "taco bowl with ground beef and toppings",
+            "hero_image_must_match": ["taco bowl", "burrito bowl"],
             "image_alt": "A white bowl layered with cilantro-lime rice, seasoned ground beef, black beans, corn, shredded lettuce, diced tomato, cheese, and a dollop of sour cream, with a lime wedge on the side.",
             "why_it_works": "Cooking the rice and beef at the same time keeps the total time under 40 minutes, and building the bowl in distinct layers rather than mixing everything together means every bite has a mix of warm, cold, creamy, and crunchy components instead of a mushy jumble.",
             "prep_time_minutes": 15,
@@ -241830,7 +241834,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What noodle pudding (kugel) actually is, smart substitutes for its key ingredients, how to store and reheat it, and what to serve alongside it.",
             "hero_image_query": "baked egg noodle casserole with golden top and raisins",
-            "hero_image_must_match": ["noodle", "noodles"],
+            "hero_image_must_match": ["noodle casserole", "noodle pudding", "kugel"],
             "image_alt": "A golden-topped noodle pudding baked in a glass casserole dish, showing crisp browned edges and a custardy egg noodle interior studded with raisins.",
             "description": "Noodle pudding, widely known by its Yiddish name kugel, is a baked casserole of egg noodles bound together with eggs, dairy (usually cottage cheese and sour cream), and sugar, then baked until the top browns and crisps while the inside stays soft and custardy. Sweet versions include raisins, cinnamon, and sometimes crushed cornflakes on top; savory versions swap the sugar for sauteed onions, black pepper, and sometimes cheese. It's a staple of Ashkenazi Jewish holiday tables, especially for Shabbat and Rosh Hashanah, but it also shows up as a diner-style side dish in Jewish delis.",
             "substitutes": [
