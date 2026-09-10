@@ -160670,7 +160670,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What tasso is, the best substitutes with ratios, how to store it, and how to use this Cajun smoked pork to season gumbo, jambalaya, and beans.",
-            "hero_image_query": "tasso ham cubed on cutting board",
+            "hero_image_query": "diced smoked cajun ham",
+            "hero_image_must_match": ["tasso ham", "cajun ham", "smoked pork"],
             "image_alt": "Diced reddish-brown tasso ham cubes coated in cayenne and black pepper crust, piled next to a chef's knife on a wooden cutting board.",
             "description": "Tasso is a Louisiana specialty made from pork, traditionally the shoulder or leg, that's cured, coated thickly in cayenne pepper, black pepper, garlic, and other spices, then smoked over pecan or hickory wood until firm and intensely flavored. It isn't eaten as a stand-alone cut the way ham or bacon is; it's a seasoning meat, cut into small dice or thin strips and cooked into a dish to release smoke, salt, and heat into the whole pot. A little goes a long way, which is why recipes typically call for just a few ounces rather than a pound.",
             "substitutes": [
@@ -170443,6 +170444,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What the main types of pasta sauce are, how to substitute one for another with real ratios, how to store and reheat them, and how to match sauce to pasta shape.",
             "hero_image_query": "jar of marinara pasta sauce with basil",
+            "hero_image_must_match": ["pasta sauce", "marinara sauce", "tomato sauce"],
             "image_alt": "A wooden spoon lifting thick red marinara pasta sauce from a simmering saucepan, with torn basil leaves and a jar of crushed tomatoes in the background.",
             "description": "Pasta sauce is a broad category covering anything tossed with cooked pasta to add flavor, moisture, and body: tomato-based sauces like marinara and arrabbiata, cream-based sauces like alfredo, oil-based sauces like aglio e olio, and herb-and-nut sauces like pesto. Each style has a different base (tomatoes, dairy, oil, or ground herbs) and behaves differently on the stove and in storage.",
             "substitutes": [
