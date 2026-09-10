@@ -189103,6 +189103,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What dijon mustard is, the best substitutes with ratios, how to store it, and how to use it in dressings, sauces, and marinades.",
             "hero_image_query": "dijon mustard jar with spoon",
+            "hero_image_must_match": ["dijon mustard", "dijon"],
             "image_alt": "A small glass jar of pale yellow-brown dijon mustard with a spoon resting in it beside whole mustard seeds on a wooden board",
             "description": "Dijon mustard is a smooth, pale yellow-brown condiment made from brown or black mustard seeds, white wine or verjuice, and vinegar, originating from Dijon, France. It's sharper and more tangy than American yellow mustard, with less sweetness and no turmeric-based coloring, and it emulsifies smoothly into dressings and sauces without the grainy texture of whole-grain versions.",
             "substitutes": [
@@ -190548,6 +190549,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What beef chuck is, the best substitutes with ratios, how to store it, and how to cook it so the tough connective tissue turns tender instead of chewy.",
             "hero_image_query": "raw beef chuck roast on cutting board",
+            "hero_image_must_match": ["beef chuck", "chuck roast"],
             "image_alt": "A boneless beef chuck roast on a wooden cutting board, showing thick marbling and connective tissue running through the meat.",
             "description": "Beef chuck comes from the shoulder and lower neck of the cow, a heavily worked area with dense connective tissue and generous marbling. That combination makes it tough when cooked quickly but exceptionally flavorful and rich when cooked low and slow, since the collagen breaks down into gelatin and bastes the meat from within. It's sold as chuck roast, chuck eye roast, chuck arm roast, or ground into chuck for burgers.",
             "substitutes": [
