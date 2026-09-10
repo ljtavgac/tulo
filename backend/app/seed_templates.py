@@ -60650,8 +60650,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What braunschweiger is, the best substitutes with ratios, how to store it safely, and how to use it beyond the classic sandwich spread.",
-            "hero_image_query": "sliced liverwurst spread on bread",
-            "hero_image_must_match": ["liverwurst"],
+            "hero_image_query": "liverwurst pate",
+            "hero_image_must_match": ["liverwurst", "liver pate", "pate"],
             "image_alt": "Thick slices of braunschweiger liver sausage arranged on dark rye bread with mustard and sliced onion on the side.",
             "description": "Braunschweiger is a soft, spreadable smoked liver sausage made primarily from pork liver, pork fat, and often cured pork, seasoned with onion, allspice, and mustard seed, then smoked and fully cooked before packaging. Unlike firmer liverwurst, most commercial braunschweiger is smoked, which gives it a deeper, slightly bacon-like undertone alongside the mineral richness of liver. It's sold pre-cooked and ready to eat, usually in a chub-shaped casing or as pre-sliced rounds.",
             "substitutes": [
@@ -171286,8 +171286,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What giblets are, which organs are included, how to substitute for them in gravy and stuffing, and how to store and cook them safely.",
-            "hero_image_query": "raw chicken liver and organ meat on a cutting board",
-            "hero_image_must_match": ["giblets", "chicken liver", "organ meat", "poultry"],
+            "hero_image_query": "chicken liver",
+            "hero_image_must_match": ["giblets", "chicken liver", "liver"],
             "image_alt": "A small pile of raw turkey giblets, including the neck, heart, gizzard, and liver, arranged on a wooden cutting board next to a paper packet.",
             "description": "Giblets are the edible internal organs of poultry, typically the neck, heart, gizzard, and liver, packaged together and tucked inside the cavity of a whole chicken or turkey. They're prized for adding deep, savory flavor to gravy, stock, and stuffing, though the liver is often set aside separately because it has a stronger, more mineral taste than the rest.",
             "substitutes": [
@@ -173967,8 +173967,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What chitlins (chitterlings) are, how to clean and cook them, real substitutes for pork intestines, and how to store them safely before and after cooking.",
-            "hero_image_query": "traditional southern soul food plate",
-            "hero_image_must_match": ["soul food"],
+            "hero_image_query": "fried chicken and collard greens",
+            "hero_image_must_match": ["soul food", "fried chicken", "collard greens"],
             "image_alt": "A pot of simmered chitlins with onions and vinegar, served alongside cornbread and hot sauce on a plate.",
             "description": "Chitlins, short for chitterlings, are the small intestines of a pig, cleaned and slow-simmered until tender. They're a traditional Southern soul food ingredient with a rich, distinctly funky flavor and a soft, slightly chewy texture once cooked. Because raw chitlins require extensive cleaning to remove residue and odor, most home cooks buy them pre-cleaned, frozen, or in cans to cut down on prep time.",
             "substitutes": [
@@ -238398,7 +238398,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What Egg Beaters liquid egg substitute is made of, how to swap it with whole eggs or egg whites using the right ratio, and how to store and cook with it.",
-            "hero_image_query": "liquid egg substitute poured from a carton into a bowl",
+            "hero_image_query": "liquid egg substitute",
             "hero_image_must_match": ["liquid egg", "egg substitute", "egg whites"],
             "image_alt": "Yellow liquid egg substitute pouring from a resealable carton into a glass bowl, with a whisk resting on the counter beside it",
             "description": "Egg Beaters is a brand of liquid egg substitute made primarily from pasteurized egg whites, with beta-carotene added for yellow color and a small amount of vitamins and minerals stirred back in to mimic whole egg. It contains no egg yolk, so it has no dietary cholesterol and almost no fat, which is why it's marketed as a lower-cholesterol swap for whole eggs rather than a true egg replacement.",
@@ -239919,7 +239919,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What pangrattato is, the best substitutes with ratios, how to store it so it stays crisp, and how to use it as a crunchy finishing topping.",
-            "hero_image_query": "toasted bread crumbs in a bowl",
+            "hero_image_query": "toasted breadcrumbs",
             "hero_image_must_match": ["breadcrumbs", "bread crumbs", "toasted crumbs"],
             "image_alt": "A small bowl of golden, coarsely toasted breadcrumbs flecked with parsley and garlic, sitting next to a wedge of stale bread.",
             "description": "Pangrattato is Italian toasted breadcrumbs made from stale bread, crisped in olive oil (often with garlic and anchovy) until deep golden and crunchy. Known as 'poor man's Parmesan,' it's scattered over pasta, vegetables, and salads to add crunch and savory depth where a hard cheese might otherwise go.",
