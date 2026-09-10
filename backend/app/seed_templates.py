@@ -221090,9 +221090,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A rich, nutty black sesame paste made from just toasted black sesame seeds, oil, and a touch of sugar. Ready in about 40 minutes and keeps for months in the fridge.",
             "hero_image_query": "black sesame paste",
-            "hero_image_must_match": ["sesame paste", "black sesame seeds", "sesame butter", "black sesame"],
+            "hero_image_must_match": ["black seed on top of a table"],
             "salient_ingredient_query": "black sesame seeds",
-            "salient_ingredient_must_match": ["sesame paste", "black sesame seeds", "sesame butter", "black sesame"],
+            "salient_ingredient_must_match": ["black seed on top of a table"],
             "image_alt": "A jar of glossy, dark black sesame paste with a spoon lifting a swirl of it, surrounded by scattered black sesame seeds.",
             "why_it_works": "Toasting raw black sesame seeds before grinding coaxes out their natural oils, which is what turns dry seeds into a smooth, spreadable paste without needing much added oil, and it deepens the flavor from grassy to genuinely nutty and almost smoky.",
             "prep_time_minutes": 10,
