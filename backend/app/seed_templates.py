@@ -245532,6 +245532,61 @@ SEED_PAGES = [
             "pan_size": None,
         },
     },
+    # --- Staging pipeline test pages (2026-09-10) ---
+    # Throwaway content used only to verify the staging environment build:
+    # seed() inserts them on staging's fresh DB, fetch_stock_images.py
+    # fetches real photos for them there, and
+    # content/scripts/bake_images_from_staging.py pulls those photos back
+    # via GET /admin/export-images and writes them here as literal data --
+    # exactly the loop a real content batch will go through. Never merged
+    # to a production deploy; delete this whole block once the staging
+    # pipeline is confirmed working end to end.
+    {
+        "slug": "claude-staging-pipeline-test-1",
+        "template_type": "definition",
+        "title": "What Is A Fiddlehead Fern?",
+        "batch_number": 99,
+        "content": {
+            "meta_description": "Fiddlehead ferns are the tightly coiled young shoots of certain fern species, foraged in early spring.",
+            "hero_image_query": "fiddlehead ferns coiled green shoots",
+            "image_alt": "A cluster of tightly coiled green fiddlehead fern shoots, foraged in early spring.",
+            "direct_answer": "A fiddlehead fern is the young, tightly coiled shoot of certain fern species, harvested in early spring before it unfurls.",
+            "expanded_explanation": "Only a few fern species (most commonly ostrich fern) are considered safe and palatable to eat this way; the shoots must be foraged in a narrow window before they open into fronds.",
+            "usage_origin": "Foraged and eaten seasonally in parts of North America and Asia, often sauteed or steamed like a vegetable.",
+            "substitute_note": "Asparagus tips or young green beans are the closest textural substitute, though the flavor differs.",
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Are fiddlehead ferns safe to eat raw?",
+                    "answer": "No, they should always be cooked thoroughly first, raw or undercooked fiddleheads have caused foodborne illness.",
+                },
+            ],
+            "related_recipe_slugs": [],
+        },
+    },
+    {
+        "slug": "claude-staging-pipeline-test-2",
+        "template_type": "definition",
+        "title": "What Is A Mandoline Slicer?",
+        "batch_number": 99,
+        "content": {
+            "meta_description": "A mandoline slicer is a kitchen tool for cutting uniform, thin slices of fruits and vegetables quickly.",
+            "hero_image_query": "mandoline slicer cutting vegetables kitchen tool",
+            "image_alt": "A stainless steel mandoline slicer being used to cut thin, even slices of a vegetable.",
+            "direct_answer": "A mandoline slicer is a flat kitchen tool with an adjustable blade used to cut fruits and vegetables into thin, uniform slices.",
+            "expanded_explanation": "Most models let you adjust slice thickness and swap blades for julienne or waffle cuts, and a hand guard is strongly recommended since the blade is exposed.",
+            "usage_origin": "Common in professional kitchens for speed and consistency, now widely sold for home use as well.",
+            "substitute_note": "A sharp chef's knife and steady hand can substitute, though slices will be less uniform.",
+            "substitute_page_slug": None,
+            "faqs": [
+                {
+                    "question": "Is a mandoline slicer dangerous to use?",
+                    "answer": "It can be, the blade is very sharp and exposed, always use the hand guard that comes with it.",
+                },
+            ],
+            "related_recipe_slugs": [],
+        },
+    },
 ]
 
 
