@@ -195205,6 +195205,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What garlic chives are, the best substitutes with ratios, how to store them without them going slimy, and how to use them in stir-fries and dumplings.",
             "hero_image_query": "fresh garlic chives flat leaves",
+            "hero_image_must_match": ["garlic chives", "chinese chives", "flat chives"],
             "image_alt": "A bundle of flat, dark green garlic chives with small white flower buds still attached to some stems, laid on a wooden cutting board.",
             "description": "Garlic chives (Allium tuberosum), also called Chinese chives or gau choy, are a different plant from common onion chives. The leaves are flat and wider rather than hollow and round, and the flavor is garlicky with only a faint onion note. They're a staple in Chinese, Vietnamese, and Korean cooking, often used by the handful rather than sprinkled as a garnish.",
             "substitutes": [
