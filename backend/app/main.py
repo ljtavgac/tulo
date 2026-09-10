@@ -15,7 +15,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
-from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, fetch_images
+from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, _search_query_for, fetch_images
 from .images import (
     ALLOWED_IMAGE_HOSTS,
     PEXELS_ACCESS_KEY,
@@ -1317,12 +1317,26 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
     # salient_ingredient_must_match: the real fetch was already using the
     # tighter, correct term, but this view showed the loose auto-derived
     # one instead, making a correctly-working search look broken.
-    attempts: list[tuple[str, object]] = []
+    #
+    # Each attempt's *search* query is run through _search_query_for, the
+    # exact same call fetch_images() makes -- that appends " plated dish"
+    # for recipe_or_dish/category_roundup templates. This view used to pass
+    # the raw content query straight to _raw_candidates, silently skipping
+    # that suffix -- confirmed live on spinach-artichoke-dip: this page
+    # showed a real, passing "...with a spinach dip" candidate for the
+    # un-suffixed salient query, but the actual fetch (searching "spinach
+    # and artichoke dip plated dish", a different query to the API) came
+    # back with nothing. The label still shows the page's own content
+    # query, unsuffixed, since that's what a human editing this page
+    # actually wrote -- only the real API call gets the suffix.
+    attempts: list[tuple[str, str, str, object]] = []
     if salient_query:
         salient_must_match = content.get("salient_ingredient_must_match") or _recipe_dish_must_match_terms(salient_query)
-        attempts.append((f"{salient_query} (salient)", salient_must_match))
+        salient_search_query = _search_query_for(page.template_type, salient_query)
+        attempts.append((f"{salient_query} (salient)", salient_query, salient_search_query, salient_must_match))
     dish_must_match = override_must_match if override_must_match else _recipe_dish_must_match_terms(query)
-    attempts.append((query, dish_must_match))
+    dish_search_query = _search_query_for(page.template_type, query)
+    attempts.append((query, query, dish_search_query, dish_must_match))
 
     def render_candidates(provider: str, attempt_query: str, must_match) -> str:
         candidates = _raw_candidates(provider, attempt_query)
@@ -1349,15 +1363,20 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
         return "".join(rows)
 
     sections = []
-    for attempt_query, must_match in attempts:
+    for label, raw_query, search_query, must_match in attempts:
+        suffix_note = (
+            f' <span class="suffix">(actually searched as "{search_query}")</span>'
+            if search_query != raw_query
+            else ""
+        )
         sections.append(f"""
         <section>
-          <h2>Attempt: "{attempt_query}"</h2>
+          <h2>Attempt: "{label}"{suffix_note}</h2>
           <p class="mm">must_match: {must_match!r}</p>
           <h3>Pexels</h3>
-          {render_candidates("pexels", attempt_query, must_match)}
+          {render_candidates("pexels", search_query, must_match)}
           <h3>Unsplash</h3>
-          {render_candidates("unsplash", attempt_query, must_match)}
+          {render_candidates("unsplash", search_query, must_match)}
         </section>
         """)
 
