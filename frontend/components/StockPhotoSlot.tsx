@@ -96,8 +96,34 @@ export default function StockPhotoSlot({
   const aspectClass = aspect === "hero" ? "aspect-[16/9]" : "aspect-square";
 
   if (!imageUrl || failed) {
+    // No placeholder at all outside a grid (reserveSpace false): the single
+    // hero image on its own page just renders nothing, same as always. In a
+    // grid, an empty box reads as a rendering bug next to photographed
+    // neighbors -- a generic "photo not loaded" glyph (not an attempt to
+    // represent the specific missing subject) reads as "content pending"
+    // instead. Never shown for a real photo that failed to load after
+    // fetch_stock_images.py wrote a good URL (see the onError comment
+    // above) vs. one that was never fetched -- StockPhotoSlot doesn't
+    // distinguish the two today, and this placeholder is a reasonable
+    // stand-in for both.
     if (!reserveSpace) return null;
-    return <div className={`${aspectClass} rounded-lg bg-ink/5 ${className}`} />;
+    return (
+      <div className={`flex items-center justify-center ${aspectClass} rounded-lg bg-ink/5 ${className}`}>
+        <svg
+          viewBox="0 0 48 48"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinejoin="round"
+          className="h-[30%] w-[30%] text-ink/20"
+          aria-hidden="true"
+        >
+          <rect x="6" y="9" width="36" height="30" rx="3" />
+          <circle cx="17" cy="19" r="3.4" />
+          <path d="M6 33l11-11 8 8 6-6 11 11" strokeLinecap="round" />
+        </svg>
+      </div>
+    );
   }
 
   return (
