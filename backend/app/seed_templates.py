@@ -146650,6 +146650,7 @@ SEED_PAGES = [
         "title": "Candy Crescent",
         "batch_number": 3,
         "content": {
+            "unpublished": True,
             "meta_description": "What candy crescents are, the best substitutes for baking and garnishing, how to store them so they don't go sticky, and how to use them in recipes.",
             "hero_image_query": "hard candy pieces",
             "hero_image_must_match": ["hard candy", "candy"],
