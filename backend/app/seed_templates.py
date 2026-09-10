@@ -172998,7 +172998,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What fruit leather is, the best substitutes with ratios, how to store it so it stays chewy instead of hardening, and how to use it in recipes and snacks.",
-            "hero_image_query": "rolled fruit leather strips",
+            "hero_image_query": "rolled dried fruit puree strips",
+            "hero_image_must_match": ["fruit leather", "fruit roll", "dried fruit"],
             "image_alt": "Thin sheets of dried fruit leather rolled into coils and sliced into strips on a wooden cutting board.",
             "description": "Fruit leather is pureed fruit that has been spread thin and dehydrated until it forms a pliable, chewy sheet. It's made by cooking down fruit (or blending it raw), spreading the puree onto a lined tray, and drying it at low heat in an oven or dehydrator until no longer tacky in the center. The result is naturally sweet, portable, and shelf-stable without added gelatin or pectin.",
             "substitutes": [
@@ -176605,6 +176606,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What kasha is, how it differs from raw buckwheat groats, the best substitutes with ratios, and how to cook and store it so it doesn't turn mushy or bitter.",
             "hero_image_query": "toasted kasha buckwheat groats in bowl",
+            "hero_image_must_match": ["buckwheat", "kasha"],
             "image_alt": "A bowl of cooked, dark reddish-brown kasha groats with separate, fluffy grains and a fork resting beside it.",
             "description": "Kasha is roasted buckwheat groats, the hulled seeds of the buckwheat plant toasted before cooking to give them a deep amber color, nutty, earthy flavor, and slightly bitter edge. Despite the name, buckwheat isn't wheat or even a grain botanically; it's a seed related to rhubarb and sorrel, which is why kasha is naturally gluten-free. In Eastern European and Jewish cooking it shows up as a side dish, in kasha varnishkes with bow-tie pasta, and stuffed into cabbage rolls or knishes.",
             "substitutes": [
@@ -179623,7 +179625,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What sorrel drink is, how it differs from the leafy herb of the same name, the best substitutes for dried sorrel (hibiscus), and how to make and store the classic Caribbean beverage.",
-            "hero_image_query": "jamaican sorrel drink with dried hibiscus calyces and spices",
+            "hero_image_query": "red hibiscus tea drink in a glass with spices",
+            "hero_image_must_match": ["hibiscus", "sorrel drink", "red drink"],
             "image_alt": "A glass pitcher of deep red Jamaican sorrel drink over ice, garnished with a cinnamon stick, next to a small bowl of dried sorrel calyces, ginger, and cloves.",
             "description": "Sorrel drink is a spiced Caribbean beverage made by steeping dried sorrel, the deep red calyces of the roselle plant (Hibiscus sabdariffa), with ginger, cloves, and other warming spices, then sweetening and straining the liquid. It has nothing to do with the tart, leafy garden herb also called sorrel; the name overlap is coincidental. Popular in Jamaica, Trinidad, and across the wider Caribbean especially around Christmas, the drink is tart, floral, and slightly astringent, similar in flavor to hibiscus tea but heavier on spice and sugar.",
             "substitutes": [
