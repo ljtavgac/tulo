@@ -100746,7 +100746,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What makes chicken halal, how certification works, the closest substitutes when it's unavailable, and how to store and cook it safely.",
-            "hero_image_query": "raw halal chicken cuts on butcher paper",
+            "hero_image_query": "raw chicken cuts on butcher paper",
+            "hero_image_must_match": ["chicken", "raw chicken"],
             "image_alt": "Raw halal chicken thighs and drumsticks arranged on butcher paper next to a halal certification stamp on the packaging.",
             "description": "Halal chicken is chicken slaughtered and processed according to Islamic dietary law (dhabihah). A trained Muslim slaughterer makes a swift cut to the throat, severing the jugular veins, carotid arteries, and windpipe while invoking the name of God, and the blood is fully drained from the carcass before further processing. The bird must also have been treated humanely and fed a diet free of animal by-products or alcohol during its life. Chicken sold simply as \"chicken\" in most Western supermarkets is not automatically halal unless labeled or certified as such, since conventional processing often uses electrical stunning or mechanical slaughter methods that many certifying bodies consider non-compliant.",
             "substitutes": [
