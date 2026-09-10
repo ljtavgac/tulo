@@ -1012,3 +1012,61 @@ def image_audit(
         "dead_count": len(dead) if check_reachability else None,
         "dead": dead,
     }
+
+
+@app.get("/admin/export-images")
+def export_images(
+    token: str,
+    slugs: str = Query(
+        ...,
+        description="Comma-separated slugs to export image_url/image_attribution for.",
+    ),
+    db: Session = Depends(get_db),
+):
+    """The "bake" step's read side (see content/scripts/bake_images_from_staging.py):
+    given a batch of slugs that were just seeded and fetched on staging,
+    returns each one's real image_url/image_attribution so the bake script
+    can write them into seed_templates.py as literal data before that
+    batch merges to main -- otherwise image_url only ever exists in a
+    runtime database (see _RUNTIME_IMAGE_KEYS in seed_templates.py), never
+    in the git-tracked seed data, and production would restart the same
+    fetch race from zero the moment the batch's code merges, reproducing
+    the exact problem the staging pipeline exists to solve.
+
+    Only covers single-hero-image templates (SINGLE_IMAGE_TEMPLATES) --
+    category_roundup has no image_url of its own to export; its cards
+    render each linked recipe's own (already-baked) photo live at serve
+    time (see get_page()'s category_roundup branch), so there's nothing
+    for this endpoint to bake for a collection slug.
+
+    Gated behind the same ADMIN_TASK_TOKEN as the other /admin/* routes.
+    Meant to be called against staging's own base URL, with staging's own
+    ADMIN_TASK_TOKEN -- never against production, which has nothing new
+    to export.
+    """
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    requested = [s.strip() for s in slugs.split(",") if s.strip()]
+    pages_by_slug = {
+        page.slug: page
+        for page in db.query(Page).filter(Page.slug.in_(requested)).all()
+    }
+
+    result = {}
+    for slug in requested:
+        page = pages_by_slug.get(slug)
+        if page is None:
+            result[slug] = {"error": "not found"}
+            continue
+        if page.template_type not in SINGLE_IMAGE_TEMPLATES:
+            result[slug] = {
+                "error": f"template_type {page.template_type!r} has no page-level image_url to export"
+            }
+            continue
+        result[slug] = {
+            "image_url": page.content.get("image_url"),
+            "image_attribution": page.content.get("image_attribution"),
+        }
+
+    return result
