@@ -69615,6 +69615,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a vodka soda is, how to build one correctly, the best substitutes for vodka or soda water, and how to keep it from going flat or watered down.",
             "hero_image_query": "vodka soda cocktail with lime in a highball glass",
+            "hero_image_must_match": ["vodka soda", "clear cocktail", "cocktail with lime"],
             "image_alt": "A tall glass of vodka soda with ice, a lime wedge, and visible carbonation bubbles rising through clear liquid.",
             "description": "A vodka soda is simply vodka and carbonated water (club soda or plain seltzer) served over ice, usually finished with a squeeze of citrus. It has almost no calories from sugar, no real flavor of its own beyond the vodka, and depends entirely on using cold, well-carbonated soda water and a decent vodka to taste good. It's the base cocktail bartenders build most other simple drinks from once you add bitters, juice, or flavored syrup.",
             "substitutes": [
@@ -70751,7 +70752,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What bistec is, which cuts work best, the closest substitutes with ratios, and how to pound, marinate, and cook it so it stays tender.",
-            "hero_image_query": "thin sliced beef bistec frying in a skillet with onions",
+            "hero_image_query": "thin sliced beef steak frying in a skillet with onions",
+            "hero_image_must_match": ["bistec", "thin steak", "beef steak", "steak and onions"],
             "image_alt": "Thin, pounded beef steaks frying in a cast iron skillet with sliced onions and a squeeze of lime on the side",
             "description": "Bistec is the Spanish word for a thin-cut beef steak, common across Mexican, Cuban, Puerto Rican, and Dominican kitchens. It's not one specific cut but a style: beef sliced thin (often further pounded with a meat mallet) so it cooks fast in a hot skillet, usually finished with onions, garlic, citrus, or a simple pan sauce. Cuts like top round, eye of round, sirloin, or palomilla are the usual starting point because they're lean and slice thin without falling apart.",
             "substitutes": [
@@ -70823,6 +70825,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What fiddleheads are, the best substitutes with ratios, how to store them safely, and why they must be cooked thoroughly before eating.",
             "hero_image_query": "fresh fiddlehead ferns",
+            "hero_image_must_match": ["fiddlehead", "fern fronds", "fiddlehead fern"],
             "image_alt": "A pile of tightly coiled green fiddlehead ferns with brown papery husks still clinging to some of them, resting on a wooden cutting board next to a paring knife.",
             "description": "Fiddleheads are the tightly coiled, unopened fronds of the ostrich fern (Matteuccia struthiopteris), harvested for only a few weeks each spring before they unfurl into mature fern leaves. Their flavor sits somewhere between asparagus, green beans, and spinach, with a grassy, slightly nutty edge and a firm, snappy texture when cooked properly.",
             "substitutes": [
