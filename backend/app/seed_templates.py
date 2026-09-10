@@ -230278,7 +230278,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A cheesy, protein-packed low carb breakfast casserole with sausage, spinach, and eggs, baked in one dish with no flour, potatoes, or added sugar.",
             "hero_image_query": "low carb breakfast casserole with eggs and sausage",
-            "hero_image_must_match": ["egg casserole", "breakfast casserole", "egg bake", "baked eggs", "scrambled eggs"],
+            "hero_image_must_match": ["hearty breakfast plate"],
             "image_alt": "A baked egg and sausage casserole in a white 9x13 dish, cut into squares, showing melted cheddar and flecks of spinach and red bell pepper throughout.",
             "why_it_works": "Cooking the sausage and vegetables first drives off excess moisture so the casserole sets firm instead of turning watery, and a mix of whole eggs and heavy cream gives a custardy texture without any flour or potato filler to add carbs.",
             "prep_time_minutes": 15,
