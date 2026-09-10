@@ -37849,7 +37849,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A baked dip of spinach, chopped artichoke hearts, cream cheese, and Parmesan, mixed cold and baked until golden and bubbling. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "baked spinach artichoke dip",
-            "salient_ingredient_query": "creamy baked dip with spinach and artichoke hearts",
+            "salient_ingredient_query": "spinach and artichoke dip",
             "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke"],
             "image_alt": "A bubbling spinach artichoke dip in a round baking dish with a golden, lightly browned Parmesan crust and a tortilla chip dipped into the edge.",
             "why_it_works": "Squeezing the thawed spinach completely dry keeps the dip from turning watery in the oven, and a base of cream cheese, sour cream, and mayonnaise gives it enough fat to stay creamy rather than separating as it bakes. A layer of Parmesan on top browns into a slightly crisp crust that contrasts with the soft filling underneath.",
@@ -55082,7 +55082,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A classic Texas ranch water recipe: tequila, fresh lime juice, and ice-cold Topo Chico over ice. Three ingredients, no shaker, ready in under 5 minutes.",
             "hero_image_query": "ranch water cocktail with lime",
-            "salient_ingredient_query": "tequila lime cocktail with sparkling water and salt rim",
+            "salient_ingredient_query": "tequila lime cocktail",
             "salient_ingredient_must_match": ["tequila", "cocktail", "sparkling water"],
             "image_alt": "A tall glass of ranch water with a salted rim, ice, a lime wedge, and a bottle of Topo Chico mineral water beside it on a wooden table.",
             "why_it_works": "Ranch water works because it stays out of its own way: a good blanco tequila, real lime juice squeezed to order, and mineral water with enough carbonation to keep the drink lively instead of flat. Topo Chico specifically has a mineral edge that plain club soda doesn't, which is why West Texas bars insist on it by name.",
@@ -89567,7 +89567,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A homemade version of the viral Dubai chocolate bar, with a crisp toasted kataifi and pistachio filling wrapped in a chocolate shell. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "dubai chocolate bar pistachio kunafa cross section",
-            "salient_ingredient_query": "chocolate bar with pistachio cream filling cross section",
+            "salient_ingredient_query": "chocolate bar with pistachio cream filling",
             "salient_ingredient_must_match": ["pistachio chocolate", "pistachio cream", "chocolate bar"],
             "image_alt": "A chocolate bar cut in half showing a thick green pistachio-kataifi filling with visible strands of crispy toasted shredded phyllo between two layers of dark chocolate.",
             "why_it_works": "The viral Dubai chocolate bar (and the pistachio-kadayif style bar Lindt has since released its own take on) gets its signature crunch from kataifi, shredded phyllo dough, toasted in butter until deeply golden before it's folded into pistachio cream. Toasting the kataifi separately and letting it cool slightly before mixing keeps every strand crisp instead of steaming soft inside the warm pistachio cream, which is the main way homemade versions of this bar go soft and pasty instead of crackly.",
@@ -108680,8 +108680,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Wendy's Biggie Bag actually includes, how it compares to other fast food value deals, what it costs, and how to store or reheat leftovers if you don't finish it in one sitting.",
-            "hero_image_query": "fast food combo meal with burger fries nuggets and drink",
-            "hero_image_must_match": ["combo meal", "fast food", "fries"],
+            "hero_image_query": "fast food combo meal tray",
+            "hero_image_must_match": ["combo meal", "fast food"],
             "image_alt": "A Wendy's Biggie Bag laid out on a tray showing a Jr. Bacon Cheeseburger, a small fry, four chicken nuggets, and a soft drink cup.",
             "description": "The Biggie Bag is a bundled value meal sold by Wendy's, first launched in 2019 as a fixed-price combo built around one of a few sandwich options, a small fries, a four-piece chicken nuggets, and a small drink. It isn't a single food item but a packaged deal, meant to compete directly with McDonald's and Burger King's own low-price bundles. The sandwich choice determines the name on the receipt (Jr. Bacon Cheeseburger Biggie Bag, Crispy Chicken Biggie Bag, Spicy Chicken Biggie Bag, or Double Stack Biggie Bag), but the sides and price stay the same across versions.",
             "substitutes": [
@@ -130992,7 +130992,7 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What kafta is, the best substitutes for the seasoned ground meat mixture, how to store and freeze it, and how to keep it from falling apart on the grill.",
-            "hero_image_query": "grilled ground meat kebab skewers with onion and parsley",
+            "hero_image_query": "ground meat kebabs grilled",
             "hero_image_must_match": ["kafta", "kofta", "kebab", "meat skewers"],
             "image_alt": "Skewers of grilled kafta made from spiced ground lamb, charred at the edges and resting on a plate with grilled tomatoes and chopped parsley",
             "description": "Kafta is a Levantine Arabic preparation of ground meat, usually beef or lamb, mixed with grated or finely minced onion, chopped parsley, and warm spices such as cumin, allspice, cinnamon, and black pepper. The mixture is shaped into logs, patties, or pressed onto skewers and cooked over high heat, though it also appears baked in a tray with tomatoes (kafta bil sanieh) or simmered in stews. The onion and parsley aren't a garnish, they're folded directly into the meat and are part of what keeps it tender and juicy.",
@@ -146647,7 +146647,7 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What candy crescents are, the best substitutes for baking and garnishing, how to store them so they don't go sticky, and how to use them in recipes.",
-            "hero_image_query": "crescent-shaped cinnamon hard candies",
+            "hero_image_query": "cinnamon hard candy crescents",
             "hero_image_must_match": ["crescent candy", "hard candy", "cinnamon candy"],
             "image_alt": "A small pile of amber-colored crescent-moon shaped hard candies scattered on a wooden board, some whole and some crushed into shards.",
             "description": "Candy crescents are hard candies molded into a crescent-moon shape, most commonly flavored with cinnamon or butterscotch, though fruit and chocolate-dipped versions exist. They're a holiday-shelf staple sold in bags similar to candy corn, and home bakers use them whole as cake and cupcake toppers or crushed as a crunchy garnish for cookies, popcorn, and ice cream.",
@@ -153354,7 +153354,7 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What lau lau is, the best substitutes for taro (lūʻau) leaves and ti leaf wrappers, how to store and reheat leftovers, and how to serve it the traditional way.",
-            "hero_image_query": "steamed pork wrapped in green leaves",
+            "hero_image_query": "pork wrapped in leaves steamed",
             "hero_image_must_match": ["lau lau", "ti leaves", "wrapped in leaves"],
             "image_alt": "A steamed lau lau bundle partially unwrapped from its dark green ti leaves, revealing tender braised pork and dark cooked taro leaves inside.",
             "description": "Lau lau is a traditional Hawaiian dish of pork, and often a piece of butterfish, wrapped first in lūʻau leaves (young taro leaves) and then bundled in ti leaves before being steamed or slow-baked for several hours until the meat falls apart and the leaves cook down into a soft, spinach-like filling. The ti leaves are not eaten; they hold in moisture and impart a faint grassy aroma while the meat steams inside them.",
@@ -160397,7 +160397,7 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What neck bones are, the best substitutes with ratios, how to store and cook them, and how they're used in soups, stews, and Southern-style greens.",
-            "hero_image_query": "raw pork neck bones on a cutting board",
+            "hero_image_query": "raw pork neck bones",
             "hero_image_must_match": ["neck bones", "pork neck", "soup bones"],
             "image_alt": "Raw pork neck bones piled in a bowl, showing the small bone sections and surrounding meat and cartilage before simmering.",
             "description": "Neck bones are cross-cut sections of the neck, most commonly from pork but also sold as beef or smoked turkey necks. They're mostly bone, cartilage, and connective tissue with a thin layer of meat clinging to each piece, which is why they're almost never roasted or grilled. Instead they're simmered low and slow, where the collagen breaks down and enriches the surrounding liquid into a thick, gelatinous broth while the meat turns tender enough to fall off the bone.",
@@ -173119,8 +173119,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What fruit leather is, the best substitutes with ratios, how to store it so it stays chewy instead of hardening, and how to use it in recipes and snacks.",
-            "hero_image_query": "rolled dried fruit puree strips",
-            "hero_image_must_match": ["fruit leather", "fruit roll", "dried fruit"],
+            "hero_image_query": "rolled fruit leather strips",
+            "hero_image_must_match": ["fruit leather", "fruit roll"],
             "image_alt": "Thin sheets of dried fruit leather rolled into coils and sliced into strips on a wooden cutting board.",
             "description": "Fruit leather is pureed fruit that has been spread thin and dehydrated until it forms a pliable, chewy sheet. It's made by cooking down fruit (or blending it raw), spreading the puree onto a lined tray, and drying it at low heat in an oven or dehydrator until no longer tacky in the center. The result is naturally sweet, portable, and shelf-stable without added gelatin or pectin.",
             "substitutes": [
@@ -189237,7 +189237,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What dijon mustard is, the best substitutes with ratios, how to store it, and how to use it in dressings, sauces, and marinades.",
-            "hero_image_query": "dijon mustard jar with spoon",
+            "hero_image_query": "dijon mustard",
             "hero_image_must_match": ["dijon mustard", "mustard"],
             "image_alt": "A small glass jar of pale yellow-brown dijon mustard with a spoon resting in it beside whole mustard seeds on a wooden board",
             "description": "Dijon mustard is a smooth, pale yellow-brown condiment made from brown or black mustard seeds, white wine or verjuice, and vinegar, originating from Dijon, France. It's sharper and more tangy than American yellow mustard, with less sweetness and no turmeric-based coloring, and it emulsifies smoothly into dressings and sauces without the grainy texture of whole-grain versions.",
@@ -190685,7 +190685,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What beef chuck is, the best substitutes with ratios, how to store it, and how to cook it so the tough connective tissue turns tender instead of chewy.",
-            "hero_image_query": "raw beef chuck roast on cutting board",
+            "hero_image_query": "raw beef chuck roast",
             "hero_image_must_match": ["beef chuck", "chuck roast"],
             "image_alt": "A boneless beef chuck roast on a wooden cutting board, showing thick marbling and connective tissue running through the meat.",
             "description": "Beef chuck comes from the shoulder and lower neck of the cow, a heavily worked area with dense connective tissue and generous marbling. That combination makes it tough when cooked quickly but exceptionally flavorful and rich when cooked low and slow, since the collagen breaks down into gelatin and bastes the meat from within. It's sold as chuck roast, chuck eye roast, chuck arm roast, or ground into chuck for burgers.",
@@ -193690,7 +193690,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What pistachio paste is, the best substitutes with ratios, how to store it without it separating, and how to use it in gelato, macarons, and pastry fillings.",
-            "hero_image_query": "pistachio paste in jar with spoon",
+            "hero_image_query": "pistachio paste",
             "hero_image_must_match": ["pistachio paste", "pistachio cream", "pistachio butter"],
             "image_alt": "A glass jar of thick, vivid green pistachio paste with a spoon lifting a swirl, surrounded by whole shelled pistachios on a wooden board.",
             "description": "Pistachio paste is a smooth, concentrated paste made by grinding blanched pistachios (usually with sugar and a small amount of neutral oil) into a spreadable consistency. It's the backbone of Italian and French pastry work, giving gelato, macarons, croissant filling, and frangipane their pistachio flavor and green color. It's different from pistachio butter, which is unsweetened pure ground pistachios, and from marzipan, which is almond-based.",
@@ -195350,7 +195350,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What garlic chives are, the best substitutes with ratios, how to store them without them going slimy, and how to use them in stir-fries and dumplings.",
-            "hero_image_query": "fresh garlic chives flat leaves",
+            "hero_image_query": "garlic chives",
             "hero_image_must_match": ["garlic chives", "chinese chives", "flat chives"],
             "image_alt": "A bundle of flat, dark green garlic chives with small white flower buds still attached to some stems, laid on a wooden cutting board.",
             "description": "Garlic chives (Allium tuberosum), also called Chinese chives or gau choy, are a different plant from common onion chives. The leaves are flat and wider rather than hollow and round, and the flavor is garlicky with only a faint onion note. They're a staple in Chinese, Vietnamese, and Korean cooking, often used by the handful rather than sprinkled as a garnish.",
@@ -196128,7 +196128,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What raclette cheese is, the best substitutes with ratios, how to store it, and how to melt and serve it the traditional way.",
-            "hero_image_query": "raclette cheese melting",
+            "hero_image_query": "melted raclette cheese",
             "hero_image_must_match": ["raclette", "melted cheese", "melting cheese"],
             "image_alt": "A half wheel of raclette cheese with its rind scraped and the melted layer scooped onto a plate of boiled potatoes and cornichons.",
             "description": "Raclette is a semi-firm cow's milk cheese from the Swiss and French Alps, named after the French verb racler, meaning to scrape. It has a washed rind, a supple pale-yellow interior, and a smell that's much stronger than its actual flavor, which is nutty, buttery, and mildly tangy. It's made specifically to be melted, either under a broiler, on a tabletop raclette grill, or against a heated cheese wheel, and scraped off in warm layers.",
@@ -199928,7 +199928,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "No-bake peanut butter rice krispie treats made with melted marshmallow, creamy peanut butter, and a crisp cereal base, ready in under an hour with a chocolate drizzle option.",
             "hero_image_query": "peanut butter rice krispie treats stacked",
-            "salient_ingredient_query": "peanut butter cereal treat bars stacked",
+            "salient_ingredient_query": "peanut butter cereal treat bars",
             "salient_ingredient_must_match": ["cereal treat", "cereal bar", "marshmallow treat"],
             "image_alt": "Stacked squares of peanut butter rice krispie treats with a chocolate drizzle on top, showing the chewy marshmallow interior.",
             "why_it_works": "Melting the peanut butter directly into the marshmallow mixture (instead of just stirring it into the cereal) coats every krispie in flavor and keeps the bars soft instead of dry, while pulling the pot off the heat before the peanut butter goes in keeps the fats from separating and turning greasy.",
@@ -213565,7 +213565,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a taco bake is, the best ingredient swaps for beef, tortillas, and cheese, how to store and reheat leftovers, and how to keep it from turning soggy.",
-            "hero_image_query": "taco bake casserole",
+            "hero_image_query": "cheesy taco casserole with beef and tortillas",
             "hero_image_must_match": ["taco bake", "taco casserole", "mexican casserole"],
             "image_alt": "A baking dish of taco bake with melted cheddar and Monterey Jack bubbling on top, layered tortilla pieces visible at the edges, garnished with sour cream, diced tomato, and sliced jalapeño.",
             "description": "A taco bake is a layered casserole that takes the flavors of a taco (seasoned ground meat, cheese, salsa, and tortillas or chips) and bakes them together in one dish instead of assembling individual tacos. Most versions layer tortillas or crushed chips with taco-seasoned beef, beans, and shredded cheese, then bake until the cheese melts and the edges crisp slightly.",
@@ -217631,7 +217631,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A moist, orange-scented Italian olive oil cake made with extra-virgin olive oil instead of butter. Includes tips on picking oil that hasn't gone rancid, plus a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "olive oil cake",
-            "salient_ingredient_query": "sliced olive oil cake with orange glaze on a plate",
+            "salient_ingredient_query": "sliced olive oil cake with orange glaze",
             "salient_ingredient_must_match": ["olive oil cake", "olive cake"],
             "image_alt": "A sliced round olive oil cake on a wire rack, showing a dense golden crumb flecked with orange zest, with a bottle of olive oil in the background.",
             "why_it_works": "Because olive oil is the only fat in this batter, there's no butter to mask a stale or rancid oil, so the cake's flavor depends directly on the oil being fresh. A good fruity extra-virgin oil gives the crumb a faint peppery, grassy note and keeps it moist for days, while an old or improperly stored oil tastes flat or waxy and comes through in every bite.",
@@ -221084,7 +221084,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A rich, nutty black sesame paste made from just toasted black sesame seeds, oil, and a touch of sugar. Ready in about 40 minutes and keeps for months in the fridge.",
             "hero_image_query": "black sesame paste in jar with spoon",
-            "salient_ingredient_query": "smooth ground black sesame paste texture close up",
+            "salient_ingredient_query": "smooth black sesame paste",
             "salient_ingredient_must_match": ["black sesame", "sesame paste"],
             "image_alt": "A jar of glossy, dark black sesame paste with a spoon lifting a swirl of it, surrounded by scattered black sesame seeds.",
             "why_it_works": "Toasting raw black sesame seeds before grinding coaxes out their natural oils, which is what turns dry seeds into a smooth, spreadable paste without needing much added oil, and it deepens the flavor from grassy to genuinely nutty and almost smoky.",
@@ -221912,7 +221912,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What Colby Jack cheese is, the best substitutes with ratios, how to store it so it doesn't dry out or sweat, and how to use it for the best melt.",
-            "hero_image_query": "marbled colby jack cheese block sliced",
+            "hero_image_query": "marbled colby jack cheese",
             "hero_image_must_match": ["colby jack", "marbled cheese"],
             "image_alt": "A block of Colby Jack cheese sliced open to show the orange and white marbled pattern, with a few shredded pieces beside it.",
             "description": "Colby Jack is a marbled American cheese made by blending curds from Colby (a mild, orange cheddar-style cheese) and Monterey Jack (a soft, pale white cheese) before pressing them into one wheel. The result is the familiar orange-and-white swirled cheese with a mild, slightly buttery flavor and a soft, very meltable texture.",
@@ -230271,7 +230271,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A cheesy, protein-packed low carb breakfast casserole with sausage, spinach, and eggs, baked in one dish with no flour, potatoes, or added sugar.",
             "hero_image_query": "low carb breakfast casserole with eggs and sausage",
-            "salient_ingredient_query": "baked eggs with crumbled breakfast sausage",
+            "salient_ingredient_query": "eggs and breakfast sausage bake",
             "salient_ingredient_must_match": ["egg bake", "breakfast sausage", "baked eggs"],
             "image_alt": "A baked egg and sausage casserole in a white 9x13 dish, cut into squares, showing melted cheddar and flecks of spinach and red bell pepper throughout.",
             "why_it_works": "Cooking the sausage and vegetables first drives off excess moisture so the casserole sets firm instead of turning watery, and a mix of whole eggs and heavy cream gives a custardy texture without any flour or potato filler to add carbs.",
@@ -234746,7 +234746,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a sunshine bowl is, the core components that define it, smart substitutes for each part, and how to build and store one so it doesn't turn soggy.",
-            "hero_image_query": "turmeric rice grain bowl with roasted sweet potato and greens",
+            "hero_image_query": "turmeric rice bowl with sweet potato and greens",
             "hero_image_must_match": ["turmeric rice", "grain bowl", "buddha bowl"],
             "image_alt": "A wide bowl of turmeric-yellow rice topped with roasted sweet potato cubes, chickpeas, shredded purple cabbage, avocado slices, and a drizzle of tahini dressing.",
             "description": "A sunshine bowl is a composed grain bowl built around warm, orange-and-yellow ingredients, usually turmeric or curry-spiced rice or quinoa, roasted sweet potato or squash, and a protein like chickpeas or a fried egg, finished with something green and something creamy. The name refers to its color palette rather than one fixed recipe, so the format is meant to be swapped and rebuilt with whatever produce is in season.",
@@ -242046,7 +242046,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What noodle pudding (kugel) actually is, smart substitutes for its key ingredients, how to store and reheat it, and what to serve alongside it.",
-            "hero_image_query": "baked egg noodle casserole with golden top and raisins",
+            "hero_image_query": "baked egg noodle casserole with raisins",
             "hero_image_must_match": ["noodle casserole", "noodle pudding", "kugel", "egg noodles", "noodles"],
             "image_alt": "A golden-topped noodle pudding baked in a glass casserole dish, showing crisp browned edges and a custardy egg noodle interior studded with raisins.",
             "description": "Noodle pudding, widely known by its Yiddish name kugel, is a baked casserole of egg noodles bound together with eggs, dairy (usually cottage cheese and sour cream), and sugar, then baked until the top browns and crisps while the inside stays soft and custardy. Sweet versions include raisins, cinnamon, and sometimes crushed cornflakes on top; savory versions swap the sugar for sauteed onions, black pepper, and sometimes cheese. It's a staple of Ashkenazi Jewish holiday tables, especially for Shabbat and Rosh Hashanah, but it also shows up as a diner-style side dish in Jewish delis.",
@@ -243101,7 +243101,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A pantry-staple onion soup mix recipe made from dried minced onion, onion powder, and beef bouillon, ready in 5 minutes with no MSG or anti-caking agents.",
             "hero_image_query": "onion soup mix seasoning blend in glass jar",
-            "salient_ingredient_query": "dried minced onion flakes in a bowl",
+            "salient_ingredient_query": "dried minced onion flakes",
             "salient_ingredient_must_match": ["dried onion", "onion flakes", "dehydrated onion"],
             "image_alt": "A small glass jar filled with a tan, flaky homemade onion soup mix blend of dried minced onion and bouillon granules, with a wooden spoon and loose dried onion flakes scattered beside it.",
             "why_it_works": "Dried minced onion and onion powder give two layers of onion flavor, one flaky and one fine, while beef bouillon granules supply the savory depth that store-bought packets get from hydrolyzed protein and MSG. Mixing your own means full control over sodium and no anti-caking additives, and it whisks into dips, gravies, and roasts exactly like the envelope version.",
