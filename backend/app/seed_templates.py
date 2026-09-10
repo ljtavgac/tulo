@@ -92717,7 +92717,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What rum punch is, the classic ratio behind it, substitutes for when you're out of rum or want a non-alcoholic version, and how to batch it for a crowd.",
-            "hero_image_query": "rum punch cocktail with fruit garnish",
+            "hero_image_query": "tropical rum punch cocktail with fruit garnish",
+            "hero_image_must_match": ["rum punch", "fruit punch", "tropical cocktail", "cocktail"],
             "image_alt": "A pitcher of orange-red rum punch with lime wheels and a cinnamon stick, poured over ice in a highball glass on a wooden bar tray.",
             "description": "Rum punch is a category of mixed drink built around a single ratio rather than one fixed recipe: one part sour, two parts sweet, three parts strong (rum), and four parts weak (juice or water), often finished with grenadine, bitters, and a grating of nutmeg. It originated in the Caribbean, where rum was cheap and citrus was abundant, and every island now has its own version.",
             "substitutes": [
@@ -94718,6 +94719,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What arctic char is, the best substitutes with ratios, how to store and cook it, and how it compares to salmon and trout.",
             "hero_image_query": "raw arctic char fillet on ice",
+            "hero_image_must_match": ["arctic char", "char fillet", "salmon fillet", "fish fillet"],
             "image_alt": "A pink-orange arctic char fillet with silvery skin resting on crushed ice, showing its fine flaky texture.",
             "description": "Arctic char (Salvelinus alpinus) is a cold-water fish related to both salmon and trout, with flesh that ranges from pale pink to deep orange-red depending on diet and origin. Its flavor sits between the two: milder and less oily than salmon, but richer than most trout, with a delicate, slightly sweet finish.",
             "substitutes": [
@@ -95447,7 +95449,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What aji amarillo is, the best substitutes with ratios, how to store the fresh peppers and paste, and how it's used in Peruvian cooking.",
-            "hero_image_query": "aji amarillo peppers and paste",
+            "hero_image_query": "yellow-orange chile peppers whole and in paste",
+            "hero_image_must_match": ["aji amarillo", "yellow chile", "chile pepper", "chili pepper"],
             "image_alt": "Bright orange-yellow aji amarillo peppers split open next to a jar of aji amarillo paste and a spoon",
             "description": "Aji amarillo (Capsicum baccatum) is the signature chile of Peruvian cuisine, a long, tapering pod that ripens from green to a vivid orange-yellow. Despite the name, which translates to 'yellow chile,' most ripe pods look more orange than yellow. The flavor is fruity and slightly floral with a berry-like sweetness underneath a medium heat, roughly 30,000 to 50,000 Scoville units, in the same range as a mild habanero. It's rarely eaten raw in large amounts and is most often blended into a bright orange paste that forms the base of dishes like aji de gallina, causa rellena, and ceviche's leche de tigre.",
             "substitutes": [
@@ -96094,7 +96097,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What a fuzzy navel is, the best substitutes for peach schnapps in the recipe, how to store a batch, and how to use it beyond the classic cocktail.",
-            "hero_image_query": "fuzzy navel cocktail with orange garnish",
+            "hero_image_query": "peach schnapps and orange juice cocktail",
+            "hero_image_must_match": ["fuzzy navel", "cocktail", "orange juice"],
             "image_alt": "A tall glass of fuzzy navel cocktail, pale orange in color, garnished with an orange slice and ice cubes on a wooden bar counter.",
             "description": "A fuzzy navel is a simple two-ingredient cocktail made from peach schnapps and orange juice, usually served over ice in a highball glass. It has no vermouth, bitters, or citrus juice beyond the orange, which makes it sweeter and lower-proof than most mixed drinks. The name comes from the fuzzy skin of a peach and the navel orange used for the juice.",
             "substitutes": [
