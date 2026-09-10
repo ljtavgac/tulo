@@ -157779,7 +157779,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What ensalada rusa is, how it differs from Olivier salad, the best substitutes for a similar dish, and how to store and serve it safely.",
-            "hero_image_query": "ensalada rusa potato salad with peas and carrots",
+            "hero_image_query": "potato salad with peas and carrots in mayonnaise",
+            "hero_image_must_match": ["potato salad", "russian salad"],
             "image_alt": "A bowl of ensalada rusa showing diced potatoes, carrots, and peas bound in mayonnaise, garnished with strips of red pimiento and hard-boiled egg.",
             "description": "Ensalada rusa (Russian salad) is a cold, mayonnaise-bound salad built from diced boiled potatoes and carrots mixed with peas, and often hard-boiled egg, tuna, or olives. It descends from the Russian Olivier salad but has been simplified and adapted across Spain and Latin America, where it's sold by weight in delis and served as a tapa, a sandwich filling, or a stuffing for tomatoes and eggs.",
             "substitutes": [
@@ -160355,7 +160356,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What neck bones are, the best substitutes with ratios, how to store and cook them, and how they're used in soups, stews, and Southern-style greens.",
-            "hero_image_query": "pork neck bones in a pot with seasoning",
+            "hero_image_query": "raw pork neck bones on a cutting board",
+            "hero_image_must_match": ["neck bones", "pork neck", "soup bones"],
             "image_alt": "Raw pork neck bones piled in a bowl, showing the small bone sections and surrounding meat and cartilage before simmering.",
             "description": "Neck bones are cross-cut sections of the neck, most commonly from pork but also sold as beef or smoked turkey necks. They're mostly bone, cartilage, and connective tissue with a thin layer of meat clinging to each piece, which is why they're almost never roasted or grilled. Instead they're simmered low and slow, where the collagen breaks down and enriches the surrounding liquid into a thick, gelatinous broth while the meat turns tender enough to fall off the bone.",
             "substitutes": [
