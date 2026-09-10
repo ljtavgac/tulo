@@ -37849,7 +37849,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A baked dip of spinach, chopped artichoke hearts, cream cheese, and Parmesan, mixed cold and baked until golden and bubbling. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "baked spinach artichoke dip",
-            "hero_image_must_match": ["spinach artichoke dip", "artichoke dip", "spinach dip"],
+            "hero_image_must_match": ["spinach artichoke", "spinach and artichoke"],
             "salient_ingredient_query": "spinach and artichoke dip",
             "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke"],
             "image_alt": "A bubbling spinach artichoke dip in a round baking dish with a golden, lightly browned Parmesan crust and a tortilla chip dipped into the edge.",
@@ -131476,10 +131476,10 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "A homemade copycat of Heinz 57 steak sauce, tangy and slightly sweet with raisins, mustard, and allspice. Ready in 20 minutes with pantry staples.",
-            "hero_image_query": "steak sauce in small bowl with steak",
-            "hero_image_must_match": ["steak sauce", "dipping sauce", "brown sauce"],
+            "hero_image_query": "copycat steak sauce in small bowl",
+            "hero_image_must_match": ["steak sauce", "dipping sauce"],
             "salient_ingredient_query": "tangy brown steak sauce",
-            "salient_ingredient_must_match": ["steak sauce", "brown sauce"],
+            "salient_ingredient_must_match": ["steak sauce"],
             "image_alt": "A small glass bowl of dark reddish-brown copycat Heinz 57 steak sauce next to a grilled steak, with a spoon resting in the sauce.",
             "why_it_works": "Pureed raisins add the same fruity sweetness and body that the original sauce gets from tomato and fruit concentrate, while a hit of allspice and dry mustard recreates its distinctive warm, tangy edge that plain ketchup or Worcestershire can't match on their own.",
             "prep_time_minutes": 10,
@@ -146650,9 +146650,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What candy crescents are, the best substitutes for baking and garnishing, how to store them so they don't go sticky, and how to use them in recipes.",
-            "hero_image_query": "cinnamon hard candy",
-            "hero_image_must_match": ["hard candy", "cinnamon candy", "candy"],
-            "hero_image_must_match": ["crescent candy", "hard candy", "cinnamon candy"],
+            "hero_image_query": "hard candy pieces",
+            "hero_image_must_match": ["hard candy", "candy"],
             "image_alt": "A small pile of amber-colored crescent-moon shaped hard candies scattered on a wooden board, some whole and some crushed into shards.",
             "description": "Candy crescents are hard candies molded into a crescent-moon shape, most commonly flavored with cinnamon or butterscotch, though fruit and chocolate-dipped versions exist. They're a holiday-shelf staple sold in bags similar to candy corn, and home bakers use them whole as cake and cupcake toppers or crushed as a crunchy garnish for cookies, popcorn, and ice cream.",
             "substitutes": [
@@ -173123,8 +173122,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What fruit leather is, the best substitutes with ratios, how to store it so it stays chewy instead of hardening, and how to use it in recipes and snacks.",
-            "hero_image_query": "flat sheet of chewy fruit snack candy",
-            "hero_image_must_match": ["fruit leather", "fruit roll", "fruit snack"],
+            "hero_image_query": "rolled fruit leather sheets",
+            "hero_image_must_match": ["fruit leather", "fruit roll-up", "fruit roll"],
             "image_alt": "Thin sheets of dried fruit leather rolled into coils and sliced into strips on a wooden cutting board.",
             "description": "Fruit leather is pureed fruit that has been spread thin and dehydrated until it forms a pliable, chewy sheet. It's made by cooking down fruit (or blending it raw), spreading the puree onto a lined tray, and drying it at low heat in an oven or dehydrator until no longer tacky in the center. The result is naturally sweet, portable, and shelf-stable without added gelatin or pectin.",
             "substitutes": [
@@ -213571,8 +213570,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a taco bake is, the best ingredient swaps for beef, tortillas, and cheese, how to store and reheat leftovers, and how to keep it from turning soggy.",
-            "hero_image_query": "cheesy taco casserole with beef and tortillas",
-            "hero_image_must_match": ["taco bake", "taco casserole", "mexican casserole", "casserole"],
+            "hero_image_query": "taco casserole with beef and melted cheese",
+            "hero_image_must_match": ["taco bake", "taco casserole", "taco"],
             "image_alt": "A baking dish of taco bake with melted cheddar and Monterey Jack bubbling on top, layered tortilla pieces visible at the edges, garnished with sour cream, diced tomato, and sliced jalapeño.",
             "description": "A taco bake is a layered casserole that takes the flavors of a taco (seasoned ground meat, cheese, salsa, and tortillas or chips) and bakes them together in one dish instead of assembling individual tacos. Most versions layer tortillas or crushed chips with taco-seasoned beef, beans, and shredded cheese, then bake until the cheese melts and the edges crisp slightly.",
             "substitutes": [
@@ -217637,7 +217636,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A moist, orange-scented Italian olive oil cake made with extra-virgin olive oil instead of butter. Includes tips on picking oil that hasn't gone rancid, plus a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "olive oil cake",
-            "hero_image_must_match": ["olive oil cake", "bundt cake", "sliced cake"],
+            "hero_image_must_match": ["olive oil cake", "olive cake"],
             "salient_ingredient_query": "sliced olive oil cake with orange glaze",
             "salient_ingredient_must_match": ["olive oil cake", "olive cake"],
             "image_alt": "A sliced round olive oil cake on a wire rack, showing a dense golden crumb flecked with orange zest, with a bottle of olive oil in the background.",
@@ -221091,9 +221090,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A rich, nutty black sesame paste made from just toasted black sesame seeds, oil, and a touch of sugar. Ready in about 40 minutes and keeps for months in the fridge.",
             "hero_image_query": "black sesame paste in jar with spoon",
-            "hero_image_must_match": ["sesame paste", "black sesame paste"],
+            "hero_image_must_match": ["sesame paste", "black sesame", "sesame butter"],
             "salient_ingredient_query": "smooth black sesame paste",
-            "salient_ingredient_must_match": ["sesame paste", "black sesame paste"],
+            "salient_ingredient_must_match": ["sesame paste", "black sesame", "sesame butter"],
             "image_alt": "A jar of glossy, dark black sesame paste with a spoon lifting a swirl of it, surrounded by scattered black sesame seeds.",
             "why_it_works": "Toasting raw black sesame seeds before grinding coaxes out their natural oils, which is what turns dry seeds into a smooth, spreadable paste without needing much added oil, and it deepens the flavor from grassy to genuinely nutty and almost smoky.",
             "prep_time_minutes": 10,
@@ -230279,9 +230278,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A cheesy, protein-packed low carb breakfast casserole with sausage, spinach, and eggs, baked in one dish with no flour, potatoes, or added sugar.",
             "hero_image_query": "low carb breakfast casserole with eggs and sausage",
-            "hero_image_must_match": ["egg casserole", "breakfast casserole", "egg bake"],
+            "hero_image_must_match": ["egg casserole", "breakfast casserole", "egg bake", "baked eggs", "eggs"],
             "salient_ingredient_query": "eggs and breakfast sausage bake",
-            "salient_ingredient_must_match": ["egg bake", "baked eggs", "egg casserole"],
+            "salient_ingredient_must_match": ["egg bake", "baked eggs", "egg casserole", "eggs"],
             "image_alt": "A baked egg and sausage casserole in a white 9x13 dish, cut into squares, showing melted cheddar and flecks of spinach and red bell pepper throughout.",
             "why_it_works": "Cooking the sausage and vegetables first drives off excess moisture so the casserole sets firm instead of turning watery, and a mix of whole eggs and heavy cream gives a custardy texture without any flour or potato filler to add carbs.",
             "prep_time_minutes": 15,
@@ -243109,10 +243108,10 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "A pantry-staple onion soup mix recipe made from dried minced onion, onion powder, and beef bouillon, ready in 5 minutes with no MSG or anti-caking agents.",
-            "hero_image_query": "onion soup mix seasoning blend in glass jar",
-            "hero_image_must_match": ["seasoning mix", "dried onion", "spice blend", "onion flakes"],
+            "hero_image_query": "dried minced onion flakes seasoning",
+            "hero_image_must_match": ["dried onion", "onion flakes", "seasoning", "onion powder"],
             "salient_ingredient_query": "dried minced onion flakes",
-            "salient_ingredient_must_match": ["dried onion", "onion flakes", "dehydrated onion"],
+            "salient_ingredient_must_match": ["dried onion", "onion flakes", "dehydrated onion", "onion powder"],
             "image_alt": "A small glass jar filled with a tan, flaky homemade onion soup mix blend of dried minced onion and bouillon granules, with a wooden spoon and loose dried onion flakes scattered beside it.",
             "why_it_works": "Dried minced onion and onion powder give two layers of onion flavor, one flaky and one fine, while beef bouillon granules supply the savory depth that store-bought packets get from hydrolyzed protein and MSG. Mixing your own means full control over sodium and no anti-caking additives, and it whisks into dips, gravies, and roasts exactly like the envelope version.",
             "prep_time_minutes": 5,
