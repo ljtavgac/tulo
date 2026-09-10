@@ -5,6 +5,7 @@ import os
 import re
 import secrets
 import threading
+import time
 from contextlib import asynccontextmanager, redirect_stdout
 from typing import NamedTuple
 
@@ -91,6 +92,18 @@ _background_tasks: set[asyncio.Task] = set()
 # than 300. Configurable via env var for the same reason.
 IMAGE_FETCH_INTERVAL_SECONDS = int(os.environ.get("IMAGE_FETCH_INTERVAL_SECONDS", 300))
 
+# How often a background pass also revalidates already-written image_urls
+# (see fetch_images()'s revalidate param), not just backfill pages with no
+# image at all -- a real, separate cost from the default pass (one live
+# GET per already-valid image already in the database, not the cheap dict
+# check _needs_fetch does otherwise), so this runs on a much slower
+# cadence than IMAGE_FETCH_INTERVAL_SECONDS itself rather than on every
+# pass. 24 hours by default: catches a photo taken down at the source
+# within a day, without turning every 5-minute pass into a full-catalog
+# live-fetch storm. Configurable via env var for the same reason as
+# IMAGE_FETCH_INTERVAL_SECONDS.
+IMAGE_REVALIDATE_INTERVAL_SECONDS = int(os.environ.get("IMAGE_REVALIDATE_INTERVAL_SECONDS", 86400))
+
 
 async def _run_periodic_image_fetch() -> None:
     """Backfills real stock photos for any page still missing one, on a
@@ -110,16 +123,40 @@ async def _run_periodic_image_fetch() -> None:
     network call -- see fetch_images()'s _needs_fetch), so a pass that
     finds nothing new to do finishes fast, not on a timer of its own.
 
+    Also periodically revalidates already-written image_urls, on the much
+    slower IMAGE_REVALIDATE_INTERVAL_SECONDS cadence tracked below as
+    elapsed wall-clock time since this loop started. Confirmed necessary
+    for real, not just a hypothetical: the default pass alone only ever
+    finds pages with *no* image_url, never one that was valid when
+    written and has since been taken down at the source (see images.py's
+    _is_reachable() docstring for the char-siu incident this exact gap
+    let through once already) -- that class of decay had no automatic
+    path to self-heal before this, only a manual
+    /admin/fetch-images?revalidate=true run someone had to remember to
+    make. The elapsed-time tracker lives only in this process's memory,
+    so a redeploy resets it -- if deploys happen more often than
+    IMAGE_REVALIDATE_INTERVAL_SECONDS, a periodic revalidation pass might
+    never actually fire before the process restarts.
+    /admin/image-audit?check_reachability=true stays the manual fallback
+    that doesn't depend on this loop's uptime at all.
+
     fetch_images() is synchronous (blocking `requests` calls) so each pass
     runs in a worker thread via asyncio.to_thread rather than blocking the
     event loop that's also serving real requests -- confirmed non-blocking
     locally (see 32b9c62)."""
+    last_revalidate = time.monotonic()
     while True:
         db = SessionLocal()
         try:
-            pages_updated, images_written = await asyncio.to_thread(fetch_images, db)
+            due_for_revalidate = time.monotonic() - last_revalidate >= IMAGE_REVALIDATE_INTERVAL_SECONDS
+            pages_updated, images_written = await asyncio.to_thread(
+                fetch_images, db, revalidate=due_for_revalidate
+            )
+            if due_for_revalidate:
+                last_revalidate = time.monotonic()
             if images_written:
-                print(f"Background image fetch: {pages_updated} page(s) updated, {images_written} image(s) written.")
+                label = "Background image fetch (revalidating)" if due_for_revalidate else "Background image fetch"
+                print(f"{label}: {pages_updated} page(s) updated, {images_written} image(s) written.")
                 _revalidate_frontend()
         except Exception as e:
             # A crash here must never take the loop (or the process) down
