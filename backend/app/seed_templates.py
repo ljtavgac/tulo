@@ -83353,6 +83353,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a chicken bake actually is, smart substitutes for the classic ingredients, how to store and reheat leftovers, and how to keep the chicken from drying out.",
             "hero_image_query": "baked chicken casserole in a dish",
+            "hero_image_must_match": ["chicken bake", "chicken casserole", "chicken"],
             "image_alt": "A bubbling chicken bake in a ceramic casserole dish with melted cheese on top and chicken pieces visible through a creamy sauce.",
             "description": "A chicken bake is a broad category of oven casserole built from cut-up chicken (breast, thigh, or tenders), a binding sauce (often a cream soup, cream cheese, or a roux-based sauce), and a starch or vegetable filler like rice, pasta, or broccoli, finished under cheese or a crumb topping. It's less a single recipe than a method: protein plus sauce plus filler, baked until the chicken hits a safe internal temperature and the top browns.",
             "substitutes": [
@@ -84682,7 +84683,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What a simmer pot is, which ingredient swaps work best, how to keep one going safely on the stove, and how long the mixture lasts before it needs refreshing.",
-            "hero_image_query": "simmer pot with orange slices and cinnamon sticks on stove",
+            "hero_image_query": "pot simmering with orange slices and cinnamon sticks on stove",
+            "hero_image_must_match": ["simmer pot", "simmering pot", "stovetop potpourri", "orange slices"],
             "image_alt": "A small saucepan on a stovetop filled with sliced oranges, cinnamon sticks, and whole cloves simmering in water, with steam rising.",
             "description": "A simmer pot is a pan of water simmered on low heat with aromatics like citrus peel, whole spices, and herbs, used to scent a room the way a candle does but without wax or synthetic fragrance. It isn't a dish meant to be eaten; the point is the steam carrying the aroma through the house, though the strained liquid can double as a mulled drink base if the ingredients are food-safe and unspiced with anything decorative.",
             "substitutes": [
@@ -84956,6 +84958,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What bat wings actually are (whole, uncut chicken wings), the best substitutes with ratios, how to store and cook them, and why the name has nothing to do with actual bats.",
             "hero_image_query": "whole chicken wings fanned open on a grill",
+            "hero_image_must_match": ["chicken wing", "chicken wings"],
             "image_alt": "Whole chicken wings with the drumette, flat, and tip still connected, spread open on a grill grate to show the fanned bat-wing shape.",
             "description": "Bat wings are whole chicken wings left completely intact: the drumette, the flat (wingette), and the tip all still connected as one piece rather than cut apart. The name comes from how the wing looks once it's spread open before cooking, the joints splay outward into a shape that resembles a bat's wing. It's not a different bird part or breed, just a seasonal nickname (common around Halloween) for what butchers usually call a whole wing or 3-joint wing.",
             "substitutes": [
@@ -85839,7 +85842,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What canned salmon is, how pink and sockeye differ, the best substitutes with ratios, and how to store and use it without wasting the bones or skin.",
-            "hero_image_query": "canned salmon flaked in a bowl with skin and bones visible",
+            "hero_image_query": "flaked salmon in a bowl",
+            "hero_image_must_match": ["canned salmon", "flaked salmon", "salmon"],
             "image_alt": "Flaked canned salmon in a white bowl showing pink flesh, soft edible bones, and a few pieces of skin, with an empty open can beside it.",
             "description": "Canned salmon is wild-caught salmon (usually pink, sockeye, or keta/chum) that's cooked and sealed in the can during processing, so it arrives fully cooked and shelf-stable. Most cans include the skin and small, soft bones, both edible and a major source of the calcium canned salmon is known for. It's sold packed in water, brine, or occasionally oil, and comes bone-in/skin-on or as boneless, skinless fillets.",
             "substitutes": [
@@ -86257,6 +86261,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What artichoke hearts are, the best substitutes with ratios, how to store canned, frozen, and fresh ones, and how to use them without turning them mushy.",
             "hero_image_query": "artichoke hearts halved on cutting board",
+            "hero_image_must_match": ["artichoke heart", "artichoke hearts", "artichoke"],
             "image_alt": "Halved artichoke hearts with pale green leaves and tender centers arranged on a wooden cutting board, some packed in jarred oil beside them",
             "description": "Artichoke hearts are the tender, pale inner leaves and base of the artichoke flower bud, left once the tough outer leaves, fibrous choke, and stem have been removed. They have a mild, slightly nutty, faintly lemony flavor and a texture that ranges from firm (fresh, briefly cooked) to soft and almost buttery (canned or jarred). Most cooking uses canned, frozen, or marinated jarred hearts rather than whole fresh artichokes, since trimming a fresh one down to just the heart is labor-intensive.",
             "substitutes": [
@@ -86834,7 +86839,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Star Crunch bars are made of, the best substitutes with ratios, how to store them so they stay crisp, and how to use them in no-bake desserts.",
-            "hero_image_query": "Little Debbie Star Crunch bar unwrapped showing chocolate coating and caramel chow mein noodles",
+            "hero_image_query": "chocolate covered caramel crispy noodle snack bar",
+            "hero_image_must_match": ["snack bar", "chocolate covered", "caramel crispy"],
             "image_alt": "A star-shaped Star Crunch bar broken in half, showing the crispy chow mein noodle and caramel center under a chocolate coating.",
             "description": "Star Crunch is a packaged snack bar made by Little Debbie: crispy chow mein noodles bound together with caramel, pressed into a star shape, and coated in a chocolate-flavored compound coating. The texture comes from the contrast between the crunchy noodles and the chewy caramel, similar in spirit to a caramel rice crispy treat but denser and more brittle.",
             "substitutes": [
@@ -87412,7 +87418,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What chile colorado is, how it differs from chili powder and chile verde, the best substitutes with ratios, and how to store and use it.",
-            "hero_image_query": "chile colorado sauce with dried red chiles",
+            "hero_image_query": "deep red chile sauce with dried red chiles",
+            "hero_image_must_match": ["red chile sauce", "chile sauce", "red sauce", "dried chile"],
             "image_alt": "A bowl of deep red chile colorado sauce next to a pile of dried guajillo and New Mexico chile pods used to make it.",
             "description": "Chile colorado refers both to a family of dried red chiles (commonly New Mexico chile, guajillo, or ancho) and to the deep red sauce made by rehydrating and blending those pods with garlic, onion, and cumin. It's a foundation of New Mexican and northern Mexican cooking, giving dishes like chile colorado con carne, enchiladas, and tamales their rusty red color and earthy, moderately spicy flavor, distinct from the brighter, more acidic green chile sauces made from roasted poblanos or Hatch chiles.",
             "substitutes": [
@@ -91877,7 +91884,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What kvass is, how to substitute it in cooking and drinking, how to store it once opened, and how to use it in soups, marinades, and braises.",
-            "hero_image_query": "kvass in glass bottles with dark bread",
+            "hero_image_query": "dark fermented rye drink in glass bottles with bread",
+            "hero_image_must_match": ["kvass", "fermented drink", "rye drink"],
             "image_alt": "Two glass bottles of dark amber kvass next to a mug of the fermented drink and a slice of rye bread",
             "description": "Kvass is a mildly alcoholic (usually under 1% ABV) fermented beverage from Eastern Europe and Russia, traditionally made by fermenting stale rye bread with water, sugar, and yeast, sometimes with added fruit, mint, or raisins. It has a tangy, faintly sour, bready flavor somewhere between a light beer and a malt soda, and it's used both as a refreshing drink and as an ingredient in cold soups and marinades.",
             "substitutes": [
