@@ -61162,7 +61162,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What calabacitas are, how they differ from zucchini, the best substitutes with ratios, and how to store and cook them so they don't turn watery.",
-            "hero_image_query": "fresh calabacitas mexican squash",
+            "hero_image_query": "mexican squash with corn and cheese",
+            "hero_image_must_match": ["squash", "calabacita"],
             "image_alt": "A pile of small, round, pale green calabacitas squash next to a knife and a few ears of corn on a wooden cutting board.",
             "description": "Calabacita is the Spanish word for a small, tender summer squash widely used in Mexican cooking, most often a round or oblong pale green variety (sometimes called Mexican squash or tatuma) that's related to zucchini but generally sweeter, thinner-skinned, and less watery. The name is also used loosely across Latin American markets to mean any young, tender squash, including standard zucchini. The dish called calabacitas, squash sautéed with corn, onion, tomato, and often cheese, takes its name directly from the vegetable.",
             "substitutes": [
@@ -61299,6 +61300,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What campanelle pasta is, the best substitutes with ratios, how to store it, and which sauces actually cling to its ruffled shape.",
             "hero_image_query": "campanelle pasta dry uncooked close up",
+            "hero_image_must_match": ["pasta", "campanelle"],
             "image_alt": "A pile of dry campanelle pasta showing its ruffled, cone-shaped edges and hollow center.",
             "description": "Campanelle is a dried pasta shape whose name means 'little bells' in Italian, though it's also called 'cone flower' or 'trumpet' pasta for its flared, ruffled edge that curls around a narrow, slightly conical base. The ruffles and the small cone shape give it a lot of surface area and texture, so it grabs onto chunky and creamy sauces far better than smooth shapes like penne.",
             "substitutes": [
@@ -61506,6 +61508,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What chicken vindaloo is, how to substitute for its key ingredients, how to store and reheat leftovers, and what makes it different from other curries.",
             "hero_image_query": "chicken vindaloo curry in bowl with rice",
+            "hero_image_must_match": ["curry", "vindaloo"],
             "image_alt": "A bowl of deep red-brown chicken vindaloo with tender chicken pieces in a glossy, chili-flecked sauce, served alongside steamed rice and a wedge of lime.",
             "description": "Chicken vindaloo is a fiery, vinegar-tinged curry that originated in Goa, India, adapted from a Portuguese dish of meat marinated in wine and garlic (carne de vinha d'alhos). Goan cooks swapped the wine for palm vinegar and added chilies, cumin, and mustard seed, producing a curry that's distinctly sour and hot rather than creamy or sweet like many other Indian curries. Traditional versions use dried Kashmiri chilies for color and a moderate, fruity heat, black peppercorns, and a generous hit of vinegar that both tenderizes the chicken and gives the dish its sharp tang.",
             "substitutes": [
@@ -64643,7 +64646,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What lambrusco is, how it differs from still red wine in cooking, the best substitutes with ratios, and how to store and serve it once opened.",
-            "hero_image_query": "glass of sparkling red lambrusco wine with charcuterie",
+            "hero_image_query": "glass of sparkling red wine with charcuterie",
+            "hero_image_must_match": ["red wine", "sparkling wine", "lambrusco"],
             "image_alt": "A glass of dark pink, lightly foaming lambrusco next to a plate of prosciutto and parmigiano wedges.",
             "description": "Lambrusco is a lightly sparkling (frizzante) Italian wine, most often red, made from Lambrusco grapes grown in Emilia-Romagna. It ranges from bone-dry (secco) to noticeably sweet (dolce or amabile), and its trademark is a soft, foamy fizz with low tannin and bright, fruity acidity rather than the heavier structure of a still red. It shows up both as a table wine served chilled alongside rich, fatty foods and as a cooking ingredient in braises, risottos, and poached fruit.",
             "substitutes": [
@@ -65509,6 +65513,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What menma is, the best substitutes with ratios, how to store it, and how to use this fermented bamboo shoot topping in ramen and beyond.",
             "hero_image_query": "menma seasoned bamboo shoots ramen topping",
+            "hero_image_must_match": ["bamboo shoot", "bamboo shoots", "menma"],
             "image_alt": "A small bowl of glossy amber-brown menma strands, thin lacto-fermented bamboo shoots seasoned with soy sauce and sesame oil, served as a ramen topping.",
             "description": "Menma is lacto-fermented bamboo shoot, typically made from madake bamboo, that's been dried, rehydrated, and simmered in a seasoning liquid of soy sauce, mirin, sugar, and sesame oil until it turns a translucent amber color. It has a soft but slightly crunchy texture and a savory, faintly funky depth from fermentation, and it's best known as a standard topping for shoyu and tonkotsu ramen. It's sometimes labeled 'shinachiku' on older packaging or restaurant menus, an older name for the same product.",
             "substitutes": [
@@ -75596,7 +75601,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What a mulita is, how it differs from a quesadilla and gordita, the best substitutes with ratios, and how to make or fill one at home.",
-            "hero_image_query": "grilled mulita with melted cheese and carne asada on a griddle",
+            "hero_image_query": "grilled quesadilla with melted cheese and steak",
+            "hero_image_must_match": ["quesadilla", "cheese"],
             "image_alt": "A mulita cut in half on a plate, showing two corn tortillas sandwiching melted white cheese and diced carne asada, with salsa and lime on the side",
             "description": "A mulita is a Mexican street food originating in Tijuana: two thin corn tortillas with a layer of melted cheese griddled between them, functioning as edible \"bread\" for a filling of grilled meat, usually carne asada or al pastor. The cheese acts as glue, holding the two tortillas together into a single stuffed sandwich that's crisped on a flat-top griddle (plancha) until the outside is lightly charred and the cheese inside is fully melted.",
             "substitutes": [
@@ -75726,7 +75732,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What raspados are, how they differ from snow cones, the best substitutes for shaved ice and syrup, and how to build one with the right texture and flavor balance.",
-            "hero_image_query": "mango raspado with chamoy and tajin in plastic cup",
+            "hero_image_query": "shaved ice dessert with fruit syrup in a cup",
+            "hero_image_must_match": ["shaved ice", "snow cone", "raspado"],
             "image_alt": "A tall cup of finely shaved ice soaked in orange and red fruit syrups, drizzled with chamoy and dusted with tajin, with a spoon-straw sticking out the top",
             "description": "Raspados are a Mexican shaved ice treat made by shaving a block of ice into fine, snow-like flakes, then soaking it in layers of fruit syrup, tamarind, chamoy, or sweetened condensed milk. The word comes from raspar, meaning to scrape, which describes how the ice is prepared: scraped in thin layers off a block rather than crushed into chunks. That fine texture is what lets raspados absorb syrup evenly instead of just sitting in a puddle at the bottom of the cup.",
             "substitutes": [
@@ -76530,7 +76537,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What gazpachero (torta cenceña) flatbread is, the best substitutes with ratios, how to store it, and how it's used to make gazpacho manchego.",
-            "hero_image_query": "torta cenceña gazpachero flatbread torn into stew broth",
+            "hero_image_query": "torn flatbread in savory stew broth",
+            "hero_image_must_match": ["stew", "broth", "flatbread"],
             "image_alt": "Thin, cracker-like sheets of gazpachero flatbread broken into pieces and softening in a dark broth alongside pieces of rabbit and vegetables in a wide clay pot.",
             "description": "Gazpachero (also called torta cenceña, pan cenceño, or simply gazpacho in its plural form, gazpachos) is a thin, unleavened flatbread from the La Mancha region of Spain, made from just wheat flour, water, olive oil, and a pinch of salt, rolled paper-thin and baked until dry and crisp like a large cracker. It's the defining ingredient of gazpacho manchego (also called galianos), a hearty hunter's stew of rabbit, hare, or other game simmered with vegetables. The bread is torn into irregular pieces and cooked directly in the stew's broth until it softens into something between a dumpling and a noodle, thickening the dish and soaking up the meat's flavor. It has no relation to the cold tomato soup that shares the gazpacho name; the two dishes are unrelated aside from the word.",
             "substitutes": [
@@ -77808,7 +77816,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What pozole verde is, the best substitutes for its tomatillo-based broth, how to store leftovers, and how to serve it the traditional way.",
-            "hero_image_query": "bowl of pozole verde with shredded chicken hominy and toppings",
+            "hero_image_query": "mexican green soup with hominy and chicken",
+            "hero_image_must_match": ["pozole", "hominy soup", "soup"],
             "image_alt": "A bowl of green pozole broth with hominy kernels and shredded chicken, topped with shredded cabbage, sliced radish, diced avocado, and a lime wedge on the side.",
             "description": "Pozole verde is a Mexican soup built on a broth of blended tomatillos, green chiles, and pumpkin seeds or squash seeds, simmered with hominy (nixtamalized corn kernels) and usually chicken or pork. The green color and tang come from the tomatillos and fresh herbs like epazote or cilantro blended raw into the broth near the end of cooking, which keeps the color bright rather than muddy. It's distinct from pozole rojo, which uses dried red chiles, and pozole blanco, which skips chiles almost entirely and relies on garlic and broth alone.",
             "substitutes": [
@@ -81850,7 +81859,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What cachapas are, the best substitutes for fresh corn in the batter, how to store and reheat them, and what to fill them with for an authentic Venezuelan meal.",
-            "hero_image_query": "venezuelan cachapas corn pancakes with cheese",
+            "hero_image_query": "corn pancakes with cheese",
+            "hero_image_must_match": ["corn pancake", "cachapa", "pancake"],
             "image_alt": "A stack of golden cachapas corn pancakes folded around melted white cheese, with corn kernels scattered on the plate beside them.",
             "description": "Cachapas are Venezuelan pancakes made from fresh, sweet corn kernels blended into a thick, lightly sweet batter and cooked on a griddle (budare) until golden with charred edges. Unlike arepas, which use precooked corn flour (masarepa), cachapas are made from whole fresh corn, giving them a coarser texture, natural sweetness, and a soft, almost custardy interior. They're traditionally folded around queso de mano or queso telita, a soft, stretchy white cheese, and eaten hot off the griddle.",
             "substitutes": [
@@ -83140,7 +83150,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What an einspanner is, how it differs from a cappuccino or caffè con panna, substitute ingredients if you're missing espresso or heavy cream, and how to build one properly at home.",
-            "hero_image_query": "einspanner viennese coffee whipped cream glass",
+            "hero_image_query": "viennese coffee with whipped cream in a glass",
+            "hero_image_must_match": ["coffee", "whipped cream"],
             "image_alt": "A tall glass mug of dark espresso topped with a thick unstirred dome of whipped cream dusted with cocoa powder, served on a small saucer with a spoon.",
             "description": "An einspanner is a traditional Viennese coffee drink: strong black coffee, historically brewed very concentrated or as a double espresso, served in a glass mug and topped with a generous, unstirred dollop of lightly sweetened whipped cream. The name comes from the one-horse carriage (Einspänner) once driven around Vienna; drivers could hold the glass in one gloved hand without spilling, since the cream layer insulated the coffee and meant they didn't need to stir in milk or sugar. It's meant to be sipped through the cream rather than mixed together.",
             "substitutes": [
@@ -84605,7 +84616,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What goes into a Godiva Chocolatini, the best substitutes for Godiva liqueur, how to store an opened bottle, and how to mix the cocktail properly.",
-            "hero_image_query": "godiva chocolatini cocktail in martini glass",
+            "hero_image_query": "chocolate martini cocktail in a glass",
+            "hero_image_must_match": ["chocolate martini", "martini", "cocktail"],
             "image_alt": "A chocolate martini in a chilled glass with a chocolate-drizzled rim, next to a bottle of Godiva chocolate liqueur and a shaker.",
             "description": "A Godiva Chocolatini is a chocolate martini built around Godiva's branded chocolate liqueur, usually shaken with vodka and a splash of cream or half-and-half, then strained into a chilled glass with a chocolate-syrup rim. The name refers both to the cocktail and, informally, to the liqueur itself since Godiva Original Liqueur is the ingredient that gives the drink its dense, dessert-like chocolate flavor rather than a thin cocoa taste.",
             "substitutes": [
@@ -84742,6 +84754,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What cappelletti are, how they differ from tortellini, the best substitutes, and how to cook and store this stuffed Italian pasta.",
             "hero_image_query": "cappelletti pasta in broth",
+            "hero_image_must_match": ["pasta", "tortellini", "cappelletti"],
             "image_alt": "A bowl of small hat-shaped cappelletti pasta floating in golden chicken broth, garnished with grated Parmigiano-Reggiano and parsley.",
             "description": "Cappelletti (\"little hats\" in Italian) are small stuffed pasta shapes made by folding a square or round of dough around a filling, usually a mix of meats, cheese, or a cheese-and-vegetable blend, then pinching the corners together to form a peaked cap. They come from Emilia-Romagna and the Marche region, where they're traditionally served in capon or chicken broth for Christmas and other holidays, though they also hold up well in butter or cream sauces.",
             "substitutes": [
@@ -87954,7 +87967,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What a Vieux Carré is, how to substitute for it in cocktails and recipes, how to store a batched version, and how to build one correctly.",
-            "hero_image_query": "Vieux Carre cocktail in a rocks glass with a lemon twist",
+            "hero_image_query": "whiskey cocktail in a rocks glass with a lemon twist",
+            "hero_image_must_match": ["cocktail", "whiskey"],
             "image_alt": "A Vieux Carré cocktail served over a large ice cube in a rocks glass, garnished with a twist of lemon peel, next to a small julep strainer.",
             "description": "The Vieux Carré is a stirred, spirit-forward cocktail created in the 1930s at the Carousel Bar in New Orleans' French Quarter (Vieux Carré is French for \"old square,\" the neighborhood's name). It's built from equal parts rye whiskey and cognac, plus sweet vermouth, a small amount of Bénédictine, and a dash each of Peychaud's and Angostura bitters. The combination of two base spirits and two bitters gives it more layers than a Manhattan or Old Fashioned, with a honeyed, herbal note from the Bénédictine running underneath.",
             "substitutes": [
@@ -90159,6 +90173,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What tartufo (truffle) is, the difference between black and white varieties, real substitutes with ratios, and how to store and use it without wasting its aroma.",
             "hero_image_query": "fresh black and white truffles on wooden board",
+            "hero_image_must_match": ["truffle", "truffles"],
             "image_alt": "Whole black and white truffles resting on a dark wooden board next to a truffle slicer, with visible marbled interior on a halved truffle.",
             "description": "Tartufo is the Italian word for truffle, the underground fungus (genus Tuber) that grows in symbiosis with the roots of oak, hazelnut, and beech trees. It's prized not for texture but for its intense aroma, earthy, garlicky, and musky all at once, which perfumes a dish rather than adding bulk or bite. The two commercially important types are black truffle (tartufo nero) and white truffle (tartufo bianco), harvested in different seasons and used in very different ways.",
             "substitutes": [
@@ -92924,7 +92939,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What chicken paillard is, the best substitutes with ratios, how to store and pound it properly, and how to cook it without drying it out.",
-            "hero_image_query": "pounded chicken paillard on cutting board",
+            "hero_image_query": "thin pounded chicken cutlet on a cutting board",
+            "hero_image_must_match": ["chicken cutlet", "pounded chicken", "chicken"],
             "image_alt": "A thin, evenly pounded chicken breast cutlet on a wooden cutting board next to a meat mallet and plastic wrap.",
             "description": "Chicken paillard is a boneless, skinless chicken breast that has been pounded flat, usually to about 1/4 inch thick, so it cooks quickly and evenly over high heat. The term comes from French technique and originally referred to any thin cut of meat cooked fast, but in American kitchens it almost always means chicken breast flattened, then grilled or pan-seared and topped with a light salad or citrus sauce.",
             "substitutes": [
@@ -94990,6 +95006,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a boysenberry is, the best substitutes with ratios, how to store the fragile fresh berries, and how to use them in pies, jams, and syrups.",
             "hero_image_query": "fresh boysenberries in a bowl",
+            "hero_image_must_match": ["boysenberry", "berries", "berry"],
             "image_alt": "A pile of large, deep purple-black boysenberries with a few halved to show the soft, seedy interior.",
             "description": "Boysenberries are a cross-bred bramble fruit, a combination of blackberry, raspberry, and loganberry parentage developed by Rudolph Boysen in the 1920s and later popularized by Walter Knott. They're larger and softer than a blackberry, with a deep wine-purple color, a pronounced sweet-tart flavor, and a shorter, more delicate growing season that makes fresh fruit hard to find outside specialty farms and farmers markets.",
             "substitutes": [
@@ -95054,7 +95071,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What gandules (pigeon peas) are, the best substitutes with ratios, how to store dried, canned, and fresh versions, and how to cook them for arroz con gandules and stews.",
-            "hero_image_query": "gandules pigeon peas in pot with rice",
+            "hero_image_query": "pigeon peas with rice",
+            "hero_image_must_match": ["pigeon pea", "pigeon peas"],
             "image_alt": "A pot of yellow rice studded with beige-green gandules (pigeon peas), tomato sofrito, and pimiento strips visible throughout.",
             "description": "Gandules are pigeon peas (Cajanus cajan), small oval legumes with a beige-green color and a mild, slightly nutty, earthy flavor. They're a staple of Puerto Rican and broader Caribbean cooking, most famously in arroz con gandules, the rice dish served at nearly every holiday meal. They're sold dried, canned, and occasionally frozen or fresh in the pod, and each form cooks and behaves a little differently.",
             "substitutes": [
@@ -97778,7 +97796,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What tilefish is, the best substitutes with ratios, how to store and cook it, and the mercury advisory worth knowing before you buy it.",
-            "hero_image_query": "raw tilefish fillet on ice",
+            "hero_image_query": "raw white fish fillet on ice",
+            "hero_image_must_match": ["fish fillet", "fish", "tilefish"],
             "image_alt": "A pinkish-white tilefish fillet with its distinctive mottled skin resting on crushed ice at a fish counter",
             "description": "Tilefish is a firm, mild, slightly sweet whitefish found along the Atlantic coast and Gulf of Mexico, most often sold as golden tilefish. It has a lobster-like flavor that chefs have long prized, dense flake similar to halibut, and skin that crisps well when seared. It's less commonly found in supermarkets than cod or snapper, but shows up regularly at fish markets and on seafood-forward restaurant menus.",
             "substitutes": [
@@ -99381,7 +99400,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Boston butt is, the best substitutes for pulled pork and roasts, how to store it, and how to cook it so it shreds instead of turning tough.",
-            "hero_image_query": "raw boston butt pork shoulder roast on cutting board",
+            "hero_image_query": "raw pork shoulder roast on a cutting board",
+            "hero_image_must_match": ["pork shoulder", "pork roast"],
             "image_alt": "A bone-in Boston butt roast with a thick fat cap on one side, sitting on a wooden cutting board next to a boning knife.",
             "description": "Boston butt is a cut from the upper part of the pig's shoulder, above the front leg, despite the confusing name it has nothing to do with the rear of the animal. It's heavily marbled and laced with connective tissue, which makes it a poor choice for quick cooking but ideal for slow, moist heat methods like braising, smoking, or slow roasting, where the collagen breaks down into gelatin and the meat pulls apart easily.",
             "substitutes": [
@@ -99748,7 +99768,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What The Vegg vegan egg yolk replacer is, the best substitutes with ratios, how to store the powder and mixed liquid, and how to use it in French toast, custards, and sauces.",
-            "hero_image_query": "vegg vegan egg yolk powder mixed in bowl",
+            "hero_image_query": "vegan egg yolk substitute powder mixed in a bowl",
+            "hero_image_must_match": ["vegan egg", "egg substitute", "egg yolk"],
             "image_alt": "A small glass bowl of golden-yellow liquid made from The Vegg powder whisked with water, next to the open jar of yellow powder and a whisk.",
             "description": "The Vegg is a shelf-stable powdered vegan egg yolk replacer made mainly from nutritional yeast, black salt (kala namak), and gums like xanthan or guar. Whisked with water, it turns into a yellow, slightly sulfurous liquid that mimics the flavor, color, and some of the binding richness of egg yolk. It's sold in two main forms: the original Vegg (for flavoring French toast, custards, and sauces) and the Vegg Baking Mix (formulated to bind in cakes and cookies).",
             "substitutes": [
@@ -100368,7 +100389,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Burgerow is, the best substitutes with ratios, how to store the dry mix and rehydrated crumble, and how to use it so patties hold together.",
-            "hero_image_query": "burgerow vegetarian burger mix rehydrated crumble",
+            "hero_image_query": "rehydrated vegetarian burger crumble mix",
+            "hero_image_must_match": ["vegetarian burger", "meat substitute"],
             "image_alt": "A bowl of rehydrated Burgerow crumble next to an uncooked shaped veggie patty on a wooden cutting board",
             "description": "Burgerow is a dehydrated, textured vegetable protein (TVP) burger mix sold as dry granules that rehydrate with hot water or broth into a ground-meat-like crumble for shaping into vegetarian patties. It's made from defatted soy flour processed into a fibrous texture, then pre-seasoned with onion, garlic, and umami-forward flavoring so it binds and browns in a way that mimics ground beef once cooked.",
             "substitutes": [
@@ -101341,7 +101363,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What ponche crema is, the best substitutes with ratios, how to store an opened bottle, and how it differs from the hot Christmas fruit punch of the same name.",
-            "hero_image_query": "bottle of Venezuelan ponche crema poured into a glass with grated nutmeg on top",
+            "hero_image_query": "creamy spiced rum drink poured into a glass with nutmeg",
+            "hero_image_must_match": ["cream liqueur", "eggnog", "rum drink"],
             "image_alt": "A glass of thick, pale yellow ponche crema garnished with a dusting of nutmeg, next to its labeled glass bottle",
             "description": "Ponche, short for ponche crema, is a thick, sweet, egg-based cream liqueur that originated in Venezuela in the early 1900s. It's built from eggs, condensed and evaporated milk, sugar, rum, and warm spices like nutmeg and vanilla, giving it a custardy texture closer to a drinkable flan than a typical cocktail. It's bottled commercially, sold in liquor stores, and drunk chilled over ice during the Christmas season, though it also shows up as a baking ingredient in Latin American desserts.",
             "substitutes": [
@@ -103478,7 +103501,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What khmeli suneli is, the Georgian spice blend behind kharcho and lobio, the best substitutes with ratios, and how to store and use it.",
-            "hero_image_query": "khmeli suneli spice blend",
+            "hero_image_query": "dried spice blend in a small bowl",
+            "hero_image_must_match": ["spice blend", "spices"],
             "image_alt": "A small wooden bowl of khmeli suneli, a coarse olive-green and brown dried herb blend, next to whole coriander seeds and dried marigold petals.",
             "description": "Khmeli suneli is the everyday spice blend of Georgian cooking, a dried mix built around coriander, dill, summer savory, basil, bay leaf, and blue fenugreek (utskho suneli), sometimes rounded out with marigold petals, celery seed, or mint. Its name literally means \"dried spices\" in Georgian, and it shows up in most savory Georgian dishes the way a curry powder anchors Indian cooking or herbes de Provence anchors French cooking.",
             "substitutes": [
@@ -103533,7 +103557,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What lechuga (lettuce) is, the best substitutes for each variety, how to store it so it stays crisp, and how to use it without it wilting or browning.",
-            "hero_image_query": "fresh lechuga romana and lechuga iceberg on a wooden table",
+            "hero_image_query": "fresh romaine and iceberg lettuce heads",
+            "hero_image_must_match": ["lettuce"],
             "image_alt": "Heads of romaine and iceberg lechuga with loose green leaves fanned out beside a whole butterhead lettuce, water droplets still visible on the leaves.",
             "description": "Lechuga is the Spanish word for lettuce (Lactuca sativa), a leafy vegetable grown for its crisp or tender leaves and eaten mostly raw. It's not one single plant but a category covering several distinct types, iceberg, romaine, butterhead, and loose-leaf, each with different texture, water content, and flavor. Iceberg is the crunchiest and most watery, romaine has sturdy ribbed leaves with a slight bitterness, and butterhead (like Boston or Bibb) is the softest and sweetest.",
             "substitutes": [
@@ -108359,6 +108384,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What mizuna is, the best substitutes with ratios, how to store it so it stays crisp, and how to use its peppery leaves in salads and cooked dishes.",
             "hero_image_query": "fresh mizuna leaves",
+            "hero_image_must_match": ["mizuna", "salad greens", "leafy greens"],
             "image_alt": "A bunch of feathery, deeply serrated mizuna leaves piled on a wooden cutting board with a few whole stems still attached at the base.",
             "description": "Mizuna (Brassica rapa var. nipposinica) is a Japanese mustard green with slender, deeply feathered, jagged-edged leaves and a mild, peppery bite that's much gentler than arugula or mustard greens. It's tender enough to eat raw in salads but sturdy enough to hold up to a quick saute or a stir into hot soup.",
             "substitutes": [
@@ -108755,6 +108781,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What garganelli is, the best substitute pasta shapes with ratios, how to store fresh or dried garganelli, and which sauces actually work with its ridged tube shape.",
             "hero_image_query": "garganelli pasta ridged tubes",
+            "hero_image_must_match": ["pasta", "garganelli"],
             "image_alt": "A pile of hand-rolled garganelli pasta showing their ridged surface and diagonal seam, dusted with semolina on a wooden board.",
             "description": "Garganelli is an egg pasta from Emilia-Romagna shaped into short, ridged quills by rolling small squares of dough around a thin dowel over a ridged wooden board called a pettine. The rolling leaves a visible diagonal seam and presses ridges into the surface, which is what sets it apart from machine-extruded tube pasta like penne. It's traditionally made with just eggs and flour, giving it a richer, more tender bite than semolina-and-water pasta shapes.",
             "substitutes": [
@@ -109178,7 +109205,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What habichuelas are, the best substitutes with ratios, how to store dried and cooked beans, and how to use them in Puerto Rican and Dominican cooking.",
-            "hero_image_query": "habichuelas guisadas stewed beans in sofrito",
+            "hero_image_query": "stewed beans in tomato sofrito sauce",
+            "hero_image_must_match": ["beans", "stewed beans"],
             "image_alt": "A pot of pink habichuelas guisadas simmering in a tomato-based sofrito with visible potato chunks and cilantro leaves.",
             "description": "Habichuelas is the Spanish word used across Puerto Rico, the Dominican Republic, and much of the Caribbean for beans, most often referring to the stewed bean dish habichuelas guisadas rather than plain boiled beans. The beans themselves are typically small pink beans (habichuelas rosadas), red kidney beans (habichuelas coloradas), or pinto beans, simmered in a sofrito-based tomato broth with olive oil, garlic, and often a piece of calabaza squash or potato for body.",
             "substitutes": [
@@ -109303,6 +109331,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What totopos are, how they differ from regular tortilla chips, the best substitutes, and how to fry or bake them at home.",
             "hero_image_query": "totopos corn tortilla chips",
+            "hero_image_must_match": ["tortilla chips", "chips"],
             "image_alt": "A basket of freshly fried triangular corn tortilla chips (totopos) with visible crisp edges and light char spots, served with a side of salsa verde.",
             "description": "Totopos are triangular pieces of corn tortilla, fried or baked until crisp, used throughout Mexico both as a scooping chip and as a structural base for dishes like chilaquiles, tostadas, and totopos con salsa. They're traditionally made from day-old corn tortillas cut into wedges rather than from a separate masa recipe, which gives them a firmer, less oily texture than many commercial tortilla chips.",
             "substitutes": [
@@ -110895,7 +110924,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What chuleta is, the best substitutes with ratios, how to store and thaw it safely, and how to cook it so it doesn't dry out.",
-            "hero_image_query": "raw pork chuleta chops on cutting board",
+            "hero_image_query": "raw pork chops on a cutting board",
+            "hero_image_must_match": ["pork chop", "pork chops"],
             "image_alt": "Two bone-in pork chuletas with a thin fat cap, seasoned with salt and pepper, resting on a wooden cutting board next to a chef's knife.",
             "description": "Chuleta is the Spanish word for a bone-in chop, and in most Spanish-language and Latin American recipes it refers specifically to a pork chop cut crosswise through the loin, including the rib bone. The same word can apply to lamb (chuleta de cordero) or veal (chuleta de ternera), so context matters, but unqualified \"chuleta\" on a menu or in a recipe almost always means pork. It's a quick-cooking cut prized for the combination of tender loin meat, a strip of fat along one edge, and a bone that adds flavor during cooking.",
             "substitutes": [
@@ -111242,7 +111272,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What marshmallow Butterfinger bars are made of, the best candy substitutes with ratios, how to store the finished bars, and tips for a clean set every time.",
-            "hero_image_query": "marshmallow butterfinger bars cut into squares",
+            "hero_image_query": "crunchy peanut butter candy marshmallow bars cut into squares",
+            "hero_image_must_match": ["marshmallow bar", "peanut butter candy", "candy bar"],
             "image_alt": "A stack of no-bake marshmallow bars studded with crushed orange Butterfinger candy pieces, cut into squares on parchment paper.",
             "description": "Marshmallow Butterfinger refers to the classic no-bake combination of melted marshmallows and butter stirred together with crushed Butterfinger candy bars, the crunchy peanut-butter-flake center coated in a thin layer of chocolate. The marshmallow mixture acts as the binder, much like it does in Rice Krispie treats, while the crushed candy adds crunch, chocolate flavor, and pockets of melted peanut butter flavor throughout. It's most often made into bars, but the same base shows up in popcorn balls, fudge, and no-bake cookie mixes.",
             "substitutes": [
@@ -114074,7 +114105,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Chicken Cheez (cheese-filled chicken hotdogs) actually is, the best substitutes with ratios, how to store and cook them so the cheese center doesn't leak out, and how to use them in everyday meals.",
-            "hero_image_query": "sliced cheese-filled chicken hotdog sausages on a plate",
+            "hero_image_query": "cheese-stuffed sausages sliced on a plate",
+            "hero_image_must_match": ["sausage", "cheese sausage"],
             "image_alt": "Several cheese-filled chicken hotdogs sliced open on a cutting board, showing the melted cheese center against the reddish-orange sausage casing.",
             "description": "Chicken Cheez refers to cheese-filled chicken hotdogs (sometimes labeled \"cheezy dogs\" or \"cheese dogs\"), a processed chicken sausage with a soft cheese core running through the middle. They're a staple in Filipino grocery freezers and refrigerated meat sections, sold under brand names like CDO, Purefoods, and Tender Juicy, and are eaten far more often as a quick pan-fried breakfast item than as a bunned hotdog.",
             "substitutes": [
@@ -114403,7 +114435,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What prosciuttini is, how it differs from true prosciutto, the best substitutes with ratios, and how to store and use it.",
-            "hero_image_query": "sliced prosciuttini deli ham on cutting board",
+            "hero_image_query": "sliced italian deli ham on a cutting board",
+            "hero_image_must_match": ["prosciutto", "deli ham", "ham"],
             "image_alt": "Thin pink-and-white slices of prosciuttini fanned out on a wooden board next to a chef's knife",
             "description": "Prosciuttini is a boneless, cylindrical cured ham made in the style of Italian prosciutto but produced faster, cured for weeks rather than months, and typically domestically made rather than imported. It's the deli-counter cousin of true prosciutto: milder, less expensive, and softer in texture, with a lighter salt and umami punch than a genuine Prosciutto di Parma or San Daniele.",
             "substitutes": [
@@ -115406,7 +115439,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "Cosa sono i burger vegetariani, le migliori alternative in base all'ingrediente principale, come conservarli senza che si sfaldino e come cuocerli per ottenere una crosta compatta.",
-            "hero_image_query": "burger vegetariano su pane con lattuga e pomodoro",
+            "hero_image_query": "veggie burger on a bun with lettuce and tomato",
+            "hero_image_must_match": ["veggie burger", "vegetarian burger"],
             "image_alt": "Burger vegetariano a base di fagioli neri e avena, dorato in padella, servito su pane brioche con lattuga, pomodoro e maionese vegana",
             "description": "Il burger vegetariano è una polpetta schiacciata a base vegetale, pensata per sostituire la carne macinata nel classico panino. La base cambia molto da ricetta a ricetta: legumi (fagioli neri, ceci, lenticchie), funghi, cereali (riso, avena, quinoa), verdure grattugiate o proteine come tofu e tempeh, tenute insieme da un legante (uovo, farina, pangrattato o semi di lino idratati). La consistenza finale dipende soprattutto dal rapporto tra ingrediente umido e legante: troppo umido e il burger si sfalda in cottura, troppo secco e risulta compatto ma asciutto.",
             "substitutes": [
@@ -115478,6 +115512,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What creamsicle flavor actually is, how to recreate it in recipes without a specific extract, how to store homemade or store-bought creamsicle treats, and how the flavor is used in baking and drinks.",
             "hero_image_query": "orange and vanilla creamsicle popsicles on a tray",
+            "hero_image_must_match": ["creamsicle", "popsicle", "orange popsicle"],
             "image_alt": "Orange-and-white striped creamsicle popsicles melting slightly on a wire rack, with fresh orange halves and a vanilla bean in the background.",
             "description": "Creamsicle refers to the flavor pairing of orange and vanilla cream, made famous by the frozen pop of the same name introduced by the Popsicle brand in 1947: a layer of orange-flavored ice built around a vanilla ice cream core. The name is trademarked, but the flavor combination has become generic shorthand used in cakes, shakes, cocktails, fudge, and candy that pair citrus with dairy-forward vanilla.",
             "substitutes": [
@@ -116631,7 +116666,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "A full breakdown of steak doneness levels by internal temperature, how to check doneness without a thermometer, and how resting time changes the final result.",
-            "hero_image_query": "steak doneness chart cross section rare to well done",
+            "hero_image_query": "grilled steaks cooked to different levels sliced open showing color",
+            "hero_image_must_match": ["steak", "grilled steak"],
             "image_alt": "Five steak halves sliced open in a row showing the color gradient from a deep red rare center through pink medium to a fully browned well-done interior, with a digital probe thermometer resting beside them.",
             "description": "Steak doneness describes how much a piece of beef has cooked through, measured most accurately by internal temperature rather than color or cook time. The five standard levels, rare, medium-rare, medium, medium-well, and well done, each correspond to a specific temperature range that determines texture, juiciness, and color at the center of the cut.",
             "substitutes": [
@@ -117086,7 +117122,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What campechano is, the classic chorizo-and-steak combination it's built on, how to make it at home, and what to swap in if you're missing one of the meats.",
-            "hero_image_query": "campechano taco meat chorizo and steak on griddle",
+            "hero_image_query": "mixed grilled meat taco filling chorizo and steak",
+            "hero_image_must_match": ["taco meat", "grilled meat", "chorizo"],
             "image_alt": "Diced red chorizo and chopped grilled bistec steak mixed together and searing on a flat-top griddle for campechano tacos",
             "description": "Campechano isn't a single ingredient but a Mexican taco filling made by cooking two (or more) meats together on a hot plancha until their fats and juices combine. The standard version pairs finely chopped Mexican chorizo with grilled bistec (thin-cut beef steak, often skirt or sirloin), so the smoky char of the steak picks up the paprika and vinegar tang of the chorizo. The name comes from Campeche, though the dish itself is most closely associated with Mexico City taquerias, where campechano is a menu staple alongside al pastor and suadero.",
             "substitutes": [
@@ -117408,6 +117445,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What strozzapreti pasta is, the best shape substitutes with ratios, how to store it, and how to cook it so it holds sauce properly.",
             "hero_image_query": "strozzapreti pasta uncooked twisted shape",
+            "hero_image_must_match": ["pasta", "strozzapreti"],
             "image_alt": "A pile of dried strozzapreti pasta showing its short, hand-rolled, twisted rope shape dusted lightly with flour.",
             "description": "Strozzapreti is a short, hand-rolled pasta shape from Emilia-Romagna and Tuscany, made by twisting a strip of dough between the palms into a tight, elongated spiral, unlike extruded shapes such as penne or fusilli, which come from a die. The name translates loosely to \"priest strangler,\" a reference to old folk stories about the shape's twisted, rope-like form. It's typically made with just flour, water, and sometimes egg, giving it a dense, chewy bite and a rough, porous surface that grabs onto thick sauces far better than smooth machine-made pasta.",
             "substitutes": [
@@ -118488,7 +118526,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What carne picada is, how it differs from ground beef, the best substitutes with ratios, and how to cook it for tacos, burritos, and chili.",
-            "hero_image_query": "carne picada diced beef on cutting board",
+            "hero_image_query": "diced raw beef on a cutting board",
+            "hero_image_must_match": ["diced beef", "beef"],
             "image_alt": "Small hand-cut cubes of raw beef chuck on a wooden cutting board next to a chef's knife, showing the coarser texture of carne picada compared to ground beef.",
             "description": "Carne picada (Spanish for \"minced meat\") is beef, usually chuck, sirloin, or skirt steak, cut into small irregular pieces with a knife rather than run through a grinder. The texture sits between a fine dice and ground beef: rough enough to hold its shape when browned, small enough to cook through fast and fit into a taco or burrito without needing a knife at the table.",
             "substitutes": [
@@ -121646,7 +121685,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What milchschek is, the best substitutes for this German-Austrian flavored milk drink, how to store it, and how to use it in recipes.",
-            "hero_image_query": "glass of chocolate milchschek milk drink",
+            "hero_image_query": "chocolate milk drink in a glass",
+            "hero_image_must_match": ["chocolate milk", "milk drink"],
             "image_alt": "A tall glass of chocolate-flavored milchschek with visible milk froth, served with a striped straw on a wooden table.",
             "description": "Milchschek (sometimes spelled Milch-Schek or Milchshake) is a German and Austrian term for a cold, sweetened flavored milk drink, thinner and lighter than an American ice-cream milkshake. It's made by shaking or blending cold milk with a flavoring syrup, most commonly chocolate (Schoko), vanilla, banana, or strawberry, and is a common home and cafe drink for kids and adults alike, closer to flavored milk than a dessert shake.",
             "substitutes": [
@@ -126412,7 +126452,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What encebollado is, the traditional Ecuadorian fish and yuca soup, substitutes for its key ingredients, and how to store and serve it properly.",
-            "hero_image_query": "bowl of encebollado ecuadorian fish soup with pickled onions",
+            "hero_image_query": "ecuadorian fish soup with pickled red onions",
+            "hero_image_must_match": ["fish soup", "seafood soup"],
             "image_alt": "A bowl of encebollado showing chunks of yuca and flaked tuna in a red tomato broth, topped with a mound of pink pickled red onions and fresh cilantro, with a side of plantain chips.",
             "description": "Encebollado is Ecuadorian coastal soup built on flaked albacore or bonito, chunks of boiled yuca (cassava), and a tomato-cumin broth, finished with a heap of quick-pickled red onions, lime juice, and cilantro. The name comes from cebolla (onion) and literally means \"onioned,\" referring to that raw or lightly pickled onion topping rather than the broth itself. In Ecuador, especially Guayaquil, it's eaten at breakfast, often as a hangover remedy, and served with mustard, ketchup, aji (hot sauce), and crunchy plantain chifles or popcorn on the side.",
             "substitutes": [
@@ -127400,6 +127441,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What molasses is, the best substitutes with exact ratios, how to store it without it crystallizing, and how light, dark, and blackstrap varieties differ.",
             "hero_image_query": "dark molasses being poured from a jar",
+            "hero_image_must_match": ["molasses"],
             "image_alt": "A spoon lifting thick dark molasses out of a glass jar, showing its viscous ribbon and near-black color against a light kitchen counter.",
             "description": "Molasses is a thick, dark syrup left over from refining sugarcane or sugar beet juice into granulated sugar. As the juice is boiled and crystallized in multiple rounds, sugar is extracted and the remaining liquid, molasses, gets progressively darker, thicker, and more bitter with each boiling. It's used in baking for moisture and color, in glazes and barbecue sauces for depth, and in some traditional dishes as a standalone sweetener.",
             "substitutes": [
@@ -131319,7 +131361,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What chicken saltimbocca is, the best substitutes for prosciutto, sage, and wine, how to store and reheat it, and what to serve alongside it.",
-            "hero_image_query": "chicken saltimbocca with prosciutto and sage in white wine sauce",
+            "hero_image_query": "chicken wrapped in prosciutto with sage in white wine sauce",
+            "hero_image_must_match": ["chicken", "prosciutto chicken"],
             "image_alt": "Pan-seared chicken cutlets topped with crisped prosciutto and sage leaves in a glossy white wine butter sauce, served on a white platter.",
             "description": "Chicken saltimbocca is a Roman-style dish of thin chicken cutlets topped with a slice of prosciutto and a fresh sage leaf, pan-seared until the prosciutto crisps, then finished in a quick pan sauce of white wine, butter, and lemon. The name means 'jumps in the mouth' in Italian, a nod to how fast and vivid the flavors hit. It's traditionally made with veal, but chicken cutlets have become the more common version outside Italy since they're cheaper and easier to find pounded thin.",
             "substitutes": [
@@ -131635,6 +131678,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What repollo (cabbage) is, the best substitutes with ratios, how to store a head so it lasts for weeks, and how to use it in soups, slaws, and stir-fries.",
             "hero_image_query": "fresh whole green cabbage head cut in half",
+            "hero_image_must_match": ["cabbage"],
             "image_alt": "A halved green cabbage head showing its tightly packed pale green leaves and core, next to a whole uncut head.",
             "description": "Repollo is the Spanish word for cabbage (Brassica oleracea var. capitata), the dense, round vegetable made of tightly layered leaves. Most commonly this refers to green cabbage, though red cabbage and savoy cabbage are also sold under the same name in Spanish-speaking markets. Raw, it's crunchy and slightly peppery; cooked, it turns sweet and soft, and it's a base ingredient in soups, stews, slaws, and fermented dishes across many cuisines.",
             "substitutes": [
@@ -133118,7 +133162,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What yakamein is, how to substitute its key components when you're missing something, how to store and reheat leftovers, and how it's traditionally served in New Orleans.",
-            "hero_image_query": "bowl of yakamein noodle soup",
+            "hero_image_query": "beef noodle soup with green onions",
+            "hero_image_must_match": ["noodle soup", "beef soup"],
             "image_alt": "A bowl of yakamein showing spaghetti noodles in dark beef broth topped with sliced stewed beef, a halved boiled egg, chopped green onion, and a stripe of hot sauce.",
             "description": "Yakamein is a New Orleans dish of spaghetti noodles simmered in a heavily seasoned beef broth, topped with tender stewed beef, a hard-boiled egg, chopped green onions, and a shake of hot sauce or Worcestershire. It's sometimes called \"old sober\" because of its long reputation as a hangover remedy, especially around Mardi Gras. The dish traces back to Black-owned corner stores and Chinese-Creole cooks in New Orleans in the early 1900s, and it sits somewhere between a noodle soup and a stew, thick enough to eat with a fork as often as a spoon.",
             "substitutes": [
@@ -133301,6 +133346,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What salsa roja is, how it differs from pico de gallo and salsa verde, the best substitutes with ratios, and how to store and use it.",
             "hero_image_query": "bowl of salsa roja with tortilla chips",
+            "hero_image_must_match": ["salsa", "red salsa"],
             "image_alt": "A molcajete filled with deep red salsa roja studded with flecks of charred chile skin, served alongside a stack of warm corn tortillas.",
             "description": "Salsa roja is a cooked Mexican red sauce made by blending tomatoes (often roasted or charred) with dried or fresh red chiles, garlic, and onion, then simmering the mixture to concentrate the flavor. Unlike pico de gallo, which is raw and chunky, salsa roja is smooth or lightly textured and built for pouring over tacos, eggs, and grilled meats. Common chiles include guajillo, arbol, and ancho for depth and heat, though many home versions use nothing more than roasted plum tomatoes and jalapenos.",
             "substitutes": [
@@ -134385,7 +134431,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What Eiswein (ice wine) is, the best substitutes with ratios, how to store an opened bottle, and how to use it in cooking and pairing.",
-            "hero_image_query": "eiswein ice wine bottle and glass with frozen grapes",
+            "hero_image_query": "dessert wine bottle and glass with frozen grapes",
+            "hero_image_must_match": ["dessert wine", "ice wine", "wine"],
             "image_alt": "A small glass of golden Eiswein next to frozen, shriveled grapes still on the cluster and a slim dessert wine bottle",
             "description": "Eiswein is a German and Austrian dessert wine made from grapes left on the vine well past normal harvest and picked only after they freeze solid, typically at 17F/-8C or colder. The grapes are pressed while still frozen, so most of the water stays behind as ice and only a small amount of intensely sweet, high-acid juice comes out. The result is a wine that's thick, syrupy, and sweet but balanced by sharp acidity, unlike other dessert wines that rely on noble rot or dried grapes. Canadian and other New World versions of the same process are labeled 'icewine,' one word.",
             "substitutes": [
@@ -136344,7 +136391,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What leche evaporada (evaporated milk) is, how it differs from condensed milk, the best substitutes with ratios, and how to use it in cooking and baking.",
-            "hero_image_query": "can of leche evaporada evaporated milk poured into a bowl",
+            "hero_image_query": "can of evaporated milk poured into a bowl",
+            "hero_image_must_match": ["evaporated milk", "milk"],
             "image_alt": "An open can of leche evaporada with a small amount poured into a glass measuring cup, showing its thick, creamy, off-white texture.",
             "description": "Leche evaporada is the Spanish name for evaporated milk, a shelf-stable canned milk with about 60% of its water removed through heating. The process concentrates the milk's proteins and natural sugars, giving it a slightly caramelized flavor, a thicker body than fresh milk, and a pale ivory color. It's unsweetened, which sets it apart from sweetened condensed milk, and is a staple in Latin American, Filipino, and Southeast Asian kitchens for both savory sauces and desserts like flan and tres leches cake.",
             "substitutes": [
@@ -136896,7 +136944,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What garnachas are, how they differ by region, what to use if you can't find fresh masa disks, and how to store and reheat them without losing their crunch.",
-            "hero_image_query": "garnachas mexican antojito with salsa and queso fresco",
+            "hero_image_query": "fried masa cakes topped with salsa and cheese",
+            "hero_image_must_match": ["masa", "tostada", "antojito"],
             "image_alt": "A plate of fried masa garnachas topped with red salsa, crumbled queso fresco, and shredded cabbage, served with lime wedges.",
             "description": "Garnachas are small, thick fried masa cakes eaten as a street food antojito across Mexico and parts of Central America. The base is corn masa pressed into rounds about two to three inches across, fried until the edges crisp and the center stays slightly soft, then topped while hot. Toppings vary by region but usually include a red or green salsa, crumbled queso fresco, shredded cabbage or onion, and sometimes shredded beef, pork, or picadillo. The name and exact preparation shift depending on where you are: Veracruz-style garnachas are thin and topped with picadillo, Oaxacan garnachas are thicker and topped with pork and pickled cabbage, and in Guatemala and El Salvador garnachas often refer to fried tortilla chips piled with a vinegary cabbage slaw, closer to a tostada.",
             "substitutes": [
@@ -137630,7 +137679,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What a croffle is, what to use instead if you can't get one, how to store and reheat leftovers, and how to keep the layers crisp.",
-            "hero_image_query": "croffle waffle-pressed croissant with powdered sugar",
+            "hero_image_query": "waffle-pressed croissant dusted with powdered sugar",
+            "hero_image_must_match": ["croissant", "waffle"],
             "image_alt": "A golden croffle with visible flaky layers and a honeycomb waffle-iron pattern, dusted with powdered sugar and topped with a scoop of vanilla ice cream.",
             "description": "A croffle is a croissant (or croissant dough) pressed in a waffle iron, which crisps the exterior into a honeycomb pattern while keeping the buttery, laminated layers underneath. It originated in South Korean cafe culture and spread as a hybrid pastry that gives croissant flavor with waffle crunch. Croffles can be made from store-bought croissants reheated in a waffle iron, or from raw laminated dough baked directly in the iron.",
             "substitutes": [
@@ -139587,6 +139637,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What little smokies are, the best substitutes with ratios, how to store and reheat them, and the classic ways to serve them at a party.",
             "hero_image_query": "little smokies simmering in barbecue sauce in a slow cooker",
+            "hero_image_must_match": ["cocktail sausage", "little smokies", "sausage"],
             "image_alt": "A slow cooker filled with little smokies coated in glossy barbecue sauce, with toothpicks stuck in several links for serving.",
             "description": "Little smokies are miniature smoked sausage links, usually made from pork, beef, or a pork-beef blend, seasoned and smoked much like a hot dog or kielbasa but cut and stuffed into small casings around 1 to 2 inches long. They come fully cooked and vacuum-sealed, so they only need reheating, which is why they show up so often in slow cooker appetizers and party trays.",
             "substitutes": [
@@ -144082,7 +144133,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What a gazpachera is, the wide shallow pan used to cook Spanish gazpacho manchego, plus substitutes, care tips, and how to use one.",
-            "hero_image_query": "wide shallow gazpachera pan with gazpacho manchego stew and torn flatbread",
+            "hero_image_query": "savory stew with torn flatbread in a wide pan",
+            "hero_image_must_match": ["stew", "flatbread stew"],
             "image_alt": "A wide, shallow metal gazpachera pan filled with shredded game meat stew and pieces of torn unleavened flatbread soaking up the broth.",
             "description": "A gazpachera is the wide, shallow, sloped-sided pan traditionally used in La Mancha, Spain, to cook gazpacho manchego (also called galianos), a hunter's stew of rabbit, hare, or chicken simmered with game broth and finished by tearing in thin unleavened flatbread (torta cenceña) to soak up the liquid. The pan itself, not a soup, gives the dish its name, and its broad, low-walled shape is built for exactly this: reducing broth quickly over an open flame while leaving enough surface area to layer flatbread pieces evenly across the meat.",
             "substitutes": [
@@ -147063,6 +147115,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a vodka gimlet is, how it differs from a gin gimlet, the best substitutes for lime cordial and vodka, and how to build one so it isn't too sweet or too sour.",
             "hero_image_query": "vodka gimlet cocktail in coupe glass with lime wheel",
+            "hero_image_must_match": ["cocktail", "gimlet", "vodka cocktail"],
             "image_alt": "A pale green vodka gimlet in a chilled coupe glass garnished with a lime wheel, condensation beading on the glass.",
             "description": "A vodka gimlet is a two- or three-ingredient cocktail built from vodka, lime juice, and a sweetener, traditionally lime cordial (Rose's Lime). It's a vodka riff on the classic gin gimlet, favored by drinkers who want the tart, citrus-forward profile without gin's botanical edge. The formula is simple enough that the quality of each component matters far more than technique.",
             "substitutes": [
@@ -149017,7 +149070,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What gelatina (gelatin) is, how powdered and sheet forms differ, the best substitutes with ratios, and how to bloom and use it so desserts set properly.",
-            "hero_image_query": "powdered gelatin and gelatin sheets on a spoon",
+            "hero_image_query": "powdered gelatin on a spoon",
+            "hero_image_must_match": ["gelatin"],
             "image_alt": "A small dish of powdered gelatin next to translucent gelatin sheets, with a wobbly set gelatina dessert in the background.",
             "description": "Gelatina is the Spanish and Italian word for gelatin, a flavorless, colorless setting agent made by cooking down collagen from animal connective tissue and bones. It's what gives flan, panna cotta, aspics, and jiggly molded desserts their firm-but-tender wobble. It comes in two common forms: powdered gelatin sold in small packets or jars, and sheet (leaf) gelatin sold in thin, brittle sheets that need to be softened in cold water before use.",
             "substitutes": [
@@ -149082,7 +149136,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What potato pavé is, how it differs from gratin and dauphinoise, the best substitutes for a composed plate, and how to store and reheat it without losing its crisp edges.",
-            "hero_image_query": "potato pave seared golden crust cross section",
+            "hero_image_query": "pan-seared potato cake with golden crust cross section",
+            "hero_image_must_match": ["potato cake", "seared potato"],
             "image_alt": "A rectangular block of potato pavé with a golden seared crust on top and bottom, showing thin layered potato slices pressed together inside, plated with a sprig of thyme.",
             "description": "Potato pavé (French for \"paving stone\") is thinly sliced potatoes layered in a tray with cream, butter, and often garlic and thyme, weighted down and baked, then chilled and cut into neat rectangular blocks. Before serving, each block is pan-seared on its cut faces until deeply golden, giving a crisp, almost laminated crust around a soft, custardy interior of fused potato layers. It's a restaurant-style plating technique built on the same base as gratin dauphinoise, but pressed and portioned so it holds a clean shape on the plate.",
             "substitutes": [
@@ -150882,7 +150937,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What bomboloni are, the closest substitutes if you can't find them, how to store them so they don't go stale, and how to fill and serve them right.",
-            "hero_image_query": "bomboloni Italian filled doughnuts dusted with sugar",
+            "hero_image_query": "italian filled doughnuts dusted with sugar",
+            "hero_image_must_match": ["doughnut", "donut", "filled doughnut"],
             "image_alt": "A stack of golden bomboloni dusted with granulated sugar, one split open to show pastry cream filling oozing out.",
             "description": "Bomboloni (singular: bombolone) are Italian filled doughnuts made from an enriched, egg-and-butter yeasted dough, deep-fried until golden, then rolled in granulated sugar while still warm. Unlike a plain glazed doughnut, they're almost always filled after frying, most traditionally with pastry cream (crema pasticcera), but also jam, chocolate hazelnut spread, or plain with no filling at all in their simplest Tuscan form. The dough is richer and more brioche-like than an American cake doughnut, giving bomboloni a softer, more pillowy crumb.",
             "substitutes": [
@@ -151083,7 +151139,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What gianduja is, the best substitutes with ratios, how to store it so it doesn't seize or separate, and how to use it in fillings, ganache, and baking.",
-            "hero_image_query": "gianduja chocolate hazelnut paste block",
+            "hero_image_query": "chocolate hazelnut spread block",
+            "hero_image_must_match": ["hazelnut chocolate", "chocolate spread", "nutella"],
             "image_alt": "A block of gianduja chocolate cut into pieces, showing its dense, matte, slightly grainy texture flecked with ground hazelnuts.",
             "description": "Gianduja (pronounced jahn-DOO-yah) is a sweet paste from Turin, Italy, made by grinding roasted hazelnuts into a fine paste and blending it with melted chocolate (milk, dark, or occasionally white) and sugar. Hazelnuts typically make up 20 to 40 percent of the finished product. The hazelnut oil keeps gianduja softer and more spreadable than straight chocolate even at room temperature, and it never fully hardens the way a chocolate bar does. The flavor leans toasted and nutty first, cocoa second.",
             "substitutes": [
@@ -151760,6 +151817,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What pummelo is, how it differs from grapefruit, the best substitutes with ratios, and how to peel, store, and use it.",
             "hero_image_query": "pummelo cut open showing pink flesh segments",
+            "hero_image_must_match": ["pummelo", "pomelo", "citrus"],
             "image_alt": "A halved pummelo on a wood board showing its thick pale rind and pink segmented flesh, with a few loose segments beside it.",
             "description": "Pummelo (Citrus maxima), also spelled pomelo, is the largest citrus fruit and the ancestor of the modern grapefruit. It has an extremely thick, spongy rind, large individual segments with tough membranes that are usually peeled away, and flesh that ranges from pale yellow to deep pink. The flavor is milder and sweeter than grapefruit, with much less bitterness.",
             "substitutes": [
@@ -152214,7 +152272,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "Qué es la berenjena, los mejores sustitutos con proporciones, cómo conservarla sin que se ponga amarga y cómo cocinarla para que no absorba tanto aceite.",
-            "hero_image_query": "berenjenas frescas enteras y cortadas",
+            "hero_image_query": "fresh whole and sliced eggplant",
+            "hero_image_must_match": ["eggplant"],
             "image_alt": "Berenjenas moradas enteras junto a una cortada por la mitad mostrando la pulpa blanca con semillas pequeñas",
             "description": "La berenjena (Solanum melongena) es una hortaliza de la familia de las solanáceas, con piel brillante de color morado oscuro (aunque también existen variedades blancas, verdes y rayadas) y pulpa blanca esponjosa que absorbe grasa y sabor con facilidad. Cruda tiene un sabor amargo y una textura firme; cocida se vuelve cremosa y suave.",
             "substitutes": [
@@ -152490,7 +152549,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What a bubbelwafel is, how it differs from a regular waffle, the best substitutes if you don't own a bubble waffle pan, and how to store and reheat it.",
-            "hero_image_query": "bubbelwafel bubble waffle rolled with ice cream",
+            "hero_image_query": "bubble waffle rolled with ice cream",
+            "hero_image_must_match": ["bubble waffle", "waffle"],
             "image_alt": "A golden bubbelwafel with its signature honeycomb pattern of puffed spheres, rolled into a cone shape and filled with soft-serve ice cream and fruit.",
             "description": "A bubbelwafel (bubble waffle) is a thin, egg-rich waffle cooked in a hinged pan with a honeycomb of round molds, giving it a distinctive pattern of connected puffed spheres instead of the usual deep square grid. It originated in Hong Kong as gai daan jai (egg waffle) and spread through the Netherlands and Belgium as a street food snack, usually sold rolled into a cone and stuffed with ice cream, whipped cream, or fruit. The batter is thinner and sweeter than classic Belgian waffle batter, closer to a cross between pancake and sponge cake batter, which is what lets it puff into bubbles and stay flexible enough to roll while still warm.",
             "substitutes": [
@@ -152546,6 +152606,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What haricots verts are, how they differ from regular green beans, the best substitutes with ratios, and how to cook them so they stay crisp-tender.",
             "hero_image_query": "haricots verts thin French green beans",
+            "hero_image_must_match": ["green beans", "haricots verts"],
             "image_alt": "A pile of thin, uniform haricots verts on a wooden cutting board next to a paring knife, with a few trimmed stem ends scattered nearby.",
             "description": "Haricots verts are a slender variety of green bean, French for \"green beans,\" but the term specifically refers to beans that are thinner, more tender, and less starchy than standard green beans like Blue Lake. They cook faster than regular green beans and have a more delicate, slightly sweeter flavor with a snappier bite.",
             "substitutes": [
@@ -152610,7 +152671,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What sunomono is, the best substitutes for its vinegar dressing and key ingredients, how to store it, and how to serve it as part of a Japanese meal.",
-            "hero_image_query": "Japanese cucumber sunomono salad in small bowl",
+            "hero_image_query": "japanese cucumber salad in a small bowl",
+            "hero_image_must_match": ["cucumber salad", "cucumber"],
             "image_alt": "A small ceramic bowl of thinly sliced cucumber sunomono topped with sesame seeds and a few strands of wakame seaweed.",
             "description": "Sunomono (\"vinegared thing\") is a Japanese side dish of ingredients tossed in a sweet-tart rice vinegar dressing, most commonly thinly sliced cucumber but also seen with wakame seaweed, crab, octopus, or shrimp. The dressing, called sanbaizu, is built from rice vinegar, sugar, and a small amount of soy sauce or dashi, and it's what defines the dish more than any single ingredient does.",
             "substitutes": [
@@ -155550,6 +155612,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What an entree actually means depending on where you are, how to build one that balances protein, starch, and vegetables, and what to swap in when you need a lighter or heartier main course.",
             "hero_image_query": "plated dinner entree with protein and vegetables",
+            "hero_image_must_match": ["entree", "dinner plate", "plated meal"],
             "image_alt": "A dinner plate with seared chicken breast, roasted potatoes, and sautéed green beans arranged as a main course entree.",
             "description": "An entree is the main dish of a meal, typically the largest and most substantial course, built around a protein such as meat, poultry, fish, or a plant-based centerpiece, and usually served with one or more sides. In American usage this is the standard meaning, but the term flips in France and much of Europe, where 'entree' refers to a starter course served before the main dish. Restaurant menus in the US almost always list entrees as the section containing full dinner plates.",
             "substitutes": [
@@ -158771,7 +158834,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What ricotta salata is, how it differs from fresh ricotta and feta, the best substitutes with ratios, and how to store and serve it.",
-            "hero_image_query": "ricotta salata block sliced with shavings",
+            "hero_image_query": "firm white cheese block sliced with shavings",
+            "hero_image_must_match": ["ricotta salata", "cheese"],
             "image_alt": "A block of pale white ricotta salata with a wedge shaved into thin curls next to a chunk of the whole piece",
             "description": "Ricotta salata is a firm, dry, salted Italian cheese pressed from sheep's milk ricotta, aged for at least 90 days. Despite the name, it's a completely different product from fresh tub ricotta: pressing and salting turn the soft, moist curd into a dense, sliceable cheese that can be shaved, grated, or crumbled. It has a clean, milky, faintly tangy flavor with a firm, slightly squeaky texture similar to a mild feta or a young pecorino.",
             "substitutes": [
@@ -160623,7 +160687,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What beanie weenies are, the best substitutes for the hot dogs and canned beans, how to store leftovers, and how to dress up the classic combo.",
-            "hero_image_query": "beanie weenies in bowl with sliced hot dogs",
+            "hero_image_query": "beans and sliced hot dogs in a bowl",
+            "hero_image_must_match": ["beans and hot dogs", "hot dogs"],
             "image_alt": "A bowl of beanie weenies showing sliced hot dog rounds mixed into thick tomato-sauced baked beans, garnished with a sprinkle of black pepper.",
             "description": "Beanie weenies is a simple American comfort dish made by simmering sliced hot dogs with canned baked beans, usually pork and beans in a sweet tomato sauce. It's a pantry-staple meal built for speed: no browning meat from raw, no long simmer, just heat and stir. It shows up on camping trips, weeknight dinners, and school cafeteria menus, and the exact flavor depends heavily on which brand of canned beans and which hot dogs go into the pot.",
             "substitutes": [
@@ -160899,7 +160964,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What Masgonzola cheese is, the best substitutes with ratios, how to store it so it stays creamy, and how to use it in cooking and on cheese boards.",
-            "hero_image_query": "masgonzola blue cheese wedge with visible blue veining",
+            "hero_image_query": "blue cheese wedge with visible veining",
+            "hero_image_must_match": ["blue cheese", "gorgonzola"],
             "image_alt": "A wedge of pale ivory Masgonzola cheese cut open to show soft, buttery paste marbled with blue-green veins.",
             "description": "Masgonzola is a semi-soft, blue-veined cow's milk cheese made in Menorca, Spain, designed as a hybrid between the island's traditional Mahón cheese and Italian Gorgonzola. The name is a portmanteau of the two. It has a pale ivory paste, a springy, buttery texture, and a milder, less peppery blue flavor than true Gorgonzola, with a faint tang from the Mahón side of its heritage. It's typically aged 60 to 90 days, long enough to develop veining but short enough to keep the paste soft and spreadable rather than crumbly.",
             "substitutes": [
@@ -163239,6 +163305,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a kombucha SCOBY actually is, how to substitute for one if you're starting from scratch, how to store extras, and how to tell a healthy culture from a contaminated one.",
             "hero_image_query": "kombucha scoby in jar",
+            "hero_image_must_match": ["scoby", "kombucha"],
             "image_alt": "A pale tan, rubbery kombucha SCOBY disc floating in a jar of brewing sweet tea, with a thinner new layer visible forming on top.",
             "description": "A SCOBY (Symbiotic Culture Of Bacteria and Yeast) is the rubbery, pancake-like disc that forms on top of sweetened tea during kombucha fermentation. It's not a single organism but a living mat of cellulose produced by acetic acid bacteria, colonized by yeast, that floats on the liquid and drives the conversion of sugared tea into kombucha. Each brew grows a new layer on top of the old one, which is why a SCOBY gets thicker over time.",
             "substitutes": [
@@ -163298,6 +163365,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What cafe cubano is, how the sugar-whipped espumita gets made, substitutes when you don't have a moka pot, and how to store and serve it.",
             "hero_image_query": "cafe cubano with espumita in small cup",
+            "hero_image_must_match": ["cuban coffee", "espresso", "cafe cubano"],
             "image_alt": "A small white demitasse of cafe cubano topped with a thick tan layer of whipped espumita foam, next to a stainless steel moka pot on a stove.",
             "description": "Cafe cubano is sweetened Cuban espresso, traditionally brewed in a stovetop moka pot using finely ground dark-roast coffee. What sets it apart from plain espresso is the espumita (or espuma): the first few drops of hot coffee are whipped vigorously with sugar in the serving cup or pitcher before the rest of the coffee is poured in, creating a thick, caramel-colored foam that sits on top and sweetens the whole drink evenly.",
             "substitutes": [
@@ -163362,7 +163430,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What crispitos are, how they differ from taquitos and flautas, the best substitutes, and how to store and reheat them so they stay crisp.",
-            "hero_image_query": "crispitos on plate with dipping sauce",
+            "hero_image_query": "crispy fried rolled tortillas on a plate with dipping sauce",
+            "hero_image_must_match": ["taquito", "fried tortilla", "crispy roll"],
             "image_alt": "A row of golden, deep-fried rolled tortillas filled with seasoned beef, cut in half to show the meat filling, served with a small bowl of red sauce.",
             "description": "Crispitos are rolled corn or flour tortillas filled with seasoned ground beef (or sometimes chicken or beans), then deep-fried or baked until the shell turns hard and golden. They're common in school cafeterias and Tex-Mex restaurants, usually sold frozen in bulk under names like beef crispito or crispito roll, and are typically served with a mild red enchilada-style sauce or cheese sauce for dipping rather than salsa.",
             "substitutes": [
@@ -165440,7 +165509,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What sand dabs are, the best substitutes with ratios, how to store and cook this delicate Pacific flatfish, and what makes it different from sole.",
-            "hero_image_query": "pan-fried whole sand dabs on a plate with lemon",
+            "hero_image_query": "pan-fried whole small fish on a plate with lemon",
+            "hero_image_must_match": ["fried fish", "pan-fried fish", "fish"],
             "image_alt": "A plate of whole pan-fried sand dabs with crisped brown skin, lemon wedges, and a scattering of chopped parsley.",
             "description": "Sand dabs are a small, thin-bodied flatfish (Citharichthys sordidus, sometimes Citharichthys stigmaeus) caught mainly off the California and Pacific Northwest coast. They rarely grow past 12 inches, have a mild, slightly sweet flavor, and cook almost translucent-white with a delicate, flaky texture similar to sole or flounder but softer. They're most often sold whole and small enough to fit two or three to a dinner plate, which is how they're traditionally served in Bay Area seafood restaurants.",
             "substitutes": [
@@ -165845,7 +165915,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What scrod actually is (hint: it's not a species), the best substitutes with ratios, how to store and cook it, and how to buy it without getting a bait-and-switch fillet.",
-            "hero_image_query": "scrod fillet on ice at fish market",
+            "hero_image_query": "white fish fillet on ice at a fish market",
+            "hero_image_must_match": ["fish fillet", "cod", "fish"],
             "image_alt": "Two thin white fish fillets labeled scrod resting on crushed ice at a seafood counter, next to whole haddock on display.",
             "description": "Scrod isn't a fish species. It's a New England market term for the small, young fillets of cod, haddock, or occasionally pollock, typically weighing under about 2.5 pounds whole. The name refers to size and freshness rather than a distinct animal, which is why two packages labeled scrod at the same counter can be entirely different fish. The flesh is white, lean, mild, and flakes into large, tender pieces when cooked, which is why it became a staple of New England baked and broiled fish dinners.",
             "substitutes": [
@@ -168078,7 +168149,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What cremasse is, the best substitutes with ratios, how to store it so it doesn't separate, and how to serve this Haitian holiday drink.",
-            "hero_image_query": "Haitian cremasse coconut rum drink in glasses with nutmeg garnish",
+            "hero_image_query": "creamy coconut rum drink in glasses with nutmeg",
+            "hero_image_must_match": ["coconut rum", "cream liqueur", "rum drink"],
             "image_alt": "Two small glasses of pale, creamy cremasse dusted with grated nutmeg, next to a bottle of white rum and a cinnamon stick",
             "description": "Cremasse (also spelled cremas or cremas) is a Haitian holiday drink made by blending coconut milk, sweetened condensed milk, evaporated milk, and white rum with warm spices like cinnamon, star anise, cloves, and sometimes almond extract or lime zest. It's related to Puerto Rican coquito and Dominican crema de vie, but coconut is the dominant flavor rather than a background note, and the spice level is usually lighter. Traditionally made in large batches before Christmas and served through New Year's, it's poured over ice in small glasses rather than sipped like a full cocktail.",
             "substitutes": [
@@ -170583,7 +170655,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What caciocavallo cheese is, the best substitutes with ratios, how to store it, and how to cook with its stretchy texture and tangy, smoky flavor.",
-            "hero_image_query": "caciocavallo cheese wheels hanging",
+            "hero_image_query": "pear-shaped cheese wheels hanging to age",
+            "hero_image_must_match": ["cheese wheel", "cheese"],
             "image_alt": "Pear-shaped caciocavallo cheeses tied with twine and hanging in pairs to age, with one wheel cut open showing a pale, dense interior.",
             "description": "Caciocavallo is a semi-hard, stretched-curd (pasta filata) cheese from southern Italy, traditionally made from cow's milk and shaped into a distinctive gourd or teardrop form with a small knob at the top. Pairs of the cheese are tied together at the neck with string and hung over a beam to age, which is where the shape and possibly the name (roughly \"cheese on horseback\") come from. Young caciocavallo is mild, milky, and elastic like a firmer mozzarella; aged versions turn sharp, tangy, and slightly smoky, closer to an aged provolone.",
             "substitutes": [
@@ -171171,6 +171244,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What giblets are, which organs are included, how to substitute for them in gravy and stuffing, and how to store and cook them safely.",
             "hero_image_query": "raw poultry giblets on cutting board",
+            "hero_image_must_match": ["giblets", "poultry organs"],
             "image_alt": "A small pile of raw turkey giblets, including the neck, heart, gizzard, and liver, arranged on a wooden cutting board next to a paper packet.",
             "description": "Giblets are the edible internal organs of poultry, typically the neck, heart, gizzard, and liver, packaged together and tucked inside the cavity of a whole chicken or turkey. They're prized for adding deep, savory flavor to gravy, stock, and stuffing, though the liver is often set aside separately because it has a stronger, more mineral taste than the rest.",
             "substitutes": [
@@ -171531,7 +171605,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What fra diavolo sauce is, how it differs from arrabbiata and marinara, the best substitutes with ratios, and how to store and use it.",
-            "hero_image_query": "fra diavolo sauce with shrimp and pasta",
+            "hero_image_query": "spicy tomato sauce with shrimp and pasta",
+            "hero_image_must_match": ["shrimp pasta", "spicy tomato sauce", "pasta"],
             "image_alt": "A skillet of red fra diavolo sauce studded with shrimp and red pepper flakes, tossed with linguine and fresh parsley.",
             "description": "Fra diavolo is a spicy Italian-American tomato sauce built on garlic, crushed red pepper flakes, and a splash of white wine, traditionally simmered with shrimp, lobster, or other shellfish and tossed with pasta. The name translates to \"brother devil,\" a nod to the heat level, which is meant to be noticeably hotter than a standard marinara but not as sharply acidic as arrabbiata.",
             "substitutes": [
@@ -172935,7 +173010,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What campechana is, how it differs from ceviche and shrimp cocktail, the best substitutes, and how to store and serve it safely.",
-            "hero_image_query": "campechana seafood cocktail in glass with tostadas",
+            "hero_image_query": "mexican seafood cocktail in a glass with tostadas",
+            "hero_image_must_match": ["seafood cocktail", "shrimp cocktail"],
             "image_alt": "A tall glass of campechana layered with shrimp, octopus, diced tomato, onion, and avocado in a pink tomato-clamato sauce, served with lime wedges and tostadas.",
             "description": "Campechana is a cold Mexican seafood cocktail that originated in the coastal state of Campeche and is now common along both the Gulf and Pacific coasts of Mexico. It combines cooked shrimp with other seafood such as octopus, crab, or oysters in a tangy, slightly sweet tomato-based sauce built from ketchup, Clamato or tomato juice, lime, and hot sauce, then finished with diced onion, cilantro, and avocado. Unlike ceviche, the seafood in campechana is fully cooked before it goes into the sauce rather than cured raw in citrus.",
             "substitutes": [
@@ -173848,7 +173924,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What chitlins (chitterlings) are, how to clean and cook them, real substitutes for pork intestines, and how to store them safely before and after cooking.",
-            "hero_image_query": "cooked chitlins soul food",
+            "hero_image_query": "cooked pork intestines soul food dish",
+            "hero_image_must_match": ["chitlins", "soul food"],
             "image_alt": "A pot of simmered chitlins with onions and vinegar, served alongside cornbread and hot sauce on a plate.",
             "description": "Chitlins, short for chitterlings, are the small intestines of a pig, cleaned and slow-simmered until tender. They're a traditional Southern soul food ingredient with a rich, distinctly funky flavor and a soft, slightly chewy texture once cooked. Because raw chitlins require extensive cleaning to remove residue and odor, most home cooks buy them pre-cleaned, frozen, or in cans to cut down on prep time.",
             "substitutes": [
@@ -174317,7 +174394,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What azafran (saffron) is, why cheaper jars labeled azafran often aren't real saffron, the best substitutes with ratios, and how to store and use it.",
-            "hero_image_query": "azafran saffron threads in small dish",
+            "hero_image_query": "saffron threads in a small dish",
+            "hero_image_must_match": ["saffron"],
             "image_alt": "A small ceramic dish of deep red-orange azafran threads next to a wooden spoon, with a few threads scattered on a linen cloth",
             "description": "Azafran is simply the Spanish word for saffron, the dried stigmas of the Crocus sativus flower, hand-picked and dried to produce the world's most expensive spice by weight. Real azafran has a deep red-orange color, a slightly metallic-sweet aroma, and a flavor often described as honeyed, earthy, and faintly like hay. In many Latin American grocery stores, though, jars labeled azafran or azafran de bolita actually contain dried safflower petals (Carthamus tinctorius), a much cheaper spice that mimics saffron's golden color in rice and stews but carries almost none of its aroma or flavor.",
             "substitutes": [
@@ -177050,7 +177128,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What auyama (calabaza squash) is, the best substitutes with ratios, how to store and prep it, and how it's used in Dominican and Latin American cooking.",
-            "hero_image_query": "whole and sliced auyama calabaza squash showing orange flesh",
+            "hero_image_query": "whole and sliced orange squash",
+            "hero_image_must_match": ["squash", "pumpkin", "calabaza"],
             "image_alt": "A whole auyama squash cut in half on a wooden board, revealing bright orange flesh and a cluster of seeds in the center cavity",
             "description": "Auyama is the Dominican and Venezuelan name for calabaza, a large winter squash in the Cucurbita moschata family also called West Indian pumpkin. It has a hard, mottled green-and-tan or solid tan rind and dense, deep orange flesh that's sweeter and less watery than American jack-o'-lantern pumpkin. It's a staple in sancocho, soups, purees, and baked desserts across the Caribbean and northern South America.",
             "substitutes": [
@@ -177351,7 +177430,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What carlota potatoes are, the best substitutes with ratios, how to store them so they don't sprout, and how to cook them without them falling apart.",
-            "hero_image_query": "carlota potatoes",
+            "hero_image_query": "creamy layered potato casserole",
+            "hero_image_must_match": ["potato casserole", "potatoes"],
             "image_alt": "A pile of oval, thin-skinned yellow carlota potatoes on a wooden board, some halved to show the pale waxy flesh.",
             "description": "Carlota is the Spanish name for a waxy, second-early potato variety known as Charlotte in France and the UK. It has an oval, slightly elongated shape, thin yellow-tan skin, and pale yellow flesh that holds together well when boiled, so it doesn't fall apart into mush the way a starchy baking potato does.",
             "substitutes": [
@@ -179111,7 +179191,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What chicharrón prensado is, how it differs from crispy chicharrón, the best substitutes with ratios, and how to cook it into a proper guisado.",
-            "hero_image_query": "chicharron prensado block at Mexican carniceria",
+            "hero_image_query": "pressed pork cracklings block at a butcher shop",
+            "hero_image_must_match": ["pork cracklings", "chicharron", "pressed pork"],
             "image_alt": "A dense brick of soft pressed chicharrón prensado studded with pork skin and meat scraps, displayed alongside fresh cuts at a Mexican meat counter.",
             "description": "Chicharrón prensado is a Mexican pork product made by simmering pork skin, meat trimmings, and fat until tender, then pressing the mixture into a dense, moist block. Unlike the crispy, puffed chicharrón sold in bags, prensado is soft and fatty straight out of the package, meant to be cooked further rather than eaten as a snack. It's sold fresh, refrigerated, at Mexican carnicerias and is the base for guisado de chicharrón, a stewed filling for tacos, tortas, and gorditas.",
             "substitutes": [
@@ -180857,7 +180938,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What jaiba is, the best substitutes with ratios, how to store it safely, and how to use it in Mexican and coastal dishes.",
-            "hero_image_query": "fresh jaiba crab meat",
+            "hero_image_query": "fresh crab meat",
+            "hero_image_must_match": ["crab meat", "crab"],
             "image_alt": "A bowl of cooked, shredded jaiba crab meat next to whole blue crab shells and lime wedges on a wooden table.",
             "description": "Jaiba is the Spanish word for crab, and in most Mexican and Latin American kitchens it specifically refers to blue crab (Callinectes sapidus), prized for its sweet, delicate meat. It shows up whole in caldos and cocteles, or picked and shredded for tostadas, empanadas, and stuffed jaiba rellena.",
             "substitutes": [
@@ -184012,6 +184094,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What white zinfandel is, how it differs from real rosé, the best substitutes for cooking with exact ratios, and how to store an opened bottle.",
             "hero_image_query": "glass of pink white zinfandel wine with grapes",
+            "hero_image_must_match": ["rose wine", "pink wine", "white zinfandel"],
             "image_alt": "A glass of pale pink white zinfandel wine next to a bottle, condensation on the glass suggesting it's served chilled",
             "description": "White zinfandel is a pale pink, semi-sweet wine made from red Zinfandel grapes using a brief skin contact process that pulls color and light tannin without much depth. Despite the name, it's a blush wine, not a white wine, and it's noticeably sweeter and lower in alcohol than a dry rosé. It became popular in the U.S. in the 1980s as an easy-drinking, low-tannin alternative to red wine, and it still shows up in recipes calling for a light, fruity, slightly sweet wine.",
             "substitutes": [
@@ -186867,7 +186950,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What morir soñando is, the classic Dominican orange juice and milk drink, how to keep it from curdling, ingredient swaps, and how to serve it right.",
-            "hero_image_query": "morir soñando drink glass with ice",
+            "hero_image_query": "orange and milk drink in a glass with ice",
+            "hero_image_must_match": ["orange drink", "milk drink", "agua fresca"],
             "image_alt": "A tall glass of pale orange morir soñando with visible swirls of milk and orange juice, ice cubes, and a straw, set on a wooden table.",
             "description": "Morir soñando (literally \"to die dreaming\") is a Dominican drink made by combining chilled evaporated milk, sugar, and fresh orange juice over ice, then stirring quickly so the mixture turns a pale, creamy orange before the acidity curdles it. It's closer to an orange creamsicle in liquid form than a smoothie, thin enough to drink through a straw but rich from the milk. Dominican households each have their own ratio of juice to milk, and some add a splash of vanilla or a pinch of salt.",
             "substitutes": [
@@ -186933,6 +187017,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What chile pasilla is, how it differs from ancho and mulato, the best substitutes with ratios, and how to use it in moles, salsas, and adobos.",
             "hero_image_query": "dried pasilla chiles whole and split open showing seeds",
+            "hero_image_must_match": ["dried chile", "chile pepper", "pasilla"],
             "image_alt": "Several long, wrinkled, near-black dried pasilla chiles laid on a wooden board with two split open to reveal the seeds inside.",
             "description": "Chile pasilla is the dried form of the chilaca chile, a long, narrow pepper that turns from dark green to blackish-brown as it dries and wrinkles like a raisin, which is where the name comes from (pasilla means \"little raisin\" in Spanish). It has a mild-to-medium heat, around 1,000 to 2,500 Scoville units, and a deep, earthy flavor with notes of dried fruit, licorice, and mild coffee. It's one of the three chiles, along with ancho and mulato, that make up the classic \"holy trinity\" used in many mole sauces.",
             "substitutes": [
@@ -188418,7 +188503,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What vaca frita is, which cuts of beef work best if you can't get flank steak, how to store and reheat leftovers, and how to serve it the traditional Cuban way.",
-            "hero_image_query": "vaca frita cuban shredded fried beef with onions",
+            "hero_image_query": "cuban shredded fried beef with onions",
+            "hero_image_must_match": ["shredded beef", "fried beef"],
             "image_alt": "Crispy shredded flank steak vaca frita piled on a plate with caramelized onions, lime wedges, white rice, and black beans",
             "description": "Vaca frita is a Cuban dish of flank steak that's braised until tender, shredded by hand, marinated in sour orange or lime juice and garlic, then pan-fried in a hot skillet until the edges turn crisp and browned. The name translates to \"fried cow,\" a nod to the contrast between the tender interior of the meat and its crackly, caramelized surface. It's typically finished with a pile of sauteed onions on top.",
             "substitutes": [
@@ -189346,7 +189432,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What koobideh is, the meat ratios and technique that keep it from falling apart on the grill, substitutes, storage, and how to serve it the traditional way.",
-            "hero_image_query": "grilled koobideh kabab skewers with saffron rice",
+            "hero_image_query": "grilled ground meat kabob skewers with saffron rice",
+            "hero_image_must_match": ["kabob", "kebab", "grilled skewers"],
             "image_alt": "Flat metal skewers of grilled ground beef and lamb koobideh kabab with charred edges, served over saffron rice with a grilled tomato and sumac on the side.",
             "description": "Koobideh (also spelled kubideh or kobideh) is a Persian ground meat kabab made from finely ground beef, lamb, or a mix of the two, combined with grated onion, salt, and black pepper, then molded flat onto wide metal skewers and grilled directly over charcoal. There's no egg, breadcrumb, or filler; the grated onion's moisture and natural enzymes are what bind the meat and keep it tender once the fat renders.",
             "substitutes": [
@@ -190122,7 +190209,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What biko is, practical substitutes for its key ingredients (glutinous rice, coconut milk, brown sugar, banana leaves), how to store it, and how to serve it.",
-            "hero_image_query": "biko Filipino sticky rice cake with latik topping",
+            "hero_image_query": "filipino sticky rice cake dessert",
+            "hero_image_must_match": ["sticky rice cake", "rice cake"],
             "image_alt": "A pan of biko cut into diamond-shaped pieces, the sticky rice cake glossy with coconut caramel and topped with golden brown latik curds.",
             "description": "Biko is a Filipino dessert made by cooking glutinous rice (malagkit) with coconut milk and brown sugar until sticky and dense, then topping it with a layer of coconut caramel or latik (browned coconut curds). It's dense, chewy, and sweet rather than fluffy, closer in texture to a rice-based fudge than a cake. It's a staple at Filipino gatherings, fiestas, and merienda tables, usually cut into small diamond or square pieces and eaten with the hands or a fork.",
             "substitutes": [
@@ -191009,6 +191097,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Out of cotija? Here are five ranked substitutes with exact ratios, including which ones best match its salty crumble versus its aged, sharp flavor.",
             "hero_image_query": "crumbled cotija cheese on elote corn",
+            "hero_image_must_match": ["cotija", "mexican cheese", "crumbled cheese"],
             "image_alt": "A block of crumbly white cotija cheese next to a small pile of grated cheese and a microplane, showing its dry, salty texture.",
             "ranked_substitutes": [
                 {
@@ -192056,7 +192145,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What hodge podge is (the classic Rhode Island summer vegetable stew), the best substitutes if you're missing ingredients, how to store leftovers, and how to serve it.",
-            "hero_image_query": "New England hodgepodge vegetable stew with corn and lima beans",
+            "hero_image_query": "new england vegetable stew with corn and lima beans",
+            "hero_image_must_match": ["vegetable stew", "stew"],
             "image_alt": "A pot of creamy hodge podge stew with fresh corn kernels, lima beans, green beans, and diced potatoes in a light butter broth, served in a white bowl.",
             "description": "Hodge podge is a summer vegetable stew from Rhode Island and southern New England, built around whatever is coming out of the garden at the same time: fresh corn, lima beans, string beans, and small new potatoes, all simmered together in butter and a splash of cream or milk. Unlike succotash, which is usually just corn and beans, hodge podge is looser and more of a light, brothy dish meant to be eaten with a spoon. There's no tomato and no thickener beyond the starch the potatoes release, so the finished stew stays pale and soupy rather than stew-thick.",
             "substitutes": [
@@ -193067,6 +193157,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "EVOO stands for extra virgin olive oil, the highest, least processed grade of olive oil. What it is, how it differs from regular olive oil, and how to use it.",
             "hero_image_query": "extra virgin olive oil bottle pouring into dish",
+            "hero_image_must_match": ["olive oil", "extra virgin olive oil"],
             "image_alt": "A glass bottle of golden-green extra virgin olive oil being poured over a shallow dish of bread and herbs.",
             "direct_answer": "EVOO is shorthand for extra virgin olive oil, the highest quality grade of olive oil, made by mechanically pressing olives without heat or chemical processing.",
             "expanded_explanation": "Extra virgin olive oil comes from the first cold pressing of olives, meaning no heat or solvents are used to extract the oil, which preserves more of the fruit's natural flavor, aroma, and nutrients. To be legally labeled extra virgin, the oil also has to meet strict standards for acidity (below 0.8%) and pass a taste test for defects like rancidity or mustiness. This is what separates it from regular 'olive oil' or 'light olive oil,' which are often blends of refined oil (processed with heat or chemicals to strip out flaws) and a small amount of virgin oil added back for flavor. EVOO tends to be more peppery, grassy, or fruity depending on the olive variety and where it was grown.",
@@ -194536,7 +194627,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What scungilli is, the best substitutes with ratios, how to store and cook it, and how to use it in the classic Italian-American scungilli salad.",
-            "hero_image_query": "scungilli salad with celery and lemon",
+            "hero_image_query": "seafood salad with celery and lemon",
+            "hero_image_must_match": ["seafood salad", "conch salad"],
             "image_alt": "Sliced scungilli (conch meat) tossed with celery, garlic, parsley, and lemon in an Italian-American scungilli salad, served in a glass bowl",
             "description": "Scungilli is the Italian-American name for the meat of the conch, a large sea snail, most often sold cooked, sliced, and canned or frozen. It has a firm, chewy texture similar to abalone or squid and a mild, faintly sweet shellfish flavor that takes on garlic, lemon, and olive oil well. It's a staple of Italian-American Christmas Eve seafood spreads, usually served cold as a salad rather than hot.",
             "substitutes": [
@@ -194854,7 +194946,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What queso cotija is, the best substitutes with ratios, how to store it, and how to use it so it adds salty, savory finish without turning rubbery.",
-            "hero_image_query": "queso cotija crumbled on a plate",
+            "hero_image_query": "crumbled white mexican cheese on a plate",
+            "hero_image_must_match": ["cotija", "crumbled cheese", "mexican cheese"],
             "image_alt": "A block of aged queso cotija next to a small pile of coarsely crumbled cheese, showing its dry, chalky texture and pale ivory color.",
             "description": "Queso cotija is a hard, aged Mexican cheese made from cow's milk, named for the town of Cotija in Michoacan. It's salty, tangy, and crumbly, similar in texture and role to Parmesan or feta, and it doesn't melt so it's used almost exclusively as a finishing garnish rather than a cooking cheese.",
             "substitutes": [
@@ -194919,7 +195012,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What hondashi is, the best substitutes with ratios, how to store it, and how to use this instant Japanese dashi powder correctly in soups and broths.",
-            "hero_image_query": "hondashi instant dashi powder in a bowl with bonito flakes",
+            "hero_image_query": "dashi powder with bonito flakes in a bowl",
+            "hero_image_must_match": ["dashi", "bonito flakes"],
             "image_alt": "A small glass jar of tan hondashi powder next to a wooden spoon and dried bonito flakes on a dark countertop.",
             "description": "Hondashi is a brand of instant dashi powder made primarily from dried, smoked skipjack tuna (katsuobushi), along with salt, sugar, and monosodium glutamate. Made by Ajinomoto, it's become the generic name many home cooks use for any instant bonito-based dashi granules. Dissolved in hot water, it recreates the smoky, savory base broth (dashi) that underlies Japanese miso soup, noodle broths, and simmered dishes, without the time needed to make dashi from scratch with kombu and bonito flakes.",
             "substitutes": [
@@ -195848,7 +195942,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What tortelloni is, how it differs from tortellini, the best substitutes with ratios, how to store and cook it, and what sauces actually work.",
-            "hero_image_query": "fresh cheese tortelloni pasta on wooden board",
+            "hero_image_query": "fresh cheese-filled pasta on a wooden board",
+            "hero_image_must_match": ["tortellini", "stuffed pasta", "pasta"],
             "image_alt": "A pile of large ridge-edged tortelloni pasta parcels dusted with flour next to a small bowl of ricotta filling.",
             "description": "Tortelloni is a large, ring-shaped or crescent-shaped stuffed pasta from Emilia-Romagna, typically filled with ricotta and spinach or another cheese-based mixture rather than meat. It's noticeably bigger than tortellini, which causes constant mix-ups between the two names even on packaging.",
             "substitutes": [
@@ -197126,7 +197221,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What riblets are, the best substitutes when your butcher is out, how to store and cook them, and how they differ from spare ribs and baby back ribs.",
-            "hero_image_query": "pork riblets glazed and grilled",
+            "hero_image_query": "glazed grilled pork riblets",
+            "hero_image_must_match": ["pork ribs", "riblets", "ribs"],
             "image_alt": "A pile of glazed pork riblets on a wire rack, each piece showing a cross-section of rib bone with a thin layer of meat and dark sticky sauce coating the surface.",
             "description": "Riblets are the meaty rib tips and short cross-cut pieces left over when a butcher trims a full slab of spare ribs into a neat, uniform rack for retail sale. They're cut either lengthwise into short strips or crosswise across the bones into 1 to 2 inch segments, so each riblet has a bit of bone, cartilage, and meat rather than one long clean rib. Pork riblets are the most common, though beef riblets (cut from the plate or short rib section) show up in some markets, especially for Korean-style kalbi.",
             "substitutes": [
@@ -197514,7 +197610,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What duxelles is, how it differs from plain sautéed mushrooms, the best substitutes with ratios, and how to store and use this classic French mushroom paste.",
-            "hero_image_query": "mushroom duxelles in a pan",
+            "hero_image_query": "minced mushroom mixture in a pan",
+            "hero_image_must_match": ["mushroom", "minced mushroom"],
             "image_alt": "A dark, finely minced mushroom and shallot mixture cooked down to a thick paste in a skillet, ready to spread on pastry or meat.",
             "description": "Duxelles is a French preparation of finely minced mushrooms and shallots (or onions) slowly cooked down in butter until nearly all their moisture evaporates, leaving a dense, deeply savory paste. Classically bound with a little cream or brandy and seasoned with fresh thyme, it's the layer that gives Beef Wellington its earthy backbone, but it also works as a filling for vol-au-vents, an omelet stuffing, or a spread on toast.",
             "substitutes": [
@@ -198658,6 +198755,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What beef tendon is, how it turns from rubbery to gelatinous when braised, the best substitutes with ratios, and how to store and cook it.",
             "hero_image_query": "braised beef tendon in soup",
+            "hero_image_must_match": ["beef tendon", "tendon", "braised beef"],
             "image_alt": "Glossy, translucent slices of braised beef tendon floating in a dark beef broth alongside rice noodles and scallions",
             "description": "Beef tendon is the tough, fibrous connective tissue that attaches muscle to bone, most commonly cut from the shank or leg. Raw, it's dense, pale, and nearly impossible to chew, but long simmering breaks its collagen down into gelatin, turning it soft, jiggly, and translucent while keeping a slight springy bite. It's a staple in Vietnamese pho, Taiwanese beef noodle soup, Chinese braises, and dim sum, valued more for texture and the body it adds to broth than for meaty flavor.",
             "substitutes": [
@@ -200656,7 +200754,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What chè Thái is, how to build it from real ingredients, good substitutes for the harder-to-find components, and how to store the pieces so nothing gets soggy.",
-            "hero_image_query": "che thai vietnamese mixed fruit dessert bowl with coconut milk and ice",
+            "hero_image_query": "vietnamese mixed fruit dessert with coconut milk and ice",
+            "hero_image_must_match": ["che", "vietnamese dessert", "fruit dessert"],
             "image_alt": "A tall glass of chè Thái layered with sliced jackfruit, lychee, red jelly cubes, and shaved ice, topped with coconut milk and condensed milk",
             "description": "Chè Thái is a Vietnamese mixed-fruit dessert soup built around jackfruit, lychee, and other sweet fruit suspended in coconut milk and condensed milk, then finished with crushed ice and colorful jelly cubes. Despite the name, it isn't from Thailand; the \"Thai\" refers to the Thai-influenced style of combining many fruits and textures in one bowl, a technique Vietnamese dessert shops adapted and made their own in the mid-20th century. It's served cold, usually in a tall glass or bowl with a long spoon, and eaten as a refreshing after-meal treat rather than a baked or plated dessert.",
             "substitutes": [
@@ -202194,7 +202293,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What lamb vindaloo is, how to substitute the meat or the paste, how to store and reheat leftovers, and what to serve alongside it.",
-            "hero_image_query": "lamb vindaloo curry in a bowl",
+            "hero_image_query": "spicy indian lamb curry in a bowl",
+            "hero_image_must_match": ["curry", "lamb curry"],
             "image_alt": "A bowl of dark red lamb vindaloo with tender lamb chunks in a thick, oil-slicked chile and vinegar sauce, garnished with cilantro and served with rice.",
             "description": "Lamb vindaloo is a fiery, vinegar-forward curry from Goa, India, built on a marinade of dried red chiles, garlic, ginger, vinegar, and warm spices like cumin and cinnamon. The dish traces back to a Portuguese pork preparation, carne de vinha d'alhos, that Goan cooks adapted with local chiles and, eventually, lamb or goat. Good lamb vindaloo balances sharp acidity, deep chile heat, and the richness of slow-cooked lamb shoulder rather than relying on heat alone.",
             "substitutes": [
@@ -204409,7 +204509,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What veal scallopini is, the best substitutes with ratios, how to store and pound it properly, and how to cook it without turning it rubbery.",
-            "hero_image_query": "raw veal scallopini cutlets on cutting board",
+            "hero_image_query": "thin raw veal cutlets on a cutting board",
+            "hero_image_must_match": ["veal cutlet", "cutlet"],
             "image_alt": "Thin, pale pink veal scallopini cutlets pounded flat and laid out on a wooden cutting board next to a meat mallet.",
             "description": "Veal scallopini refers to thin cutlets of veal, usually cut from the leg (top round) or loin, then pounded to an even 1/8 to 1/4 inch thickness. The word comes from the Italian scaloppine, meaning small, thin slices. The thinness and pounding are what define the cut as much as the meat itself, since they let it cook through in under two minutes per side without drying out.",
             "substitutes": [
@@ -206662,7 +206763,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What pastalaya is, common ingredient substitutes with ratios, how to store and reheat leftovers, and how it differs from jambalaya.",
-            "hero_image_query": "pastalaya in a large pot",
+            "hero_image_query": "cajun jambalaya-style pasta in a large pot",
+            "hero_image_must_match": ["jambalaya", "pasta dish"],
             "image_alt": "A wide cast iron pot filled with pastalaya, showing browned andouille sausage, chicken, and short pasta coated in a deep reddish-brown sauce, topped with sliced green onion.",
             "description": "Pastalaya is a south Louisiana dish that takes the flavor base of jambalaya, the trinity of onion, celery, and bell pepper, andouille sausage, chicken, and a dark roux-built stock, and swaps the rice for pasta. It's typically cooked in one large pot, often in batches big enough to feed a crowd at a boil, tailgate, or fundraiser, and has its own dedicated cook-off circuit in Louisiana separate from jambalaya competitions.",
             "substitutes": [
@@ -209382,6 +209484,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Room temperature in cooking means ingredients or food at about 68-72°F (20-22°C), not fridge-cold or heated. Here's why it matters and how to get there fast.",
             "hero_image_query": "eggs and butter softening on kitchen counter",
+            "hero_image_must_match": ["room temperature", "softened butter", "kitchen counter"],
             "image_alt": "Sticks of butter and a carton of eggs sitting out on a wooden countertop next to a small kitchen thermometer",
             "direct_answer": "Room temperature in a recipe means ingredients or food that have been left out until they reach roughly 68-72°F (20-22°C), the typical temperature of an indoor kitchen, rather than being cold from the refrigerator or warm from cooking.",
             "expanded_explanation": "Recipes call for room temperature ingredients, especially eggs, butter, and dairy, because temperature changes how those ingredients behave when mixed. Cold butter resists creaming with sugar and won't trap air the same way, which affects how a cake rises. Cold eggs don't emulsify as smoothly into batters and can seize melted chocolate or butter on contact, causing it to clump. Cold cream cheese leaves lumps in frosting no matter how long you beat it. Bringing these ingredients closer to room temperature lets fats stay soft and pliable and lets proteins loosen up, so everything blends into a uniform batter or dough instead of separating or curdling.",
@@ -210579,7 +210682,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What bionico is, how to make it a day ahead without it turning soggy, the best substitutes for its key components, and how it's traditionally served.",
-            "hero_image_query": "bionico Mexican fruit dessert cup with granola and cream",
+            "hero_image_query": "mexican fruit dessert cup with granola and cream",
+            "hero_image_must_match": ["fruit dessert", "fruit cup"],
             "image_alt": "A glass bowl of bionico layered with diced mango, strawberries, banana, and papaya, topped with a swirl of Mexican crema, condensed milk, granola, raisins, and shredded coconut.",
             "description": "Bionico is a chilled Mexican fruit dessert that originated in Guadalajara, Jalisco, sold from street carts and juice stands as a cooling snack. It's built from a mix of diced fresh fruit (typically strawberries, banana, mango, apple, and melon) folded with Mexican crema and sweetened condensed milk, then topped with granola, raisins, and shredded coconut. It sits somewhere between a fruit salad and a parfait, sweeter and creamier than a plain fruit cup but lighter than a sundae.",
             "substitutes": [
@@ -211768,7 +211872,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What oshinko (Japanese pickled daikon) is, the best substitutes with ratios, how to store it, and how it's used in the classic oshinko roll.",
-            "hero_image_query": "oshinko roll sushi with yellow pickled daikon",
+            "hero_image_query": "sushi roll with yellow pickled daikon",
+            "hero_image_must_match": ["sushi roll", "sushi"],
             "image_alt": "A sliced oshinko roll on a wooden board showing bright yellow pickled daikon strips wrapped in sushi rice and nori.",
             "description": "Oshinko is the Japanese term used broadly for tsukemono (pickled vegetables), but in sushi restaurants it almost always means takuan: daikon radish pickled in salt, sugar, and rice bran or turmeric until it turns a distinctive golden yellow. It has a crunchy bite and a sweet, tangy, faintly funky flavor, and it's the entire filling of the oshinko roll, a simple vegetarian maki popular as a palate cleanser between richer nigiri and sashimi.",
             "substitutes": [
@@ -218015,6 +218120,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Baking and roasting both use dry heat in an oven, but the difference comes down to temperature and the food itself, not the technique's name.",
             "hero_image_query": "roasted vegetables and baked bread side by side in oven",
+            "hero_image_must_match": ["baking", "roasting", "oven"],
             "image_alt": "A sheet pan of golden roasted carrots and potatoes next to a loaf of baked bread cooling on a rack, both fresh from the oven.",
             "direct_answer": "Baking and roasting are essentially the same cooking method, dry heat in an enclosed oven, but the terms are used differently based on what's being cooked and at what temperature. Baking typically refers to foods with a batter or dough (bread, cakes, casseroles) cooked at lower, steadier temperatures, while roasting refers to whole cuts of meat or vegetables cooked at higher heat to develop a browned, caramelized exterior.",
             "expanded_explanation": "Physically, an oven doesn't know the difference between baking and roasting; both processes surround food with hot, dry air. The distinction is really about tradition and the structural change happening in the food. Baking is the word used when heat causes something to set or rise, like turning liquid batter into a solid cake or dough into bread, and it's usually done between 325°F and 375°F so the inside cooks through without the outside burning before the structure firms up. Roasting is the word used when food already has a firm structure, like a chicken, a beef roast, or cubed vegetables, and the goal is surface browning and caramelization rather than setting a batter. Roasting is usually done at higher heat, often 400°F to 450°F, to drive off surface moisture quickly and trigger the Maillard reaction that creates a deep brown crust.",
@@ -218709,7 +218815,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What boliche is, the best beef cuts to substitute for it, how to store and prep it, and how to turn it into the classic Cuban stuffed pot roast.",
-            "hero_image_query": "raw eye of round beef roast tied for boliche mechado",
+            "hero_image_query": "raw beef roast tied with string",
+            "hero_image_must_match": ["beef roast", "tied roast"],
             "image_alt": "A whole, untrimmed eye of round beef roast on a cutting board next to a boning knife used to hollow out the center for stuffing.",
             "description": "Boliche is the Cuban name for a beef roast cut from the eye of round, a long, cylindrical, very lean muscle from the hind leg. Butchers in Cuban and Latin markets sell it already trimmed into this tube shape specifically so a channel can be bored through the center and packed with chorizo, garlic, and sometimes a strip of ham or hard-boiled egg. Once stuffed, tied, and braised low and slow in a sofrito-based broth, the dish itself is also called boliche or boliche mechado. Because eye of round has almost no internal fat, the stuffing and the long braise are what keep it from turning dry and stringy.",
             "substitutes": [
@@ -220534,6 +220641,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a turkey brine actually does, ratios for wet and dry brines, how long to brine by turkey size, and the best substitutes if you're short on time or fridge space.",
             "hero_image_query": "turkey brining in salted water with herbs",
+            "hero_image_must_match": ["turkey", "brine"],
             "image_alt": "A whole raw turkey submerged in a large stockpot of brine with peppercorns, bay leaves, and orange slices floating on top.",
             "description": "A turkey brine is a saltwater solution, usually built with sugar, aromatics, and sometimes acid, that the turkey soaks in (or is coated with, for a dry brine) before roasting. The salt denatures muscle proteins so they hold more moisture during cooking, which is why brined turkeys stay juicier through a long roast, especially in the breast meat that tends to dry out first.",
             "substitutes": [
@@ -225399,6 +225507,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a boilermaker is, how it's traditionally made and served, whiskey and beer substitutions with ratios, and tips for building one at home.",
             "hero_image_query": "boilermaker drink beer pint and whiskey shot glass on bar",
+            "hero_image_must_match": ["beer", "whiskey shot", "boilermaker"],
             "image_alt": "A pint of amber lager next to a filled shot glass of whiskey on a dark wood bar, the classic boilermaker pairing.",
             "description": "A boilermaker is a two-part drink built from a shot of whiskey and a beer, traditionally served together rather than mixed as a cocktail. The classic version pairs a shot of bourbon or rye with a pint of lager, drunk either as a chaser (sip the beer, then knock back the shot, or vice versa) or as a \"depth charge,\" where the full shot glass is dropped directly into the beer and the whole thing is drunk in one go. It originated as a working-class bar order, cheap, fast, and strong, and the name comes from boilermakers and other laborers who drank it after shifts.",
             "substitutes": [
@@ -226198,7 +226307,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What steak pizzaiola is, the best cuts and substitutes for the classic Neapolitan tomato-braised steak, how to store leftovers, and how to serve it.",
-            "hero_image_query": "steak pizzaiola in tomato sauce with peppers",
+            "hero_image_query": "steak simmered in tomato sauce with peppers",
+            "hero_image_must_match": ["steak in tomato sauce", "pizzaiola"],
             "image_alt": "Sliced braised steak sitting in a chunky red tomato sauce with strips of bell pepper and onion in a cast iron skillet",
             "description": "Steak pizzaiola (pizzaiola style) is a Southern Italian dish where a cut of beef is seared and then simmered in a garlicky tomato sauce, often with bell peppers, onions, and oregano, until the meat turns fork-tender. The name comes from \"pizzaiolo\" (pizza maker), referring to the same tomato-garlic-oregano sauce used on pizza, not to pizza itself. Traditional versions use thin, tougher cuts that benefit from a long simmer; Italian-American versions often use a quick-seared strip or sirloin steak finished briefly in sauce.",
             "substitutes": [
@@ -226269,7 +226379,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What mantecadas are, how they differ from cupcakes and muffins, the best substitutes with ratios, and how to store them so they stay soft.",
-            "hero_image_query": "mantecadas mexican muffins in paper cups",
+            "hero_image_query": "mexican muffins in paper cups",
+            "hero_image_must_match": ["muffin", "mantecada"],
             "image_alt": "Golden-domed mantecadas in fluted paper liners dusted with granulated sugar, cooling on a wire rack next to a cup of coffee.",
             "description": "Mantecadas are a Mexican sweet quick bread, close cousins to a muffin or a small pound cake, baked in tall paper cups and traditionally made with lard (manteca), which gives them their name and their dense, moist crumb. The batter is egg-heavy and only lightly leavened, so the tops rise into a smooth, rounded dome that's sprinkled with granulated sugar before baking, giving each one a faint crunchy crust. They're a breakfast and merienda staple across Mexico, especially associated with Ciudad Guzman in Jalisco, and are usually eaten plain with coffee or hot chocolate rather than frosted like a cupcake.",
             "substitutes": [
@@ -226909,7 +227020,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What congri is, how it differs from moros y cristianos, the best substitutes when you're short on black beans or the right rice, and how to store and reheat it.",
-            "hero_image_query": "cuban congri rice and black beans",
+            "hero_image_query": "cuban rice and black beans",
+            "hero_image_must_match": ["rice and beans", "black beans"],
             "image_alt": "A skillet of congri showing rice tinted gray-brown from cooking with black beans, with flecks of green bell pepper and a wedge of lime on the side",
             "description": "Congri is a Cuban rice dish from the eastern (Oriente) region, made by cooking white rice directly in black beans and their cooking liquid along with sofrito (onion, garlic, bell pepper), so every grain turns a deep grayish-brown. It's distinct from the Havana-style dish moros y cristianos, where the rice and beans are typically cooked separately and combined at the end. Congri is usually seasoned with cumin, oregano, bay leaf, and a splash of vinegar, and often includes diced salt pork or bacon for richness.",
             "substitutes": [
@@ -230337,7 +230449,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What Butterfinger candy bars are, the best substitutes with ratios, how to store crushed bars so they stay crunchy, and how to use them in marshmallow bars and no-bake desserts.",
-            "hero_image_query": "crushed butterfinger candy bars folded into marshmallow bars",
+            "hero_image_query": "crunchy peanut butter candy bar crushed pieces",
+            "hero_image_must_match": ["peanut butter candy", "candy bar"],
             "image_alt": "A pan of no-bake marshmallow bars studded with orange-flecked crushed Butterfinger candy pieces, cut into squares.",
             "description": "Butterfinger is a candy bar made from a crunchy, flaky peanut butter center coated in a thin layer of chocolate. The center isn't smooth peanut butter but a brittle, aerated peanut-butter-and-corn-flake mixture that shatters into small orange-gold shards when crushed. Those shards are what show up folded into marshmallow-based bars, fluff salads, and no-bake pies, since the candy holds its crunch even when mixed into something soft and sticky.",
             "substitutes": [
@@ -231140,6 +231253,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Tequila is distilled from the fermented sugars of the blue agave plant. How it's made, where it's legally produced, and how it differs from mezcal.",
             "hero_image_query": "blue agave plants field Jalisco Mexico",
+            "hero_image_must_match": ["tequila", "agave"],
             "image_alt": "Rows of spiky blue-gray agave plants growing in red volcanic soil under a mountain in Jalisco, Mexico",
             "direct_answer": "Tequila is made from the blue agave plant (Agave tequilana), specifically the sugars in its core, or piña, which is harvested, cooked, crushed to extract juice, fermented, and then distilled.",
             "expanded_explanation": "To legally be called tequila, the spirit must be produced in specific regions of Mexico, mostly the state of Jalisco, from blue Weber agave that's typically grown for 6 to 8 years before harvest. Workers called jimadores cut away the plant's spiky leaves to expose the piña, a starchy core that can weigh 80 to 200 pounds. The piñas are roasted or steamed to convert their stored starches into fermentable sugars, then shredded and pressed to release the sweet juice, called aguamiel. That juice is fermented into a low-alcohol liquid similar to beer, then distilled, usually twice, to concentrate it into tequila. By law, tequila must contain at least 51% blue agave sugars; anything labeled '100% agave' contains no other sugar source, while standard 'mixto' tequila can legally include up to 49% non-agave sugars like cane sugar.",
@@ -231942,6 +232056,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Branzino is a mild, flaky white fish popular in Mediterranean cooking. What it is, how it's typically cooked, and the best substitutes.",
             "hero_image_query": "whole grilled branzino fish on plate",
+            "hero_image_must_match": ["branzino", "sea bass"],
             "image_alt": "A whole roasted branzino with crispy skin, lemon slices, and fresh herbs stuffed inside the cavity, served on a white platter.",
             "direct_answer": "Branzino is a European sea bass, a mild, delicate white fish with tender flaky flesh and thin, crispy skin when cooked, commonly sold and served whole.",
             "expanded_explanation": "Branzino (Dicentrarchus labrax) is a saltwater fish native to the Mediterranean Sea and the eastern Atlantic coast. It's the Italian name for the fish also called European sea bass or loup de mer in French. The flesh is white, lean, and mild, with a texture similar to snapper or striped bass but slightly more delicate. Branzino is typically sold whole, weighing about 1 to 2 pounds per fish, which makes it a common size for a single serving or split between two people. Because the flesh is thin, it cooks quickly and is forgiving on the grill or in a hot oven, where the skin crisps up while the interior stays moist.",
@@ -231978,6 +232093,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "The correct internal temperature for beef, turkey, chicken, and plant-based burgers, why ground meat safety rules differ from steak, and how to check doneness without guessing.",
             "hero_image_query": "instant-read thermometer inserted sideways into a grilled beef burger patty",
+            "hero_image_must_match": ["burger", "thermometer", "grilled patty"],
             "image_alt": "A digital instant-read thermometer inserted sideways into a thick grilled burger patty, showing a reading of 160 degrees Fahrenheit",
             "description": "Burger temperature refers to the internal temperature a patty needs to reach to be both safe to eat and cooked the way you want. Ground beef behaves differently from a whole steak: grinding mixes any surface bacteria throughout the meat, so the entire patty, not just the seared crust, has to hit a safe minimum temperature. That's why a rare or medium-rare burger carries real food safety risk in a way a rare steak doesn't, and why USDA guidance for ground beef sits higher than for whole cuts.",
             "substitutes": [
@@ -233422,7 +233538,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What cacahuate (peanut) is, the best substitutes with ratios, how to store it so it doesn't turn rancid, and how it's used in Mexican cooking.",
-            "hero_image_query": "roasted cacahuates peanuts in shell",
+            "hero_image_query": "roasted peanuts in shell",
+            "hero_image_must_match": ["peanut", "peanuts"],
             "image_alt": "A pile of roasted cacahuates, some still in their tan papery shells and some shelled with the red skins on, next to a small dish of salted peanuts.",
             "description": "Cacahuate is the Spanish word for peanut, used mainly in Mexico (maní is more common in Central America, the Caribbean, and South America). Botanically a legume rather than a tree nut, cacahuate grows underground in a papery shell and is eaten roasted, salted, boiled, or ground into salsas, moles, and candies throughout Mexican cooking.",
             "substitutes": [
@@ -236410,7 +236527,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a baleada is, how the thick Honduran tortilla differs from a regular flour tortilla, the best substitutes if you can't find one, and how to fill and store them.",
-            "hero_image_query": "Honduran baleada folded tortilla with refried beans cheese and crema",
+            "hero_image_query": "honduran folded tortilla with beans cheese and cream",
+            "hero_image_must_match": ["folded tortilla", "baleada"],
             "image_alt": "A folded thick Honduran flour tortilla opened to show a layer of mashed red refried beans, crumbled cheese, and a drizzle of crema inside",
             "description": "A baleada is a Honduran staple built on a thick, doughy flour tortilla, noticeably heavier and chewier than the thin flour tortillas used for burritos or quesadillas. The tortilla is folded in half around a filling of mashed refried red beans, crumbled or shredded cheese, and mantequilla (a tangy, pourable Honduran-style cream similar to crema). The basic version is called a baleada sencilla; loaded versions with scrambled eggs, avocado, shredded chicken, chorizo, or grilled steak are called baleadas especiales. It's sold everywhere in Honduras from street carts to sit-down restaurants and is eaten at any time of day, not just breakfast.",
             "substitutes": [
@@ -238237,6 +238355,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What Egg Beaters liquid egg substitute is made of, how to swap it with whole eggs or egg whites using the right ratio, and how to store and cook with it.",
             "hero_image_query": "Egg Beaters liquid egg substitute poured from carton into a mixing bowl",
+            "hero_image_must_match": ["liquid egg", "egg substitute"],
             "image_alt": "Yellow liquid egg substitute pouring from a resealable carton into a glass bowl, with a whisk resting on the counter beside it",
             "description": "Egg Beaters is a brand of liquid egg substitute made primarily from pasteurized egg whites, with beta-carotene added for yellow color and a small amount of vitamins and minerals stirred back in to mimic whole egg. It contains no egg yolk, so it has no dietary cholesterol and almost no fat, which is why it's marketed as a lower-cholesterol swap for whole eggs rather than a true egg replacement.",
             "substitutes": [
@@ -239756,7 +239875,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What pangrattato is, the best substitutes with ratios, how to store it so it stays crisp, and how to use it as a crunchy finishing topping.",
-            "hero_image_query": "pangrattato toasted breadcrumbs in a bowl",
+            "hero_image_query": "toasted breadcrumbs in a bowl",
+            "hero_image_must_match": ["breadcrumbs", "toasted breadcrumbs"],
             "image_alt": "A small bowl of golden, coarsely toasted breadcrumbs flecked with parsley and garlic, sitting next to a wedge of stale bread.",
             "description": "Pangrattato is Italian toasted breadcrumbs made from stale bread, crisped in olive oil (often with garlic and anchovy) until deep golden and crunchy. Known as 'poor man's Parmesan,' it's scattered over pasta, vegetables, and salads to add crunch and savory depth where a hard cheese might otherwise go.",
             "substitutes": [
@@ -240109,7 +240229,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What kamaboko is, the best substitutes with ratios, how to store it, and how to use the classic pink-and-white fish cake in ramen and other Japanese dishes.",
-            "hero_image_query": "sliced kamaboko fish cake with pink and white swirl",
+            "hero_image_query": "sliced pink and white fish cake",
+            "hero_image_must_match": ["fish cake", "kamaboko"],
             "image_alt": "Thin pink-rimmed white slices of kamaboko fanned out on top of a bowl of ramen noodles in broth",
             "description": "Kamaboko is a Japanese cured fish cake made from surimi, white fish paste that has been pureed, seasoned, and steamed into a firm, semi-sweet loaf. The classic version has a pale white interior wrapped in a bright pink or red skin, and it's molded onto a small wooden board (the itaita) that gets discarded before slicing. Its texture is dense, springy, and slightly rubbery, closer to a fish sausage than to flaked fish.",
             "substitutes": [
@@ -240683,7 +240804,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What sopressata is, the best substitutes with ratios, how to store it so it doesn't dry out or spoil, and how to use it on boards and in cooking.",
-            "hero_image_query": "sliced sopressata salami on wooden board",
+            "hero_image_query": "sliced italian salami on a wooden board",
+            "hero_image_must_match": ["salami", "sopressata"],
             "image_alt": "Thin rounds of sopressata salami fanned out on a wooden cutting board, showing coarse flecks of white fat and a dark red-brown cured exterior.",
             "description": "Sopressata is a dry-cured Italian salami made from coarsely chopped or ground pork, seasoned with salt, black or red pepper, garlic, and sometimes wine or fennel, then stuffed into natural casing and air-dried for weeks to months. The texture is coarser and chunkier than a fine-ground salami like Genoa, with visible marbled fat and a firm, sliceable bite once fully cured.",
             "substitutes": [
