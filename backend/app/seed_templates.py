@@ -203632,6 +203632,16 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Boudin is a Cajun sausage made from pork, rice, and seasonings, stuffed into a casing. What it is, how it's eaten, and how it differs from other sausages.",
             "hero_image_query": "boudin sausage links on plate",
+            # Reported wrong-subject photo (2026-09-10): boudin is a niche
+            # regional sausage, so a generic "sausage" result (bratwurst,
+            # hot dogs, French boudin blanc) can satisfy the search query's
+            # relevance check without actually showing boudin. Forces
+            # images.py's _is_relevant() to require "boudin" in the
+            # candidate's own alt text -- see homemade-turkey-feed/
+            # milano-cookies for the same per-page pattern. Correctly
+            # yields a placeholder over a wrong photo if Pexels/Unsplash
+            # never has a real match.
+            "hero_image_must_match": "boudin",
             "image_alt": "Split boudin link on a plate showing the moist rice-and-pork filling spilling out of its casing, next to a small dish of mustard.",
             "direct_answer": "Boudin is a Cajun sausage from south Louisiana made by mixing cooked pork, rice, onions, and seasonings, then stuffing that mixture into a natural casing. It's fully cooked before packaging, so it only needs reheating.",
             "expanded_explanation": "Louisiana boudin (usually called boudin blanc locally, not to be confused with the French veal-and-cream version of the same name) starts with pork shoulder or pork trimmings simmered until tender, then chopped or ground and combined with cooked rice, sauteed onion, bell pepper, celery, garlic, and a mix of cayenne and other seasonings. That filling gets stuffed into hog casing and lightly smoked or simmered again to set it. The rice makes up close to half the volume, which is what gives boudin its soft, almost porridge-like texture rather than the firm bite of a typical sausage.",
