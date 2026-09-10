@@ -147,7 +147,12 @@ def _howto_fallback_query(page_title: str) -> str:
 # whose naive result was "If Eggs Are Good" -- no real photo's alt text
 # will ever contain that phrase). This list also drops non-visual judgment
 # words (good/bad/safe/ripe's opposite "eating"/"lasts") that a
-# photographer would never caption a photo with.
+# photographer would never caption a photo with, and kitchen-location/
+# appliance words (stove/oven/microwave/refrigerator/fridge) that describe
+# *where* the technique happens, not what the photo needs to show -- see
+# _howto_must_match_term's own real-world example (found live: "Popcorn
+# Stove" required "stove" to appear in a stovetop-popcorn photo's alt
+# text, which it essentially never does; "Popcorn" alone matches).
 _HOWTO_MUST_MATCH_STOPWORDS = frozenset({
     "a", "an", "the", "to", "of", "in", "on", "at", "from", "for", "out",
     "with", "without", "if", "is", "are", "be", "still", "fast", "quickly",
@@ -155,6 +160,7 @@ _HOWTO_MUST_MATCH_STOPWORDS = frozenset({
     "while", "know", "how", "your", "again", "back", "up", "down", "over",
     "into", "onto", "so", "just", "it", "its", "good", "bad", "eating",
     "home", "long", "lasts", "stays", "safe", "eat",
+    "stove", "oven", "microwave", "refrigerator", "fridge", "ripe", "word",
 })
 
 
@@ -172,6 +178,36 @@ def _howto_must_match_term(fallback_term: str) -> str | None:
     if not words or len(words) > 3:
         return None
     return " ".join(words)
+
+
+def _howto_relaxed_terms(must_match_term: str | None) -> tuple[str, ...] | None:
+    """Last-resort relaxed attempt once the (already-cleaned) must_match
+    term itself has been tried and failed -- same pattern and rationale as
+    _ingredient_hub_relaxed_term below, generalized to howto_technique.
+
+    A 2-3 word must_match term is still often too specific: real alt text
+    rarely contains an exact multi-word phrase, especially since this
+    derivation can't always tell which word order the title implies (e.g.
+    "How to Get the Most Juice Out of a Lemon" reduces to "Juice Lemon",
+    but a real photo's alt text is far more likely to say "lemon" alone,
+    or "lemon juice" -- never "juice lemon" as an ordered phrase). Rather
+    than guess which single word is "the" head noun (position isn't
+    consistent enough across titles to get that right generally -- see
+    "Pork Butt" vs. "Juice Lemon", where the photographable subject is
+    the first word in one and the last in the other), this returns every
+    word as an OR-tuple: images._is_relevant() already treats a tuple as
+    "any one of these is an acceptable match" for comparison pages, so a
+    photo matching on just "lemon" (out of "Juice Lemon") or just "pork"
+    (out of "Pork Butt") now correctly passes at this final, most
+    permissive tier -- exactly the retry a real audit of stuck pages
+    called for.
+
+    Returns None when the term is already a single word (nothing left to
+    relax) or absent."""
+    if not must_match_term:
+        return None
+    words = must_match_term.split()
+    return tuple(words) if len(words) > 1 else None
 
 
 def _substitute_fallback_query(page_title: str) -> str:
@@ -510,6 +546,16 @@ def fetch_images(
                 relaxed = _ingredient_hub_relaxed_term(page.title)
                 if relaxed and relaxed.lower() != (must_match or "").lower():
                     attempts.append((relaxed, relaxed))
+            # howto_technique only: same last-resort idea, but as an
+            # OR-tuple of must_match's individual words rather than a
+            # single relaxed term -- see _howto_relaxed_terms' docstring
+            # for why a positional guess (first word vs. last word) can't
+            # be made to work generally here the way it can for
+            # ingredient_hub's title-derived term.
+            elif page.template_type == "howto_technique":
+                relaxed_terms = _howto_relaxed_terms(must_match)
+                if relaxed_terms:
+                    attempts.append((fallback_term, relaxed_terms))
 
         # Per-page escape hatch: recipe_or_dish is deliberately left out of
         # the relevance check above (see its own comment -- a dish name is
