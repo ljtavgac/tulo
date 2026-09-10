@@ -120679,7 +120679,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What a rum runner is, how to substitute for it in recipes and drinks, how to store the mix, and the ratios for building one from scratch.",
-            "hero_image_query": "rum runner cocktail with fruit garnish",
+            "hero_image_query": "tropical fruit cocktail with rum and grenadine",
+            "hero_image_must_match": ["rum runner", "tropical cocktail", "cocktail"],
             "image_alt": "A tall glass of rum runner cocktail with its layered pink and orange hues, garnished with a pineapple wedge and maraschino cherry.",
             "description": "Rum runner refers to the Florida Keys cocktail built from light rum, dark rum, banana liqueur, blackberry liqueur, grenadine, and pineapple and orange juices, and also to the bottled fruit-rum mixer sold under that name for making the drink or flavoring desserts. Recipes that call for \"rum runner\" as an ingredient (in cakes, popsicles, granitas, or glazes) usually mean the pre-mixed juice-and-liqueur base rather than the finished cocktail poured over ice.",
             "substitutes": [
