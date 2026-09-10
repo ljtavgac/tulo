@@ -245,14 +245,23 @@ _page_cache: dict[str, list[_PageRecord]] = {}
 
 
 def _cached_pages(db: Session, template_type: str) -> list[_PageRecord]:
-    """Every page of this template_type, as plain (slug, title, content)
-    snapshots -- computed once per process and reused for its lifetime, see
-    the block comment above for why that's safe here. The lock only
-    guards against redundant (not incorrect -- recomputing is idempotent)
-    duplicate work from concurrent requests racing to populate a cold
-    entry; sync endpoints like this run in FastAPI's threadpool, not the
-    single-threaded event loop, so that race is real, just benign without
-    it."""
+    """Every *published* page of this template_type, as plain (slug, title,
+    content) snapshots -- computed once per process and reused for its
+    lifetime, see the block comment above for why that's safe here. The
+    lock only guards against redundant (not incorrect -- recomputing is
+    idempotent) duplicate work from concurrent requests racing to populate
+    a cold entry; sync endpoints like this run in FastAPI's threadpool,
+    not the single-threaded event loop, so that race is real, just benign
+    without it.
+
+    Excludes content["unpublished"] pages (see e.g. swordfish-recipes) at
+    this one shared source rather than in each caller -- every function
+    built on this cache (hub_slug resolution, recipe_slugs, related_*,
+    the auto-linking dictionary, ...) gets the exclusion automatically:
+    an unpublished ingredient_hub page stops being a valid hub_slug match
+    target, stops offering its substitutes, stops appearing as a related
+    link, etc., all for free, with nothing to remember to add at a new
+    call site later."""
     cached = _page_cache.get(template_type)
     if cached is not None:
         return cached
@@ -261,7 +270,11 @@ def _cached_pages(db: Session, template_type: str) -> list[_PageRecord]:
         if cached is not None:
             return cached
         rows = db.query(Page.slug, Page.title, Page.content).filter(Page.template_type == template_type).all()
-        records = [_PageRecord(slug=r.slug, title=r.title, content=r.content) for r in rows]
+        records = [
+            _PageRecord(slug=r.slug, title=r.title, content=r.content)
+            for r in rows
+            if not r.content.get("unpublished")
+        ]
         _page_cache[template_type] = records
         return records
 
@@ -507,6 +520,13 @@ def _page_out(page: Page, content: dict) -> PageOut:
 def get_page(slug: str, db: Session = Depends(get_db)):
     page = db.query(Page).filter(Page.slug == slug).first()
     if page is None:
+        raise HTTPException(status_code=404, detail="Page not found")
+    # content["unpublished"] is a deliberate, explicit per-page opt-out
+    # (see e.g. swordfish-recipes) -- not found is exactly the right
+    # response, indistinguishable from a slug that was never seeded at
+    # all, rather than a distinct "page exists but hidden" status that
+    # would need its own frontend handling.
+    if page.content.get("unpublished"):
         raise HTTPException(status_code=404, detail="Page not found")
 
     if page.template_type == "ingredient_hub":
@@ -782,6 +802,18 @@ def list_pages(
 
     summaries = []
     for page in query.all():
+        # Same content["unpublished"] opt-out get_page() honors -- keeps an
+        # explicitly unpublished page (see e.g. swordfish-recipes) out of
+        # every listing this endpoint feeds: section index pages, the
+        # homepage carousels, RelatedLinks, and sitemap.xml alike, all in
+        # this one place. Filtered in Python rather than SQL (content is a
+        # JSON blob, not a queryable column) -- fine at today's scale
+        # where this is expected to flag a small handful of pages at most;
+        # can mean a `limit`-ed page returns fewer than `limit` results if
+        # one of the skipped pages would've been in that page, same minor
+        # tradeoff any post-query filter has.
+        if page.content.get("unpublished"):
+            continue
         image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
         summaries.append(
             PageSummary(

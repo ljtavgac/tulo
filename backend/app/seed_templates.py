@@ -241854,6 +241854,19 @@ SEED_PAGES = [
         "title": "Swordfish Recipes",
         "batch_number": 4,
         "content": {
+            # Unpublished for now (2026-09-09): every one of this
+            # collection's cards is still aspirational (no real recipe has
+            # ever been published with category_link pointing here), found
+            # via a site-wide audit of every category_roundup page's real-
+            # vs-aspirational ratio -- the only one of 24 collections at
+            # 0%. get_page()/list_pages() both treat this as a 404/absent
+            # from listings (including the sitemap) while it's set. Remove
+            # this key once at least one real swordfish recipe is
+            # published -- the recipe_cards enrichment already runs live
+            # on every view (see get_page()'s category_roundup branch), so
+            # no separate backfill step is needed once that happens, just
+            # deleting this flag.
+            "unpublished": True,
             "meta_description": "Swordfish recipes organized by cooking method, grilled, seared, broiled, and Sicilian-style, with real dishes instead of a generic list.",
             "intro": "Swordfish is dense and meaty enough to grill like a steak, which is why most of the best recipes for it lean on high, direct heat and bold, acidic sauces that cut through the richness.",
             "recipe_cards": [
