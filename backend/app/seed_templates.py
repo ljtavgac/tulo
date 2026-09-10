@@ -72603,6 +72603,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What strawberry puree is, the best substitutes with ratios, how to store it without losing color or flavor, and how to use it in drinks, desserts, and sauces.",
             "hero_image_query": "fresh strawberry puree in a bowl with whole strawberries",
+            "hero_image_must_match": ["strawberry puree", "strawberry sauce", "strawberry"],
             "image_alt": "A bowl of smooth, deep red strawberry puree next to a few whole strawberries and a fine mesh sieve used to strain out the seeds.",
             "description": "Strawberry puree is fresh or frozen strawberries blended smooth, sometimes strained to remove the seeds. It's used as a base for sauces, drinks, fillings, and frozen desserts, and its flavor and color depend heavily on how ripe the berries were and whether the puree was cooked down or left raw.",
             "substitutes": [
@@ -72738,7 +72739,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What mango sago is, how to swap out sago pearls, pomelo, and coconut milk with ratios, and how to store it so the pearls don't turn hard in the fridge.",
-            "hero_image_query": "mango sago dessert bowl",
+            "hero_image_query": "mango dessert soup with tapioca pearls in a bowl",
+            "hero_image_must_match": ["mango sago", "mango dessert", "mango soup", "tapioca pearls"],
             "image_alt": "A glass bowl of chilled mango sago with cubed mango, translucent sago pearls, and coconut milk, garnished with pomelo segments and a mint leaf.",
             "description": "Mango sago is a chilled Cantonese dessert soup built from pureed fresh mango, small translucent sago pearls, and a milk base (usually evaporated milk, coconut milk, or a mix), often with pomelo or grapefruit segments folded in for texture. It's served cold in bowls rather than eaten as a solid dessert, closer to a fruit soup than a pudding.",
             "substitutes": [
