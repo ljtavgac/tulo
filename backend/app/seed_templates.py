@@ -165227,7 +165227,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What small potatoes actually are (and how they differ from new potatoes and fingerlings), the best substitutes with ratios, how to store them, and how to cook them so they hold their shape.",
-            "hero_image_query": "small potatoes roasted whole with skins on",
+            "hero_image_query": "baby potatoes roasted whole with skins on",
+            "hero_image_must_match": ["baby potato", "new potato", "potato"],
             "image_alt": "A pile of small red and yellow potatoes with skins on, some halved to show waxy yellow flesh, next to a sprig of rosemary.",
             "description": "Small potatoes are simply potatoes harvested or sorted small, generally 1 to 2 inches across, rather than a specific variety. Bags labeled \"small potatoes,\" \"baby potatoes,\" or \"creamer potatoes\" at the grocery store are usually a mix of red, yellow, and purple varieties picked for uniform size rather than for being immature. They're prized for cooking whole: the skin-to-flesh ratio is high, they hold together through boiling and roasting, and they need no cutting or peeling for most preparations.",
             "substitutes": [
