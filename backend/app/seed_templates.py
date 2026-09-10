@@ -238398,8 +238398,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What Egg Beaters liquid egg substitute is made of, how to swap it with whole eggs or egg whites using the right ratio, and how to store and cook with it.",
-            "hero_image_query": "liquid egg substitute",
-            "hero_image_must_match": ["liquid egg", "egg substitute", "egg whites"],
+            "hero_image_query": "beaten eggs in a bowl",
+            "hero_image_must_match": ["beaten eggs", "eggs", "egg substitute"],
             "image_alt": "Yellow liquid egg substitute pouring from a resealable carton into a glass bowl, with a whisk resting on the counter beside it",
             "description": "Egg Beaters is a brand of liquid egg substitute made primarily from pasteurized egg whites, with beta-carotene added for yellow color and a small amount of vitamins and minerals stirred back in to mimic whole egg. It contains no egg yolk, so it has no dietary cholesterol and almost no fat, which is why it's marketed as a lower-cholesterol swap for whole eggs rather than a true egg replacement.",
             "substitutes": [
@@ -239919,8 +239919,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What pangrattato is, the best substitutes with ratios, how to store it so it stays crisp, and how to use it as a crunchy finishing topping.",
-            "hero_image_query": "toasted breadcrumbs",
-            "hero_image_must_match": ["breadcrumbs", "bread crumbs", "toasted crumbs"],
+            "hero_image_query": "breadcrumbs",
+            "hero_image_must_match": ["breadcrumbs", "bread crumbs", "panko"],
             "image_alt": "A small bowl of golden, coarsely toasted breadcrumbs flecked with parsley and garlic, sitting next to a wedge of stale bread.",
             "description": "Pangrattato is Italian toasted breadcrumbs made from stale bread, crisped in olive oil (often with garlic and anchovy) until deep golden and crunchy. Known as 'poor man's Parmesan,' it's scattered over pasta, vegetables, and salads to add crunch and savory depth where a hard cheese might otherwise go.",
             "substitutes": [
