@@ -170443,8 +170443,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What the main types of pasta sauce are, how to substitute one for another with real ratios, how to store and reheat them, and how to match sauce to pasta shape.",
-            "hero_image_query": "jar of marinara pasta sauce with basil",
-            "hero_image_must_match": ["pasta sauce", "marinara sauce", "tomato sauce"],
+            "hero_image_query": "spaghetti with mussels in tomato sauce",
+            "hero_image_must_match": ["mussels, tomato sauce", "spaghetti with mussels"],
             "image_alt": "A wooden spoon lifting thick red marinara pasta sauce from a simmering saucepan, with torn basil leaves and a jar of crushed tomatoes in the background.",
             "description": "Pasta sauce is a broad category covering anything tossed with cooked pasta to add flavor, moisture, and body: tomato-based sauces like marinara and arrabbiata, cream-based sauces like alfredo, oil-based sauces like aglio e olio, and herb-and-nut sauces like pesto. Each style has a different base (tomatoes, dairy, oil, or ground herbs) and behaves differently on the stove and in storage.",
             "substitutes": [
