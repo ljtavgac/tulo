@@ -110327,8 +110327,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Cheese Whiz actually is, the best substitutes for cooking and dipping, how to store an opened jar, and how to use it in recipes like a Philly cheesesteak.",
-            "hero_image_query": "melted cheese sauce being poured",
-            "hero_image_must_match": ["cheese sauce", "cheese"],
+            "hero_image_query": "melted orange cheese sauce being poured or dipped",
+            "hero_image_must_match": ["cheese sauce", "cheese dip", "nacho cheese"],
             "image_alt": "A spoon lifting a scoop of glossy orange Cheese Whiz out of its jar, showing its smooth, pourable texture.",
             "description": "Cheese Whiz is a jarred, pasteurized process cheese sauce made by Kraft, built from cheddar cheese, whey, milk proteins, and emulsifying salts that keep it smooth and pourable even cold. It's shelf-stable before opening, melts without breaking or separating, and has a tangy, salty flavor closer to American cheese than sharp cheddar. It's not a natural cheese and won't behave like one when heated; it stays glossy and fluid rather than stringing or browning.",
             "substitutes": [
