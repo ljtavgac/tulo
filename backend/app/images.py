@@ -203,13 +203,20 @@ def _search_pexels(
 def search_image(
     query: str, exclude_urls: frozenset[str] = frozenset(), must_match: str | tuple[str, ...] | None = None
 ) -> ImageResult | None:
-    """Unsplash first, Pexels as fallback. Returns None only if no keys are
-    configured or neither provider has an unused, relevant match for this
-    query -- a real API failure (bad key, rate limit, network error) raises
-    requests.RequestException instead of silently masquerading as "no
-    result," so callers (see fetch_stock_images.py, which already catches
-    and logs per-page errors) can tell "nothing found" apart from
-    "something's broken" instead of debugging blind.
+    """Pexels first, Unsplash as fallback when Pexels comes up empty.
+    Returns None only if no keys are configured or neither provider has an
+    unused, relevant match for this query -- a real API failure (bad key,
+    rate limit, network error) raises requests.RequestException instead of
+    silently masquerading as "no result," so callers (see
+    fetch_stock_images.py, which already catches and logs per-page errors)
+    can tell "nothing found" apart from "something's broken" instead of
+    debugging blind.
+
+    Pexels goes first deliberately: Unsplash's free tier has a much
+    smaller hourly rate limit than Pexels', so checking it on every single
+    search (even ones Pexels alone would satisfy) burns a scarce budget on
+    redundant lookups. Trying Unsplash only when Pexels genuinely has
+    nothing makes its limited quota count as real extra coverage instead.
 
     `exclude_urls` skips photos already assigned to another page in the
     same run -- without it, a thin catalog for a niche query (e.g. a
@@ -222,16 +229,16 @@ def search_image(
     API ranks on loose keyword overlap, not actual subject matching, and
     already produced two live wrong-photo results with no other check in
     this pipeline catching it)."""
-    if UNSPLASH_ACCESS_KEY:
+    if PEXELS_ACCESS_KEY:
         try:
-            result = _search_unsplash(query, exclude_urls, must_match)
+            result = _search_pexels(query, exclude_urls, must_match)
             if result:
                 return result
         except requests.RequestException as e:
-            print(f"    Unsplash request failed ({e}), falling back to Pexels")
+            print(f"    Pexels request failed ({e}), falling back to Unsplash")
 
-    if PEXELS_ACCESS_KEY:
-        return _search_pexels(query, exclude_urls, must_match)
+    if UNSPLASH_ACCESS_KEY:
+        return _search_unsplash(query, exclude_urls, must_match)
 
     return None
 
