@@ -241503,7 +241503,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What turtles candy is, the best substitutes with ratios for baking, how to store it so the caramel stays soft, and how to use it in recipes.",
-            "hero_image_query": "chocolate pieces adorned with pine needles",
+            "hero_image_query": "chocolate pieces adorned with fresh pine needles",
             "hero_image_must_match": ["adorned with fresh pine needles"],
             "image_alt": "A pile of chocolate-covered turtle candies with pecan clusters and caramel centers, one broken in half showing the gooey caramel layer.",
             "description": "Turtles candy is a confection built from three layers: a cluster of pecan halves arranged to look like turtle legs and a head, a layer of soft caramel poured over the pecans, and a coating of melted milk or dark chocolate on top. The shape and name date back to DeMet's Candy Company in Chicago, which trademarked the Turtles brand in 1918, though many other candy makers now sell similar chocolate-caramel-pecan clusters under generic names.",
