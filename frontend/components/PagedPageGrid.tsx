@@ -17,16 +17,27 @@ const IN_FEED_INTERVAL = 6;
 // since a client component can't reach the server-only API_URL directly).
 export default function PagedPageGrid({
   initialPages,
+  initialNextOffset,
+  initialHasMore,
   templateType,
   pageSize,
 }: {
   initialPages: PageSummary[];
+  // A raw row cursor from the initial server-rendered fetch (GET /pages
+  // with paged=true), not initialPages.length -- see PagedPagesResult's
+  // own comment for why those two diverge the moment an unpublished page
+  // was skipped, and why re-deriving "more data exists" from the response
+  // length (this component's old behavior) let a page with hundreds of
+  // real rows stop offering "Load more" after as few as a couple dozen.
+  initialNextOffset: number;
+  initialHasMore: boolean;
   templateType: string;
   pageSize: number;
 }) {
   const [pages, setPages] = useState(initialPages);
+  const [offset, setOffset] = useState(initialNextOffset);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(initialPages.length === pageSize);
+  const [hasMore, setHasMore] = useState(initialHasMore);
   const [error, setError] = useState(false);
 
   async function loadMore() {
@@ -36,12 +47,14 @@ export default function PagedPageGrid({
       const url = new URL("/api/pages", window.location.origin);
       url.searchParams.set("template_type", templateType);
       url.searchParams.set("limit", String(pageSize));
-      url.searchParams.set("offset", String(pages.length));
+      url.searchParams.set("offset", String(offset));
+      url.searchParams.set("paged", "true");
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to load more");
-      const more: PageSummary[] = await res.json();
-      setPages((prev) => [...prev, ...more]);
-      setHasMore(more.length === pageSize);
+      const more: { items: PageSummary[]; next_offset: number; has_more: boolean } = await res.json();
+      setPages((prev) => [...prev, ...more.items]);
+      setOffset(more.next_offset);
+      setHasMore(more.has_more);
     } catch {
       setError(true);
     } finally {

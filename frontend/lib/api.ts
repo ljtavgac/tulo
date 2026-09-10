@@ -1,4 +1,4 @@
-import type { PageRecord, PageSummary } from "./types";
+import type { PagedPagesResult, PageRecord, PageSummary } from "./types";
 
 // Server-side base URL for the backend API. Set this to your deployed
 // backend's HTTPS URL in production (see the root README for details).
@@ -50,6 +50,25 @@ export async function listPages(
   if (options?.lean) {
     url.searchParams.set("lean", "true");
   }
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
+  return res.json();
+}
+
+// The section index pages' "Load more" flow (PagedPageGrid.tsx) -- see
+// PagedPagesResult's own comment for why this can't just reuse listPages()
+// and infer "more data exists" from the response length. Backs both the
+// initial server-rendered page (offset 0) and every subsequent client-side
+// "Load more" click (offset = the previous call's own next_offset).
+export async function listPagesPaged(
+  templateType: string,
+  options: { limit: number; offset: number }
+): Promise<PagedPagesResult> {
+  const url = new URL(`${API_URL}/pages`);
+  url.searchParams.set("template_type", templateType);
+  url.searchParams.set("limit", String(options.limit));
+  url.searchParams.set("offset", String(options.offset));
+  url.searchParams.set("paged", "true");
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to list pages: ${res.status}`);
   return res.json();

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listPages } from "@/lib/api";
+import { listPagesPaged } from "@/lib/api";
 import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default async function DefinitionsIndexPage() {
   const section = sectionForTemplate("definition")!;
-  const pages = await listPages("definition", { limit: PAGE_SIZE, offset: 0 });
+  const { items: pages, next_offset, has_more } = await listPagesPaged("definition", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -55,7 +55,7 @@ export default async function DefinitionsIndexPage() {
         Quick, direct answers to the &quot;what is X&quot; questions you actually typed into Google.
       </p>
 
-      <PagedPageGrid initialPages={pages} templateType="definition" pageSize={PAGE_SIZE} />
+      <PagedPageGrid initialPages={pages} initialNextOffset={next_offset} initialHasMore={has_more} templateType="definition" pageSize={PAGE_SIZE} />
     </main>
   );
 }

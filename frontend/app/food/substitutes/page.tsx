@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listPages } from "@/lib/api";
+import { listPagesPaged } from "@/lib/api";
 import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default async function SubstitutesIndexPage() {
   const section = sectionForTemplate("substitute")!;
-  const pages = await listPages("substitute", { limit: PAGE_SIZE, offset: 0 });
+  const { items: pages, next_offset, has_more } = await listPagesPaged("substitute", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -55,7 +55,7 @@ export default async function SubstitutesIndexPage() {
         Ranked substitutes with exact ratios.
       </p>
 
-      <PagedPageGrid initialPages={pages} templateType="substitute" pageSize={PAGE_SIZE} />
+      <PagedPageGrid initialPages={pages} initialNextOffset={next_offset} initialHasMore={has_more} templateType="substitute" pageSize={PAGE_SIZE} />
     </main>
   );
 }

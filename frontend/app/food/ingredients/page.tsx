@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listPages } from "@/lib/api";
+import { listPagesPaged } from "@/lib/api";
 import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default async function IngredientsIndexPage() {
   const section = sectionForTemplate("ingredient_hub")!;
-  const pages = await listPages("ingredient_hub", { limit: PAGE_SIZE, offset: 0 });
+  const { items: pages, next_offset, has_more } = await listPagesPaged("ingredient_hub", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -55,7 +55,7 @@ export default async function IngredientsIndexPage() {
         What each ingredient actually is, how to store it, and what to swap in when you&apos;re out.
       </p>
 
-      <PagedPageGrid initialPages={pages} templateType="ingredient_hub" pageSize={PAGE_SIZE} />
+      <PagedPageGrid initialPages={pages} initialNextOffset={next_offset} initialHasMore={has_more} templateType="ingredient_hub" pageSize={PAGE_SIZE} />
     </main>
   );
 }
