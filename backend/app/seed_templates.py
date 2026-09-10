@@ -42249,7 +42249,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What Swedish Fish are, the best substitutes for baking and snack mixes, how to store them so they don't harden, and how to use them in desserts.",
-            "hero_image_query": "swedish fish candy",
+            "hero_image_query": "red fish-shaped gummy candy",
+            "hero_image_must_match": ["swedish fish", "gummy candy", "fish-shaped candy", "gummy"],
             "image_alt": "A handful of red Swedish Fish gummy candies shaped like fish, piled next to a few sliced open to show the dense chewy interior",
             "description": "Swedish Fish are soft, chewy, fish-shaped candies made mainly from sugar, corn syrup, and modified corn starch, with citric acid for tartness and no gelatin, which sets them apart from most gummy candy. They were originally developed in Sweden by the candy maker Malaco and have been sold in the US since the 1960s, now made domestically under the Mondelez-owned brand. The classic bag is bright red with a mild, fruity flavor that's often described as cherry-adjacent but is officially just \"natural and artificial flavor.\"",
             "substitutes": [
