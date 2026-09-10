@@ -126388,6 +126388,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What cow tongue (beef tongue) is, how to prepare and substitute it, how to store it, and how to cook it so it turns out tender rather than rubbery.",
             "hero_image_query": "sliced braised beef tongue",
+            "hero_image_must_match": ["beef tongue", "cow tongue", "tongue"],
             "image_alt": "Peeled, sliced beef tongue arranged on a cutting board showing the tender pink interior and thin browned edge from braising.",
             "description": "Cow tongue, usually sold as beef tongue, is a dense, well-exercised muscle covered in a thick, rough outer skin that must be removed after cooking. Raw it looks intimidating, but braised or simmered low and slow for several hours it turns silky and rich, closer in texture to a well-cooked brisket than anything resembling a tongue. It's a staple in Mexican (lengua), Jewish, Korean, and Eastern European cooking, usually poached or pressure-cooked whole, then peeled, sliced, and finished by grilling, frying, or simmering in a sauce.",
             "substitutes": [
@@ -127012,6 +127013,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What beef cheeks are, the best substitutes with ratios, how to store and cook them, and why they need long, slow braising to turn tender.",
             "hero_image_query": "raw beef cheeks on butcher paper",
+            "hero_image_must_match": ["beef cheek", "beef cheeks", "braised beef"],
             "image_alt": "Two trimmed raw beef cheeks, dark red and marbled with connective tissue, resting on butcher paper next to a boning knife.",
             "description": "Beef cheeks are the facial muscle from the cow's jaw, a heavily worked muscle packed with collagen and connective tissue. Raw, they look tough and sinewy, but slow, moist cooking (braising for 3 to 4 hours) melts that collagen into gelatin, leaving meat that shreds easily and a sauce with a naturally silky, rich body.",
             "substitutes": [
@@ -130685,7 +130687,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "Why cooked chicken sometimes looks pink even when it's safe to eat, what actually causes it, and how to tell true doneness without guessing from color.",
-            "hero_image_query": "pink chicken breast sliced open next to meat thermometer",
+            "hero_image_query": "cooked chicken breast sliced open next to meat thermometer",
+            "hero_image_must_match": ["chicken breast", "chicken", "meat thermometer"],
             "image_alt": "A roasted chicken breast sliced in half on a cutting board, showing a faint pink tinge near the bone beside a digital thermometer reading 165 degrees Fahrenheit.",
             "description": "Pink chicken refers to poultry meat that retains a rosy or pinkish color near the bone or in the thickest part even after cooking to a safe temperature. It's caused by myoglobin, a pigment protein in muscle tissue, reacting to heat differently depending on the bird's age, diet, bone porosity, and cooking method. Color is not a reliable way to judge doneness; a food thermometer is the only accurate test.",
             "substitutes": [
@@ -130958,7 +130961,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What kafta is, the best substitutes for the seasoned ground meat mixture, how to store and freeze it, and how to keep it from falling apart on the grill.",
-            "hero_image_query": "grilled kafta skewers with onion and parsley",
+            "hero_image_query": "grilled ground meat kebab skewers with onion and parsley",
+            "hero_image_must_match": ["kafta", "kofta", "kebab", "meat skewers"],
             "image_alt": "Skewers of grilled kafta made from spiced ground lamb, charred at the edges and resting on a plate with grilled tomatoes and chopped parsley",
             "description": "Kafta is a Levantine Arabic preparation of ground meat, usually beef or lamb, mixed with grated or finely minced onion, chopped parsley, and warm spices such as cumin, allspice, cinnamon, and black pepper. The mixture is shaped into logs, patties, or pressed onto skewers and cooked over high heat, though it also appears baked in a tray with tomatoes (kafta bil sanieh) or simmered in stews. The onion and parsley aren't a garnish, they're folded directly into the meat and are part of what keeps it tender and juicy.",
             "substitutes": [
