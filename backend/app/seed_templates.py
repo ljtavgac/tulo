@@ -60644,6 +60644,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What braunschweiger is, the best substitutes with ratios, how to store it safely, and how to use it beyond the classic sandwich spread.",
             "hero_image_query": "sliced braunschweiger liver sausage on rye bread",
+            "hero_image_must_match": ["liverwurst", "braunschweiger"],
             "image_alt": "Thick slices of braunschweiger liver sausage arranged on dark rye bread with mustard and sliced onion on the side.",
             "description": "Braunschweiger is a soft, spreadable smoked liver sausage made primarily from pork liver, pork fat, and often cured pork, seasoned with onion, allspice, and mustard seed, then smoked and fully cooked before packaging. Unlike firmer liverwurst, most commercial braunschweiger is smoked, which gives it a deeper, slightly bacon-like undertone alongside the mineral richness of liver. It's sold pre-cooked and ready to eat, usually in a chub-shaped casing or as pre-sliced rounds.",
             "substitutes": [
@@ -62269,7 +62270,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What consomé is in Mexican cooking, the best substitutes with ratios, how to store homemade or store-bought versions, and how to use it in birria and beyond.",
-            "hero_image_query": "bowl of red birria consome with lime and onion",
+            "hero_image_query": "bowl of clear beef consomme broth",
+            "hero_image_must_match": ["consomme", "broth"],
             "image_alt": "A red-orange bowl of birria consomé topped with chopped onion, cilantro, and a lime wedge, served alongside a quesabirria taco.",
             "description": "Consomé is Spanish for a clear, concentrated, well-seasoned broth. In Mexican cooking it most often refers to the deep red, chile-spiced broth strained off after slow-stewing beef or goat for birria, served as a dipping or sipping liquid alongside the meat. The word is also used more loosely for granulated or cubed chicken and beef bouillon products, like Knorr's Consomé de Pollo, sold in Mexican grocery aisles as an everyday seasoning base for soups, rice, and beans.",
             "substitutes": [
@@ -64703,6 +64705,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What langostino actually is (hint: not a baby lobster), the best substitutes with ratios, how to store and thaw it, and how to cook it without turning it rubbery.",
             "hero_image_query": "cooked langostino tails on ice",
+            "hero_image_must_match": ["langostino", "shrimp", "lobster"],
             "image_alt": "A pile of small pinkish-orange cooked langostino tail meat, resembling tiny lobster tails, arranged on crushed ice.",
             "description": "Langostino is the meat from a small crustacean (genus Munida and related squat lobsters) that lives on the ocean floor off the coasts of Chile and South America. Despite the name meaning 'little lobster' in Spanish, langostino is not a baby lobster or a type of shrimp; it's its own species, distantly related to both. The tail meat is what's sold, usually already cooked and frozen, and it has a texture between shrimp and lobster with a sweeter, more delicate flavor than either.",
             "substitutes": [
@@ -65802,7 +65805,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What Milk Duds are, the best substitutes for baking or snacking with ratios, how to store them so they stay chewy, and how to use them in cookies and desserts.",
-            "hero_image_query": "box of Milk Duds chocolate caramel candy",
+            "hero_image_query": "chocolate covered caramel candies",
+            "hero_image_must_match": ["chocolate", "caramel"],
             "image_alt": "A pile of chocolate-coated Milk Duds spilling out of their yellow box next to a few cut open to show the caramel center.",
             "description": "Milk Duds are a small, egg-shaped candy made of a firm, chewy caramel center coated in a thin layer of milk chocolate. Made by Hershey, they're sold both as a movie-theater box candy and in resealable bags meant for snacking or baking. The caramel is denser and chewier than a soft caramel square, closer to a taffy, which is why Milk Duds hold their shape reasonably well when baked into cookies or bars instead of turning into a puddle.",
             "substitutes": [
@@ -66866,7 +66870,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What qottab is, the best substitutes for this Persian fried pastry, how to store it so it stays crisp, and how it's traditionally served.",
-            "hero_image_query": "Persian qottab pastries dusted with powdered sugar",
+            "hero_image_query": "fried pastries dusted with powdered sugar on a plate",
+            "hero_image_must_match": ["pastry", "pastries"],
             "image_alt": "A plate of crescent-shaped qottab pastries dusted with powdered sugar, one cut open to show the ground walnut and almond filling inside the fried shell.",
             "description": "Qottab (also spelled ghotab or ghottab) is a traditional Persian fried pastry from the cities of Yazd and Kerman. Thin dough is wrapped around a filling of ground walnuts and almonds sweetened with sugar and scented with cardamom and rosewater, folded into a crescent, deep-fried until golden, and dusted heavily with powdered sugar. It's dense, nutty, and only lightly sweet compared to syrup-soaked pastries like baklava.",
             "substitutes": [
@@ -67463,6 +67468,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What salchipapa is, the best substitutes for the sausage and fries, how to keep leftovers from going soggy, and how it's traditionally topped and served.",
             "hero_image_query": "salchipapa street food fries and sausage",
+            "hero_image_must_match": ["fries", "sausage"],
             "image_alt": "A paper plate piled with crispy golden fries and sliced fried hot dog rounds, drizzled with ketchup, mayonnaise, and pale green aji sauce.",
             "description": "Salchipapa is a Latin American street food dish, most closely associated with Peru but eaten across Ecuador, Colombia, and Bolivia, made of french fries and sliced sausage (usually a beef hot dog) fried or pan-fried together and served on one plate. The name is a mashup of \"salchicha\" (sausage) and \"papa\" (potato). It's typically piled onto a paper plate or foil tray and finished with a mix of sauces rather than eaten separately as a sandwich.",
             "substitutes": [
@@ -67527,7 +67533,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What a SCOBY actually is, how to substitute one when starting kombucha for the first time, how to store extras in a SCOBY hotel, and how to tell a healthy one from a moldy one.",
-            "hero_image_query": "kombucha scoby in jar",
+            "hero_image_query": "kombucha scoby culture in glass jar",
+            "hero_image_must_match": "kombucha",
             "image_alt": "A pale, rubbery kombucha SCOBY floating near the surface of a jar of amber sweet tea, with a thin new cream-colored layer forming across the top.",
             "description": "A SCOBY (symbiotic culture of bacteria and yeast) is the rubbery, pancake-like disc that forms on top of sweetened tea during kombucha fermentation. It's not a single organism but a living mat of cellulose produced by acetic acid bacteria, embedded with yeast strains, that converts sugar and caffeine into the acids, trace alcohol, and carbonation that give kombucha its tang. Every batch of kombucha grows a new layer on top of the old one, which is how a single SCOBY can be split into many over time.",
             "substitutes": [
@@ -68425,7 +68432,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What a smuffin is, the closest substitutes if you can't get one, how to store them so they don't dry out, and how they differ from a regular muffin or scone.",
-            "hero_image_query": "fresh baked smuffins on a cooling rack",
+            "hero_image_query": "fresh baked muffins on a cooling rack",
+            "hero_image_must_match": "muffin",
             "image_alt": "A batch of golden-topped smuffins in a muffin tin, showing a dense crumbly top over a moist interior studded with berries.",
             "description": "A smuffin is a hybrid baked good that splits the difference between a scone and a muffin: it's mixed and baked in a muffin tin like a muffin, but uses the higher butter-to-flour ratio and lighter mixing technique of a scone, giving it a firmer, slightly crumbly top with a moist, tender interior. Bakeries sell it as a sturdier alternative to a standard muffin, often topped with coarse sugar the way a scone would be.",
             "substitutes": [
@@ -68555,7 +68563,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What someng is, the closest substitutes with ratios, how to store fresh and fermented someng, and how it's used in Western Visayan Filipino cooking.",
-            "hero_image_query": "guinamos nga someng fermented fish paste Philippines",
+            "hero_image_query": "fermented fish paste in a small bowl",
+            "hero_image_must_match": ["fish paste", "paste"],
             "image_alt": "A small glass jar of amber-colored guinamos nga someng paste next to a mound of tiny translucent someng fish fry on a market scale",
             "description": "Someng is the local Hiligaynon name for the tiny, nearly translucent fry of small coastal fish (mainly juvenile anchovy and silverside species) harvested off the coasts of Panay and Guimaras in the Western Visayas region of the Philippines. It's eaten fresh, pan-fried into small cakes, or salted and fermented into guinamos nga someng, a pungent paste that functions the way bagoong alamang does elsewhere in the country but with a fishier, less pink, more amber character since it's made from fish rather than shrimp.",
             "substitutes": [
@@ -69142,7 +69151,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What tacos dorados are, how they differ from flautas and taquitos, the best ways to fry or bake them, and how to keep leftovers crispy instead of soggy.",
-            "hero_image_query": "crispy tacos dorados on plate",
+            "hero_image_query": "crispy fried tacos on a plate",
+            "hero_image_must_match": ["taco", "tacos"],
             "image_alt": "A platter of golden fried tacos dorados folded in half, topped with shredded lettuce, crema, and crumbled cotija cheese, with one taco broken open to show shredded chicken filling.",
             "description": "Tacos dorados (\"golden tacos\") are corn tortillas folded or rolled around a filling, usually shredded chicken, beef, or potato, then fried in hot oil until the shell turns crisp and deep golden. They're a staple of Mexican home cooking and street stands, distinct from soft tacos in that the fried shell itself is the point: it should shatter slightly when bitten, not bend. Traditionally the tortilla is folded over the filling and secured with a toothpick or held closed by hand during frying, rather than rolled tight like a flauta.",
             "substitutes": [
@@ -70198,6 +70208,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What linguica is, the best substitutes with ratios, how to store it, and how to cook it so it keeps its smoky, garlicky flavor.",
             "hero_image_query": "sliced linguica sausage on cutting board",
+            "hero_image_must_match": ["sausage", "linguica"],
             "image_alt": "Sliced linguica sausage showing its deep red, garlic-and-paprika-cured interior next to whole links on a wooden board",
             "description": "Linguica is a Portuguese smoked pork sausage cured with garlic and paprika, giving it a deep red color and a smoky, slightly tangy flavor. It's coarser and drier than fresh Italian sausage, closer in texture to a firm smoked kielbasa, and it's fully cooked or cured before packaging, though most cooks still brown or simmer it before eating.",
             "substitutes": [
@@ -71708,7 +71719,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What mamajuana is, how to substitute it in cocktails and marinades, how to store an opened bottle, and how to use its distinct herbal-spiced flavor.",
-            "hero_image_query": "bottle of mamajuana with tree bark and herbs",
+            "hero_image_query": "dark spiced rum in a glass bottle",
+            "hero_image_must_match": "rum",
             "image_alt": "A glass bottle of dark reddish-brown mamajuana liquid with visible strips of tree bark, dried herbs, and roots layered at the bottom.",
             "description": "Mamajuana is a traditional Dominican drink made by steeping a mix of tree bark (usually a combination called palo de brasil, palo indio, and canelilla), dried herbs, and sometimes raisins in a blend of rum, red wine, and honey. The dried bark-and-herb mix is sold on its own in bundles or small bags, and it's reused for infusions after the liquid is poured off, sometimes for months. The finished drink is dark reddish-brown, sweet up front, and bitter-earthy on the finish, with flavor closer to a spiced amaro or vermouth than a standard cocktail mixer.",
             "substitutes": [
@@ -73729,6 +73741,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What guajillo chiles are, the best substitutes with ratios, how to store and rehydrate them, and how to use them in sauces, salsas, and stews.",
             "hero_image_query": "dried guajillo chiles",
+            "hero_image_must_match": ["chile", "pepper", "chiles"],
             "image_alt": "A pile of dried guajillo chiles with smooth, deep reddish-brown skins and elongated, tapered shapes on a wooden cutting board.",
             "description": "Guajillo (Capsicum annuum) is a dried Mexican chile made from the mirasol pepper, recognizable by its smooth, glossy, deep reddish-brown skin and long, narrow, tapered shape. It has a mild to medium heat (2,500 to 5,000 Scoville units) and a tangy, slightly fruity flavor with notes of berry and green tea, plus an earthy, almost tannic edge. Guajillos are one of the most common chiles in Mexican cooking, forming the backbone of countless red sauces, adobos, and moles alongside ancho and pasilla chiles.",
             "substitutes": [
@@ -73985,6 +73998,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What sablefish (black cod) is, the best substitutes with ratios, how to store and cook it, and why its high fat content makes it so forgiving on the grill or broiler.",
             "hero_image_query": "raw sablefish fillet on ice",
+            "hero_image_must_match": ["fish", "fillet"],
             "image_alt": "Two glossy, pale ivory sablefish fillets with visible fat marbling resting on crushed ice at a fish counter",
             "description": "Sablefish (Anoplopoma fimbria) is a deep-water Pacific fish also sold as black cod, though it isn't related to cod at all. It's prized for an extremely high fat content that gives it a soft, almost buttery texture and large, silky flakes even when overcooked slightly, something few other fish can survive. The flavor is mild and rich rather than fishy, which is why it's so often paired with strong marinades like miso or soy.",
             "substitutes": [
@@ -76706,6 +76720,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What swai fish is, the best substitutes with ratios, how to store and thaw it safely, and how to cook it without ending up with a mushy texture.",
             "hero_image_query": "raw swai fish fillets on ice",
+            "hero_image_must_match": ["fish", "fillet"],
             "image_alt": "Pale, thin swai fillets laid on crushed ice, showing their translucent edges and soft pinkish-white flesh.",
             "description": "Swai (Pangasianodon hypophthalmus) is a freshwater catfish farmed almost entirely in Vietnam's Mekong Delta and sold in the U.S. as inexpensive, boneless, skinless white fish fillets. It has a very mild, almost neutral flavor, a soft texture, and a higher water content than most whitefish, which is why it's nearly always sold frozen and needs careful cooking to avoid turning mushy.",
             "substitutes": [
@@ -77212,6 +77227,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What Taleggio cheese is, the best substitutes with ratios, how to store it so the rind stays intact, and how to use it in melting and eating applications.",
             "hero_image_query": "taleggio cheese wedge with rind",
+            "hero_image_must_match": "cheese",
             "image_alt": "A wedge of Taleggio cheese sliced open on a wooden board, showing its thin orange-pink washed rind and soft, pale yellow interior.",
             "description": "Taleggio is a semi-soft, washed-rind cow's milk cheese from the Lombardy region of Italy, protected under DOP status. It's aged about six to ten weeks, during which the rind is repeatedly washed in a mild brine that encourages the growth of Brevibacterium linens, the same bacteria responsible for the pungent smell of many washed-rind cheeses. Despite the strong aroma, the paste itself is much milder: buttery, faintly fruity, and slightly tangy, with a texture that softens toward the rind as it ripens.",
             "substitutes": [
@@ -77526,6 +77542,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What mastic resin is, how to grind and use it in Greek and Turkish desserts, the closest substitutes, and how to store it so it doesn't lose its piney aroma.",
             "hero_image_query": "mastic resin tears in bowl",
+            "hero_image_must_match": "resin",
             "image_alt": "Small translucent pale yellow-green tears of mastic resin piled in a wooden bowl next to a mortar and pestle with sugar for grinding.",
             "description": "Mastic is a resin harvested from Pistacia lentiscus var. chia, a tree grown almost exclusively on the Greek island of Chios. Farmers score the bark and collect the sap as it hardens into small translucent tears, which are dried, sorted, and sold whole or ground. Culinary mastic has a resinous, piney aroma with a faint sweetness, and it melts into a chewy, slightly stretchy texture when used in ice cream, puddings, and enriched breads.",
             "substitutes": [
@@ -79289,7 +79306,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What kanpachi is, the best substitutes for sushi and crudo, how to store it safely, and how to tell it apart from hamachi and other amberjack.",
-            "hero_image_query": "kanpachi sashimi sliced on plate",
+            "hero_image_query": "sliced raw fish sashimi on a plate",
+            "hero_image_must_match": ["sashimi", "fish"],
             "image_alt": "Thin translucent slices of raw kanpachi arranged on a black plate with a small mound of grated wasabi and shiso leaf",
             "description": "Kanpachi (Seriola rivoliana), also called amberjack or almaco jack, is a firm, mild, cold-water fish prized in Japanese cuisine for sashimi and sushi. Its flesh is pale pink to white, denser and slightly less fatty than hamachi, with a clean, faintly sweet flavor and a firmer bite. Most kanpachi sold in the U.S. and Japan today is farm-raised, particularly from Hawaii and Baja California, which has made it more consistently available at sushi counters year-round.",
             "substitutes": [
@@ -79615,6 +79633,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What demerara sugar is, the best substitutes with ratios, how to store it so it doesn't clump, and how to use its crunch and molasses flavor.",
             "hero_image_query": "demerara sugar crystals in a bowl with spoon",
+            "hero_image_must_match": "sugar",
             "image_alt": "Coarse golden-brown demerara sugar crystals piled in a small wooden bowl next to a spoon, showing their large, glossy grain size.",
             "description": "Demerara is a large-grain, light brown raw cane sugar named for the Demerara region of Guyana, where it was first produced. Unlike white granulated sugar, it retains a thin coating of molasses from the cane juice, giving it a pale amber color, a faint toffee flavor, and noticeably large, crunchy crystals that don't fully dissolve into batters.",
             "substitutes": [
@@ -110271,7 +110290,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Cheese Whiz actually is, the best substitutes for cooking and dipping, how to store an opened jar, and how to use it in recipes like a Philly cheesesteak.",
-            "hero_image_query": "jar of cheese whiz being spooned over pretzel",
+            "hero_image_query": "melted cheese sauce being poured",
+            "hero_image_must_match": ["cheese sauce", "cheese"],
             "image_alt": "A spoon lifting a scoop of glossy orange Cheese Whiz out of its jar, showing its smooth, pourable texture.",
             "description": "Cheese Whiz is a jarred, pasteurized process cheese sauce made by Kraft, built from cheddar cheese, whey, milk proteins, and emulsifying salts that keep it smooth and pourable even cold. It's shelf-stable before opening, melts without breaking or separating, and has a tangy, salty flavor closer to American cheese than sharp cheddar. It's not a natural cheese and won't behave like one when heated; it stays glossy and fluid rather than stringing or browning.",
             "substitutes": [
