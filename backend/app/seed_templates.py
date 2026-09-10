@@ -37849,9 +37849,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A baked dip of spinach, chopped artichoke hearts, cream cheese, and Parmesan, mixed cold and baked until golden and bubbling. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "baked spinach artichoke dip",
-            "hero_image_must_match": ["spinach artichoke", "spinach and artichoke", "spinach dip", "flavorful dips"],
+            "hero_image_must_match": ["spinach artichoke", "spinach and artichoke", "spinach and tomato dips"],
             "salient_ingredient_query": "spinach and artichoke dip",
-            "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke", "spinach dip", "flavorful dips"],
+            "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke", "spinach and tomato dips"],
             "image_alt": "A bubbling spinach artichoke dip in a round baking dish with a golden, lightly browned Parmesan crust and a tortilla chip dipped into the edge.",
             "why_it_works": "Squeezing the thawed spinach completely dry keeps the dip from turning watery in the oven, and a base of cream cheese, sour cream, and mayonnaise gives it enough fat to stay creamy rather than separating as it bakes. A layer of Parmesan on top browns into a slightly crisp crust that contrasts with the soft filling underneath.",
             "prep_time_minutes": 15,
