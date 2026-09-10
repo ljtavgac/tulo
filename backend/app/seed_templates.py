@@ -37849,6 +37849,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A baked dip of spinach, chopped artichoke hearts, cream cheese, and Parmesan, mixed cold and baked until golden and bubbling. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "baked spinach artichoke dip",
+            "hero_image_must_match": ["spinach artichoke dip", "artichoke dip", "spinach dip"],
             "salient_ingredient_query": "spinach and artichoke dip",
             "salient_ingredient_must_match": ["spinach artichoke", "spinach and artichoke"],
             "image_alt": "A bubbling spinach artichoke dip in a round baking dish with a golden, lightly browned Parmesan crust and a tortilla chip dipped into the edge.",
@@ -102670,7 +102671,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "How long leftover pizza actually lasts in the fridge, the right way to store it so the crust doesn't turn soggy, and how to tell when it's gone bad.",
-            "hero_image_query": "leftover pizza slices stored in fridge container",
+            "hero_image_query": "pizza box with leftover slices",
+            "hero_image_must_match": ["pizza box", "pizza slice", "pizza"],
             "image_alt": "Leftover pizza slices stacked with parchment paper between them inside a shallow airtight container in the fridge.",
             "intro": "Leftover pizza is only as good as how it's stored, and the fridge doesn't stop bacteria growth, it just slows it down. Pizza left out too long before refrigerating or sealed the wrong way turns soggy, dries out, or spoils faster than it should.",
             "steps": [
@@ -131475,7 +131477,8 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A homemade copycat of Heinz 57 steak sauce, tangy and slightly sweet with raisins, mustard, and allspice. Ready in 20 minutes with pantry staples.",
             "hero_image_query": "steak sauce in small bowl with steak",
-            "salient_ingredient_query": "tangy brown steak sauce in a small bowl",
+            "hero_image_must_match": ["steak sauce", "dipping sauce", "brown sauce"],
+            "salient_ingredient_query": "tangy brown steak sauce",
             "salient_ingredient_must_match": ["steak sauce", "brown sauce"],
             "image_alt": "A small glass bowl of dark reddish-brown copycat Heinz 57 steak sauce next to a grilled steak, with a spoon resting in the sauce.",
             "why_it_works": "Pureed raisins add the same fruity sweetness and body that the original sauce gets from tomato and fruit concentrate, while a hit of allspice and dry mustard recreates its distinctive warm, tangy edge that plain ketchup or Worcestershire can't match on their own.",
@@ -146647,7 +146650,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What candy crescents are, the best substitutes for baking and garnishing, how to store them so they don't go sticky, and how to use them in recipes.",
-            "hero_image_query": "cinnamon hard candy crescents",
+            "hero_image_query": "cinnamon hard candy",
+            "hero_image_must_match": ["hard candy", "cinnamon candy", "candy"],
             "hero_image_must_match": ["crescent candy", "hard candy", "cinnamon candy"],
             "image_alt": "A small pile of amber-colored crescent-moon shaped hard candies scattered on a wooden board, some whole and some crushed into shards.",
             "description": "Candy crescents are hard candies molded into a crescent-moon shape, most commonly flavored with cinnamon or butterscotch, though fruit and chocolate-dipped versions exist. They're a holiday-shelf staple sold in bags similar to candy corn, and home bakers use them whole as cake and cupcake toppers or crushed as a crunchy garnish for cookies, popcorn, and ice cream.",
@@ -153354,8 +153358,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What lau lau is, the best substitutes for taro (lūʻau) leaves and ti leaf wrappers, how to store and reheat leftovers, and how to serve it the traditional way.",
-            "hero_image_query": "pork wrapped in leaves steamed",
-            "hero_image_must_match": ["lau lau", "ti leaves", "wrapped in leaves"],
+            "hero_image_query": "pork wrapped in banana leaf",
+            "hero_image_must_match": ["pork wrapped", "banana leaf", "pork"],
             "image_alt": "A steamed lau lau bundle partially unwrapped from its dark green ti leaves, revealing tender braised pork and dark cooked taro leaves inside.",
             "description": "Lau lau is a traditional Hawaiian dish of pork, and often a piece of butterfish, wrapped first in lūʻau leaves (young taro leaves) and then bundled in ti leaves before being steamed or slow-baked for several hours until the meat falls apart and the leaves cook down into a soft, spinach-like filling. The ti leaves are not eaten; they hold in moisture and impart a faint grassy aroma while the meat steams inside them.",
             "substitutes": [
@@ -160398,7 +160402,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What neck bones are, the best substitutes with ratios, how to store and cook them, and how they're used in soups, stews, and Southern-style greens.",
             "hero_image_query": "raw pork neck bones",
-            "hero_image_must_match": ["neck bones", "pork neck", "soup bones"],
+            "hero_image_must_match": ["neck bones", "pork neck", "soup bones", "pork"],
             "image_alt": "Raw pork neck bones piled in a bowl, showing the small bone sections and surrounding meat and cartilage before simmering.",
             "description": "Neck bones are cross-cut sections of the neck, most commonly from pork but also sold as beef or smoked turkey necks. They're mostly bone, cartilage, and connective tissue with a thin layer of meat clinging to each piece, which is why they're almost never roasted or grilled. Instead they're simmered low and slow, where the collagen breaks down and enriches the surrounding liquid into a thick, gelatinous broth while the meat turns tender enough to fall off the bone.",
             "substitutes": [
@@ -173119,8 +173123,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What fruit leather is, the best substitutes with ratios, how to store it so it stays chewy instead of hardening, and how to use it in recipes and snacks.",
-            "hero_image_query": "rolled fruit leather strips",
-            "hero_image_must_match": ["fruit leather", "fruit roll"],
+            "hero_image_query": "flat sheet of chewy fruit snack candy",
+            "hero_image_must_match": ["fruit leather", "fruit roll", "fruit snack"],
             "image_alt": "Thin sheets of dried fruit leather rolled into coils and sliced into strips on a wooden cutting board.",
             "description": "Fruit leather is pureed fruit that has been spread thin and dehydrated until it forms a pliable, chewy sheet. It's made by cooking down fruit (or blending it raw), spreading the puree onto a lined tray, and drying it at low heat in an oven or dehydrator until no longer tacky in the center. The result is naturally sweet, portable, and shelf-stable without added gelatin or pectin.",
             "substitutes": [
@@ -190686,7 +190690,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What beef chuck is, the best substitutes with ratios, how to store it, and how to cook it so the tough connective tissue turns tender instead of chewy.",
             "hero_image_query": "raw beef chuck roast",
-            "hero_image_must_match": ["beef chuck", "chuck roast"],
+            "hero_image_must_match": ["beef chuck", "chuck roast", "beef roast", "beef"],
             "image_alt": "A boneless beef chuck roast on a wooden cutting board, showing thick marbling and connective tissue running through the meat.",
             "description": "Beef chuck comes from the shoulder and lower neck of the cow, a heavily worked area with dense connective tissue and generous marbling. That combination makes it tough when cooked quickly but exceptionally flavorful and rich when cooked low and slow, since the collagen breaks down into gelatin and bastes the meat from within. It's sold as chuck roast, chuck eye roast, chuck arm roast, or ground into chuck for burgers.",
             "substitutes": [
@@ -193691,7 +193695,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What pistachio paste is, the best substitutes with ratios, how to store it without it separating, and how to use it in gelato, macarons, and pastry fillings.",
             "hero_image_query": "pistachio paste",
-            "hero_image_must_match": ["pistachio paste", "pistachio cream", "pistachio butter"],
+            "hero_image_must_match": ["pistachio paste", "pistachio cream", "pistachio butter", "pistachio"],
             "image_alt": "A glass jar of thick, vivid green pistachio paste with a spoon lifting a swirl, surrounded by whole shelled pistachios on a wooden board.",
             "description": "Pistachio paste is a smooth, concentrated paste made by grinding blanched pistachios (usually with sugar and a small amount of neutral oil) into a spreadable consistency. It's the backbone of Italian and French pastry work, giving gelato, macarons, croissant filling, and frangipane their pistachio flavor and green color. It's different from pistachio butter, which is unsweetened pure ground pistachios, and from marzipan, which is almond-based.",
             "substitutes": [
@@ -194808,6 +194812,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "Moonshine is a high-proof, unaged distilled spirit traditionally made from corn mash. What it is, how it's made, and how it differs from other liquors.",
             "hero_image_query": "clear moonshine in mason jar",
+            "hero_image_must_match": ["moonshine", "mason jar", "jug", "still"],
             "image_alt": "A mason jar filled with clear moonshine sitting on a wooden barrel, with a copper still visible in the blurred background.",
             "direct_answer": "Moonshine is a clear, unaged distilled spirit, usually made from a corn-based mash, historically produced illegally to avoid alcohol taxes. It's typically much higher in proof than standard liquor, often 100 to 190 proof.",
             "expanded_explanation": "The term originally referred to any liquor distilled illicitly and secretly, often at night ('by moonlight') to avoid detection by tax authorities. Traditional moonshine is made by fermenting a mash, most often corn, though sugar, rye, or fruit versions exist, then running it through a pot still. Because it's not aged in barrels like bourbon or whiskey, it stays clear and carries a sharp, grain-forward flavor with a strong alcohol bite. Quality varies enormously depending on how carefully the still is run; a skilled distiller separates out the 'heads' and 'tails' of the distillation run, which contain harsher compounds, keeping only the cleaner 'hearts' for drinking.",
@@ -199928,6 +199933,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "No-bake peanut butter rice krispie treats made with melted marshmallow, creamy peanut butter, and a crisp cereal base, ready in under an hour with a chocolate drizzle option.",
             "hero_image_query": "peanut butter rice krispie treats stacked",
+            "hero_image_must_match": ["rice krispie", "krispie treat", "cereal bar", "marshmallow treat", "cereal treat"],
             "salient_ingredient_query": "peanut butter cereal treat bars",
             "salient_ingredient_must_match": ["cereal treat", "cereal bar", "marshmallow treat"],
             "image_alt": "Stacked squares of peanut butter rice krispie treats with a chocolate drizzle on top, showing the chewy marshmallow interior.",
@@ -213566,7 +213572,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a taco bake is, the best ingredient swaps for beef, tortillas, and cheese, how to store and reheat leftovers, and how to keep it from turning soggy.",
             "hero_image_query": "cheesy taco casserole with beef and tortillas",
-            "hero_image_must_match": ["taco bake", "taco casserole", "mexican casserole"],
+            "hero_image_must_match": ["taco bake", "taco casserole", "mexican casserole", "casserole"],
             "image_alt": "A baking dish of taco bake with melted cheddar and Monterey Jack bubbling on top, layered tortilla pieces visible at the edges, garnished with sour cream, diced tomato, and sliced jalapeño.",
             "description": "A taco bake is a layered casserole that takes the flavors of a taco (seasoned ground meat, cheese, salsa, and tortillas or chips) and bakes them together in one dish instead of assembling individual tacos. Most versions layer tortillas or crushed chips with taco-seasoned beef, beans, and shredded cheese, then bake until the cheese melts and the edges crisp slightly.",
             "substitutes": [
@@ -217631,6 +217637,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A moist, orange-scented Italian olive oil cake made with extra-virgin olive oil instead of butter. Includes tips on picking oil that hasn't gone rancid, plus a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "olive oil cake",
+            "hero_image_must_match": ["olive oil cake", "bundt cake", "sliced cake"],
             "salient_ingredient_query": "sliced olive oil cake with orange glaze",
             "salient_ingredient_must_match": ["olive oil cake", "olive cake"],
             "image_alt": "A sliced round olive oil cake on a wire rack, showing a dense golden crumb flecked with orange zest, with a bottle of olive oil in the background.",
@@ -221084,8 +221091,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A rich, nutty black sesame paste made from just toasted black sesame seeds, oil, and a touch of sugar. Ready in about 40 minutes and keeps for months in the fridge.",
             "hero_image_query": "black sesame paste in jar with spoon",
+            "hero_image_must_match": ["sesame paste", "black sesame paste"],
             "salient_ingredient_query": "smooth black sesame paste",
-            "salient_ingredient_must_match": ["black sesame", "sesame paste"],
+            "salient_ingredient_must_match": ["sesame paste", "black sesame paste"],
             "image_alt": "A jar of glossy, dark black sesame paste with a spoon lifting a swirl of it, surrounded by scattered black sesame seeds.",
             "why_it_works": "Toasting raw black sesame seeds before grinding coaxes out their natural oils, which is what turns dry seeds into a smooth, spreadable paste without needing much added oil, and it deepens the flavor from grassy to genuinely nutty and almost smoky.",
             "prep_time_minutes": 10,
@@ -221913,7 +221921,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What Colby Jack cheese is, the best substitutes with ratios, how to store it so it doesn't dry out or sweat, and how to use it for the best melt.",
             "hero_image_query": "marbled colby jack cheese",
-            "hero_image_must_match": ["colby jack", "marbled cheese"],
+            "hero_image_must_match": ["colby jack", "marbled cheese", "cheddar", "cheese"],
             "image_alt": "A block of Colby Jack cheese sliced open to show the orange and white marbled pattern, with a few shredded pieces beside it.",
             "description": "Colby Jack is a marbled American cheese made by blending curds from Colby (a mild, orange cheddar-style cheese) and Monterey Jack (a soft, pale white cheese) before pressing them into one wheel. The result is the familiar orange-and-white swirled cheese with a mild, slightly buttery flavor and a soft, very meltable texture.",
             "substitutes": [
@@ -230271,8 +230279,9 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A cheesy, protein-packed low carb breakfast casserole with sausage, spinach, and eggs, baked in one dish with no flour, potatoes, or added sugar.",
             "hero_image_query": "low carb breakfast casserole with eggs and sausage",
+            "hero_image_must_match": ["egg casserole", "breakfast casserole", "egg bake"],
             "salient_ingredient_query": "eggs and breakfast sausage bake",
-            "salient_ingredient_must_match": ["egg bake", "breakfast sausage", "baked eggs"],
+            "salient_ingredient_must_match": ["egg bake", "baked eggs", "egg casserole"],
             "image_alt": "A baked egg and sausage casserole in a white 9x13 dish, cut into squares, showing melted cheddar and flecks of spinach and red bell pepper throughout.",
             "why_it_works": "Cooking the sausage and vegetables first drives off excess moisture so the casserole sets firm instead of turning watery, and a mix of whole eggs and heavy cream gives a custardy texture without any flour or potato filler to add carbs.",
             "prep_time_minutes": 15,
@@ -243101,6 +243110,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A pantry-staple onion soup mix recipe made from dried minced onion, onion powder, and beef bouillon, ready in 5 minutes with no MSG or anti-caking agents.",
             "hero_image_query": "onion soup mix seasoning blend in glass jar",
+            "hero_image_must_match": ["seasoning mix", "dried onion", "spice blend", "onion flakes"],
             "salient_ingredient_query": "dried minced onion flakes",
             "salient_ingredient_must_match": ["dried onion", "onion flakes", "dehydrated onion"],
             "image_alt": "A small glass jar filled with a tan, flaky homemade onion soup mix blend of dried minced onion and bouillon granules, with a wooden spoon and loose dried onion flakes scattered beside it.",
