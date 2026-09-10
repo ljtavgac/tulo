@@ -160670,8 +160670,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What tasso is, the best substitutes with ratios, how to store it, and how to use this Cajun smoked pork to season gumbo, jambalaya, and beans.",
-            "hero_image_query": "diced smoked cajun ham",
-            "hero_image_must_match": ["tasso ham", "cajun ham", "smoked pork"],
+            "hero_image_query": "sliced smoked ham on a plate",
+            "hero_image_must_match": ["sliced smoked ham", "smoked ham"],
             "image_alt": "Diced reddish-brown tasso ham cubes coated in cayenne and black pepper crust, piled next to a chef's knife on a wooden cutting board.",
             "description": "Tasso is a Louisiana specialty made from pork, traditionally the shoulder or leg, that's cured, coated thickly in cayenne pepper, black pepper, garlic, and other spices, then smoked over pecan or hickory wood until firm and intensely flavored. It isn't eaten as a stand-alone cut the way ham or bacon is; it's a seasoning meat, cut into small dice or thin strips and cooked into a dish to release smoke, salt, and heat into the whole pot. A little goes a long way, which is why recipes typically call for just a few ounces rather than a pound.",
             "substitutes": [
