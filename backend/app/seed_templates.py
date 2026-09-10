@@ -193549,6 +193549,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What pistachio paste is, the best substitutes with ratios, how to store it without it separating, and how to use it in gelato, macarons, and pastry fillings.",
             "hero_image_query": "pistachio paste in jar with spoon",
+            "hero_image_must_match": ["pistachio paste", "pistachio cream", "pistachio butter"],
             "image_alt": "A glass jar of thick, vivid green pistachio paste with a spoon lifting a swirl, surrounded by whole shelled pistachios on a wooden board.",
             "description": "Pistachio paste is a smooth, concentrated paste made by grinding blanched pistachios (usually with sugar and a small amount of neutral oil) into a spreadable consistency. It's the backbone of Italian and French pastry work, giving gelato, macarons, croissant filling, and frangipane their pistachio flavor and green color. It's different from pistachio butter, which is unsweetened pure ground pistachios, and from marzipan, which is almond-based.",
             "substitutes": [
