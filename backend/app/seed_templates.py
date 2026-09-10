@@ -189195,7 +189195,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What dijon mustard is, the best substitutes with ratios, how to store it, and how to use it in dressings, sauces, and marinades.",
             "hero_image_query": "dijon mustard jar with spoon",
-            "hero_image_must_match": ["dijon mustard", "dijon"],
+            "hero_image_must_match": ["dijon mustard", "mustard"],
             "image_alt": "A small glass jar of pale yellow-brown dijon mustard with a spoon resting in it beside whole mustard seeds on a wooden board",
             "description": "Dijon mustard is a smooth, pale yellow-brown condiment made from brown or black mustard seeds, white wine or verjuice, and vinegar, originating from Dijon, France. It's sharper and more tangy than American yellow mustard, with less sweetness and no turmeric-based coloring, and it emulsifies smoothly into dressings and sauces without the grainy texture of whole-grain versions.",
             "substitutes": [
@@ -234703,7 +234703,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a sunshine bowl is, the core components that define it, smart substitutes for each part, and how to build and store one so it doesn't turn soggy.",
-            "hero_image_query": "colorful sunshine bowl with turmeric rice sweet potato and greens",
+            "hero_image_query": "turmeric rice grain bowl with roasted sweet potato and greens",
+            "hero_image_must_match": ["turmeric rice", "grain bowl", "buddha bowl"],
             "image_alt": "A wide bowl of turmeric-yellow rice topped with roasted sweet potato cubes, chickpeas, shredded purple cabbage, avocado slices, and a drizzle of tahini dressing.",
             "description": "A sunshine bowl is a composed grain bowl built around warm, orange-and-yellow ingredients, usually turmeric or curry-spiced rice or quinoa, roasted sweet potato or squash, and a protein like chickpeas or a fried egg, finished with something green and something creamy. The name refers to its color palette rather than one fixed recipe, so the format is meant to be swapped and rebuilt with whatever produce is in season.",
             "substitutes": [
