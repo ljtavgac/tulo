@@ -5066,6 +5066,10 @@ SEED_PAGES = [
         "title": "Best Substitutes for Butter",
         "batch_number": 2,
         "content": {
+            # Unpublished (2026-09-10): duplicate of best-substitutes-for-butter,
+            # same topic covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": (
                 "Out of butter, dairy-free, or just want a healthier swap? "
                 "Here are four ranked substitutes with exact ratios."
@@ -17957,6 +17961,10 @@ SEED_PAGES = [
         "title": "What Is Caviar?",
         "batch_number": 1,
         "content": {
+            # Unpublished (2026-09-10): duplicate of what-is-caviar, same
+            # topic covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "Caviar is salt-cured roe from sturgeon fish. What makes it different from other fish eggs, how it's graded, and how to serve it properly.",
             "hero_image_query": "caviar tin with mother of pearl spoon",
             "image_alt": "Glossy black caviar mounded in a small glass dish beside a mother-of-pearl spoon and blini",
@@ -32613,6 +32621,10 @@ SEED_PAGES = [
         "title": "Latte vs. Cappuccino: What's the Difference?",
         "batch_number": 1,
         "content": {
+            # Unpublished (2026-09-10): duplicate of cappuccino-vs-latte,
+            # same topic covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "Latte vs. cappuccino: same espresso base, very different milk. Here's how the ratios, texture, and size compare so you know what to order.",
             "hero_image_query": "latte and cappuccino side by side on wooden counter",
             "image_alt": "A tall latte with a thin layer of foam and a leaf-pattern pour next to a shorter cappuccino with a thick, domed foam cap.",
@@ -48528,6 +48540,10 @@ SEED_PAGES = [
         "title": "Cacao",
         "batch_number": 1,
         "content": {
+            # Unpublished (2026-09-10): duplicate of cacao, same topic
+            # covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "What cacao is, how it differs from cocoa, the best substitutes with ratios, and how to store and use cacao powder and nibs without losing flavor.",
             "hero_image_query": "raw cacao powder and nibs",
             "image_alt": "A small bowl of dark cacao powder next to a scattering of cacao nibs and whole cacao pods on a wooden surface.",
@@ -82178,6 +82194,10 @@ SEED_PAGES = [
         "title": "Homemade Half and Half Recipe",
         "batch_number": 2,
         "content": {
+            # Unpublished (2026-09-10): duplicate of homemade-half-and-half,
+            # same topic covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "Make your own half and half at home with just two ingredients: whole milk and heavy cream. Ready in under 5 minutes, with a live scaler and US/metric toggle.",
             "hero_image_query": "half and half pouring into coffee",
             "image_alt": "A small glass pitcher of homemade half and half being poured into a cup of coffee, with a measuring cup of whole milk and heavy cream in the background.",
@@ -95747,6 +95767,11 @@ SEED_PAGES = [
         "title": "Chocolate Covered Pretzels Recipe",
         "batch_number": 2,
         "content": {
+            # Unpublished (2026-09-10): duplicate of
+            # chocolate-covered-pretzels, same topic covered independently
+            # under a different slug (see _check_no_duplicate_titles).
+            # User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "Easy chocolate covered pretzel rods dipped in melted chocolate and finished with a contrasting drizzle. Ready in under an hour with a live serving-size scaler.",
             "hero_image_query": "chocolate covered pretzel rods",
             "image_alt": "Rows of chocolate-dipped pretzel rods drizzled with white chocolate and topped with rainbow sprinkles, cooling on a parchment-lined baking sheet.",
@@ -110316,6 +110341,13 @@ SEED_PAGES = [
         "title": "Spaghetti",
         "batch_number": 2,
         "content": {
+            # Unpublished (2026-09-10): duplicate of spaghetti, same topic
+            # covered independently under a different slug (see
+            # _check_no_duplicate_titles). The other one is also the one
+            # actually linked from recipes via hub_slug, so it's the clear
+            # keeper regardless of the user's image-based tiebreak for the
+            # rest of this batch.
+            "unpublished": True,
             "meta_description": "What spaghetti is, the best substitutes for it in any recipe, how to store it, and how to cook it so it doesn't turn to mush.",
             "hero_image_query": "dried spaghetti noodles bundled",
             "image_alt": "A bundle of dried spaghetti strands standing upright next to a cooked portion twirled on a fork with tomato sauce.",
@@ -178309,6 +178341,10 @@ SEED_PAGES = [
         "title": "Sweet Potato vs. Yam: What's the Difference?",
         "batch_number": 3,
         "content": {
+            # Unpublished (2026-09-10): duplicate of yam-vs-sweet-potato,
+            # same topic covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "Sweet potato vs. yam: they're not the same plant at all. Here's how to tell them apart at the store and which one your recipe actually needs.",
             "hero_image_query": "raw sweet potato and true yam side by side cut open",
             "image_alt": "A halved orange-fleshed sweet potato next to a halved true yam with white, starchy flesh and rough dark skin",
@@ -193701,6 +193737,14 @@ SEED_PAGES = [
         "title": "Best Substitutes for Gruy\u00e8re Cheese",
         "batch_number": 4,
         "content": {
+            # Unpublished (2026-09-10): duplicate of
+            # gruyere-cheese-substitute, same topic covered independently
+            # under a different slug (see _check_no_duplicate_titles). The
+            # other one is also the one actually linked from the
+            # gruyere-cheese ingredient hub's substitute_page_slug, so it's
+            # the clear keeper regardless of the user's image-based
+            # tiebreak for the rest of this batch.
+            "unpublished": True,
             "meta_description": "Out of Gruyère? Here are six ranked substitutes with exact ratios, including which ones melt best for fondue, gratins, and quiche.",
             "hero_image_query": "gruyere cheese wedge on wooden board",
             "image_alt": "A wedge of pale yellow Gruyère cheese next to thinner slices, showing the small holes and firm, dense texture typical of aged Swiss-style cheese.",
@@ -229459,6 +229503,10 @@ SEED_PAGES = [
         "title": "Ham and Beans Recipe",
         "batch_number": 4,
         "content": {
+            # Unpublished (2026-09-10): duplicate of ham-and-beans, same
+            # topic covered independently under a different slug (see
+            # _check_no_duplicate_titles). User chose to keep the other one.
+            "unpublished": True,
             "meta_description": "A slow-simmered ham and beans recipe made with a leftover ham bone, dried great northern beans, and a savory broth. Includes a serving-size scaler and US/metric toggle.",
             "hero_image_query": "ham and bean soup",
             "image_alt": "A bowl of creamy ham and white bean soup with shredded ham, diced carrots, and cracked black pepper, served with a wedge of cornbread on the side.",
