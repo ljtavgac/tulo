@@ -540,6 +540,15 @@ def fetch_images(
 
         query = content[query_key]
         queries = [query]
+        # How many leading entries in `attempts` (built below) are exempt
+        # from the hero_image_must_match override further down -- only the
+        # recipe_or_dish branch's salient_ingredient_query tier sets this,
+        # since that tier's whole point is a must_match independently
+        # derived from *its own* query text (see its own comment), not the
+        # dish-level term hero_image_must_match exists to override. Left at
+        # 0 for every other branch, so the override behaves exactly as
+        # before everywhere it's actually used today (ingredient_hub, etc).
+        protected_attempts = 0
         if page.template_type == "comparison":
             # Already has two clean, broad item names on hand -- no need to
             # derive anything from the title. Used to skip the relevance
@@ -623,6 +632,7 @@ def fetch_images(
             salient_attempts = (
                 [(salient_query, _recipe_dish_must_match_terms(salient_query))] if salient_query else []
             )
+            protected_attempts = len(salient_attempts)
             attempts = salient_attempts + dish_attempts
         else:
             fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
@@ -682,7 +692,15 @@ def fetch_images(
         # can opt into a required term via this optional content key.
         override_must_match = content.get("hero_image_must_match")
         if override_must_match:
-            attempts = [(q, override_must_match) for q, _ in attempts]
+            # Skips the first `protected_attempts` entries (the
+            # salient_ingredient_query tier, when present) -- see
+            # `protected_attempts`' own comment above for why blanket-
+            # overriding that tier's independently-derived must_match with
+            # the dish-level override would defeat the whole point of it.
+            attempts = [
+                (q, override_must_match) if i >= protected_attempts else (q, m)
+                for i, (q, m) in enumerate(attempts)
+            ]
 
         # Only exclude the page's own current photo when it was explicitly
         # named (slugs=...) -- not for the passive background loop, which
