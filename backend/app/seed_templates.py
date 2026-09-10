@@ -62610,7 +62610,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What a Crunchwrap Supreme is made of, smart substitutes for the tostada shell, meat, and sauce, plus how to store and reheat one without losing the crunch.",
-            "hero_image_query": "crunchwrap supreme cut in half showing layers",
+            "hero_image_query": "folded grilled tortilla wrap cut in half showing beef cheese and lettuce layers",
+            "hero_image_must_match": ["tortilla wrap", "wrap sandwich", "grilled wrap"],
             "image_alt": "A crunchwrap supreme sliced in half on a plate, showing the layered tortilla, crispy tostada shell, seasoned beef, melted cheese, lettuce, tomato, and sour cream.",
             "description": "A Crunchwrap Supreme is a folded, grilled assembly built around a large flour tortilla wrapped around seasoned ground beef, melted nacho cheese, a crunchy tostada shell, cold lettuce and tomato, and sour cream, then sealed into a hexagon shape and toasted on both sides until the outer tortilla is golden and the inner shell stays crisp. It was popularized by Taco Bell but the construction, a hot filling layer, a structural crunch layer, and a cold topping layer, all folded into one portable pocket, is easy to replicate at home with a griddle or large skillet.",
             "substitutes": [
@@ -63346,6 +63347,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What elderflower is, the best substitutes with ratios, how to store fresh and dried blossoms, and how to use elderflower in cordials, baking, and cocktails.",
             "hero_image_query": "fresh elderflower blossoms in bloom",
+            "hero_image_must_match": ["elderflower", "elder flower"],
             "image_alt": "Clusters of small cream-colored elderflower blossoms on a branch, with a bowl of dried elderflower and a glass of pale elderflower cordial nearby.",
             "description": "Elderflower is the small, cream-white blossom of the elder shrub (Sambucus nigra in Europe, Sambucus canadensis in North America), prized for its delicate, honeyed, faintly muscat-grape and pear-like floral flavor. It's used almost exclusively as a flavoring agent, steeped into syrups, cordials, and infusions rather than eaten whole, since raw elder flowers, stems, and unripe berries contain compounds that are toxic unless properly processed.",
             "substitutes": [
