@@ -203635,13 +203635,18 @@ SEED_PAGES = [
             # Reported wrong-subject photo (2026-09-10): boudin is a niche
             # regional sausage, so a generic "sausage" result (bratwurst,
             # hot dogs, French boudin blanc) can satisfy the search query's
-            # relevance check without actually showing boudin. Forces
-            # images.py's _is_relevant() to require "boudin" in the
-            # candidate's own alt text -- see homemade-turkey-feed/
-            # milano-cookies for the same per-page pattern. Correctly
-            # yields a placeholder over a wrong photo if Pexels/Unsplash
-            # never has a real match.
-            "hero_image_must_match": "boudin",
+            # relevance check without actually showing boudin. Tried
+            # requiring "boudin" itself first, but neither Pexels nor
+            # Unsplash has any candidate whose alt text uses that word --
+            # every attempt exhausted to a placeholder (see
+            # fetch_stock_images.py's own self-exclusion fix, added the
+            # same day, for why a re-fetch didn't just return the same bad
+            # photo again). Relaxed to "sausage": accepts a generic
+            # sausage-in-casing photo rather than guaranteeing an actual
+            # boudin one, a real trade-off, but still meaningfully closer
+            # than the original bug (a wrong dish/animal entirely, not
+            # just a non-specific version of the right category).
+            "hero_image_must_match": "sausage",
             "image_alt": "Split boudin link on a plate showing the moist rice-and-pork filling spilling out of its casing, next to a small dish of mustard.",
             "direct_answer": "Boudin is a Cajun sausage from south Louisiana made by mixing cooked pork, rice, onions, and seasonings, then stuffing that mixture into a natural casing. It's fully cooked before packaging, so it only needs reheating.",
             "expanded_explanation": "Louisiana boudin (usually called boudin blanc locally, not to be confused with the French veal-and-cream version of the same name) starts with pork shoulder or pork trimmings simmered until tender, then chopped or ground and combined with cooked rice, sauteed onion, bell pepper, celery, garlic, and a mix of cayenne and other seasonings. That filling gets stuffed into hog casing and lightly smoked or simmered again to set it. The rice makes up close to half the volume, which is what gives boudin its soft, almost porridge-like texture rather than the firm bite of a typical sausage.",
