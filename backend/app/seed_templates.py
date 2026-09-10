@@ -60647,8 +60647,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What braunschweiger is, the best substitutes with ratios, how to store it safely, and how to use it beyond the classic sandwich spread.",
-            "hero_image_query": "sliced braunschweiger liver sausage on rye bread",
-            "hero_image_must_match": ["liverwurst", "braunschweiger"],
+            "hero_image_query": "sliced liverwurst spread on bread",
+            "hero_image_must_match": ["liverwurst"],
             "image_alt": "Thick slices of braunschweiger liver sausage arranged on dark rye bread with mustard and sliced onion on the side.",
             "description": "Braunschweiger is a soft, spreadable smoked liver sausage made primarily from pork liver, pork fat, and often cured pork, seasoned with onion, allspice, and mustard seed, then smoked and fully cooked before packaging. Unlike firmer liverwurst, most commercial braunschweiger is smoked, which gives it a deeper, slightly bacon-like undertone alongside the mineral richness of liver. It's sold pre-cooked and ready to eat, usually in a chub-shaped casing or as pre-sliced rounds.",
             "substitutes": [
@@ -65512,8 +65512,8 @@ SEED_PAGES = [
         "batch_number": 1,
         "content": {
             "meta_description": "What menma is, the best substitutes with ratios, how to store it, and how to use this fermented bamboo shoot topping in ramen and beyond.",
-            "hero_image_query": "menma seasoned bamboo shoots ramen topping",
-            "hero_image_must_match": ["bamboo shoot", "bamboo shoots", "menma"],
+            "hero_image_query": "pickled bamboo shoots",
+            "hero_image_must_match": ["bamboo shoot", "bamboo shoots"],
             "image_alt": "A small bowl of glossy amber-brown menma strands, thin lacto-fermented bamboo shoots seasoned with soy sauce and sesame oil, served as a ramen topping.",
             "description": "Menma is lacto-fermented bamboo shoot, typically made from madake bamboo, that's been dried, rehydrated, and simmered in a seasoning liquid of soy sauce, mirin, sugar, and sesame oil until it turns a translucent amber color. It has a soft but slightly crunchy texture and a savory, faintly funky depth from fermentation, and it's best known as a standard topping for shoyu and tonkotsu ramen. It's sometimes labeled 'shinachiku' on older packaging or restaurant menus, an older name for the same product.",
             "substitutes": [
@@ -95071,8 +95071,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What gandules (pigeon peas) are, the best substitutes with ratios, how to store dried, canned, and fresh versions, and how to cook them for arroz con gandules and stews.",
-            "hero_image_query": "pigeon peas with rice",
-            "hero_image_must_match": ["pigeon pea", "pigeon peas"],
+            "hero_image_query": "rice and beans dish",
+            "hero_image_must_match": ["pigeon pea", "pigeon peas", "rice and beans", "beans"],
             "image_alt": "A pot of yellow rice studded with beige-green gandules (pigeon peas), tomato sofrito, and pimiento strips visible throughout.",
             "description": "Gandules are pigeon peas (Cajanus cajan), small oval legumes with a beige-green color and a mild, slightly nutty, earthy flavor. They're a staple of Puerto Rican and broader Caribbean cooking, most famously in arroz con gandules, the rice dish served at nearly every holiday meal. They're sold dried, canned, and occasionally frozen or fresh in the pod, and each form cooks and behaves a little differently.",
             "substitutes": [
@@ -99400,8 +99400,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Boston butt is, the best substitutes for pulled pork and roasts, how to store it, and how to cook it so it shreds instead of turning tough.",
-            "hero_image_query": "raw pork shoulder roast on a cutting board",
-            "hero_image_must_match": ["pork shoulder", "pork roast"],
+            "hero_image_query": "raw pork roast on a cutting board",
+            "hero_image_must_match": ["pork shoulder", "pork roast", "pork"],
             "image_alt": "A bone-in Boston butt roast with a thick fat cap on one side, sitting on a wooden cutting board next to a boning knife.",
             "description": "Boston butt is a cut from the upper part of the pig's shoulder, above the front leg, despite the confusing name it has nothing to do with the rear of the animal. It's heavily marbled and laced with connective tissue, which makes it a poor choice for quick cooking but ideal for slow, moist heat methods like braising, smoking, or slow roasting, where the collagen breaks down into gelatin and the meat pulls apart easily.",
             "substitutes": [
@@ -171243,8 +171243,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What giblets are, which organs are included, how to substitute for them in gravy and stuffing, and how to store and cook them safely.",
-            "hero_image_query": "raw poultry giblets on cutting board",
-            "hero_image_must_match": ["giblets", "poultry organs"],
+            "hero_image_query": "raw chicken liver and organ meat on a cutting board",
+            "hero_image_must_match": ["giblets", "chicken liver", "organ meat", "poultry"],
             "image_alt": "A small pile of raw turkey giblets, including the neck, heart, gizzard, and liver, arranged on a wooden cutting board next to a paper packet.",
             "description": "Giblets are the edible internal organs of poultry, typically the neck, heart, gizzard, and liver, packaged together and tucked inside the cavity of a whole chicken or turkey. They're prized for adding deep, savory flavor to gravy, stock, and stuffing, though the liver is often set aside separately because it has a stronger, more mineral taste than the rest.",
             "substitutes": [
@@ -173924,8 +173924,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What chitlins (chitterlings) are, how to clean and cook them, real substitutes for pork intestines, and how to store them safely before and after cooking.",
-            "hero_image_query": "cooked pork intestines soul food dish",
-            "hero_image_must_match": ["chitlins", "soul food"],
+            "hero_image_query": "traditional southern soul food plate",
+            "hero_image_must_match": ["soul food"],
             "image_alt": "A pot of simmered chitlins with onions and vinegar, served alongside cornbread and hot sauce on a plate.",
             "description": "Chitlins, short for chitterlings, are the small intestines of a pig, cleaned and slow-simmered until tender. They're a traditional Southern soul food ingredient with a rich, distinctly funky flavor and a soft, slightly chewy texture once cooked. Because raw chitlins require extensive cleaning to remove residue and odor, most home cooks buy them pre-cleaned, frozen, or in cans to cut down on prep time.",
             "substitutes": [
@@ -191096,7 +191096,7 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "Out of cotija? Here are five ranked substitutes with exact ratios, including which ones best match its salty crumble versus its aged, sharp flavor.",
-            "hero_image_query": "crumbled cotija cheese on elote corn",
+            "hero_image_query": "crumbled white mexican cheese on a plate",
             "hero_image_must_match": ["cotija", "mexican cheese", "crumbled cheese"],
             "image_alt": "A block of crumbly white cotija cheese next to a small pile of grated cheese and a microplane, showing its dry, salty texture.",
             "ranked_substitutes": [
@@ -218816,7 +218816,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What boliche is, the best beef cuts to substitute for it, how to store and prep it, and how to turn it into the classic Cuban stuffed pot roast.",
             "hero_image_query": "raw beef roast tied with string",
-            "hero_image_must_match": ["beef roast", "tied roast"],
+            "hero_image_must_match": ["beef roast", "tied roast", "roast", "beef"],
             "image_alt": "A whole, untrimmed eye of round beef roast on a cutting board next to a boning knife used to hollow out the center for stuffing.",
             "description": "Boliche is the Cuban name for a beef roast cut from the eye of round, a long, cylindrical, very lean muscle from the hind leg. Butchers in Cuban and Latin markets sell it already trimmed into this tube shape specifically so a channel can be bored through the center and packed with chorizo, garlic, and sometimes a strip of ham or hard-boiled egg. Once stuffed, tied, and braised low and slow in a sofrito-based broth, the dish itself is also called boliche or boliche mechado. Because eye of round has almost no internal fat, the stuffing and the long braise are what keep it from turning dry and stringy.",
             "substitutes": [
@@ -226308,7 +226308,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What steak pizzaiola is, the best cuts and substitutes for the classic Neapolitan tomato-braised steak, how to store leftovers, and how to serve it.",
             "hero_image_query": "steak simmered in tomato sauce with peppers",
-            "hero_image_must_match": ["steak in tomato sauce", "pizzaiola"],
+            "hero_image_must_match": ["steak in tomato sauce", "pizzaiola", "steak", "tomato sauce"],
             "image_alt": "Sliced braised steak sitting in a chunky red tomato sauce with strips of bell pepper and onion in a cast iron skillet",
             "description": "Steak pizzaiola (pizzaiola style) is a Southern Italian dish where a cut of beef is seared and then simmered in a garlicky tomato sauce, often with bell peppers, onions, and oregano, until the meat turns fork-tender. The name comes from \"pizzaiolo\" (pizza maker), referring to the same tomato-garlic-oregano sauce used on pizza, not to pizza itself. Traditional versions use thin, tougher cuts that benefit from a long simmer; Italian-American versions often use a quick-seared strip or sirloin steak finished briefly in sauce.",
             "substitutes": [
@@ -236527,8 +236527,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a baleada is, how the thick Honduran tortilla differs from a regular flour tortilla, the best substitutes if you can't find one, and how to fill and store them.",
-            "hero_image_query": "honduran folded tortilla with beans cheese and cream",
-            "hero_image_must_match": ["folded tortilla", "baleada"],
+            "hero_image_query": "folded flour tortilla with beans and cheese filling",
+            "hero_image_must_match": ["folded tortilla", "tortilla", "quesadilla"],
             "image_alt": "A folded thick Honduran flour tortilla opened to show a layer of mashed red refried beans, crumbled cheese, and a drizzle of crema inside",
             "description": "A baleada is a Honduran staple built on a thick, doughy flour tortilla, noticeably heavier and chewier than the thin flour tortillas used for burritos or quesadillas. The tortilla is folded in half around a filling of mashed refried red beans, crumbled or shredded cheese, and mantequilla (a tangy, pourable Honduran-style cream similar to crema). The basic version is called a baleada sencilla; loaded versions with scrambled eggs, avocado, shredded chicken, chorizo, or grilled steak are called baleadas especiales. It's sold everywhere in Honduras from street carts to sit-down restaurants and is eaten at any time of day, not just breakfast.",
             "substitutes": [
@@ -238354,8 +238354,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What Egg Beaters liquid egg substitute is made of, how to swap it with whole eggs or egg whites using the right ratio, and how to store and cook with it.",
-            "hero_image_query": "Egg Beaters liquid egg substitute poured from carton into a mixing bowl",
-            "hero_image_must_match": ["liquid egg", "egg substitute"],
+            "hero_image_query": "liquid egg substitute poured from a carton into a bowl",
+            "hero_image_must_match": ["liquid egg", "egg substitute", "egg whites"],
             "image_alt": "Yellow liquid egg substitute pouring from a resealable carton into a glass bowl, with a whisk resting on the counter beside it",
             "description": "Egg Beaters is a brand of liquid egg substitute made primarily from pasteurized egg whites, with beta-carotene added for yellow color and a small amount of vitamins and minerals stirred back in to mimic whole egg. It contains no egg yolk, so it has no dietary cholesterol and almost no fat, which is why it's marketed as a lower-cholesterol swap for whole eggs rather than a true egg replacement.",
             "substitutes": [
@@ -239875,8 +239875,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What pangrattato is, the best substitutes with ratios, how to store it so it stays crisp, and how to use it as a crunchy finishing topping.",
-            "hero_image_query": "toasted breadcrumbs in a bowl",
-            "hero_image_must_match": ["breadcrumbs", "toasted breadcrumbs"],
+            "hero_image_query": "toasted bread crumbs in a bowl",
+            "hero_image_must_match": ["breadcrumbs", "bread crumbs", "toasted crumbs"],
             "image_alt": "A small bowl of golden, coarsely toasted breadcrumbs flecked with parsley and garlic, sitting next to a wedge of stale bread.",
             "description": "Pangrattato is Italian toasted breadcrumbs made from stale bread, crisped in olive oil (often with garlic and anchovy) until deep golden and crunchy. Known as 'poor man's Parmesan,' it's scattered over pasta, vegetables, and salads to add crunch and savory depth where a hard cheese might otherwise go.",
             "substitutes": [
