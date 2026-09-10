@@ -183365,7 +183365,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What peach fuzz actually is, whether it's safe to eat, the best ways to remove it, and what to reach for if you'd rather skip it altogether.",
-            "hero_image_query": "close-up peach fuzz texture on skin",
+            "hero_image_query": "close-up of a whole peach showing its fuzzy skin texture",
+            "hero_image_must_match": ["peach fuzz", "peach skin", "fuzzy peach", "peach"],
             "image_alt": "Macro close-up of a ripe peach showing the fine, pale fuzz covering its orange and red-blushed skin",
             "description": "Peach fuzz is a coat of short, fine hairs (trichomes) growing directly out of the peach's skin. Botanically, these hairs form as the fruit develops on the tree and help protect it from insects, fungal spores, and sun damage while it ripens. The fuzz is thickest on freshly picked, tree-ripened peaches and tends to rub off somewhat during shipping and handling by the time fruit reaches a grocery store.",
             "substitutes": [
