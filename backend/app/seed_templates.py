@@ -21122,6 +21122,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What lard is, the best substitutes with ratios, how to store it so it doesn't turn rancid, and how to use it for flakier pastry and better frying.",
             "hero_image_query": "lard in a glass jar with a spoon",
+            "hero_image_must_match": ["lard", "pork fat", "rendered fat"],
             "image_alt": "A glass jar of white, opaque lard with a spoon resting inside, next to a piece of pastry dough on a wooden board.",
             "description": "Lard is rendered pork fat, prized in cooking and baking for its high smoke point and its ability to create exceptionally flaky pastry. It's solid at room temperature, nearly flavorless when refined, and has a larger fat crystal structure than butter, which is why pie crusts made with lard shatter rather than snap.",
             "substitutes": [
@@ -21264,6 +21265,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What nopales are, the best substitutes with ratios, how to store and clean them, and how to cook them without the sliminess.",
             "hero_image_query": "fresh nopales cactus paddles",
+            "hero_image_must_match": ["nopales", "cactus paddle", "cactus paddles", "nopal"],
             "image_alt": "Trimmed green nopales paddles with the spines and edges removed, sliced into strips on a cutting board next to a whole uncut paddle.",
             "description": "Nopales are the flat, paddle-shaped pads of the prickly pear cactus (Opuntia species), harvested young while still tender. Once the spines and thorny nodes are trimmed away, the flesh is diced or sliced and cooked down to a texture between green bean and okra, with a tart, slightly citrusy flavor and a mucilaginous (slippery) quality similar to okra when heated.",
             "substitutes": [
