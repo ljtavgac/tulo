@@ -74569,7 +74569,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What carne seca is, how it differs from beef jerky, the best substitutes with ratios, how to store it, and how to rehydrate it for dishes like machaca.",
-            "hero_image_query": "dried shredded beef carne seca strips",
+            "hero_image_query": "dried shredded beef jerky strips",
+            "hero_image_must_match": ["carne seca", "dried beef", "beef jerky", "jerky"],
             "image_alt": "Thin strips of salted, sun-dried beef carne seca hanging on a rack, deep reddish-brown and leathery at the edges",
             "description": "Carne seca is beef that has been salted and dried, traditionally in thin strips hung in the sun, a technique from northern Mexico (especially Sonora) developed to preserve meat without refrigeration. Unlike snack-style jerky, carne seca is made to be rehydrated, shredded, and cooked into dishes, most famously machaca, where it's fried with eggs, onions, and chiles.",
             "substitutes": [
@@ -76806,6 +76807,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a vodka cranberry is, the classic ratio, ingredient substitutes, how to store the components, and tips for making one that isn't watered down.",
             "hero_image_query": "vodka cranberry cocktail in a highball glass with lime",
+            "hero_image_must_match": ["vodka cranberry", "cranberry cocktail", "cape codder"],
             "image_alt": "A vodka cranberry cocktail in a tall glass over ice, garnished with a lime wheel, with a bottle of vodka and a carton of cranberry juice in the background.",
             "description": "A vodka cranberry, also called a Cape Codder, is a simple highball built from vodka and cranberry juice cocktail over ice, usually finished with a squeeze of lime. It's one of the most-ordered mixed drinks in the U.S. because it needs no shaker, no syrup, and no special glassware, just two ingredients poured over ice.",
             "substitutes": [
