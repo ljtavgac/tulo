@@ -133027,6 +133027,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What rib tips are, the best substitutes with ratios, how to store them, and how to cook them so the cartilage turns tender instead of chewy.",
             "hero_image_query": "glazed pork rib tips on a cutting board",
+            "hero_image_must_match": ["rib tips", "pork ribs", "ribs"],
             "image_alt": "A cutting board piled with dark, caramelized pork rib tips glazed in barbecue sauce, with a knife and scattered sesame seeds nearby.",
             "description": "Rib tips are the cartilage-heavy strip trimmed off the bottom of a pork spare rib rack when a butcher squares it into St. Louis-style ribs. They contain small bone fragments, cartilage, and pockets of fat and meat rather than long, uniform bones. Because of all that connective tissue, they're tough and rubbery if cooked quickly, but turn deeply flavorful and tender with low, slow heat that has time to melt the cartilage down.",
             "substitutes": [
@@ -145167,7 +145168,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What pancit canton noodles are, the best substitutes with ratios, how to store and cook them without turning mushy, and how they differ from bihon and miki.",
-            "hero_image_query": "dried pancit canton noodles",
+            "hero_image_query": "dried wheat flour noodles",
+            "hero_image_must_match": ["noodles", "wheat noodles", "pancit"],
             "image_alt": "A stir-fried plate of pancit canton noodles tossed with sliced cabbage, carrots, and pork, with a wedge of calamansi on the side.",
             "description": "Pancit canton refers to thin, wheat-flour noodles used in Filipino stir-fried noodle dishes, and by extension to the finished dish itself. The noodles are similar to Chinese chow mein or egg noodles: pale yellow, slightly springy, and sold dried in coiled nests or blocks. They're prized for soaking up soy sauce and pan drippings while holding some bite, which is why they're the base for one of the most common Filipino party dishes.",
             "substitutes": [
@@ -146146,6 +146148,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What ancho chiles are, the best substitutes with ratios, how to store and rehydrate them, and how to use them in mole, adobo, and chili.",
             "hero_image_query": "dried ancho chiles whole",
+            "hero_image_must_match": ["ancho chile", "ancho", "dried poblano", "dried chile"],
             "image_alt": "A pile of dried ancho chiles showing their wide, flat, wrinkled reddish-brown skins next to a few halved chiles with seeds removed.",
             "description": "Ancho chiles are dried poblano peppers, wide and heart-shaped with deeply wrinkled, brick-to-mahogany-colored skin. Drying concentrates the poblano's mild flavor into something sweeter and more complex: notes of raisin, prune, dried plum, and a faint smokiness, with mild heat (about 1,000 to 2,000 Scoville units, roughly on par with a poblano). Anchos are one of the three chiles that make up the classic \"holy trinity\" of Mexican mole sauces, alongside mulato and pasilla, and they're also the backbone of most commercial chili powder blends.",
             "substitutes": [
@@ -146609,7 +146612,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What candy crescents are, the best substitutes for baking and garnishing, how to store them so they don't go sticky, and how to use them in recipes.",
-            "hero_image_query": "cinnamon candy crescents on parchment paper",
+            "hero_image_query": "crescent-shaped cinnamon hard candies",
+            "hero_image_must_match": ["crescent candy", "hard candy", "cinnamon candy"],
             "image_alt": "A small pile of amber-colored crescent-moon shaped hard candies scattered on a wooden board, some whole and some crushed into shards.",
             "description": "Candy crescents are hard candies molded into a crescent-moon shape, most commonly flavored with cinnamon or butterscotch, though fruit and chocolate-dipped versions exist. They're a holiday-shelf staple sold in bags similar to candy corn, and home bakers use them whole as cake and cupcake toppers or crushed as a crunchy garnish for cookies, popcorn, and ice cream.",
             "substitutes": [
