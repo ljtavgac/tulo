@@ -241673,6 +241673,14 @@ SEED_PAGES = [
         "title": "How to Cut Watermelon",
         "batch_number": 4,
         "content": {
+            # Unpublished (2026-09-10): duplicate of how-to-cut-a-watermelon
+            # (batch 2, same technique -- square off the ends, peel into
+            # flat planks, then grid-cut into cubes). Keeping the older,
+            # more established page and unpublishing this one rather than
+            # deleting it, in case any of this version's copy is worth
+            # merging in later. get_page()/list_pages() both treat this as
+            # a 404/absent from listings (including the sitemap) while set.
+            "unpublished": True,
             "meta_description": "How to cut a watermelon into clean cubes or wedges without a mess, plus the grid method that makes bite-sized pieces in under five minutes.",
             "hero_image_query": "sliced watermelon cubes on cutting board",
             "image_alt": "A watermelon cut into flat planks with the rind trimmed off, being sliced into a grid of even cubes on a wooden cutting board.",
