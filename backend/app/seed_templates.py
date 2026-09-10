@@ -153314,7 +153314,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What lau lau is, the best substitutes for taro (lūʻau) leaves and ti leaf wrappers, how to store and reheat leftovers, and how to serve it the traditional way.",
-            "hero_image_query": "hawaiian lau lau wrapped in ti leaves steamed",
+            "hero_image_query": "steamed pork wrapped in green leaves",
+            "hero_image_must_match": ["lau lau", "ti leaves", "wrapped in leaves"],
             "image_alt": "A steamed lau lau bundle partially unwrapped from its dark green ti leaves, revealing tender braised pork and dark cooked taro leaves inside.",
             "description": "Lau lau is a traditional Hawaiian dish of pork, and often a piece of butterfish, wrapped first in lūʻau leaves (young taro leaves) and then bundled in ti leaves before being steamed or slow-baked for several hours until the meat falls apart and the leaves cook down into a soft, spinach-like filling. The ti leaves are not eaten; they hold in moisture and impart a faint grassy aroma while the meat steams inside them.",
             "substitutes": [
