@@ -135,6 +135,45 @@ def _howto_fallback_query(page_title: str) -> str:
     return re.sub(r"^(a|an|the)\s+", "", rest, flags=re.IGNORECASE).strip()
 
 
+# Words this derivation strips only from the *must_match* value, never from
+# the query text above -- a search engine tolerates (even benefits from)
+# extra context words, but images._is_relevant()'s exact-substring check
+# doesn't, and this derivation's single-word verb-strip only handles the
+# simple "How to <verb> <object>" shape. A title with a compound verb
+# ("How to Tell If..."), a trailing modifier ("...Fast", "...Quickly"), or
+# a prepositional tail ("...in the Fridge", "...on the Stove") leaves that
+# filler in _howto_fallback_query's own result, which becomes an
+# effectively unmatchable required term (see how-to-tell-if-eggs-are-good,
+# whose naive result was "If Eggs Are Good" -- no real photo's alt text
+# will ever contain that phrase). This list also drops non-visual judgment
+# words (good/bad/safe/ripe's opposite "eating"/"lasts") that a
+# photographer would never caption a photo with.
+_HOWTO_MUST_MATCH_STOPWORDS = frozenset({
+    "a", "an", "the", "to", "of", "in", "on", "at", "from", "for", "out",
+    "with", "without", "if", "is", "are", "be", "still", "fast", "quickly",
+    "every", "most", "and", "get", "much", "youll", "before", "after",
+    "while", "know", "how", "your", "again", "back", "up", "down", "over",
+    "into", "onto", "so", "just", "it", "its", "good", "bad", "eating",
+    "home", "long", "lasts", "stays", "safe", "eat",
+})
+
+
+def _howto_must_match_term(fallback_term: str) -> str | None:
+    """Cleans up _howto_fallback_query's result specifically for use as a
+    must_match value (see _HOWTO_MUST_MATCH_STOPWORDS above for why the
+    query text itself is left alone). Returns None -- skip the relevance
+    check for this attempt entirely, the same policy recipe_or_dish already
+    uses when no reliable subject term exists -- when nothing substantial
+    survives, or when more than 3 words do: a long remainder is a sign this
+    title's shape didn't reduce to one clean noun phrase, and forcing an
+    unreliable multi-word exact-match requirement is worse than not
+    checking at all."""
+    words = [w for w in re.findall(r"[A-Za-z']+", fallback_term) if w.lower().replace("'", "") not in _HOWTO_MUST_MATCH_STOPWORDS]
+    if not words or len(words) > 3:
+        return None
+    return " ".join(words)
+
+
 def _substitute_fallback_query(page_title: str) -> str:
     """"Best Substitutes for Baking Soda" -> "Baking Soda"."""
     return re.sub(r"^best substitutes?\s+for\s+", "", page_title, flags=re.IGNORECASE).strip()
@@ -449,9 +488,19 @@ def fetch_images(
             # photo for this page actually needs to be of, whether it was
             # found via the specific hero_image_query or the broader
             # fallback.
-            must_match = fallback_fn(page.title) if fallback_fn else None
-            if must_match and must_match.lower() != query.lower():
-                queries.append(must_match)
+            fallback_term = fallback_fn(page.title) if fallback_fn else None
+            if fallback_term and fallback_term.lower() != query.lower():
+                queries.append(fallback_term)
+            # howto_technique's fallback_term often still carries filler
+            # _howto_fallback_query's single-word verb-strip can't catch
+            # (see _howto_must_match_term's own docstring) -- fine to keep
+            # in the query text above (harmless extra context for a search
+            # engine), but not as the required exact-substring match term.
+            must_match = (
+                _howto_must_match_term(fallback_term)
+                if page.template_type == "howto_technique" and fallback_term
+                else fallback_term
+            )
             attempts = [(q, must_match) for q in queries]
             # ingredient_hub only: a last-resort relaxed attempt once the
             # exact title itself has been tried and failed -- see
