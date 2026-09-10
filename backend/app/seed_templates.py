@@ -147612,7 +147612,8 @@ SEED_PAGES = [
         "batch_number": 3,
         "content": {
             "meta_description": "What goes into a classic Mudslide cocktail, ingredient substitutes with ratios, how to store a batch, and how to serve it frozen or on the rocks.",
-            "hero_image_query": "frozen mudslide cocktail with chocolate drizzle",
+            "hero_image_query": "creamy coffee liqueur cocktail with chocolate drizzle",
+            "hero_image_must_match": ["mudslide cocktail", "cocktail", "chocolate drizzle"],
             "image_alt": "A mudslide cocktail in a rocks glass lined with chocolate syrup, topped with whipped cream and a drizzle of coffee liqueur, next to a cocktail shaker",
             "description": "A Mudslide is a cream-based cocktail built from roughly equal parts vodka, coffee liqueur (usually Kahlua), and Irish cream (usually Baileys), shaken or blended with cream and ice. It originated at the Wreck Bar in Grand Cayman in the 1950s as a simpler mix, and the modern version with all three liquors became a bar and dessert-cocktail staple in the 1970s and 80s. It can be served shaken and strained over ice, or blended with ice into a thick, milkshake-like drink, usually finished with a chocolate syrup swirl inside the glass and whipped cream on top.",
             "substitutes": [
