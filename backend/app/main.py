@@ -15,9 +15,11 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
-from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, fetch_images
+from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, fetch_images
 from .images import (
+    ALLOWED_IMAGE_HOSTS,
     PEXELS_ACCESS_KEY,
+    SEARCH_RESULTS_PER_PAGE,
     UNSPLASH_ACCESS_KEY,
     _is_reachable,
     _is_relevant,
@@ -1222,6 +1224,170 @@ def compare_images(token: str):
         <tr><th>Term</th><th>Pexels</th><th>Unsplash</th></tr>
         {"".join(rows)}
       </table>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html)
+
+
+def _raw_candidates(provider: str, query: str, limit: int = 12) -> list[dict]:
+    """Like images._search_pexels/_search_unsplash, but returns every
+    candidate the API ranked (up to `limit`), not just the first one that
+    passes every check -- for /admin/debug-page-image below, which needs to
+    show *why* a given photo won or lost, not just the final answer."""
+    if provider == "pexels":
+        if not PEXELS_ACCESS_KEY:
+            return []
+        r = requests.get(
+            "https://api.pexels.com/v1/search",
+            headers={"Authorization": PEXELS_ACCESS_KEY},
+            params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
+            timeout=10,
+        )
+        r.raise_for_status()
+        photos = r.json().get("photos", [])[:limit]
+        return [
+            {
+                "url": p["src"]["large"],
+                "alt": p.get("alt") or "",
+                "photographer": p["photographer"],
+                "source": "pexels",
+            }
+            for p in photos
+        ]
+    if not UNSPLASH_ACCESS_KEY:
+        return []
+    r = requests.get(
+        "https://api.unsplash.com/search/photos",
+        headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
+        params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
+        timeout=10,
+    )
+    r.raise_for_status()
+    results = r.json().get("results", [])[:limit]
+    return [
+        {
+            "url": p["urls"]["regular"],
+            "alt": " ".join(filter(None, (p.get("alt_description"), p.get("description")))),
+            "photographer": p["user"]["name"],
+            "source": "unsplash",
+        }
+        for p in results
+    ]
+
+
+@app.get("/admin/debug-page-image", response_class=HTMLResponse)
+def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
+    """Shows exactly what fetch_stock_images.py would search for and select
+    for one real page -- every attempt (salient_ingredient_query first when
+    set, then the dish/primary query, each with its actual must_match), and
+    for each attempt, every candidate photo both providers returned with its
+    real alt text and whether it passed the relevance check, not just the
+    single final answer _apply_result would have picked. Built after two
+    rounds of guessing wrong about why a specific page's re-fetch still
+    wasn't picking a good photo -- this replaces guessing with actually
+    seeing what the search is doing. Not meant to be a permanent route.
+    """
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    page = db.query(Page).filter(Page.slug == slug).first()
+    if page is None:
+        raise HTTPException(status_code=404, detail="page not found")
+
+    content = page.content
+    query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
+    if query_key is None or query_key not in content:
+        raise HTTPException(status_code=400, detail=f"template_type {page.template_type!r} has no image query")
+
+    query = content[query_key]
+    salient_query = content.get("salient_ingredient_query")
+    override_must_match = content.get("hero_image_must_match")
+
+    # Mirrors fetch_images()'s real attempt order: salient tier first (with
+    # its own derived must_match, never the override -- see
+    # `protected_attempts` in fetch_stock_images.py), then the dish/primary
+    # query (with the override applied if set, else the derived term for
+    # recipe_or_dish, else None for every other template -- this debug view
+    # only covers recipe_or_dish and ingredient_hub-style override usage,
+    # the two template types actually in question this round).
+    attempts: list[tuple[str, object]] = []
+    if salient_query:
+        attempts.append((f"{salient_query} (salient)", _recipe_dish_must_match_terms(salient_query)))
+    dish_must_match = override_must_match if override_must_match else _recipe_dish_must_match_terms(query)
+    attempts.append((query, dish_must_match))
+
+    def render_candidates(provider: str, attempt_query: str, must_match) -> str:
+        candidates = _raw_candidates(provider, attempt_query)
+        if not candidates:
+            return '<p class="empty">No results (no key configured, or provider returned nothing).</p>'
+        rows = []
+        for c in candidates:
+            passes = _is_relevant(c["alt"], must_match)
+            host_ok = c["url"].startswith(ALLOWED_IMAGE_HOSTS)
+            css = "pass" if passes and host_ok else "fail"
+            reason = "" if passes else "no must_match term in alt text"
+            if not host_ok:
+                reason = "disallowed host"
+            rows.append(f"""
+            <div class="candidate {css}">
+              <img src="{c['url']}" alt="">
+              <div class="cand-info">
+                <div class="verdict">{"PASS" if passes and host_ok else "FAIL"} {f'<span class="reason">({reason})</span>' if reason else ""}</div>
+                <div class="alt">alt: "{c['alt'] or '(blank)'}"</div>
+                <div class="photog">by {c['photographer']} on {c['source']}</div>
+              </div>
+            </div>
+            """)
+        return "".join(rows)
+
+    sections = []
+    for attempt_query, must_match in attempts:
+        sections.append(f"""
+        <section>
+          <h2>Attempt: "{attempt_query}"</h2>
+          <p class="mm">must_match: {must_match!r}</p>
+          <h3>Pexels</h3>
+          {render_candidates("pexels", attempt_query, must_match)}
+          <h3>Unsplash</h3>
+          {render_candidates("unsplash", attempt_query, must_match)}
+        </section>
+        """)
+
+    current_url = content.get("image_url")
+    current_block = (
+        f'<img src="{current_url}" alt="" style="max-width:300px;border-radius:8px;">'
+        if current_url
+        else "<p>(no image_url set)</p>"
+    )
+
+    html = f"""
+    <html>
+    <head>
+      <title>Debug: {slug}</title>
+      <style>
+        body {{ font-family: -apple-system, sans-serif; padding: 24px; background: #faf9f7; max-width: 900px; margin: 0 auto; }}
+        h1 {{ font-size: 20px; }}
+        h2 {{ font-size: 16px; margin-top: 32px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }}
+        h3 {{ font-size: 13px; color: #666; margin: 16px 0 8px; }}
+        .mm {{ font-size: 12px; color: #666; }}
+        .candidate {{ display: flex; gap: 12px; padding: 8px; border-radius: 6px; margin-bottom: 6px; }}
+        .candidate.pass {{ background: #e6f4ea; }}
+        .candidate.fail {{ background: #fbe9e7; opacity: 0.6; }}
+        .candidate img {{ width: 100px; height: 70px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }}
+        .cand-info {{ font-size: 12px; }}
+        .verdict {{ font-weight: 700; }}
+        .reason {{ font-weight: 400; color: #888; }}
+        .alt {{ color: #333; margin-top: 2px; }}
+        .photog {{ color: #888; margin-top: 2px; }}
+        .empty {{ color: #b00; font-style: italic; }}
+      </style>
+    </head>
+    <body>
+      <h1>Debug image search: {slug}</h1>
+      <p><strong>Current live photo:</strong></p>
+      {current_block}
+      {"".join(sections)}
     </body>
     </html>
     """
