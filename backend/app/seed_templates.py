@@ -105043,7 +105043,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What pho tai actually is (thin-sliced rare beef in pho), the best cuts to use as substitutes, how to slice and store the beef, and how it's served.",
-            "hero_image_query": "pho tai bowl with thin sliced rare beef",
+            "hero_image_query": "vietnamese beef pho bowl with thin sliced rare beef",
+            "hero_image_must_match": ["pho tai", "beef pho", "pho"],
             "image_alt": "A bowl of pho tai showing pale pink, paper-thin raw beef slices fanned over rice noodles just before hot broth is poured on top",
             "description": "Pho tai refers to a specific style of Vietnamese pho, not a separate ingredient: \"tai\" means \"rare\" in Vietnamese, so pho tai is pho topped with thin, raw beef slices that cook to a blush pink the moment scalding broth is ladled over them. The beef is almost always eye of round or top sirloin, sliced against the grain into pieces thin enough (about 1/8 inch) to cook through from broth heat alone, with no separate boiling step.",
             "substitutes": [
