@@ -14,6 +14,21 @@ export interface PageSummary {
   link_terms?: string[] | null;
 }
 
+// Returned by GET /pages when paged=true -- see lib/api.ts's listPagesPaged
+// and PagedPageGrid.tsx for why this replaced inferring "more data exists"
+// from `items.length === pageSize`: a batch that happens to contain an
+// unpublished page comes back shorter than pageSize even when real
+// published pages remain further on, since the backend can't filter
+// content["unpublished"] (a JSON field) at the SQL LIMIT/OFFSET level.
+// next_offset is a raw row cursor, not items.length -- those diverge the
+// moment any row in between was unpublished, so it must be threaded through
+// as its own value rather than recomputed client-side.
+export interface PagedPagesResult {
+  items: PageSummary[];
+  next_offset: number;
+  has_more: boolean;
+}
+
 export interface PageRecord<T = Record<string, unknown>> {
   slug: string;
   template_type: string;

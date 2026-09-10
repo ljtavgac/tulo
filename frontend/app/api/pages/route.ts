@@ -12,11 +12,13 @@ export async function GET(request: NextRequest) {
   const templateType = request.nextUrl.searchParams.get("template_type");
   const limit = request.nextUrl.searchParams.get("limit");
   const offset = request.nextUrl.searchParams.get("offset");
+  const paged = request.nextUrl.searchParams.get("paged");
 
   const url = new URL(`${API_URL}/pages`);
   if (templateType) url.searchParams.set("template_type", templateType);
   if (limit) url.searchParams.set("limit", limit);
   if (offset) url.searchParams.set("offset", offset);
+  if (paged) url.searchParams.set("paged", paged);
 
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {

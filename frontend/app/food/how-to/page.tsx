@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listPages } from "@/lib/api";
+import { listPagesPaged } from "@/lib/api";
 import { absoluteUrl, buildBreadcrumbList, pagePath, SITE_NAME } from "@/lib/seo";
 import { sectionForTemplate } from "@/lib/taxonomy";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default async function HowToIndexPage() {
   const section = sectionForTemplate("howto_technique")!;
-  const pages = await listPages("howto_technique", { limit: PAGE_SIZE, offset: 0 });
+  const { items: pages, next_offset, has_more } = await listPagesPaged("howto_technique", { limit: PAGE_SIZE, offset: 0 });
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -55,7 +55,7 @@ export default async function HowToIndexPage() {
         Clear, numbered steps for the techniques that trip people up.
       </p>
 
-      <PagedPageGrid initialPages={pages} templateType="howto_technique" pageSize={PAGE_SIZE} />
+      <PagedPageGrid initialPages={pages} initialNextOffset={next_offset} initialHasMore={has_more} templateType="howto_technique" pageSize={PAGE_SIZE} />
     </main>
   );
 }

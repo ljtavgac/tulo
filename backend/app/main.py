@@ -724,7 +724,7 @@ def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None, 
     return None, None, content.get("hero_image_query"), content.get("image_alt")
 
 
-@app.get("/pages", response_model=list[PageSummary])
+@app.get("/pages")
 def list_pages(
     template_type: str | None = Query(default=None),
     q: str | None = Query(default=None),
@@ -756,6 +756,19 @@ def list_pages(
     ),
     limit: int | None = Query(default=None, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
+    paged: bool = Query(
+        default=False,
+        description=(
+            "Opt-in cursor-based response shape: {items, next_offset, "
+            "has_more} instead of a bare list. See list_pages()'s own "
+            "comment on the limit/offset branch for why the bare-list "
+            "shape can silently under-fill a page and stop 'Load more' "
+            "early -- existing callers that pass limit/offset without "
+            "this flag (the homepage carousels) keep that exact behavior "
+            "unchanged, since a static, non-paginated carousel can't "
+            "compound the bug the way repeated 'Load more' calls do."
+        ),
+    ),
     db: Session = Depends(get_db),
 ):
     if lean:
@@ -785,11 +798,11 @@ def list_pages(
     # freshest content first, not whatever happened to seed the site
     # originally) and costs nothing on the sitemap/RelatedLinks callers,
     # which don't care about order.
-    query = db.query(Page).order_by(Page.id.desc())
+    base_query = db.query(Page).order_by(Page.id.desc())
     if template_type is not None:
-        query = query.filter(Page.template_type == template_type)
+        base_query = base_query.filter(Page.template_type == template_type)
     if slugs is not None:
-        query = query.filter(Page.slug.in_([s for s in slugs.split(",") if s]))
+        base_query = base_query.filter(Page.slug.in_([s for s in slugs.split(",") if s]))
     if q:
         # Title-only for now: ilike() is portable across SQLite/Postgres,
         # unlike JSON-field queries (Postgres' ->> operator has no SQLite
@@ -804,38 +817,82 @@ def list_pages(
         # already one click away from everywhere. Excluded here rather than
         # in each frontend caller, since both the search results page and
         # the header's autocomplete dropdown go through this same query.
-        query = query.filter(Page.title.ilike(f"%{q}%"), Page.template_type != "homepage")
+        base_query = base_query.filter(Page.title.ilike(f"%{q}%"), Page.template_type != "homepage")
 
+    def _build_summary(page: Page) -> PageSummary:
+        image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
+        return PageSummary(
+            slug=page.slug,
+            template_type=page.template_type,
+            title=page.title,
+            image_url=image_url,
+            image_attribution=image_attribution,
+            hero_image_query=hero_image_query,
+            image_alt=image_alt,
+            link_terms=page.content.get("link_terms") if page.template_type == "definition" else None,
+        )
+
+    if paged and limit is not None:
+        # A raw SQL OFFSET/LIMIT can't see content["unpublished"] (a JSON
+        # field, not a queryable column) -- so a plain `.offset(offset)
+        # .limit(limit)` batch that happens to contain an unpublished page
+        # comes back shorter than `limit` even though more published pages
+        # exist further on. PagedPageGrid.tsx took "got back fewer than I
+        # asked for" as "there's nothing left" and stopped offering "Load
+        # more" -- confirmed live: /food/recipes stopped at 71 of the 929
+        # real recipe_or_dish rows, because a "Load more" batch somewhere
+        # in that range happened to contain an unpublished page.
+        #
+        # Fetching in a loop here, expanding the raw window (tracked as
+        # `raw_offset`, not `len(items)`) until `limit` published items are
+        # collected or a fetched batch itself comes back shorter than
+        # `limit` (the only reliable "no more raw rows" signal -- SQL only
+        # returns a short batch at the true end of the matching set), means
+        # the only way this endpoint returns fewer than `limit` items is
+        # genuinely reaching the end. `next_offset` is the real raw-row
+        # cursor for the next call, not a published-item count, since those
+        # two diverge the moment any row in between was unpublished.
+        items: list[PageSummary] = []
+        raw_offset = offset
+        exhausted = False
+        while len(items) < limit:
+            batch = base_query.offset(raw_offset).limit(limit).all()
+            if not batch:
+                exhausted = True
+                break
+            consumed = 0
+            for page in batch:
+                consumed += 1
+                if page.content.get("unpublished"):
+                    continue
+                items.append(_build_summary(page))
+                if len(items) >= limit:
+                    break
+            raw_offset += consumed
+            if len(batch) < limit:
+                exhausted = True
+                break
+        return {
+            "items": items,
+            "next_offset": raw_offset,
+            "has_more": not exhausted and len(items) >= limit,
+        }
+
+    # Unchanged legacy behavior (no `paged` flag) -- still used by the
+    # homepage carousels and any other limit/offset caller that hasn't
+    # opted into the cursor-based shape above. A static, non-paginated
+    # carousel can under-fill by at most a couple of items if an unpublished
+    # page lands in its one fixed batch; it doesn't compound the way
+    # repeated "Load more" calls do, so it's lower priority to migrate.
+    query = base_query
     if limit is not None:
         query = query.offset(offset).limit(limit)
 
     summaries = []
     for page in query.all():
-        # Same content["unpublished"] opt-out get_page() honors -- keeps an
-        # explicitly unpublished page (see e.g. swordfish-recipes) out of
-        # every listing this endpoint feeds: section index pages, the
-        # homepage carousels, RelatedLinks, and sitemap.xml alike, all in
-        # this one place. Filtered in Python rather than SQL (content is a
-        # JSON blob, not a queryable column) -- fine at today's scale
-        # where this is expected to flag a small handful of pages at most;
-        # can mean a `limit`-ed page returns fewer than `limit` results if
-        # one of the skipped pages would've been in that page, same minor
-        # tradeoff any post-query filter has.
         if page.content.get("unpublished"):
             continue
-        image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
-        summaries.append(
-            PageSummary(
-                slug=page.slug,
-                template_type=page.template_type,
-                title=page.title,
-                image_url=image_url,
-                image_attribution=image_attribution,
-                hero_image_query=hero_image_query,
-                image_alt=image_alt,
-                link_terms=page.content.get("link_terms") if page.template_type == "definition" else None,
-            )
-        )
+        summaries.append(_build_summary(page))
     return summaries
 
 
