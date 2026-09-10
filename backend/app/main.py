@@ -11,11 +11,20 @@ from typing import NamedTuple
 import requests
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, fetch_images
-from .images import PEXELS_ACCESS_KEY, UNSPLASH_ACCESS_KEY, _is_reachable, is_allowed_image_url
+from .images import (
+    PEXELS_ACCESS_KEY,
+    UNSPLASH_ACCESS_KEY,
+    _is_reachable,
+    _is_relevant,
+    _search_pexels,
+    _search_unsplash,
+    is_allowed_image_url,
+)
 from .models import Page
 from .schemas import PageOut, PageSummary
 from .seed_templates import resync_content, seed
@@ -1070,3 +1079,93 @@ def export_images(
         }
 
     return result
+
+
+# One-off diagnostic for comparing Pexels vs. Unsplash search-result quality
+# side by side on the same queries -- a mix of terms Pexels previously had
+# no relevant match for (from the ingredient_hub backlog) and terms Pexels
+# already handled easily, to see whether Unsplash actually helps on the hard
+# cases and how it compares on the easy ones. Calls both providers directly
+# (not through search_image()'s Pexels-first/Unsplash-fallback order) so
+# both always run regardless of whether Pexels succeeds. Not meant to be a
+# permanent route -- safe to delete once the comparison's been reviewed.
+_COMPARE_IMAGE_TERMS = [
+    # Pexels was struggling (obscure ingredient_hub terms)
+    ("braunschweiger", "sliced braunschweiger liver sausage on rye bread", ("liverwurst", "braunschweiger")),
+    ("scoby", "kombucha scoby culture in glass jar", "kombucha"),
+    ("langostino", "cooked langostino tails on ice", ("langostino", "shrimp", "lobster")),
+    ("qottab", "fried pastries dusted with powdered sugar on a plate", ("pastry", "pastries")),
+    ("kanpachi", "sliced raw fish sashimi on a plate", ("sashimi", "fish")),
+    # Pexels wasn't struggling (easy, common queries)
+    ("chocolate chip cookies", "chocolate chip cookies", None),
+    ("roasted brussels sprouts", "roasted brussels sprouts", None),
+    ("grilled salmon fillet", "grilled salmon fillet", None),
+    ("banana bread slice", "banana bread slice", None),
+    ("taco bowl", "taco bowl with ground beef and toppings", None),
+]
+
+
+@app.get("/admin/compare-images", response_class=HTMLResponse)
+def compare_images(token: str):
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    def render_result(provider: str, query: str, must_match) -> str:
+        try:
+            if provider == "pexels":
+                photo = _search_pexels(query, must_match=must_match)
+            else:
+                photo = _search_unsplash(query, must_match=must_match)
+        except Exception as e:
+            return f'<div class="cell error">Error: {e}</div>'
+        if photo is None:
+            return '<div class="cell empty">No relevant result found</div>'
+        return f"""
+        <div class="cell">
+          <img src="{photo.url}" alt="">
+          <p class="meta">by {photo.photographer} on {photo.source}</p>
+        </div>
+        """
+
+    rows = []
+    for label, query, must_match in _COMPARE_IMAGE_TERMS:
+        pexels_html = render_result("pexels", query, must_match)
+        unsplash_html = render_result("unsplash", query, must_match)
+        rows.append(f"""
+        <tr>
+          <td class="label">
+            <strong>{label}</strong>
+            <div class="query">query: "{query}"</div>
+          </td>
+          <td>{pexels_html}</td>
+          <td>{unsplash_html}</td>
+        </tr>
+        """)
+
+    html = f"""
+    <html>
+    <head>
+      <title>Pexels vs. Unsplash comparison</title>
+      <style>
+        body {{ font-family: -apple-system, sans-serif; padding: 24px; background: #faf9f7; }}
+        table {{ border-collapse: collapse; width: 100%; }}
+        td {{ border: 1px solid #ddd; padding: 12px; vertical-align: top; width: 33%; }}
+        th {{ padding: 8px 12px; text-align: left; background: #eee; }}
+        .label {{ background: #f5f5f5; }}
+        .query {{ color: #888; font-size: 12px; margin-top: 4px; }}
+        .cell img {{ max-width: 100%; max-height: 220px; border-radius: 6px; display: block; }}
+        .meta {{ font-size: 12px; color: #666; margin: 4px 0 0; }}
+        .empty {{ color: #b00; font-style: italic; }}
+        .error {{ color: #b00; }}
+      </style>
+    </head>
+    <body>
+      <h1>Pexels vs. Unsplash: same queries, side by side</h1>
+      <table>
+        <tr><th>Term</th><th>Pexels</th><th>Unsplash</th></tr>
+        {"".join(rows)}
+      </table>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html)
