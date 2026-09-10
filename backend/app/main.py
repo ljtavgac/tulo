@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
-from .content_audit import run_full_audit
+from .content_audit import run_full_audit, scan_image_relevance_risk
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, _search_query_for, fetch_images
 from .images import (
@@ -31,7 +31,7 @@ from .images import (
 )
 from .models import Page
 from .schemas import PageOut, PageSummary
-from .seed_templates import resync_content, seed
+from .seed_templates import SEED_PAGES, resync_content, seed
 
 
 def _revalidate_frontend() -> bool:
@@ -1156,6 +1156,120 @@ def content_audit(token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404)
 
     return run_full_audit(db)
+
+
+# Mirrors frontend/lib/seo.ts's TEMPLATE_ROUTES -- the one other place
+# this mapping is defined. Kept as its own small copy here rather than
+# threaded through from the frontend (there's no shared package between
+# the two apps to put it in) since it only needs to build a human-facing
+# link for /admin/image-relevance-review below, not drive real routing.
+_ADMIN_TEMPLATE_ROUTES: dict[str, str] = {
+    "recipe_or_dish": "recipes",
+    "ingredient_hub": "ingredients",
+    "howto_technique": "how-to",
+    "definition": "what-is",
+    "comparison": "comparisons",
+    "substitute": "substitutes",
+    "category_roundup": "collections",
+    "tool_page": "tools",
+}
+
+
+def _admin_page_path(template_type: str, slug: str) -> str:
+    if template_type == "homepage":
+        return "/"
+    if template_type == "static_page":
+        return f"/{slug}"
+    prefix = _ADMIN_TEMPLATE_ROUTES.get(template_type)
+    return f"/food/{prefix}/{slug}" if prefix else f"/food/{slug}"
+
+
+@app.get("/admin/image-relevance-review", response_class=HTMLResponse)
+def image_relevance_review(token: str, db: Session = Depends(get_db)):
+    """The same score>=2 image-relevance-risk list content_audit.py's
+    scan_image_relevance_risk() returns, rendered as an actual visual
+    grid instead of raw JSON/CSV -- built after handing over a CSV of
+    signal labels made for a slower, less useful review pass than
+    actually looking at each flagged photo and clicking straight through
+    to the live page. Each card shows the page's current photo (pulled
+    live from the database -- scan_image_relevance_risk() itself only
+    sees seed_templates.py's static content, which never has image_url),
+    its risk signals, and a link to both the live page and its
+    /admin/debug-page-image view for a deeper look. Not meant to be a
+    permanent route.
+    """
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    risk = scan_image_relevance_risk(SEED_PAGES)
+    review = sorted([r for r in risk if r["score"] >= 2], key=lambda r: -r["score"])
+
+    slugs = [r["slug"] for r in review]
+    pages_by_slug = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(slugs)).all()}
+
+    frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
+
+    cards = []
+    for r in review:
+        page = pages_by_slug.get(r["slug"])
+        content = page.content if page else {}
+        image_url = content.get("image_url")
+        img_html = (
+            f'<img src="{image_url}" alt="">'
+            if image_url
+            else '<div class="no-image">no image_url</div>'
+        )
+        live_url = f"{frontend_origin}{_admin_page_path(r['template_type'], r['slug'])}"
+        debug_url = f"/admin/debug-page-image?token={token}&slug={r['slug']}"
+        signals_html = "".join(f"<li>{s}</li>" for s in r["signals"])
+        cards.append(f"""
+        <div class="card">
+          <div class="thumb">{img_html}</div>
+          <div class="info">
+            <div class="title"><a href="{live_url}" target="_blank">{r['title']}</a> <span class="score">score {r['score']}</span></div>
+            <div class="meta">{r['template_type']} &middot; {r['slug']}</div>
+            <div class="query">query: {r['query']!r}</div>
+            {f'<div class="query">must_match: {r["must_match"]!r}</div>' if r.get('must_match') else ''}
+            {f'<div class="query">salient_query: {r["salient_query"]!r}</div>' if r.get('salient_query') else ''}
+            <ul class="signals">{signals_html}</ul>
+            <div class="links"><a href="{live_url}" target="_blank">live page</a> &middot; <a href="{debug_url}" target="_blank">debug search</a></div>
+          </div>
+        </div>
+        """)
+
+    html = f"""
+    <html>
+    <head>
+      <title>Image relevance review ({len(review)} pages)</title>
+      <style>
+        body {{ font-family: -apple-system, sans-serif; margin: 24px; background: #fafafa; }}
+        h1 {{ font-size: 20px; }}
+        .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }}
+        .card {{ background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; }}
+        .thumb {{ width: 140px; min-width: 140px; background: #eee; display: flex; align-items: center; justify-content: center; }}
+        .thumb img {{ width: 100%; height: 140px; object-fit: cover; }}
+        .no-image {{ font-size: 11px; color: #b00; text-align: center; padding: 8px; }}
+        .info {{ padding: 10px 12px; font-size: 13px; flex: 1; min-width: 0; }}
+        .title {{ font-weight: 600; font-size: 14px; }}
+        .title a {{ color: #111; text-decoration: none; }}
+        .title a:hover {{ text-decoration: underline; }}
+        .score {{ font-weight: 400; color: #b00; font-size: 11px; }}
+        .meta {{ color: #888; font-size: 11px; margin: 2px 0 6px; }}
+        .query {{ color: #555; font-size: 11px; margin: 2px 0; word-break: break-word; }}
+        .signals {{ margin: 6px 0; padding-left: 16px; font-size: 11px; color: #a55; }}
+        .links {{ margin-top: 6px; font-size: 12px; }}
+        .links a {{ color: #06c; }}
+      </style>
+    </head>
+    <body>
+      <h1>Image relevance review -- {len(review)} pages (score&ge;2)</h1>
+      <div class="grid">
+        {"".join(cards)}
+      </div>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html)
 
 
 @app.get("/admin/export-images")
