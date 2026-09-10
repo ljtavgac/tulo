@@ -56,14 +56,32 @@ def _is_relevant(alt_text: str, must_match: str | tuple[str, ...] | None) -> boo
     it's a tuple and *any* of its terms do -- cheap either way (no extra
     request, this text comes back with every search result already).
 
-    Returns True (accept) when `must_match` is None (caller has no
-    reliable subject to check, e.g. recipe_or_dish's free-form dish names)
-    or when `alt_text` is blank (some photos, mostly on Unsplash, have no
-    description at all -- nothing to check against, and refusing every
-    such photo would throw away many good matches over a false negative).
+    Returns True (accept) when `must_match` is None -- the caller has no
+    reliable subject to check (e.g. recipe_or_dish's free-form dish names
+    with no salient_ingredient_query set).
+
+    A blank `alt_text` used to also auto-accept unconditionally (some
+    photos, mostly on Unsplash, have no description at all -- nothing to
+    check against, and refusing every such photo seemed like it would
+    throw away many good matches over a false negative). In practice this
+    became the dominant real failure mode this session: once a page has a
+    real, curated must_match, a blank-alt-text candidate slipping through
+    unchecked means the careful match term never actually gets exercised
+    -- confirmed live on what-is-boudin (the original case that motivated
+    adding must_match at all) and repeatedly afterward on pages whose
+    query/match wording kept getting tightened round after round with no
+    visible improvement, because the photo actually being selected was
+    never being checked against any of it. Now a blank alt_text only
+    auto-accepts when must_match is also None (nothing to check either
+    way); once a real must_match exists, a candidate with no description
+    is rejected like any other candidate that fails the check, not given
+    a free pass. SEARCH_RESULTS_PER_PAGE=30 gives each search plenty of
+    other candidates to fall through to instead.
     """
-    if not must_match or not alt_text:
+    if not must_match:
         return True
+    if not alt_text:
+        return False
     terms = (must_match,) if isinstance(must_match, str) else must_match
     return any(term.lower() in alt_text.lower() for term in terms if term)
 

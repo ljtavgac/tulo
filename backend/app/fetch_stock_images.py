@@ -387,12 +387,14 @@ def _apply_result(
     `extra_exclude` is separate from `used_urls` (which tracks photos
     claimed by *other* pages this run): it's for excluding this same
     page's own current, presumably-wrong photo on a targeted re-fetch --
-    see the caller for why that's needed. must_match alone doesn't
-    reliably prevent re-selecting it: _is_relevant() intentionally accepts
-    a photo with blank alt/description text regardless of must_match (see
-    its own docstring), so a low-effort stock photo with no description
-    can keep winning the same search on every re-run even with a required
-    subject term set, exactly what happened on what-is-boudin.
+    see the caller for why that's needed. A real must_match now rejects a
+    blank-alt-text candidate outright (see _is_relevant()'s docstring --
+    it didn't always; that gap is what originally let a low-effort photo
+    with no description keep winning the same search on every re-run even
+    with a required subject term set, on what-is-boudin), but a page with
+    no must_match at all (recipe_or_dish with no salient_ingredient_query)
+    still has nothing to stop the exact same top-ranked photo from being
+    re-selected -- extra_exclude covers that remaining case.
 
     Called from within a worker thread (see fetch_images) -- touches only
     `content` (a deep copy local to this page, per-worker, never shared)
