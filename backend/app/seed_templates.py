@@ -13,6 +13,7 @@ import re
 
 from sqlalchemy.orm import Session
 
+from .content_audit import BLOCK_PATTERNS, _scan_patterns
 from .database import SessionLocal
 from .models import Page
 
@@ -245846,6 +245847,35 @@ def _check_no_double_dashes() -> None:
     )
 
 
+def _check_no_ai_leakage_tells() -> None:
+    """Same enforcement pattern and reasoning as _check_no_double_dashes
+    above, for a small set of near-zero-false-positive AI-writing tells
+    (see content_audit.py's BLOCK_PATTERNS for the full list and how each
+    one was verified against this site's real content before being added
+    here) -- a hedge-phrase disambiguation opener ("you're likely
+    referring to X") instead of a direct definitional statement, or
+    literal model-identity/training-cutoff leakage. Both are real
+    instances found live on this site, not a hypothetical concern.
+
+    Deliberately does NOT include content_audit.py's ADVISORY_PATTERNS
+    (softer marketing-cliche constructions like "elevate your" or "whether
+    you're a beginner or") -- those need a human judgment call on a
+    case-by-case basis, not an automatic hard failure that could crash
+    the whole app on a future batch's legitimate edge case. Run
+    `python -m app.content_audit` (or hit /admin/content-audit) for that
+    fuller, advisory-only report.
+    """
+    hits = _scan_patterns(SEED_PAGES, BLOCK_PATTERNS)
+    if not hits:
+        return
+    shown = "\n".join(f"  [{h['pattern']}] {h['slug']} ({h['location']}): {h['excerpt']!r}" for h in hits[:15])
+    more = f"\n  ...and {len(hits) - 15} more" if len(hits) > 15 else ""
+    raise ValueError(
+        f"Found {len(hits)} AI-writing-tell construction(s) in SEED_PAGES content "
+        f"(see content_audit.py's BLOCK_PATTERNS for what's checked):\n{shown}{more}"
+    )
+
+
 # template_type -> the fields every live page of that type is required to
 # have populated. Each is a "component" this site's own content-depth
 # standard treats as universal, not incidental -- the fields that were
@@ -245978,6 +246008,7 @@ def _check_no_duplicate_titles() -> None:
 
 
 _check_no_double_dashes()
+_check_no_ai_leakage_tells()
 _check_content_depth()
 _check_no_duplicate_titles()
 
