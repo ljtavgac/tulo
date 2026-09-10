@@ -629,8 +629,23 @@ def fetch_images(
             # wrong match (exactly the failure case this tier exists for),
             # the curated fallback never got a chance to run at all.
             salient_query = content.get("salient_ingredient_query")
+            # Opt-in per page, same idea as hero_image_must_match but scoped
+            # to just this tier: the auto-derived OR-tuple from
+            # salient_ingredient_query can still be too lenient on its own
+            # (homemade-onion-soup-mix's salient query "dried minced onion
+            # flakes" derives a match on bare "onion" alone, which any
+            # fresh-onion photo -- not specifically dried flakes -- also
+            # satisfies). hero_image_must_match itself isn't reused here:
+            # that override is for the dish-name tier and is deliberately
+            # exempted from touching this one (see protected_attempts).
+            salient_must_match_override = content.get("salient_ingredient_must_match")
             salient_attempts = (
-                [(salient_query, _recipe_dish_must_match_terms(salient_query))] if salient_query else []
+                [(
+                    salient_query,
+                    salient_must_match_override or _recipe_dish_must_match_terms(salient_query),
+                )]
+                if salient_query
+                else []
             )
             protected_attempts = len(salient_attempts)
             attempts = salient_attempts + dish_attempts
