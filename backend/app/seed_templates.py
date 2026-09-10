@@ -108517,6 +108517,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What a veal chop is, the best substitutes for rib and loin cuts, how to store and cook it, and what to look for when buying one.",
             "hero_image_query": "grilled veal chop on plate",
+            "hero_image_must_match": ["veal chop", "veal"],
             "image_alt": "A thick-cut bone-in veal rib chop seared and resting on a wooden cutting board with a rosemary sprig",
             "description": "A veal chop is a cross-section cut from a young calf's rib or loin, usually including the bone. It has a much finer grain and paler color than beef, with a mild, slightly sweet flavor and a tenderness that makes it suited to quick, high-heat cooking rather than long braising.",
             "substitutes": [
@@ -108652,7 +108653,8 @@ SEED_PAGES = [
         "batch_number": 2,
         "content": {
             "meta_description": "What Wendy's Biggie Bag actually includes, how it compares to other fast food value deals, what it costs, and how to store or reheat leftovers if you don't finish it in one sitting.",
-            "hero_image_query": "Wendy's Biggie Bag combo meal with sandwich fries nuggets and drink",
+            "hero_image_query": "fast food combo meal with burger fries nuggets and drink",
+            "hero_image_must_match": ["combo meal", "fast food", "fries"],
             "image_alt": "A Wendy's Biggie Bag laid out on a tray showing a Jr. Bacon Cheeseburger, a small fry, four chicken nuggets, and a soft drink cup.",
             "description": "The Biggie Bag is a bundled value meal sold by Wendy's, first launched in 2019 as a fixed-price combo built around one of a few sandwich options, a small fries, a four-piece chicken nuggets, and a small drink. It isn't a single food item but a packaged deal, meant to compete directly with McDonald's and Burger King's own low-price bundles. The sandwich choice determines the name on the receipt (Jr. Bacon Cheeseburger Biggie Bag, Crispy Chicken Biggie Bag, Spicy Chicken Biggie Bag, or Double Stack Biggie Bag), but the sides and price stay the same across versions.",
             "substitutes": [
