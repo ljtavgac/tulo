@@ -230717,6 +230717,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "What canned peaches are, how to substitute fresh, frozen, or dried peaches for them, how to store an opened can, and how to use the syrup.",
             "hero_image_query": "canned peach halves in syrup",
+            "hero_image_must_match": ["peach", "peaches"],
             "image_alt": "Peeled peach halves submerged in syrup inside an open metal can, with a few slices arranged on a small plate beside it.",
             "description": "Canned peaches are peeled, halved or sliced peaches that have been heat-processed in a liquid (heavy syrup, light syrup, juice, or water) and sealed for long-term shelf storage. Most commercial canned peaches use clingstone varieties, which hold their shape better through processing than freestone peaches used for fresh eating.",
             "substitutes": [
@@ -230892,7 +230893,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a cheesecake ball is, how it differs from cheesecake bites and cheesecake fudge, the best substitutes if you're short on ingredients or time, and how to store one so it doesn't get grainy or weep.",
-            "hero_image_query": "cheesecake ball coated in crushed pecans with crackers",
+            "hero_image_query": "cheese ball appetizer coated in crushed pecans with crackers",
+            "hero_image_must_match": ["cheese ball", "cheeseball", "cheese"],
             "image_alt": "A round cheesecake ball rolled in crushed pecans and graham cracker crumbs, sitting on a wood board surrounded by graham crackers and pretzels for dipping.",
             "description": "A cheesecake ball is a no-bake dessert made by beating softened cream cheese with butter, powdered sugar, and flavorings into a stiff, spreadable dough, then chilling it and rolling it into one large ball (or several small ones) before coating the outside in crushed nuts, graham cracker crumbs, mini chocolate chips, or crushed cookies. It's built to be served like a cheese ball appetizer but eaten as a sweet dip with graham crackers, vanilla wafers, pretzels, or fruit. Because there's no baking involved, texture depends entirely on getting the cream cheese fully softened and the sugar fully incorporated before chilling.",
             "substitutes": [
@@ -230953,7 +230955,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a Colorado Bulldog is, the best ingredient substitutes with ratios, how to store the components, and how it differs from a White Russian.",
-            "hero_image_query": "colorado bulldog cocktail in a highball glass with cola and cream layers",
+            "hero_image_query": "coffee cream cocktail topped with cola in a tall glass",
+            "hero_image_must_match": ["cocktail", "cola", "cream"],
             "image_alt": "A tall glass of Colorado Bulldog showing layered cream-colored vodka and coffee liqueur base topped with dark cola and a straw",
             "description": "A Colorado Bulldog is a tall cocktail built on a White Russian base, vodka, coffee liqueur, and cream, then topped with cola for fizz and extra sweetness. It's served over ice in a highball or collins glass rather than the short rocks glass used for a White Russian, which makes it more of a long, sippable drink than a dessert-style nightcap.",
             "substitutes": [
@@ -231018,7 +231021,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What thit kho is, how to substitute its key ingredients, how to store and reheat leftovers, and how Southern and Northern versions of this Vietnamese braised pork differ.",
-            "hero_image_query": "Vietnamese caramelized braised pork thit kho with eggs in clay pot",
+            "hero_image_query": "glossy braised pork belly with whole boiled eggs in dark sauce",
+            "hero_image_must_match": ["pork", "braised"],
             "image_alt": "A clay pot of glossy dark brown braised pork belly cubes and whole hard-boiled eggs sitting in a thick caramel sauce, served over white rice.",
             "description": "Thit kho (also called thit kho tau or thit kho trung) is a Vietnamese braised pork dish made by simmering pork belly, and usually whole hard-boiled eggs, in a sauce built from caramelized sugar (nuoc mau), fish sauce, and coconut water until the meat turns tender and the sauce reduces to a dark, glossy, savory-sweet glaze. It's a staple of home cooking and a common Tet holiday dish, prized for how well it keeps and reheats over several days.",
             "substitutes": [
@@ -231398,7 +231402,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What a Kentucky Mule is, how it differs from a Moscow Mule, substitutes for the bourbon and ginger beer, and how to build one properly.",
-            "hero_image_query": "kentucky mule cocktail copper mug",
+            "hero_image_query": "moscow mule cocktail in copper mug with lime and ginger beer",
+            "hero_image_must_match": ["mule", "cocktail", "ginger beer", "copper mug"],
             "image_alt": "A copper mug filled with a Kentucky Mule, ice, bourbon, and ginger beer, garnished with a lime wheel and mint sprig on a wooden bar top.",
             "description": "A Kentucky Mule is a bourbon-based riff on the Moscow Mule: bourbon, spicy ginger beer, and fresh lime juice, built over ice and traditionally served in a chilled copper mug. The bourbon swaps in for vodka, giving the drink a rounder, slightly sweet backbone that stands up better to the ginger's heat than vodka does.",
             "substitutes": [
@@ -232644,6 +232649,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A classic Southern chocolate gravy recipe made with cocoa powder, sugar, and milk, thickened on the stovetop and poured warm over hot biscuits. Ready in 15 minutes.",
             "hero_image_query": "chocolate gravy biscuits",
+            "salient_ingredient_query": "chocolate sauce drizzled over biscuits",
             "image_alt": "A pan of dark, glossy chocolate gravy being poured over a split, buttered biscuit on a white plate.",
             "why_it_works": "Cooking the cocoa and flour together in a dry roux before the milk goes in keeps the gravy smooth and free of lumps, while a slow simmer lets the starch fully thicken without scorching the chocolate.",
             "prep_time_minutes": 5,
@@ -233024,6 +233030,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A tomato-based Manhattan clam chowder loaded with clams, potatoes, and bacon, simmered until the vegetables are tender and the broth is deeply flavored. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "manhattan clam chowder",
+            "salient_ingredient_query": "tomato based soup with clams and vegetables",
             "image_alt": "A bowl of red tomato-based Manhattan clam chowder with visible potatoes, celery, and chopped clams, garnished with fresh parsley.",
             "why_it_works": "Rendering the bacon first and cooking the vegetables in that fat builds a savory base before the tomatoes and clam juice go in, and simmering the potatoes directly in the broth lets them soak up flavor instead of just being cooked separately and added at the end.",
             "prep_time_minutes": 20,
@@ -233622,6 +233629,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A homemade white American cheese recipe made with real cheddar and Monterey Jack, no orange dye, melted smooth with sodium citrate for perfect sliceable, meltable slices.",
             "hero_image_query": "sliced white american cheese",
+            "salient_ingredient_query": "white cheddar cheese slices",
             "image_alt": "Stacked pale ivory slices of homemade white American cheese on a wooden board, with one slice folded over to show its smooth, glossy, bend-without-cracking texture.",
             "why_it_works": "Sodium citrate is an emulsifying salt that keeps the fat and protein in real cheese from separating when it's melted and re-set, which is exactly what gives packaged American cheese its signature smooth, sliceable, ultra-meltable texture. Using white cheddar and Monterey Jack instead of colored cheddar gets that same texture and melt without the orange dye or the processed aftertaste.",
             "prep_time_minutes": 15,
@@ -236418,6 +236426,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A quick, tangy cream cheese frosting recipe made for cinnamon rolls, ready in 10 minutes with no baking required. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "cream cheese frosting on cinnamon rolls",
+            "salient_ingredient_query": "cinnamon rolls with white icing",
             "image_alt": "A pan of cinnamon rolls with thick white cream cheese frosting melting down the sides, one roll lifted onto a small plate with a knife resting nearby.",
             "why_it_works": "Beating the cream cheese and butter together before adding any sugar knocks out lumps early, so the frosting turns out smooth instead of grainy, and building the powdered sugar in gradually keeps the texture thick enough to hold its shape on a warm roll without turning into a puddle.",
             "prep_time_minutes": 10,
@@ -238813,7 +238822,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What chinola (passion fruit) is, how it differs from other passion fruit varieties, the best substitutes with ratios, and how to store and use the pulp.",
-            "hero_image_query": "chinola passion fruit cut in half showing seeds and pulp",
+            "hero_image_query": "passion fruit cut in half showing seeds and pulp",
+            "hero_image_must_match": ["passion fruit", "passionfruit"],
             "image_alt": "A halved yellow chinola fruit showing its orange, seed-filled pulp next to two whole uncut fruits with wrinkled yellow-green skin.",
             "description": "Chinola is the Dominican Spanish name for passion fruit (Passiflora edulis), specifically the yellow-skinned variety (Passiflora edulis f. flavicarpa) that dominates markets across the Dominican Republic and much of the Caribbean. Inside its tough, waxy rind sits a mass of orange, gelatinous pulp packed with edible black seeds, tasting sharply tart, floral, and tropical all at once. It's used constantly in Dominican kitchens for morir soñando-style drinks, batidas, sauces, and desserts, almost always strained or blended rather than eaten out of hand.",
             "substitutes": [
@@ -240255,7 +240265,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What spiralized pasta is, the best substitutes and techniques if you don't own a spiralizer, how to store it without it turning watery, and how to cook it properly.",
-            "hero_image_query": "spiralized zucchini noodles",
+            "hero_image_query": "spiralized zucchini noodles on a plate",
+            "hero_image_must_match": ["zucchini", "noodles", "zoodles"],
             "image_alt": "A tangle of curly zucchini noodles spiralized into thin strands piled on a wooden board beside a handheld spiralizer tool.",
             "description": "Spiralized pasta is vegetables cut into long, curly, noodle-shaped strands using a spiralizer, and used in place of wheat pasta. Zucchini (often called zoodles), sweet potato, carrot, beet, and butternut squash are the most common choices. The texture and flavor vary a lot by vegetable: zucchini and cucumber are watery and mild and can be eaten raw, while sweet potato, beet, and butternut squash are starchier and need actual cooking before they're pleasant to eat.",
             "substitutes": [
@@ -241406,6 +241417,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A creamy chia seed smoothie recipe with banana, berries, and almond milk. Soaking the chia first keeps it smooth instead of gritty. Includes a serving scaler and metric toggle.",
             "hero_image_query": "chia seed smoothie in glass",
+            "salient_ingredient_query": "chia seeds in a bowl",
             "image_alt": "A tall glass of purple-pink chia seed smoothie topped with a sprinkle of whole chia seeds and fresh berries, with a stainless steel straw, next to a small bowl of dry chia seeds.",
             "why_it_works": "Soaking the chia seeds in the almond milk for a few minutes before blending lets them swell and soften, so the finished smoothie is thick and creamy instead of gritty with hard little seeds caught in your teeth.",
             "prep_time_minutes": 10,
@@ -241817,7 +241829,8 @@ SEED_PAGES = [
         "batch_number": 4,
         "content": {
             "meta_description": "What noodle pudding (kugel) actually is, smart substitutes for its key ingredients, how to store and reheat it, and what to serve alongside it.",
-            "hero_image_query": "baked noodle pudding kugel in casserole dish",
+            "hero_image_query": "baked egg noodle casserole with golden top and raisins",
+            "hero_image_must_match": ["noodle", "noodles"],
             "image_alt": "A golden-topped noodle pudding baked in a glass casserole dish, showing crisp browned edges and a custardy egg noodle interior studded with raisins.",
             "description": "Noodle pudding, widely known by its Yiddish name kugel, is a baked casserole of egg noodles bound together with eggs, dairy (usually cottage cheese and sour cream), and sugar, then baked until the top browns and crisps while the inside stays soft and custardy. Sweet versions include raisins, cinnamon, and sometimes crushed cornflakes on top; savory versions swap the sugar for sauteed onions, black pepper, and sometimes cheese. It's a staple of Ashkenazi Jewish holiday tables, especially for Shabbat and Rosh Hashanah, but it also shows up as a diner-style side dish in Jewish delis.",
             "substitutes": [
@@ -242871,6 +242884,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A pantry-staple onion soup mix recipe made from dried minced onion, onion powder, and beef bouillon, ready in 5 minutes with no MSG or anti-caking agents.",
             "hero_image_query": "onion soup mix seasoning blend in glass jar",
+            "salient_ingredient_query": "dried minced onion flakes in a bowl",
             "image_alt": "A small glass jar filled with a tan, flaky homemade onion soup mix blend of dried minced onion and bouillon granules, with a wooden spoon and loose dried onion flakes scattered beside it.",
             "why_it_works": "Dried minced onion and onion powder give two layers of onion flavor, one flaky and one fine, while beef bouillon granules supply the savory depth that store-bought packets get from hydrolyzed protein and MSG. Mixing your own means full control over sodium and no anti-caking additives, and it whisks into dips, gravies, and roasts exactly like the envelope version.",
             "prep_time_minutes": 5,
@@ -243039,6 +243053,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A Southern-style caramel caramel cake with tender buttermilk layers and a cooked caramel frosting that sets to a soft, fudgy finish. Includes a serving-size scaler and US/metric toggle.",
             "hero_image_query": "caramel layer cake sliced",
+            "salient_ingredient_query": "caramel sauce drizzling over cake",
             "image_alt": "A two-layer caramel cake on a cake stand with thick caramel frosting on top and sides, one slice cut to show the tender crumb inside.",
             "why_it_works": "Creaming the butter and sugar thoroughly gives the layers a fine, tender crumb, while cooking the frosting's brown sugar and butter together before adding powdered sugar produces a true caramel flavor and a soft, fudgy set instead of a grainy glaze.",
             "prep_time_minutes": 35,
@@ -244645,6 +244660,7 @@ SEED_PAGES = [
         "content": {
             "meta_description": "A copycat Sonic Ocean Water recipe with coconut-flavored simple syrup, a splash of blue food coloring, and crushed ice, ready in about 10 minutes.",
             "hero_image_query": "blue coconut ocean water drink with crushed ice",
+            "salient_ingredient_query": "blue tropical soda drink with ice in a glass",
             "image_alt": "A glass of pale blue Sonic-style ocean water filled with nugget ice, a straw resting on top and condensation beading on the outside of the glass.",
             "why_it_works": "A homemade coconut simple syrup gives the same round, sweet coconut flavor as the drive-in version without needing a bottle of flavored syrup, and pouring it over nugget ice (rather than regular cubes) is what actually makes the texture taste right.",
             "prep_time_minutes": 10,

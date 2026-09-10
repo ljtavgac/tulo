@@ -585,6 +585,25 @@ def fetch_images(
             # query, not only a vessel/container word it happens to share.
             must_match = _recipe_dish_must_match_terms(query)
             attempts = [(q, must_match) for q in queries]
+            # Last-resort tier, opt-in per page via this content key: a
+            # generic, raw/plain shot of the dish's single most
+            # recognizable ingredient, for dishes a general-purpose stock
+            # library is unlikely to have actually photographed as a
+            # finished, correctly-labeled plate -- a branded product name
+            # ("Sonic Ocean Water"), a dish whose name reads as something
+            # else entirely to a keyword search ("chocolate gravy" as a
+            # savory brown gravy; "onion soup mix" as an actual bowl of
+            # soup, not the dry seasoning blend it is; "Manhattan clam
+            # chowder" as the far more commonly-photographed cream-based
+            # New England style), or a regional/foreign dish name with no
+            # real stock coverage at all. Its own must_match is derived
+            # from *this* query, not the dish's -- a raw-ingredient photo's
+            # alt text will say "chia seeds" or "clams", never the dish's
+            # own name, so reusing the dish-level must_match here would
+            # reject the very photos this tier exists to find.
+            salient_query = content.get("salient_ingredient_query")
+            if salient_query:
+                attempts.append((salient_query, _recipe_dish_must_match_terms(salient_query)))
         else:
             fallback_fn = SINGLE_IMAGE_FALLBACKS.get(page.template_type)
             # Also the required subject term for every query tried for this
