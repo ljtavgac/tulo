@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
+from .content_audit import run_full_audit
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, _search_query_for, fetch_images
 from .images import (
@@ -1080,6 +1081,44 @@ def image_audit(
         "dead_count": len(dead) if check_reachability else None,
         "dead": dead,
     }
+
+
+@app.get("/admin/content-audit")
+def content_audit(token: str, db: Session = Depends(get_db)):
+    """Site-wide content quality report combining three checks in one
+    pass, so a new batch can be verified before it reaches manual review
+    instead of relying on someone clicking through pages one at a time and
+    reporting problems as they're found (see content_audit.py's own
+    docstring for the debugging session that motivated this):
+
+    - image completeness (a thin wrapper around the same missing/broken
+      logic as /admin/image-audit above)
+    - image relevance risk (a heuristic scan for the same real wrong-photo
+      patterns found by hand this session -- homonym collisions,
+      vessel-dominant queries, a weak/generic-only match term -- returned
+      as `review` for score>=2 stacked-signal pages and `low_confidence`
+      for a single weak signal, since a standalone signal alone isn't
+      itself evidence of a bad photo, see that function's docstring)
+    - AI-writing-tell phrasing, split into `blocking` (a small,
+      near-zero-false-positive list already enforced at import time by
+      seed_templates.py -- reported here too so a live run surfaces the
+      same thing without needing a redeploy) and `advisory` (softer
+      marketing-cliche constructions needing a human judgment call)
+
+    `clean` is true only when there's nothing in missing/broken image
+    completeness and no blocking AI-tell matches -- image relevance risk
+    and advisory AI tells never affect it, since both are inherently
+    judgment calls, not hard failures.
+
+    Same tool as `python -m app.content_audit` (see that module), exposed
+    over HTTP so it can run against a real deployment without shell
+    access to it -- gated behind the same ADMIN_TASK_TOKEN as every other
+    /admin/* route.
+    """
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    return run_full_audit(db)
 
 
 @app.get("/admin/export-images")
