@@ -1476,6 +1476,14 @@ def review_queue(
               <button type="submit" name="status" value="flagged" class="btn-flag">Flag</button>
               <button type="submit" name="status" value="approved" class="btn-approve-one">approve just this one</button>
             </form>
+            <form method="get" action="/admin/review-queue/override-image" class="override-form">
+              <input type="hidden" name="token" value="{token}">
+              <input type="hidden" name="slug" value="{r['slug']}">
+              <input type="hidden" name="batch" value="{target_batch}">
+              <input type="hidden" name="show" value="{show}">
+              <input type="text" name="image_url" placeholder="paste an exact images.pexels.com/... or images.unsplash.com/... URL">
+              <button type="submit" class="btn-override">use this photo</button>
+            </form>
           </div>
         </div>
         """
@@ -1520,9 +1528,11 @@ def review_queue(
         .links {{ margin: 6px 0; font-size: 12px; }}
         .links a {{ color: #06c; }}
         .mark-form {{ display: flex; gap: 6px; margin-top: 8px; align-items: center; }}
-        .mark-form input[type=text] {{ flex: 1; min-width: 0; font-size: 12px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
+        .mark-form input[type=text], .override-form input[type=text] {{ flex: 1; min-width: 0; font-size: 12px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
         .btn-approve-one {{ background: none; border: none; color: #888; font-size: 11px; cursor: pointer; text-decoration: underline; padding: 0; }}
         .btn-flag {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }}
+        .override-form {{ display: flex; gap: 6px; margin-top: 6px; align-items: center; }}
+        .btn-override {{ background: #555; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; }}
         .action-bar {{ display: flex; align-items: center; gap: 16px; margin: 14px 0 22px; }}
         .btn-approve-all {{ background: #2f7d43; color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }}
         .btn-approve-all.disabled {{ background: #ccc; pointer-events: none; }}
@@ -1618,7 +1628,17 @@ def review_queue_mark(
     (e.g. /admin/fetch-images) -- these are internal, token-gated tools,
     not user-facing forms, so a POST-only-for-mutations rule doesn't buy
     anything here and a GET form avoids a multipart-parsing dependency
-    this deploy doesn't otherwise need."""
+    this deploy doesn't otherwise need.
+
+    Flagging also immediately re-fetches this one page's image (see
+    fetch_images' only_slugs param -- it already excludes the page's own
+    current photo from the new search, exactly "try something other than
+    the one that's wrong" with zero new logic needed) so the reviewer
+    sees a fresh candidate on the very next page load instead of the same
+    bad photo staring back at them. Best-effort: a search hiccup here
+    (rate limit, network error -- fetch_images already catches and logs
+    per-page errors internally) never blocks saving the flag itself,
+    since the note is the part of this action that must never get lost."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
     if status not in ("approved", "flagged"):
@@ -1630,6 +1650,53 @@ def review_queue_mark(
         db.add(review)
     review.status = status
     review.note = note or None
+    db.commit()
+
+    if status == "flagged":
+        try:
+            fetch_images(db, only_slugs={slug})
+        except Exception as e:
+            print(f"  review-queue auto-refetch for {slug} failed: {e}")
+
+    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
+
+
+@app.get("/admin/review-queue/override-image")
+def review_queue_override_image(
+    token: str,
+    slug: str,
+    image_url: str,
+    batch: str,
+    show: str = "pending",
+    db: Session = Depends(get_db),
+):
+    """Manual escape hatch for when an automatic re-fetch (see
+    review_queue_mark above) doesn't find the right photo either: the
+    reviewer already knows the exact photo they want -- the same
+    paste-a-Pexels-URL workflow done by hand in chat throughout this
+    project -- and applies it directly here instead, no search involved,
+    no chat needed. Needs the direct image CDN URL (images.pexels.com/...
+    or images.unsplash.com/...), not a pexels.com/photo/... page link --
+    same ALLOWED_IMAGE_HOSTS next/image itself requires, checked here
+    with the same is_allowed_image_url/_is_reachable guarantees a normal
+    fetch gives, just skipping the search step entirely."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+    if not is_allowed_image_url(image_url):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Needs the direct image URL, starting with one of {ALLOWED_IMAGE_HOSTS} -- not a photo page link.",
+        )
+    if not _is_reachable(image_url):
+        raise HTTPException(status_code=400, detail="That URL didn't load -- double check it's the direct image URL.")
+
+    page = db.query(Page).filter(Page.slug == slug).first()
+    if page is None:
+        raise HTTPException(status_code=404, detail=f"No page with slug {slug}")
+    content = copy.deepcopy(page.content)
+    content["image_url"] = image_url
+    content["image_attribution"] = {"photographer": None, "photographer_url": None, "source": "manual_override"}
+    page.content = content
     db.commit()
 
     return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
