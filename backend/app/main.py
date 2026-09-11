@@ -1274,6 +1274,67 @@ def image_relevance_review(token: str, db: Session = Depends(get_db)):
     return HTMLResponse(content=html)
 
 
+def _build_review_rows(batch_pages: list[dict], db: Session) -> list[dict]:
+    """The per-page data /admin/review-queue renders as cards, factored out
+    so /admin/review-queue/data (a plain-JSON view of the exact same rows)
+    doesn't duplicate this query-and-signal-scan logic. Unfiltered and
+    unsorted -- both callers apply their own `show` filter and ordering on
+    top of this."""
+    slugs = [p["slug"] for p in batch_pages]
+    db_pages = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(slugs)).all()}
+    reviews = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(slugs)).all()}
+
+    image_risk_by_slug = {r["slug"]: r for r in scan_image_relevance_risk(batch_pages)}
+    ai_tells = scan_ai_tells(batch_pages)
+    ai_tells_by_slug: dict[str, list[dict]] = {}
+    for hit in ai_tells["blocking"] + ai_tells["advisory"]:
+        ai_tells_by_slug.setdefault(hit["slug"], []).append(hit)
+
+    rows = []
+    for p in batch_pages:
+        slug = p["slug"]
+        db_page = db_pages.get(slug)
+        content = db_page.content if db_page else {}
+        image_url = content.get("image_url")
+        review = reviews.get(slug)
+        status = review.status if review else "pending"
+        signals = []
+        if not image_url:
+            signals.append(("missing image", True))
+        risk = image_risk_by_slug.get(slug)
+        if risk:
+            signals.append((f"image risk (score {risk['score']}): {', '.join(risk['signals'])}", risk["score"] >= 2))
+        for hit in ai_tells_by_slug.get(slug, []):
+            signals.append((f"AI-tell [{hit['pattern']}]: {hit['excerpt'][:80]!r}", True))
+        rows.append({"slug": slug, "title": p["title"], "template_type": p["template_type"],
+                      "image_url": image_url, "status": status, "note": review.note if review else None,
+                      "reviewed_at": review.reviewed_at.isoformat() if review else None,
+                      "signals": signals})
+    return rows
+
+
+# Batches 0-5 are legacy content: real recipe/ingredient/how-to pages
+# published the ordinary way (commit to main, merge into staging) long
+# before this review queue existed, not new drops awaiting a first-time
+# review. Surfacing them here reads as "pending review," which is exactly
+# the confusion a reviewer hit in practice -- flagging pages from one of
+# these batches expecting it to be new, unreviewed, staging-only content,
+# when it had actually been live on both staging and prod for a while.
+# The review queue (and everything that shares its batch-number picker)
+# only ever surfaces batch_number >= this, starting at the first batch
+# daily_batch.py will actually create.
+_PIPELINE_START_BATCH = 6
+
+
+def _eligible_batch_numbers() -> list[int]:
+    """Every batch_number in SEED_PAGES that's actually part of the
+    review-queue pipeline (see _PIPELINE_START_BATCH), newest first."""
+    return sorted(
+        {p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None and p["batch_number"] >= _PIPELINE_START_BATCH},
+        reverse=True,
+    )
+
+
 def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
     """Shared by /admin/review-queue and its approve-remaining action:
     resolves the `batch` query param (a batch_number, the literal "all",
@@ -1283,16 +1344,27 @@ def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
     separately -- a page's approve/flag status already lives in
     PageReview keyed only by slug, not by batch, so nothing about
     reviewing across batches at once needed to change except this
-    filter."""
-    all_batches = sorted({p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None}, reverse=True)
+    filter. Rejects any batch_number below _PIPELINE_START_BATCH outright
+    rather than silently showing legacy content that was never meant to
+    be "reviewed" through this tool."""
+    all_batches = _eligible_batch_numbers()
     if not all_batches:
-        raise HTTPException(status_code=400, detail="No batch_number values found in SEED_PAGES")
+        raise HTTPException(status_code=400, detail="No eligible batch_number values found in SEED_PAGES")
 
     if batch == "all":
         target: str | int = "all"
-        pages = [p for p in SEED_PAGES if p["batch_number"] is not None and not p["content"].get("unpublished")]
+        pages = [
+            p for p in SEED_PAGES
+            if p["batch_number"] is not None and p["batch_number"] >= _PIPELINE_START_BATCH and not p["content"].get("unpublished")
+        ]
     else:
         target = int(batch) if batch is not None else all_batches[0]
+        if target < _PIPELINE_START_BATCH:
+            raise HTTPException(
+                status_code=400,
+                detail=f"batch {target} predates the review pipeline (batches below {_PIPELINE_START_BATCH} are "
+                f"legacy content, already fully live on both staging and prod -- nothing to review).",
+            )
         pages = [p for p in SEED_PAGES if p["batch_number"] == target and not p["content"].get("unpublished")]
     if not pages:
         raise HTTPException(status_code=404, detail=f"No published pages in batch {target}")
@@ -1337,45 +1409,16 @@ def review_queue(
 
     target_batch, batch_pages = _resolve_batch_pages(batch)
     slugs = [p["slug"] for p in batch_pages]
-    all_batches = sorted({p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None}, reverse=True)
+    all_batches = _eligible_batch_numbers()
 
-    db_pages = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(slugs)).all()}
-    reviews = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(slugs)).all()}
-
-    image_risk_by_slug = {r["slug"]: r for r in scan_image_relevance_risk(batch_pages)}
-    ai_tells = scan_ai_tells(batch_pages)
-    ai_tells_by_slug: dict[str, list[dict]] = {}
-    for hit in ai_tells["blocking"] + ai_tells["advisory"]:
-        ai_tells_by_slug.setdefault(hit["slug"], []).append(hit)
-
+    all_rows = _build_review_rows(batch_pages, db)
     frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
 
-    rows = []
-    for p in batch_pages:
-        slug = p["slug"]
-        db_page = db_pages.get(slug)
-        content = db_page.content if db_page else {}
-        image_url = content.get("image_url")
-        review = reviews.get(slug)
-        status = review.status if review else "pending"
-        signals = []
-        if not image_url:
-            signals.append(("missing image", True))
-        risk = image_risk_by_slug.get(slug)
-        if risk:
-            signals.append((f"image risk (score {risk['score']}): {', '.join(risk['signals'])}", risk["score"] >= 2))
-        for hit in ai_tells_by_slug.get(slug, []):
-            signals.append((f"AI-tell [{hit['pattern']}]: {hit['excerpt'][:80]!r}", True))
-        rows.append({"slug": slug, "title": p["title"], "template_type": p["template_type"],
-                      "image_url": image_url, "status": status, "note": review.note if review else None,
-                      "signals": signals})
-
-    if show != "all":
-        rows = [r for r in rows if r["status"] == "flagged" or (show == r["status"])]
+    rows = all_rows if show == "all" else [r for r in all_rows if r["status"] == "flagged" or (show == r["status"])]
     # Flagged always first regardless of sort, then anything with a live signal, then the rest.
     rows.sort(key=lambda r: (r["status"] != "flagged", not r["signals"], r["status"] != "pending"))
 
-    counts = Counter(reviews[s].status if s in reviews else "pending" for s in slugs)
+    counts = Counter(r["status"] for r in all_rows)
 
     approval = None
     if isinstance(target_batch, int):
@@ -1502,6 +1545,45 @@ def review_queue(
     </html>
     """
     return HTMLResponse(content=html)
+
+
+@app.get("/admin/review-queue/data")
+def review_queue_data(
+    token: str,
+    batch: str | None = Query(default=None, description="batch_number, or 'all'; defaults to the newest eligible batch_number."),
+    show: str = Query(default="flagged", description="pending | flagged | approved | all"),
+    db: Session = Depends(get_db),
+):
+    """Plain-JSON twin of /admin/review-queue, built specifically so a
+    Claude Code session (or anything else automated) can read exactly what
+    a reviewer flagged -- slug, title, and note -- without anyone needing
+    to copy-paste it out of the HTML page by hand. Same data, same
+    _resolve_batch_pages/_build_review_rows the HTML view uses; this is
+    just the machine-readable shape of it. Defaults to show=flagged since
+    "what did the reviewer flag and why" is the thing worth polling for."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    target_batch, batch_pages = _resolve_batch_pages(batch)
+    all_rows = _build_review_rows(batch_pages, db)
+    rows = all_rows if show == "all" else [r for r in all_rows if r["status"] == "flagged" or (show == r["status"])]
+
+    return {
+        "batch": target_batch,
+        "counts": dict(Counter(r["status"] for r in all_rows)),
+        "pages": [
+            {
+                "slug": r["slug"],
+                "title": r["title"],
+                "template_type": r["template_type"],
+                "status": r["status"],
+                "note": r["note"],
+                "reviewed_at": r["reviewed_at"],
+                "signals": [{"text": text, "critical": critical} for text, critical in r["signals"]],
+            }
+            for r in rows
+        ],
+    }
 
 
 @app.get("/admin/review-queue/mark")
