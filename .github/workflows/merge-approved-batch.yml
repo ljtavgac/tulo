@@ -1,0 +1,48 @@
+name: Merge approved batch to main
+
+# Triggered by the backend's /admin/review-queue/approve-for-prod endpoint
+# (see backend/app/main.py's _trigger_batch_merge) the moment a batch is
+# approved in the admin portal -- not on a schedule. This is the only place
+# in the whole pipeline that needs a real git push credential (the
+# auto-provisioned, run-scoped GITHUB_TOKEN below, granted contents:write
+# just for this job); the always-on Render web service never holds one,
+# only a narrow Actions:write-only PAT that can start this workflow and
+# nothing else.
+on:
+  workflow_dispatch:
+    inputs:
+      batch_number:
+        description: "batch_number to cherry-pick from staging onto main"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Cherry-pick the approved batch's commit onto main
+        run: |
+          set -euo pipefail
+          git fetch origin --tags
+          BATCH_TAG="batch-${{ inputs.batch_number }}"
+          SHA="$(git rev-list -n 1 "$BATCH_TAG")"
+          echo "Merging $BATCH_TAG ($SHA) onto main"
+          git config user.name "tulo-content-bot"
+          git config user.email "content-bot@users.noreply.github.com"
+          git cherry-pick "$SHA"
+          git push origin main
+
+      # daily_batch.py tags each staging batch commit as batch-<N> when it
+      # pushes (see content/scripts/daily_batch.py) -- that's what makes the
+      # cherry-pick above possible without hand-parsing commit messages.
+
+      - name: Report merged_at back to the backend
+        run: |
+          curl -sf "${{ vars.BACKEND_BASE_URL }}/admin/review-queue/mark-merged?token=${{ secrets.ADMIN_TASK_TOKEN }}&batch=${{ inputs.batch_number }}"
