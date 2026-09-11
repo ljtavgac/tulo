@@ -30,18 +30,27 @@ jobs:
       - name: Cherry-pick the approved batch's commit onto main
         run: |
           set -euo pipefail
-          git fetch origin --tags
-          BATCH_TAG="batch-${{ inputs.batch_number }}"
-          SHA="$(git rev-list -n 1 "$BATCH_TAG")"
-          echo "Merging $BATCH_TAG ($SHA) onto main"
+          git fetch origin staging
+          # daily_batch.py stamps every batch commit's message with a
+          # "Tulo-Batch-Number: <N>" trailer (see content/scripts/
+          # daily_batch.py) -- that's what makes this lookup possible
+          # without a git tag. Tags looked like the obvious choice here,
+          # but this repo's push credentials can create branches, not tag
+          # refs (a real permission boundary, confirmed by a live 403 on a
+          # tag push during setup) -- a commit trailer needs nothing more
+          # than the same push access already used for everything else.
+          # The trailing ([^0-9]|$) keeps batch 999 from matching batch
+          # 9999's trailer.
+          SHA="$(git log origin/staging -E --grep="Tulo-Batch-Number: ${{ inputs.batch_number }}([^0-9]|\$)" --format=%H -n 1)"
+          if [ -z "$SHA" ]; then
+            echo "No commit on staging carries Tulo-Batch-Number: ${{ inputs.batch_number }}" >&2
+            exit 1
+          fi
+          echo "Merging $SHA onto main"
           git config user.name "tulo-content-bot"
           git config user.email "content-bot@users.noreply.github.com"
           git cherry-pick "$SHA"
           git push origin main
-
-      # daily_batch.py tags each staging batch commit as batch-<N> when it
-      # pushes (see content/scripts/daily_batch.py) -- that's what makes the
-      # cherry-pick above possible without hand-parsing commit messages.
 
       - name: Report merged_at back to the backend
         run: |
