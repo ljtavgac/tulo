@@ -1273,10 +1273,35 @@ def image_relevance_review(token: str, db: Session = Depends(get_db)):
     return HTMLResponse(content=html)
 
 
+def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
+    """Shared by /admin/review-queue and its approve-remaining action:
+    resolves the `batch` query param (a batch_number, the literal "all",
+    or unset) to a display label and the matching published pages.
+    `batch="all"` is what makes a missed day's backlog reviewable as one
+    combined queue instead of forcing a click through each day
+    separately -- a page's approve/flag status already lives in
+    PageReview keyed only by slug, not by batch, so nothing about
+    reviewing across batches at once needed to change except this
+    filter."""
+    all_batches = sorted({p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None}, reverse=True)
+    if not all_batches:
+        raise HTTPException(status_code=400, detail="No batch_number values found in SEED_PAGES")
+
+    if batch == "all":
+        target: str | int = "all"
+        pages = [p for p in SEED_PAGES if p["batch_number"] is not None and not p["content"].get("unpublished")]
+    else:
+        target = int(batch) if batch is not None else all_batches[0]
+        pages = [p for p in SEED_PAGES if p["batch_number"] == target and not p["content"].get("unpublished")]
+    if not pages:
+        raise HTTPException(status_code=404, detail=f"No published pages in batch {target}")
+    return target, pages
+
+
 @app.get("/admin/review-queue", response_class=HTMLResponse)
 def review_queue(
     token: str,
-    batch: int | None = Query(default=None, description="batch_number to review; defaults to the newest one present."),
+    batch: str | None = Query(default=None, description="batch_number to review, or 'all' to combine every batch's pending/flagged backlog; defaults to the newest batch_number present."),
     show: str = Query(default="pending", description="pending | flagged | approved | all"),
     db: Session = Depends(get_db),
 ):
@@ -1309,15 +1334,9 @@ def review_queue(
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
-    all_batches = sorted({p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None}, reverse=True)
-    if not all_batches:
-        raise HTTPException(status_code=400, detail="No batch_number values found in SEED_PAGES")
-    target_batch = batch if batch is not None else all_batches[0]
-
-    batch_pages = [p for p in SEED_PAGES if p["batch_number"] == target_batch and not p["content"].get("unpublished")]
+    target_batch, batch_pages = _resolve_batch_pages(batch)
     slugs = [p["slug"] for p in batch_pages]
-    if not slugs:
-        raise HTTPException(status_code=404, detail=f"No published pages in batch {target_batch}")
+    all_batches = sorted({p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None}, reverse=True)
 
     db_pages = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(slugs)).all()}
     reviews = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(slugs)).all()}
@@ -1385,15 +1404,19 @@ def review_queue(
         </div>
         """
 
+    batch_label = "all batches" if target_batch == "all" else f"batch {target_batch}"
     batch_links = " &middot; ".join(
-        f'<a href="/admin/review-queue?token={token}&batch={b}&show={show}">{"batch " + str(b) if b != target_batch else f"<b>batch {b}</b>"}</a>'
-        for b in all_batches
+        [f'<a href="/admin/review-queue?token={token}&batch=all&show={show}">{"<b>all batches</b>" if target_batch == "all" else "all batches"}</a>']
+        + [
+            f'<a href="/admin/review-queue?token={token}&batch={b}&show={show}">{"batch " + str(b) if b != target_batch else f"<b>batch {b}</b>"}</a>'
+            for b in all_batches
+        ]
     )
 
     html = f"""
     <html>
     <head>
-      <title>Review queue — batch {target_batch}</title>
+      <title>Review queue — {batch_label}</title>
       <style>
         body {{ font-family: -apple-system, sans-serif; margin: 24px; background: #fafafa; }}
         h1 {{ font-size: 20px; margin-bottom: 4px; }}
@@ -1430,7 +1453,7 @@ def review_queue(
       </style>
     </head>
     <body>
-      <h1>Review queue — batch {target_batch}</h1>
+      <h1>Review queue — {batch_label}</h1>
       <div class="subnav">{batch_links}</div>
       <div class="summary">{len(slugs)} pages in batch &middot; {counts.get('pending', 0)} pending &middot; {counts.get('flagged', 0)} flagged &middot; {counts.get('approved', 0)} approved</div>
       <div class="action-bar">
@@ -1457,7 +1480,7 @@ def review_queue_mark(
     token: str,
     slug: str,
     status: str,
-    batch: int,
+    batch: str,
     show: str = "pending",
     note: str = "",
     db: Session = Depends(get_db),
@@ -1492,20 +1515,22 @@ def review_queue_mark(
 @app.get("/admin/review-queue/approve-remaining")
 def review_queue_approve_remaining(
     token: str,
-    batch: int,
+    batch: str,
     show: str = "pending",
     db: Session = Depends(get_db),
 ):
     """The primary way a review session actually ends: flag whatever's
     wrong first (mark above), then hit this once to approve every other
-    page in the batch that isn't currently flagged -- including ones
-    never individually touched. Re-approving an already-approved page is
-    a harmless no-op, so this is safe to click more than once, e.g. after
-    flagging a couple more on a second pass."""
+    page in the batch (or, with batch=all, every batch's combined
+    backlog -- see _resolve_batch_pages) that isn't currently flagged --
+    including ones never individually touched. Re-approving an
+    already-approved page is a harmless no-op, so this is safe to click
+    more than once, e.g. after flagging a couple more on a second pass."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
-    batch_slugs = [p["slug"] for p in SEED_PAGES if p["batch_number"] == batch and not p["content"].get("unpublished")]
+    _, batch_pages = _resolve_batch_pages(batch)
+    batch_slugs = [p["slug"] for p in batch_pages]
     existing = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(batch_slugs)).all()}
 
     for slug in batch_slugs:
