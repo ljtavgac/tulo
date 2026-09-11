@@ -1626,8 +1626,10 @@ def review_queue_approve_for_prod(
 
     Requires a real batch_number, not batch=all: promotion is an
     all-or-nothing per-batch operation, matching how daily_batch.py
-    generates and pushes one batch_number at a time to staging (tagged
-    batch-<N> so the merge workflow can find the exact commit).
+    generates and pushes one batch_number at a time to staging (each
+    commit's message carries a "Tulo-Batch-Number: <N>" trailer so the
+    merge workflow can find the exact commit -- not a git tag, since this
+    repo's push credentials can create branches but not tag refs).
     Re-clicking after a batch is already merged is a harmless no-op
     (redirects back without writing anything, but still re-fires the
     dispatch in case an earlier click's merge never landed)."""
