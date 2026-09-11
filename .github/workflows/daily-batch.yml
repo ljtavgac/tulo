@@ -14,7 +14,12 @@ on:
     # no per-workflow timezone setting. E.g. for 5am US Eastern, use
     # '0 9 * * *' (EST, UTC-4) or '0 10 * * *' during EDT (UTC-5).
     - cron: '0 5 * * *'
-  workflow_dispatch: {}  # manual trigger, for testing without waiting for the schedule
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Number of titles to generate this run"
+        required: false
+        default: '100'
 
 permissions:
   contents: write
@@ -34,6 +39,30 @@ jobs:
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
 
+      - name: Determine batch size
+        id: batch_size
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "count=${{ github.event.inputs.count }}" >> "$GITHUB_OUTPUT"
+          elif [ "$(date -u +%F)" = "2026-09-14" ]; then
+            # One-time safety valve for the very first live run: a small
+            # 5-title canary batch to confirm the whole pipeline actually
+            # works end to end (real API, real image fetch, real email)
+            # before committing to full volume. Once that batch is
+            # reviewed and confirmed good, the follow-up full-size run for
+            # the same day is a manual workflow_dispatch (count defaults
+            # to 100) -- deliberately NOT auto-chained here, since the
+            # entire point of the small batch is a human actually looking
+            # at it before more content gets generated.
+            #
+            # TODO: remove this date special-case once Monday 9/14 has
+            # been confirmed good -- every day after should just use the
+            # scheduled run's normal full count.
+            echo "count=5" >> "$GITHUB_OUTPUT"
+          else
+            echo "count=100" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run daily batch pipeline
         env:
           PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
@@ -47,4 +76,4 @@ jobs:
           # silently defeat daily_batch.py's own os.environ.get(...,
           # "ljtavgac@gmail.com") fallback. Add this back explicitly only
           # if notifications should ever go somewhere else.
-        run: python3 content/scripts/daily_batch.py --count 100
+        run: python3 content/scripts/daily_batch.py --count ${{ steps.batch_size.outputs.count }}
