@@ -1,0 +1,50 @@
+name: Daily content batch
+
+# Runs content/scripts/daily_batch.py unattended: claims the next 100
+# titles from CONTENT_QUEUE.csv, generates + validates + integrates them,
+# pushes to staging (never main -- see that script's own docstring for
+# why), fetches images, and emails a review-ready notification. The only
+# human step in the whole daily loop is reviewing the result in the admin
+# portal and clicking "Approve batch N for prod" -- see
+# merge-approved-batch.yml for what that triggers.
+on:
+  schedule:
+    # 5am UTC. If "5am" meant your own local morning rather than UTC,
+    # adjust this offset -- cron here is always UTC, GitHub Actions has
+    # no per-workflow timezone setting. E.g. for 5am US Eastern, use
+    # '0 9 * * *' (EST, UTC-4) or '0 10 * * *' during EDT (UTC-5).
+    - cron: '0 5 * * *'
+  workflow_dispatch: {}  # manual trigger, for testing without waiting for the schedule
+
+permissions:
+  contents: write
+
+jobs:
+  daily-batch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run daily batch pipeline
+        env:
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+          GMAIL_SMTP_USER: ${{ secrets.GMAIL_SMTP_USER }}
+          GMAIL_SMTP_APP_PASSWORD: ${{ secrets.GMAIL_SMTP_APP_PASSWORD }}
+          # NOTIFY_EMAIL_TO deliberately omitted, not set to an empty
+          # vars.NOTIFY_EMAIL_TO -- GitHub fills an unset vars.* reference
+          # with an empty string, not an absent env var, which would
+          # silently defeat daily_batch.py's own os.environ.get(...,
+          # "ljtavgac@gmail.com") fallback. Add this back explicitly only
+          # if notifications should ever go somewhere else.
+        run: python3 content/scripts/daily_batch.py --count 100
