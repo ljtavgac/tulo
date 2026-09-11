@@ -57,3 +57,24 @@ class PageReview(Base):
     reviewed_at: Mapped[datetime] = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc)
     )
+
+
+class BatchApproval(Base):
+    """One row per batch_number the user has explicitly approved for
+    promotion to main via /admin/review-queue/approve-for-prod -- the
+    durable signal the daily pipeline's merge step (content/scripts/
+    daily_batch.py, run by the scheduled job) checks for, so a click in
+    the admin portal is the entire approval; nothing re-asks in chat.
+
+    `merged_at` is null until the merge actually happens -- lets the
+    merge step find exactly the rows still needing action
+    (merged_at is null) without re-processing ones it already handled,
+    and lets the admin UI show "requested" vs. "merged" instead of just
+    a single ambiguous timestamp."""
+
+    __tablename__ = "batch_approvals"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    batch_number: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    requested_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
+    merged_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)

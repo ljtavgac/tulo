@@ -30,7 +30,7 @@ from .images import (
     _search_unsplash,
     is_allowed_image_url,
 )
-from .models import Page, PageReview
+from .models import BatchApproval, Page, PageReview
 from .schemas import PageOut, PageSummary
 from .seed_templates import SEED_PAGES, resync_content, seed
 
@@ -1376,6 +1376,26 @@ def review_queue(
 
     counts = Counter(reviews[s].status if s in reviews else "pending" for s in slugs)
 
+    approval = None
+    if isinstance(target_batch, int):
+        approval = db.query(BatchApproval).filter(BatchApproval.batch_number == target_batch).first()
+    fully_approved = counts.get("approved", 0) == len(slugs)
+    if approval is not None and approval.merged_at is not None:
+        promo_status_html = f'<span class="pill pill-approved">merged to prod {approval.merged_at:%Y-%m-%d}</span>'
+        promo_cta_html = ""
+    elif approval is not None:
+        promo_status_html = f'<span class="pill pill-pending">requested {approval.requested_at:%Y-%m-%d %H:%M}, waiting for merge</span>'
+        promo_cta_html = ""
+    elif isinstance(target_batch, int):
+        promo_status_html = ""
+        promo_cta_html = (
+            f'<a class="btn-approve-prod{"" if fully_approved else " disabled"}" '
+            f'href="/admin/review-queue/approve-for-prod?token={token}&batch={target_batch}">Approve batch {target_batch} for prod</a>'
+        )
+    else:
+        promo_status_html = ""
+        promo_cta_html = '<span style="font-size:12px;color:#888;">pick a single batch above to approve it for prod</span>'
+
     def card(r: dict) -> str:
         img_html = f'<img src="{r["image_url"]}" alt="">' if r["image_url"] else '<div class="no-image">no image_url</div>'
         live_url = f"{frontend_origin}{_admin_page_path(r['template_type'], r['slug'])}"
@@ -1450,6 +1470,9 @@ def review_queue(
         .action-bar {{ display: flex; align-items: center; gap: 16px; margin: 14px 0 22px; }}
         .btn-approve-all {{ background: #2f7d43; color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }}
         .btn-approve-all.disabled {{ background: #ccc; pointer-events: none; }}
+        .promo-bar {{ display: flex; align-items: center; gap: 16px; margin: 0 0 22px; padding: 14px 18px; background: #eef6f0; border: 1px solid #cde3d3; border-radius: 8px; }}
+        .btn-approve-prod {{ background: #1c4d99; color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }}
+        .btn-approve-prod.disabled {{ background: #ccc; pointer-events: none; }}
       </style>
     </head>
     <body>
@@ -1459,6 +1482,11 @@ def review_queue(
       <div class="action-bar">
         <a class="btn-approve-all{' disabled' if counts.get('pending', 0) == 0 else ''}" href="/admin/review-queue/approve-remaining?token={token}&batch={target_batch}&show={show}">Approve all remaining ({counts.get('pending', 0)})</a>
         <span style="font-size:12px;color:#888;">Flag the ones that look wrong below first, then hit this once for the rest.</span>
+      </div>
+      <div class="promo-bar">
+        {promo_cta_html}
+        {promo_status_html}
+        {'' if (fully_approved or promo_status_html) else '<span style="font-size:12px;color:#888;">every page in this batch needs to be approved (no pending, no flagged) before this unlocks.</span>'}
       </div>
       <div class="filters">
         <a href="/admin/review-queue?token={token}&batch={target_batch}&show=pending">pending</a>
@@ -1544,6 +1572,53 @@ def review_queue_approve_remaining(
     db.commit()
 
     return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
+
+
+@app.get("/admin/review-queue/approve-for-prod")
+def review_queue_approve_for_prod(
+    token: str,
+    batch: str,
+    db: Session = Depends(get_db),
+):
+    """The explicit CTA the user asked for: once every page in a batch is
+    approved (no pending, no flagged), click this once and the batch is
+    queued for promotion to main -- no further approval needed in chat.
+    Writes a BatchApproval row (see models.py) and nothing else: this
+    process never touches git. daily_batch.py's merge step reads
+    BatchApproval rows with merged_at IS NULL at the start of each run,
+    does the actual merge-to-main + push, then sets merged_at -- keeping
+    git push credentials to the source repo entirely out of this
+    always-on web service.
+
+    Requires a real batch_number, not batch=all: promotion is an
+    all-or-nothing per-batch operation, matching how daily_batch.py
+    generates and pushes one batch_number at a time to staging.
+    Re-clicking after a batch is already merged is a harmless no-op
+    (redirects back without writing anything)."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+    if batch == "all":
+        raise HTTPException(status_code=400, detail="Pick a specific batch_number to approve for prod, not 'all'.")
+
+    batch_number = int(batch)
+    _, batch_pages = _resolve_batch_pages(batch)
+    batch_slugs = [p["slug"] for p in batch_pages]
+    reviews = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(batch_slugs)).all()}
+    statuses = Counter(reviews[s].status if s in reviews else "pending" for s in batch_slugs)
+    if statuses.get("approved", 0) != len(batch_slugs):
+        raise HTTPException(
+            status_code=400,
+            detail=f"batch {batch_number} isn't fully approved yet "
+            f"({statuses.get('pending', 0)} pending, {statuses.get('flagged', 0)} flagged).",
+        )
+
+    approval = db.query(BatchApproval).filter(BatchApproval.batch_number == batch_number).first()
+    if approval is None:
+        db.add(BatchApproval(batch_number=batch_number))
+        db.commit()
+    # else: already requested (or already merged) -- nothing new to write.
+
+    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show=all", status_code=303)
 
 
 @app.get("/admin/export-images")
