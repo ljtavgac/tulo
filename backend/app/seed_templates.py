@@ -245801,37 +245801,6 @@ SEED_PAGES = [
             "pan_size": None,
         },
     },
-    {
-        # Throwaway page for a one-time dry run of the batch-approval merge
-        # pipeline (review-queue -> approve-for-prod -> GitHub Actions ->
-        # main): confirms GITHUB_ACTIONS_TRIGGER_TOKEN, BACKEND_BASE_URL,
-        # and the ADMIN_TASK_TOKEN GitHub secret are all wired correctly
-        # before daily_batch.py depends on them for real. batch_number 9999
-        # deliberately out of range of any real batch. Meant to be
-        # unpublished (see content["unpublished"]) right after the test
-        # confirms the plumbing works -- never treat this as real content.
-        "slug": "merge-pipeline-test-9999",
-        "template_type": "definition",
-        "title": "Merge Pipeline Test Page: Safe To Ignore",
-        "batch_number": 9999,
-        "content": {
-            "meta_description": "Internal test page for verifying the batch-approval merge pipeline. Not real site content.",
-            "hero_image_query": "test pattern",
-            "image_alt": "Internal test page, not real site content.",
-            "direct_answer": "This is a throwaway page created to verify the automated batch-approval-to-prod pipeline end to end. It carries no real content and will be unpublished once the test confirms the pipeline works.",
-            "expanded_explanation": "The review queue, the approve-for-prod button, and the GitHub Actions merge workflow all needed a real batch to click through once, since none of those pieces can be fully verified from code alone. This page exists only to be that one test batch.",
-            "usage_origin": "Created directly in seed_templates.py on the staging branch, tagged batch-9999, and never merged to main except through the same automated workflow real batches will use.",
-            "substitute_note": None,
-            "substitute_page_slug": None,
-            "faqs": [
-                {
-                    "question": "Is this a real recipe or ingredient page?",
-                    "answer": "No. It exists only to test the batch-approval merge pipeline and should be unpublished shortly after that test completes.",
-                },
-            ],
-            "related_recipe_slugs": [],
-        },
-    },
 ]
 
 
