@@ -1428,8 +1428,20 @@ def review_queue(
         promo_status_html = f'<span class="pill pill-approved">merged to prod {approval.merged_at:%Y-%m-%d}</span>'
         promo_cta_html = ""
     elif approval is not None:
+        # A request that's been sitting unmerged for a while almost always
+        # means the GitHub Actions dispatch didn't land (it's a
+        # best-effort, silent-on-failure call -- see _trigger_batch_merge)
+        # -- e.g. the exact bug hit during setup, where the workflow
+        # wasn't registered on GitHub's side yet. Re-hitting
+        # approve-for-prod is a safe no-op on the BatchApproval row itself
+        # and re-fires the dispatch, so surface it as a real retry action
+        # rather than leaving the reviewer with a dead-end status pill and
+        # no way to unstick it without a raw URL.
         promo_status_html = f'<span class="pill pill-pending">requested {approval.requested_at:%Y-%m-%d %H:%M}, waiting for merge</span>'
-        promo_cta_html = ""
+        promo_cta_html = (
+            f'<a class="btn-approve-prod" '
+            f'href="/admin/review-queue/approve-for-prod?token={token}&batch={target_batch}">Retry merge dispatch</a>'
+        )
     elif isinstance(target_batch, int):
         promo_status_html = ""
         promo_cta_html = (
