@@ -8,6 +8,7 @@ import threading
 import time
 from collections import Counter
 from contextlib import asynccontextmanager, redirect_stdout
+from datetime import datetime, timezone
 from typing import NamedTuple
 
 import requests
@@ -1574,6 +1575,42 @@ def review_queue_approve_remaining(
     return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
 
 
+# GitHub repo this deploy's content lives in -- not a secret, just where to
+# send the workflow_dispatch call below. GITHUB_ACTIONS_TRIGGER_TOKEN is the
+# only credential involved on this side: a fine-grained PAT scoped to this
+# one repo with *only* the "Actions: write" permission, which can kick off a
+# workflow run but cannot read or push code. The actual git merge happens
+# inside GitHub's own runner using its auto-provisioned, run-scoped
+# GITHUB_TOKEN -- a git push credential never lives in this always-on
+# web service.
+_GITHUB_REPO = "ljtavgac/tulo"
+_GITHUB_ACTIONS_TRIGGER_TOKEN = os.environ.get("GITHUB_ACTIONS_TRIGGER_TOKEN")
+
+
+def _trigger_batch_merge(batch_number: int) -> None:
+    """Best-effort: ask GitHub Actions to merge this batch right now (see
+    .github/workflows/merge-approved-batch.yml). If this fails -- token not
+    configured yet, GitHub hiccup, whatever -- it's not fatal: the
+    BatchApproval row written by the caller is the durable source of truth,
+    and daily_batch.py's own run retries any merged_at IS NULL row it finds
+    as a fallback, so a failed dispatch here costs at most a delay to the
+    next scheduled run rather than silently losing the approval."""
+    if not _GITHUB_ACTIONS_TRIGGER_TOKEN:
+        return
+    try:
+        requests.post(
+            f"https://api.github.com/repos/{_GITHUB_REPO}/actions/workflows/merge-approved-batch.yml/dispatches",
+            headers={
+                "Authorization": f"Bearer {_GITHUB_ACTIONS_TRIGGER_TOKEN}",
+                "Accept": "application/vnd.github+json",
+            },
+            json={"ref": "main", "inputs": {"batch_number": str(batch_number)}},
+            timeout=10,
+        )
+    except requests.RequestException:
+        pass
+
+
 @app.get("/admin/review-queue/approve-for-prod")
 def review_queue_approve_for_prod(
     token: str,
@@ -1581,20 +1618,19 @@ def review_queue_approve_for_prod(
     db: Session = Depends(get_db),
 ):
     """The explicit CTA the user asked for: once every page in a batch is
-    approved (no pending, no flagged), click this once and the batch is
-    queued for promotion to main -- no further approval needed in chat.
-    Writes a BatchApproval row (see models.py) and nothing else: this
-    process never touches git. daily_batch.py's merge step reads
-    BatchApproval rows with merged_at IS NULL at the start of each run,
-    does the actual merge-to-main + push, then sets merged_at -- keeping
-    git push credentials to the source repo entirely out of this
-    always-on web service.
+    approved (no pending, no flagged), click this once and the batch merges
+    to main right away -- no further approval needed in chat, and no
+    waiting for the next day's scheduled run. Writes a BatchApproval row
+    (see models.py) as the durable signal, then fires _trigger_batch_merge
+    to kick off the actual merge immediately via GitHub Actions.
 
     Requires a real batch_number, not batch=all: promotion is an
     all-or-nothing per-batch operation, matching how daily_batch.py
-    generates and pushes one batch_number at a time to staging.
+    generates and pushes one batch_number at a time to staging (tagged
+    batch-<N> so the merge workflow can find the exact commit).
     Re-clicking after a batch is already merged is a harmless no-op
-    (redirects back without writing anything)."""
+    (redirects back without writing anything, but still re-fires the
+    dispatch in case an earlier click's merge never landed)."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
     if batch == "all":
@@ -1613,12 +1649,42 @@ def review_queue_approve_for_prod(
         )
 
     approval = db.query(BatchApproval).filter(BatchApproval.batch_number == batch_number).first()
+    already_merged = approval is not None and approval.merged_at is not None
     if approval is None:
         db.add(BatchApproval(batch_number=batch_number))
         db.commit()
     # else: already requested (or already merged) -- nothing new to write.
 
+    if not already_merged:
+        _trigger_batch_merge(batch_number)
+
     return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show=all", status_code=303)
+
+
+@app.get("/admin/review-queue/mark-merged")
+def review_queue_mark_merged(
+    token: str,
+    batch: int,
+    db: Session = Depends(get_db),
+):
+    """Callback the merge-approved-batch.yml GitHub Action hits after it
+    successfully pushes a batch's commit to main -- sets BatchApproval's
+    merged_at so the review queue shows "merged" instead of "waiting for
+    merge", and so daily_batch.py's fallback retry (see
+    _trigger_batch_merge's docstring) knows this batch is already done.
+    Gated behind the same ADMIN_TASK_TOKEN as every other /admin/* route;
+    the Action holds this token as a GitHub Actions secret (a copy of the
+    same value Render has, not a new kind of credential)."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    approval = db.query(BatchApproval).filter(BatchApproval.batch_number == batch).first()
+    if approval is None:
+        raise HTTPException(status_code=404, detail=f"No BatchApproval row for batch {batch}")
+    if approval.merged_at is None:
+        approval.merged_at = datetime.now(timezone.utc)
+        db.commit()
+    return {"batch_number": batch, "merged_at": approval.merged_at}
 
 
 @app.get("/admin/export-images")
