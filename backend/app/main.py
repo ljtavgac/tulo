@@ -6,16 +6,17 @@ import re
 import secrets
 import threading
 import time
+from collections import Counter
 from contextlib import asynccontextmanager, redirect_stdout
 from typing import NamedTuple
 
 import requests
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 
-from .content_audit import run_full_audit, scan_image_relevance_risk
+from .content_audit import run_full_audit, scan_ai_tells, scan_image_relevance_risk
 from .database import Base, SessionLocal, engine, get_db
 from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, _search_query_for, fetch_images
 from .images import (
@@ -29,7 +30,7 @@ from .images import (
     _search_unsplash,
     is_allowed_image_url,
 )
-from .models import Page
+from .models import Page, PageReview
 from .schemas import PageOut, PageSummary
 from .seed_templates import SEED_PAGES, resync_content, seed
 
@@ -1270,6 +1271,254 @@ def image_relevance_review(token: str, db: Session = Depends(get_db)):
     </html>
     """
     return HTMLResponse(content=html)
+
+
+@app.get("/admin/review-queue", response_class=HTMLResponse)
+def review_queue(
+    token: str,
+    batch: int | None = Query(default=None, description="batch_number to review; defaults to the newest one present."),
+    show: str = Query(default="pending", description="pending | flagged | approved | all"),
+    db: Session = Depends(get_db),
+):
+    """The daily-batch review workflow: everything from one content batch
+    (see SEED_PAGES' own batch_number field -- confirmed the right unit to
+    scope by, since it already tracks real, distinct content-generation
+    runs, not just an incidental count) in one visual queue, each page
+    showing its live photo plus every automated quality signal that
+    applies to it (image-relevance risk and AI-tell hits from
+    content_audit.py, scoped to just this batch rather than the whole
+    site -- and unlike /admin/image-relevance-review, a single risk
+    signal is worth surfacing here: a fresh ~100-page batch is small
+    enough that noise tolerance is different from a full ~2,100-page
+    site scan), with a one-click Approve/Flag action per page so a
+    reviewer's progress persists across visits instead of starting over
+    each time (see PageReview in models.py).
+
+    Defaults to the newest batch_number and to `show=pending` (the actual
+    day's work queue) -- flagged pages always render regardless of `show`,
+    since a flag is exactly the thing a reviewer shouldn't lose track of.
+    Runs against whichever database this deployment points at, so hitting
+    this on the staging backend reviews staging's own fetched photos
+    before a batch's images get baked into seed_templates.py and merged
+    to main (see /admin/export-images below) -- no separate "staging
+    mode" needed, it falls out of the existing per-environment deploy.
+
+    Does not gate publishing itself -- see PageReview's own docstring for
+    why flagging is a checklist, not an enforcement mechanism.
+    """
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    all_batches = sorted({p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None}, reverse=True)
+    if not all_batches:
+        raise HTTPException(status_code=400, detail="No batch_number values found in SEED_PAGES")
+    target_batch = batch if batch is not None else all_batches[0]
+
+    batch_pages = [p for p in SEED_PAGES if p["batch_number"] == target_batch and not p["content"].get("unpublished")]
+    slugs = [p["slug"] for p in batch_pages]
+    if not slugs:
+        raise HTTPException(status_code=404, detail=f"No published pages in batch {target_batch}")
+
+    db_pages = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(slugs)).all()}
+    reviews = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(slugs)).all()}
+
+    image_risk_by_slug = {r["slug"]: r for r in scan_image_relevance_risk(batch_pages)}
+    ai_tells = scan_ai_tells(batch_pages)
+    ai_tells_by_slug: dict[str, list[dict]] = {}
+    for hit in ai_tells["blocking"] + ai_tells["advisory"]:
+        ai_tells_by_slug.setdefault(hit["slug"], []).append(hit)
+
+    frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
+
+    rows = []
+    for p in batch_pages:
+        slug = p["slug"]
+        db_page = db_pages.get(slug)
+        content = db_page.content if db_page else {}
+        image_url = content.get("image_url")
+        review = reviews.get(slug)
+        status = review.status if review else "pending"
+        signals = []
+        if not image_url:
+            signals.append(("missing image", True))
+        risk = image_risk_by_slug.get(slug)
+        if risk:
+            signals.append((f"image risk (score {risk['score']}): {', '.join(risk['signals'])}", risk["score"] >= 2))
+        for hit in ai_tells_by_slug.get(slug, []):
+            signals.append((f"AI-tell [{hit['pattern']}]: {hit['excerpt'][:80]!r}", True))
+        rows.append({"slug": slug, "title": p["title"], "template_type": p["template_type"],
+                      "image_url": image_url, "status": status, "note": review.note if review else None,
+                      "signals": signals})
+
+    if show != "all":
+        rows = [r for r in rows if r["status"] == "flagged" or (show == r["status"])]
+    # Flagged always first regardless of sort, then anything with a live signal, then the rest.
+    rows.sort(key=lambda r: (r["status"] != "flagged", not r["signals"], r["status"] != "pending"))
+
+    counts = Counter(reviews[s].status if s in reviews else "pending" for s in slugs)
+
+    def card(r: dict) -> str:
+        img_html = f'<img src="{r["image_url"]}" alt="">' if r["image_url"] else '<div class="no-image">no image_url</div>'
+        live_url = f"{frontend_origin}{_admin_page_path(r['template_type'], r['slug'])}"
+        debug_url = f"/admin/debug-page-image?token={token}&slug={r['slug']}"
+        signals_html = "".join(f'<li class="{"crit" if crit else ""}">{s}</li>' for s, crit in r["signals"])
+        note_html = f'<div class="note">note: {r["note"]}</div>' if r["note"] else ""
+        return f"""
+        <div class="card status-{r['status']}">
+          <div class="thumb">{img_html}</div>
+          <div class="info">
+            <div class="title"><a href="{live_url}" target="_blank">{r['title']}</a> <span class="pill pill-{r['status']}">{r['status']}</span></div>
+            <div class="meta">{r['template_type']} &middot; {r['slug']}</div>
+            {f'<ul class="signals">{signals_html}</ul>' if signals_html else ''}
+            {note_html}
+            <div class="links"><a href="{live_url}" target="_blank">live</a> &middot; <a href="{debug_url}" target="_blank">debug search</a></div>
+            <form method="get" action="/admin/review-queue/mark" class="mark-form">
+              <input type="hidden" name="token" value="{token}">
+              <input type="hidden" name="slug" value="{r['slug']}">
+              <input type="hidden" name="batch" value="{target_batch}">
+              <input type="hidden" name="show" value="{show}">
+              <input type="text" name="note" placeholder="what's wrong (optional)" value="{r['note'] or ''}">
+              <button type="submit" name="status" value="flagged" class="btn-flag">Flag</button>
+              <button type="submit" name="status" value="approved" class="btn-approve-one">approve just this one</button>
+            </form>
+          </div>
+        </div>
+        """
+
+    batch_links = " &middot; ".join(
+        f'<a href="/admin/review-queue?token={token}&batch={b}&show={show}">{"batch " + str(b) if b != target_batch else f"<b>batch {b}</b>"}</a>'
+        for b in all_batches
+    )
+
+    html = f"""
+    <html>
+    <head>
+      <title>Review queue — batch {target_batch}</title>
+      <style>
+        body {{ font-family: -apple-system, sans-serif; margin: 24px; background: #fafafa; }}
+        h1 {{ font-size: 20px; margin-bottom: 4px; }}
+        .subnav {{ font-size: 13px; color: #666; margin-bottom: 6px; }}
+        .summary {{ font-size: 13px; color: #444; margin-bottom: 18px; }}
+        .filters a {{ margin-right: 10px; font-size: 13px; }}
+        .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }}
+        .card {{ background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; }}
+        .card.status-flagged {{ border-color: #c33; box-shadow: 0 0 0 1px #c33; }}
+        .card.status-approved {{ opacity: 0.6; }}
+        .thumb {{ width: 140px; min-width: 140px; background: #eee; display: flex; align-items: center; justify-content: center; }}
+        .thumb img {{ width: 100%; height: 140px; object-fit: cover; }}
+        .no-image {{ font-size: 11px; color: #b00; text-align: center; padding: 8px; }}
+        .info {{ padding: 10px 12px; font-size: 13px; flex: 1; min-width: 0; }}
+        .title {{ font-weight: 600; font-size: 14px; }}
+        .title a {{ color: #111; text-decoration: none; }}
+        .pill {{ font-size: 10px; padding: 1px 7px; border-radius: 20px; margin-left: 4px; font-weight: 400; }}
+        .pill-pending {{ background: #eee; color: #666; }}
+        .pill-flagged {{ background: #fbdada; color: #a00; }}
+        .pill-approved {{ background: #dcefe0; color: #276b3c; }}
+        .meta {{ color: #888; font-size: 11px; margin: 2px 0 6px; }}
+        .signals {{ margin: 6px 0; padding-left: 16px; font-size: 11px; color: #a55; }}
+        .signals .crit {{ color: #c00; font-weight: 600; }}
+        .note {{ font-size: 11px; color: #555; font-style: italic; margin: 4px 0; }}
+        .links {{ margin: 6px 0; font-size: 12px; }}
+        .links a {{ color: #06c; }}
+        .mark-form {{ display: flex; gap: 6px; margin-top: 8px; align-items: center; }}
+        .mark-form input[type=text] {{ flex: 1; min-width: 0; font-size: 12px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
+        .btn-approve-one {{ background: none; border: none; color: #888; font-size: 11px; cursor: pointer; text-decoration: underline; padding: 0; }}
+        .btn-flag {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }}
+        .action-bar {{ display: flex; align-items: center; gap: 16px; margin: 14px 0 22px; }}
+        .btn-approve-all {{ background: #2f7d43; color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }}
+        .btn-approve-all.disabled {{ background: #ccc; pointer-events: none; }}
+      </style>
+    </head>
+    <body>
+      <h1>Review queue — batch {target_batch}</h1>
+      <div class="subnav">{batch_links}</div>
+      <div class="summary">{len(slugs)} pages in batch &middot; {counts.get('pending', 0)} pending &middot; {counts.get('flagged', 0)} flagged &middot; {counts.get('approved', 0)} approved</div>
+      <div class="action-bar">
+        <a class="btn-approve-all{' disabled' if counts.get('pending', 0) == 0 else ''}" href="/admin/review-queue/approve-remaining?token={token}&batch={target_batch}&show={show}">Approve all remaining ({counts.get('pending', 0)})</a>
+        <span style="font-size:12px;color:#888;">Flag the ones that look wrong below first, then hit this once for the rest.</span>
+      </div>
+      <div class="filters">
+        <a href="/admin/review-queue?token={token}&batch={target_batch}&show=pending">pending</a>
+        <a href="/admin/review-queue?token={token}&batch={target_batch}&show=flagged">flagged</a>
+        <a href="/admin/review-queue?token={token}&batch={target_batch}&show=approved">approved</a>
+        <a href="/admin/review-queue?token={token}&batch={target_batch}&show=all">all</a>
+      </div>
+      <div class="grid">
+        {"".join(card(r) for r in rows)}
+      </div>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html)
+
+
+@app.get("/admin/review-queue/mark")
+def review_queue_mark(
+    token: str,
+    slug: str,
+    status: str,
+    batch: int,
+    show: str = "pending",
+    note: str = "",
+    db: Session = Depends(get_db),
+):
+    """Upserts one PageReview row -- the write side of /admin/review-queue
+    above, for the one action that's still worth a deliberate per-page
+    click: flagging an exception. (Approving is the batch action below --
+    reviewing ~100 pages a day by clicking Approve on every single one
+    that's actually fine defeats the point of a queue; flag the bad ones,
+    then clear the rest in one click.) A plain GET link + redirect, same
+    convention as every other mutating /admin/* endpoint in this file
+    (e.g. /admin/fetch-images) -- these are internal, token-gated tools,
+    not user-facing forms, so a POST-only-for-mutations rule doesn't buy
+    anything here and a GET form avoids a multipart-parsing dependency
+    this deploy doesn't otherwise need."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+    if status not in ("approved", "flagged"):
+        raise HTTPException(status_code=400, detail="status must be 'approved' or 'flagged'")
+
+    review = db.query(PageReview).filter(PageReview.slug == slug).first()
+    if review is None:
+        review = PageReview(slug=slug)
+        db.add(review)
+    review.status = status
+    review.note = note or None
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
+
+
+@app.get("/admin/review-queue/approve-remaining")
+def review_queue_approve_remaining(
+    token: str,
+    batch: int,
+    show: str = "pending",
+    db: Session = Depends(get_db),
+):
+    """The primary way a review session actually ends: flag whatever's
+    wrong first (mark above), then hit this once to approve every other
+    page in the batch that isn't currently flagged -- including ones
+    never individually touched. Re-approving an already-approved page is
+    a harmless no-op, so this is safe to click more than once, e.g. after
+    flagging a couple more on a second pass."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    batch_slugs = [p["slug"] for p in SEED_PAGES if p["batch_number"] == batch and not p["content"].get("unpublished")]
+    existing = {r.slug: r for r in db.query(PageReview).filter(PageReview.slug.in_(batch_slugs)).all()}
+
+    for slug in batch_slugs:
+        review = existing.get(slug)
+        if review is not None and review.status == "flagged":
+            continue
+        if review is None:
+            review = PageReview(slug=slug)
+            db.add(review)
+        review.status = "approved"
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
 
 
 @app.get("/admin/export-images")
