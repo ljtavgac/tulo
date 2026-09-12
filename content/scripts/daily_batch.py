@@ -1,7 +1,7 @@
 """Fully automated daily content pipeline: selects the next N titles from
 CONTENT_QUEUE.csv, generates + validates + integrates them into
-seed_templates.py, pushes to staging, fetches images, and emails a "new
-batch ready for review" notification. This is the whole loop
+seed_templates.py, pushes to staging, fetches images, and writes a "new
+batch ready for review" summary. This is the whole loop
 build_batch_requests.py / submit_realtime_fallback.py /
 validate_batch_results.py / integrate_batch_results.py were each built to
 handle one step of, by hand, during the pilot -- glued here into one
@@ -11,7 +11,6 @@ Usage:
     PIPELINE_ANTHROPIC_API_KEY=... \
     BACKEND_BASE_URL=https://your-staging-backend \
     ADMIN_TASK_TOKEN=... \
-    GMAIL_SMTP_USER=you@gmail.com GMAIL_SMTP_APP_PASSWORD=... [NOTIFY_EMAIL_TO=...] \
     python3 content/scripts/daily_batch.py [--count 100] [--dry-run]
 
 Env vars:
@@ -26,12 +25,19 @@ Env vars:
     ADMIN_TASK_TOKEN            Same token that gates every /admin/* route
                                 on the staging backend.
     GMAIL_SMTP_USER,
-    GMAIL_SMTP_APP_PASSWORD     A Gmail address and an App Password for it
-                                (Google Account -> Security -> 2-Step
-                                Verification -> App passwords -- a regular
-                                account password won't work for SMTP once
-                                2FA is on). Not needed with --dry-run.
-    NOTIFY_EMAIL_TO             Defaults to ljtavgac@gmail.com if unset.
+    GMAIL_SMTP_APP_PASSWORD     Optional. A Gmail address and an App
+                                Password for it (Google Account -> Security
+                                -> 2-Step Verification -> App passwords --
+                                a regular account password won't work for
+                                SMTP once 2FA is on). When run from GitHub
+                                Actions, GitHub's own workflow-run
+                                notification email plus write_job_summary's
+                                output (below) already cover "a new batch
+                                is ready, here's the link" -- set these two
+                                only if a separate, dedicated email is
+                                wanted on top of that.
+    NOTIFY_EMAIL_TO             Only used if the Gmail vars above are set.
+                                Defaults to ljtavgac@gmail.com if unset.
 
 Meant to run from a scheduled GitHub Actions workflow (see
 .github/workflows/daily-batch.yml) with `contents: write` permission,
@@ -354,6 +360,39 @@ def fetch_images_for_batch(new_slugs: list[str]) -> tuple[int, int]:
     return result["pages_updated"], result["images_written"]
 
 
+def write_job_summary(batch_number: int, page_count: int, images_written: int) -> None:
+    """Writes the review-queue link and batch stats to GitHub Actions'
+    own job summary (the GITHUB_STEP_SUMMARY file, rendered on the
+    workflow run's page) -- this, plus GitHub's own workflow-run
+    notification email, is what makes a separate Gmail notification
+    optional rather than required: the notification says a run finished,
+    and clicking into it lands directly on this summary with the actual
+    link to click, one step further than a bespoke email but with zero
+    extra credentials to set up. A no-op with a stdout note when not
+    running inside GitHub Actions (GITHUB_STEP_SUMMARY unset), so this is
+    always safe to call."""
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    base = os.environ.get("BACKEND_BASE_URL", "").rstrip("/")
+    token = os.environ.get("ADMIN_TASK_TOKEN", "")
+    review_url = f"{base}/admin/review-queue?token={token}&batch={batch_number}"
+
+    summary = (
+        f"## Batch {batch_number} ready for review\n\n"
+        f"- **{page_count}** new pages\n"
+        f"- **{images_written}** photos fetched\n\n"
+        f"[Open the review queue]({review_url})\n\n"
+        f"Flag anything wrong with an image and a fresh candidate photo fetches "
+        f"automatically, or paste an exact photo URL directly on the card. Once "
+        f"everything's approved, click **Approve batch {batch_number} for prod** "
+        f"at the top of that page -- it merges within seconds.\n"
+    )
+    if summary_path:
+        with open(summary_path, "a") as f:
+            f.write(summary)
+    else:
+        print(summary)
+
+
 def send_notification_email(batch_number: int, page_count: int, images_written: int) -> None:
     """Gmail SMTP + an App Password, not the account's real password --
     Google requires an App Password for SMTP once 2-Step Verification is
@@ -419,7 +458,13 @@ def main() -> None:
 
     wait_for_deploy(new_slugs[0])
     _, images_written = fetch_images_for_batch(new_slugs)
-    send_notification_email(batch_number, len(clean_ids), images_written)
+
+    write_job_summary(batch_number, len(clean_ids), images_written)
+    if os.environ.get("GMAIL_SMTP_USER") and os.environ.get("GMAIL_SMTP_APP_PASSWORD"):
+        send_notification_email(batch_number, len(clean_ids), images_written)
+    else:
+        print("GMAIL_SMTP_USER/GMAIL_SMTP_APP_PASSWORD not set -- skipping email, "
+              "relying on GitHub's own workflow-run notification + the job summary above.")
 
     print(f"\nDone: batch {batch_number}, {len(clean_ids)} pages, {images_written} images.")
 
