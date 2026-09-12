@@ -2003,8 +2003,8 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 4,published,idaho potatoes,ingredient_hub,9900.0,14.0,Tier 1,9900.0,Idaho Potatoe Recipe,seo_target,
 4,published,hoja santa,ingredient_hub,9900.0,27.0,Tier 1,9900.0,"Hoja Santa: Uses, Substitutes & Recipes",seo_target,cuisine_specialty
 4,published,fruity pebbles drink,recipe_or_dish,9900.0,27.0,Tier 1,9900.0,Fruity Pebble Drink Recipe,seo_target,
-6,not_started,junmai sake,ingredient_hub,9900.0,10.0,Tier 1,9900.0,Junmai Sake Recipe,seo_target,
-6,not_started,chicken tempura,ingredient_hub,9900.0,27.0,Tier 1,9900.0,Chicken Tempura Recipe,seo_target,
+6,published,junmai sake,ingredient_hub,9900.0,10.0,Tier 1,9900.0,Junmai Sake Recipe,seo_target,
+6,published,chicken tempura,ingredient_hub,9900.0,27.0,Tier 1,9900.0,Chicken Tempura Recipe,seo_target,
 6,not_started,molcajete dish,ingredient_hub,9900.0,13.0,Tier 1,9900.0,Molcajete Dish Recipe,seo_target,
 6,not_started,air fry asparagus,recipe_or_dish,9900.0,29.0,Tier 1,9900.0,Air Fry Asparagus Recipe,seo_target,
 6,not_started,corn souffle recipe,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,corn souffle recipe,seo_target,allrecipes_mobile_find
