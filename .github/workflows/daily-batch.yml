@@ -3,17 +3,20 @@ name: Daily content batch
 # Runs content/scripts/daily_batch.py unattended: claims the next 100
 # titles from CONTENT_QUEUE.csv, generates + validates + integrates them,
 # pushes to staging (never main -- see that script's own docstring for
-# why), fetches images, and emails a review-ready notification. The only
-# human step in the whole daily loop is reviewing the result in the admin
-# portal and clicking "Approve batch N for prod" -- see
-# merge-approved-batch.yml for what that triggers.
+# why), fetches images, and writes a review-ready summary (see the
+# "Run daily batch pipeline" step -- GitHub's own workflow-run
+# notification email is the notification mechanism; no separate email
+# service is required). The only human step in the whole daily loop is
+# reviewing the result in the admin portal and clicking "Approve batch N
+# for prod" -- see merge-approved-batch.yml for what that triggers.
 on:
   schedule:
-    # 5am UTC. If "5am" meant your own local morning rather than UTC,
-    # adjust this offset -- cron here is always UTC, GitHub Actions has
-    # no per-workflow timezone setting. E.g. for 5am US Eastern, use
-    # '0 9 * * *' (EST, UTC-4) or '0 10 * * *' during EDT (UTC-5).
-    - cron: '0 5 * * *'
+    # 9am UTC = 5am US Eastern during EDT (UTC-4, in effect roughly
+    # mid-March to early November). Switch to '0 10 * * *' during EST
+    # (UTC-5, roughly early November to mid-March) -- GitHub Actions cron
+    # is always plain UTC with no per-workflow timezone or DST awareness,
+    # so this needs a manual flip twice a year.
+    - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
       count:
@@ -25,7 +28,48 @@ permissions:
   contents: write
 
 jobs:
+  # A cheap first job that decides whether the real job should run at all,
+  # and with what count -- kept separate so a scheduled run before this
+  # pipeline is actually ready (secrets not yet configured, or before the
+  # intended Monday 9/14 start) shows up as a clean, expected "skipped"
+  # run rather than a failed one. A manual workflow_dispatch always runs,
+  # any day, at whatever count is given.
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      count: ${{ steps.check.outputs.count }}
+    steps:
+      - id: check
+        run: |
+          today="$(date -u +%F)"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "count=${{ github.event.inputs.count }}" >> "$GITHUB_OUTPUT"
+          elif [[ "$today" < "2026-09-14" ]]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Scheduled run before the intended 9/14 start date -- skipping, not failing." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$today" = "2026-09-14" ]; then
+            # One-time safety valve for the very first live run: a small
+            # 5-title canary batch to confirm the whole pipeline actually
+            # works end to end before committing to full volume. The
+            # follow-up full-size run the same day is a manual
+            # workflow_dispatch (count defaults to 100) -- deliberately
+            # NOT auto-chained here, since a canary batch only provides
+            # real safety if a human looks at it first.
+            #
+            # TODO: remove this date special-case once 9/14 is confirmed
+            # good -- every day after should just use the normal count.
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "count=5" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "count=100" >> "$GITHUB_OUTPUT"
+          fi
+
   daily-batch:
+    needs: gate
+    if: needs.gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,41 +83,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
 
-      - name: Determine batch size
-        id: batch_size
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "count=${{ github.event.inputs.count }}" >> "$GITHUB_OUTPUT"
-          elif [ "$(date -u +%F)" = "2026-09-14" ]; then
-            # One-time safety valve for the very first live run: a small
-            # 5-title canary batch to confirm the whole pipeline actually
-            # works end to end (real API, real image fetch, real email)
-            # before committing to full volume. Once that batch is
-            # reviewed and confirmed good, the follow-up full-size run for
-            # the same day is a manual workflow_dispatch (count defaults
-            # to 100) -- deliberately NOT auto-chained here, since the
-            # entire point of the small batch is a human actually looking
-            # at it before more content gets generated.
-            #
-            # TODO: remove this date special-case once Monday 9/14 has
-            # been confirmed good -- every day after should just use the
-            # scheduled run's normal full count.
-            echo "count=5" >> "$GITHUB_OUTPUT"
-          else
-            echo "count=100" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Run daily batch pipeline
         env:
           PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
           ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+          # Gmail secrets are optional -- daily_batch.py skips the email
+          # step entirely when they're not set, relying on GitHub's own
+          # workflow-run notification (Settings -> Notifications ->
+          # Actions on github.com) instead. Set these only if you want a
+          # real email too, on top of that.
           GMAIL_SMTP_USER: ${{ secrets.GMAIL_SMTP_USER }}
           GMAIL_SMTP_APP_PASSWORD: ${{ secrets.GMAIL_SMTP_APP_PASSWORD }}
-          # NOTIFY_EMAIL_TO deliberately omitted, not set to an empty
-          # vars.NOTIFY_EMAIL_TO -- GitHub fills an unset vars.* reference
-          # with an empty string, not an absent env var, which would
-          # silently defeat daily_batch.py's own os.environ.get(...,
-          # "ljtavgac@gmail.com") fallback. Add this back explicitly only
-          # if notifications should ever go somewhere else.
-        run: python3 content/scripts/daily_batch.py --count ${{ steps.batch_size.outputs.count }}
+        run: python3 content/scripts/daily_batch.py --count ${{ needs.gate.outputs.count }}
