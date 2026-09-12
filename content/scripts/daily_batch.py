@@ -105,6 +105,21 @@ def _slugs_for_batch(batch_number: int) -> list[str]:
     return [m.group(1) for m in _PAGE_HEADER_RE.finditer(text) if int(m.group(2)) == batch_number]
 
 
+def _write_queue_csv(path: Path, rows: list[dict]) -> None:
+    """The one place CONTENT_QUEUE.csv (or a subset of it) ever gets
+    written -- csv.DictWriter defaults to '\\r\\n' line endings per the
+    CSV spec, but this repo's CONTENT_QUEUE.csv has always used plain
+    '\\n'. Writing the default back once turned a 100-row change into a
+    12,619-row diff (every single line "changed" purely on line-ending
+    bytes) and the resulting confusing "0 new pages" commit -- a real
+    bug hit on this pipeline's very first live run. Explicit
+    lineterminator keeps a real 100-row change looking like one."""
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=QUEUE_FIELDNAMES, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def _next_batch_number() -> int:
     """One higher than the highest batch_number already in SEED_PAGES.
     Regex-parsed directly rather than importing seed_templates.py, which
@@ -143,17 +158,11 @@ def select_next_batch(count: int) -> tuple[Path, int, list[dict]]:
     if not selected:
         raise RuntimeError("No not_started rows left in CONTENT_QUEUE.csv")
 
-    with QUEUE_PATH.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=QUEUE_FIELDNAMES)
-        writer.writeheader()
-        writer.writerows(rows)
+    _write_queue_csv(QUEUE_PATH, rows)
 
     OUTPUT_DIR.mkdir(exist_ok=True)
     subset_path = OUTPUT_DIR / f"daily_batch_{batch_number}.csv"
-    with subset_path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=QUEUE_FIELDNAMES)
-        writer.writeheader()
-        writer.writerows(selected)
+    _write_queue_csv(subset_path, selected)
 
     print(f"Claimed {len(selected)} rows for batch {batch_number} -> {subset_path}")
     return subset_path, batch_number, selected
@@ -258,10 +267,7 @@ def finalize_queue_status(selected: list[dict], id_to_row: dict, clean_ids: list
         # custom_id should land in exactly one of clean_ids/bad_ids), but
         # a visible, investigable state beats silently guessing either way.
 
-    with QUEUE_PATH.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=QUEUE_FIELDNAMES)
-        writer.writeheader()
-        writer.writerows(all_rows)
+    _write_queue_csv(QUEUE_PATH, all_rows)
 
 
 def local_verify() -> None:
@@ -436,6 +442,14 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", help="Stop after local verification -- no push, fetch, or email.")
     args = parser.parse_args()
 
+    # Fails fast, before claiming a single CONTENT_QUEUE.csv row, rather
+    # than letting every one of `count` requests dial out and fail on a
+    # missing/empty key -- a real thing that happened on this pipeline's
+    # first live run (GitHub sets a referenced secret to an empty string,
+    # not an absent env var, when it isn't configured yet).
+    if not os.environ.get("PIPELINE_ANTHROPIC_API_KEY"):
+        raise RuntimeError("PIPELINE_ANTHROPIC_API_KEY is not set -- nothing claimed, nothing generated.")
+
     subset_csv, batch_number, selected = select_next_batch(args.count)
 
     results_path = run_generation(subset_csv)
@@ -449,6 +463,21 @@ def main() -> None:
     if args.dry_run:
         print(f"--dry-run: stopping here. {len(clean_ids)} pages would have been pushed as batch {batch_number}.")
         return
+
+    if not clean_ids:
+        # Nothing to push -- the CONTENT_QUEUE.csv claim/finalize above
+        # never left this machine's disk (nothing was committed), so the
+        # same rows are simply available again on the next run rather
+        # than stuck 'claimed'. Still a real failure worth a loud, clear
+        # message (every request in the batch failed validation, most
+        # likely a bad API key or an API-side issue) rather than
+        # continuing on to push an empty commit and then crash later at
+        # the image-fetch step -- exactly what happened on this
+        # pipeline's first live run.
+        raise RuntimeError(
+            f"All {len(bad_ids)} result(s) failed validation -- 0 clean pages, nothing pushed. "
+            "Check PIPELINE_ANTHROPIC_API_KEY and the validation output above."
+        )
 
     git_commit_and_push(batch_number, len(clean_ids))
 
