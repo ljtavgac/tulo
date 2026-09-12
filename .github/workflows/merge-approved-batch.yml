@@ -49,7 +49,32 @@ jobs:
           echo "Merging $SHA onto main"
           git config user.name "tulo-content-bot"
           git config user.email "content-bot@users.noreply.github.com"
-          git cherry-pick "$SHA"
+
+          if ! git cherry-pick "$SHA"; then
+            conflicted="$(git diff --name-only --diff-filter=U)"
+            # content/CONTENT_QUEUE.csv is pure pipeline bookkeeping --
+            # daily_batch.py is the only thing that ever writes it, and it
+            # always writes to staging, so staging's copy is the one true
+            # current state; main's copy is just a mirror for repo history
+            # and nothing running in prod ever reads it. A conflict here
+            # (confirmed for real on batch 6's first live merge: main's
+            # copy had never picked up any of staging's claim/publish
+            # churn, so a plain 3-way merge on this one file couldn't
+            # apply cleanly) is safe to resolve by taking staging's
+            # version outright rather than diffing row by row.
+            if [ "$conflicted" = "content/CONTENT_QUEUE.csv" ]; then
+              echo "Resolving CONTENT_QUEUE.csv conflict by taking staging's copy wholesale"
+              git checkout --theirs content/CONTENT_QUEUE.csv
+              git add content/CONTENT_QUEUE.csv
+              git -c core.editor=true cherry-pick --continue
+            else
+              echo "Cherry-pick conflict in more than just CONTENT_QUEUE.csv -- needs human resolution:" >&2
+              echo "$conflicted" >&2
+              git cherry-pick --abort
+              exit 1
+            fi
+          fi
+
           git push origin main
 
       - name: Report merged_at back to the backend
