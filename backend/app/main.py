@@ -1702,6 +1702,49 @@ def review_queue_override_image(
     return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
 
 
+@app.get("/admin/delete-pages")
+def delete_pages(
+    token: str,
+    slugs: str = Query(..., description="Comma-separated slugs to permanently delete from the database."),
+    db: Session = Depends(get_db),
+):
+    """Real, permanent deletion by slug -- unlike every other /admin/*
+    mutation in this file, which works through content["unpublished"]
+    (see seed_templates.py's own convention: never hard-delete real
+    content, since a page removed from SEED_PAGES entirely becomes a
+    permanent orphan -- resync_content() only ever touches a row whose
+    slug is STILL present in SEED_PAGES, so it can never clean up
+    anything removed outright). This endpoint exists only for rows that
+    were never real content to begin with: a throwaway test page whose
+    seed_templates.py entry already got hard-deleted (exactly the
+    mistake that orphaned merge-pipeline-test-9999 and motivated adding
+    this). Refuses to touch any slug still present in SEED_PAGES --
+    that's real content, and belongs in a "keep one, unpublish the
+    other(s)" flow in seed_templates.py itself, not here."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    slug_list = [s.strip() for s in slugs.split(",") if s.strip()]
+    if not slug_list:
+        raise HTTPException(status_code=400, detail="No slugs given")
+
+    seed_slugs = {p["slug"] for p in SEED_PAGES}
+    deleted, refused, not_found = [], [], []
+    for slug in slug_list:
+        if slug in seed_slugs:
+            refused.append(slug)
+            continue
+        page = db.query(Page).filter(Page.slug == slug).first()
+        if page is None:
+            not_found.append(slug)
+            continue
+        db.delete(page)
+        deleted.append(slug)
+    db.commit()
+
+    return {"deleted": deleted, "refused_still_in_seed_templates": refused, "not_found": not_found}
+
+
 @app.get("/admin/review-queue/approve-remaining")
 def review_queue_approve_remaining(
     token: str,
