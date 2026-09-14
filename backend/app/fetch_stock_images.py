@@ -36,6 +36,7 @@ import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal
@@ -491,7 +492,26 @@ def fetch_images(
     # as their own concurrent phase before category_roundup pages' phase
     # starts -- not just sorted within one shared pool, which concurrency
     # would let race against each other and defeat this ordering.
-    all_pages = db.query(Page).all()
+    # A scoped-by-slug call (only_slugs set -- the review-queue's per-flag
+    # re-fetch, called once per click during a live review session) only
+    # ever needs the requested pages plus every category_roundup page (a
+    # card's slug lives nested inside its parent, so which roundup to load
+    # can't be known without loading it -- see the docstring above on
+    # `only_slugs` and card matching). Filtering at the DB level here
+    # instead of loading every page and filtering in Python turns each
+    # flag click's query from a full-table scan (over 2,000 rows of JSON
+    # content, growing daily) into a handful -- confirmed as a real,
+    # recurring memory-pressure contributor during today's live review
+    # session, on top of the fetch-images batch-size issue fixed
+    # separately in daily_batch.py.
+    if only_slugs is not None:
+        all_pages = (
+            db.query(Page)
+            .filter(or_(Page.slug.in_(only_slugs), Page.template_type == "category_roundup"))
+            .all()
+        )
+    else:
+        all_pages = db.query(Page).all()
     single_image_pages = [p for p in all_pages if SINGLE_IMAGE_TEMPLATES.get(p.template_type)]
     category_roundup_pages = [p for p in all_pages if p.template_type == "category_roundup"]
     # db.query(Page).all() with no order_by comes back in a stable order
