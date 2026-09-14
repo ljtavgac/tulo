@@ -416,6 +416,77 @@ def _recipes_linking_to(db: Session, field: str, target_slug: str) -> list[_Page
     return matches
 
 
+def _resolved_category_roundup_cards(db: Session, page: Page) -> list[dict]:
+    """A category_roundup page's own recipe_cards, enriched exactly the
+    way get_page()'s single-page response enriches them: any still
+    slug-less card gets filled in via live title-matching against a real
+    recipe whose category_link already points here (recipe_cards is
+    hand-curated editorial content that deliberately includes aspirational
+    cards for dishes the site hasn't written yet, so this only ever adds
+    or fills in, never removes or reorders), then every linked card's
+    image is synced straight from its own recipe -- a card the reader can
+    click through to a real page should always show that exact page's
+    photo, not a different, possibly stale stock result from the card's
+    own independent image search.
+
+    Factored out of get_page() so a second caller, _summary_image() (the
+    homepage carousel / section-index thumbnail path, via list_pages()),
+    can resolve the exact same first-card image get_page()'s own
+    single-page response already shows, instead of reading recipe_cards
+    straight off the stored row. A real bug, confirmed live: a
+    collection's homepage tile kept showing an unrelated, independently-
+    searched stock photo for its first card long after the collection's
+    own detail page was fixed to show the right one -- that earlier fix
+    only ever enriched get_page()'s response for that one request, never
+    the stored row this second code path reads directly."""
+    content = page.content
+    cards = copy.deepcopy(content.get("recipe_cards", []))
+    existing_slugs = {c.get("slug") for c in cards if c.get("slug")}
+    cards_by_title = {_normalize_dish_title(c.get("title", "")): c for c in cards}
+    # _recipes_linking_to reads recipe_or_dish pages from the process cache
+    # (see _cached_pages) -- fine for category_link, title, and
+    # why_it_works, which never change once a process starts, but NOT for
+    # image_url/image_attribution, which the background image-fetch loop
+    # writes at runtime. So this loop deliberately leaves a new or newly-
+    # filled card's image fields unset rather than copying a cached (and
+    # potentially long-stale) rc.get("image_url") -- the sync pass right
+    # below does a fresh, uncached lookup for every linked card instead.
+    for recipe in _recipes_linking_to(db, "category_link", page.slug):
+        if recipe.slug in existing_slugs:
+            continue
+        rc = recipe.content
+        placeholder = cards_by_title.get(_normalize_dish_title(recipe.title))
+        if placeholder is not None and not placeholder.get("slug"):
+            placeholder["slug"] = recipe.slug
+            continue
+        why = (rc.get("why_it_works") or "").strip()
+        description = why.split(". ")[0].rstrip(".") + "." if why else ""
+        cards.append(
+            {
+                "title": recipe.title,
+                "slug": recipe.slug,
+                "description": description,
+                "image_query": rc.get("hero_image_query", recipe.title),
+                "image_url": None,
+                "image_attribution": None,
+            }
+        )
+    linked_cards = [c for c in cards if c.get("slug")]
+    if linked_cards:
+        recipes_by_slug = {
+            r.slug: r
+            for r in db.query(Page)
+            .filter(Page.slug.in_({c["slug"] for c in linked_cards}))
+            .all()
+        }
+        for card in linked_cards:
+            recipe = recipes_by_slug.get(card["slug"])
+            if recipe is not None and recipe.content.get("image_url"):
+                card["image_url"] = recipe.content.get("image_url")
+                card["image_attribution"] = recipe.content.get("image_attribution")
+    return cards
+
+
 # Cap on how many *computed* related-content suggestions get merged into a
 # hand-curated related_* list (see _fill_related below). Keeps these lists
 # the same "a small, deliberate handful" size they'd be if an editor had
@@ -617,104 +688,8 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         return _page_out(page, content)
 
     if page.template_type == "category_roundup":
-        # recipe_cards is hand-curated editorial content -- it deliberately
-        # includes aspirational cards for dishes the site hasn't written yet
-        # (slug: None), which a purely computed list would wipe out. So this
-        # only ever adds or fills in, never removes or reorders:
-        #
-        # - A real recipe whose own category_link already points here and
-        #   whose title matches an existing aspirational card (an editor
-        #   already described "Carne Asada Tacos" by name before it existed
-        #   as a page) fills that card in -- its slug and photo, so the
-        #   card becomes clickable -- rather than appending a second,
-        #   duplicate "Carne Asada Tacos" card next to the still-unlinked
-        #   placeholder. This is what actually makes an aspirational card
-        #   "come true" once its recipe is written; without it, publishing
-        #   the matching recipe alone wouldn't be enough, the placeholder
-        #   would sit there dead forever unless someone remembered to go
-        #   back and hand-edit this page too.
-        # - Any other real recipe whose category_link points here (no
-        #   matching placeholder title) is appended as a new card, same as
-        #   before.
         content = copy.deepcopy(page.content)
-        cards = content.setdefault("recipe_cards", [])
-        existing_slugs = {c.get("slug") for c in cards if c.get("slug")}
-        cards_by_title = {_normalize_dish_title(c.get("title", "")): c for c in cards}
-        # _recipes_linking_to reads recipe_or_dish pages from the process
-        # cache (see _cached_pages) -- fine for category_link, title, and
-        # why_it_works, which never change once a process starts, but NOT
-        # for image_url/image_attribution, which the background image-fetch
-        # loop writes at runtime. So this loop deliberately leaves a new or
-        # newly-filled card's image fields unset rather than copying a
-        # cached (and potentially long-stale) rc.get("image_url") -- the
-        # cards_needing_image pass right below already does a fresh,
-        # uncached lookup for exactly that, for any card missing one.
-        for recipe in _recipes_linking_to(db, "category_link", page.slug):
-            if recipe.slug in existing_slugs:
-                continue
-            rc = recipe.content
-            placeholder = cards_by_title.get(_normalize_dish_title(recipe.title))
-            if placeholder is not None and not placeholder.get("slug"):
-                placeholder["slug"] = recipe.slug
-                continue
-            why = (rc.get("why_it_works") or "").strip()
-            description = why.split(". ")[0].rstrip(".") + "." if why else ""
-            cards.append(
-                {
-                    "title": recipe.title,
-                    "slug": recipe.slug,
-                    "description": description,
-                    "image_query": rc.get("hero_image_query", recipe.title),
-                    "image_url": None,
-                    "image_attribution": None,
-                }
-            )
-        # A card can already carry a real slug from the moment it's authored
-        # (every card generated by the content pipeline does -- see
-        # generate_companion_recipes.py/integrate_batch_results.py, which
-        # both write a recipe's real slug directly rather than leaving a
-        # None placeholder for the loop above to fill in later), which
-        # skips that loop's image-copy step entirely: it only runs for a
-        # card that *starts* slug-less and gets matched to a recipe later.
-        # A real bug -- char-siu's card on chinese-recipes had a real slug,
-        # a real published recipe with its own real photo, and no image on
-        # the card, because fetch_stock_images.py's separate per-card
-        # search (see fetch_images()) had simply never been run against it.
-        # Rather than depend on that offline job (or on remembering to run
-        # it) for the common case where a linked card's dish already has
-        # its own recipe page and photo, this second pass syncs every
-        # slug-bearing card's image directly from its own recipe on every
-        # request -- the same "compute it live so nobody has to remember a
-        # manual step" pattern already used for recipe_slugs/related_*
-        # elsewhere in this file. fetch_images()'s independent card search
-        # still matters for a genuinely aspirational card with no recipe.
-        #
-        # Deliberately NOT scoped to cards missing an image (a real bug,
-        # confirmed live on beets-recipes: "Roasted Beets with Balsamic"
-        # already had its own independently stock-searched card image from
-        # before its companion recipe existed -- fetch_images() runs a
-        # separate search per card, by the card's own image_query, the
-        # moment a new category_roundup page publishes, regardless of
-        # whether the card is linked yet. Once it later got linked to
-        # roasted-beets-with-balsamic, that page's own independently
-        # searched photo was a different result for the same query text,
-        # and the card kept its now-stale one forever since it was never
-        # "missing"). A card the reader can click through to a real page
-        # should always show that exact page's photo, not a different
-        # stock result for a similar-sounding search.
-        linked_cards = [c for c in cards if c.get("slug")]
-        if linked_cards:
-            recipes_by_slug = {
-                r.slug: r
-                for r in db.query(Page)
-                .filter(Page.slug.in_({c["slug"] for c in linked_cards}))
-                .all()
-            }
-            for card in linked_cards:
-                recipe = recipes_by_slug.get(card["slug"])
-                if recipe is not None and recipe.content.get("image_url"):
-                    card["image_url"] = recipe.content.get("image_url")
-                    card["image_attribution"] = recipe.content.get("image_attribution")
+        content["recipe_cards"] = _resolved_category_roundup_cards(db, page)
         return _page_out(page, content)
 
     if page.template_type == "howto_technique":
@@ -760,12 +735,17 @@ def get_page(slug: str, db: Session = Depends(get_db)):
     return page
 
 
-def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None, str | None]:
+def _summary_image(page: Page, db: Session) -> tuple[str | None, dict | None, str | None, str | None]:
     """image_url, image_attribution, hero_image_query, image_alt for a
     page's summary thumbnail. Category Roundup pages have no hero image of
     their own (only per-card images on recipe_cards), so this falls back to
     the first card's image (and that card's own image_alt) as a
-    representative thumbnail for the collection."""
+    representative thumbnail for the collection -- resolved via the same
+    live title-matching + per-card image sync get_page() itself applies
+    (see _resolved_category_roundup_cards), not the raw stored row, which
+    can carry a stale or still slug-less first card for a companion recipe
+    generated after the collection was first published."""
+    content = page.content
     if content.get("image_url"):
         return (
             content["image_url"],
@@ -773,7 +753,7 @@ def _summary_image(content: dict) -> tuple[str | None, dict | None, str | None, 
             content.get("hero_image_query"),
             content.get("image_alt"),
         )
-    cards = content.get("recipe_cards")
+    cards = _resolved_category_roundup_cards(db, page) if page.template_type == "category_roundup" else content.get("recipe_cards")
     if cards:
         first = cards[0]
         return first.get("image_url"), first.get("image_attribution"), first.get("image_query"), first.get("image_alt")
@@ -876,7 +856,7 @@ def list_pages(
         base_query = base_query.filter(Page.title.ilike(f"%{q}%"), Page.template_type != "homepage")
 
     def _build_summary(page: Page) -> PageSummary:
-        image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
+        image_url, image_attribution, hero_image_query, image_alt = _summary_image(page, db)
         return PageSummary(
             slug=page.slug,
             template_type=page.template_type,
@@ -973,7 +953,7 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
             term for term in terms if any(term in name or name in term for name in recipe_ingredients)
         ]
         if matched_terms:
-            image_url, image_attribution, hero_image_query, image_alt = _summary_image(page.content)
+            image_url, image_attribution, hero_image_query, image_alt = _summary_image(page, db)
             matches.append(
                 {
                     "slug": page.slug,
