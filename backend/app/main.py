@@ -2033,19 +2033,37 @@ def apply_baked_images(token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404)
 
     seed_by_slug = {p["slug"]: p["content"] for p in SEED_PAGES}
+    # Scoped to slugs with a real baked image_url (most of the site, but a
+    # real, meaningful reduction from literally every SEED_PAGES slug) and
+    # chunked, rather than one query()+loop over the whole match set --
+    # the exact shape of the OOM crash fetch_images() hit earlier this
+    # session (see CONCURRENCY's docstring in fetch_stock_images.py) before
+    # its own query got the same only_slugs scoping. Confirmed the risk is
+    # real here too, not just theoretical: a request to this endpoint hung
+    # for 13+ minutes from a GitHub Actions caller (2026-09-14) consistent
+    # with prod either OOMing mid-request or a Render deploy racing it --
+    # either way, holding every matched row's full content in memory at
+    # once was the wrong shape for a 512MB instance regardless of which it
+    # was. Committing per chunk lets memory actually be released between
+    # batches instead of holding the whole result set until one final commit.
+    candidate_slugs = [slug for slug, content in seed_by_slug.items() if content.get("image_url")]
+    _CHUNK_SIZE = 200
     updated: list[str] = []
-    for page in db.query(Page).filter(Page.slug.in_(seed_by_slug.keys())).all():
-        seed_image_url = seed_by_slug[page.slug].get("image_url")
-        if not seed_image_url or page.content.get("image_url") == seed_image_url:
-            continue
-        content = copy.deepcopy(page.content)
-        content["image_url"] = seed_image_url
-        content["image_attribution"] = seed_by_slug[page.slug].get("image_attribution")
-        page.content = content
-        updated.append(page.slug)
-
-    if updated:
-        db.commit()
+    for i in range(0, len(candidate_slugs), _CHUNK_SIZE):
+        chunk = candidate_slugs[i : i + _CHUNK_SIZE]
+        chunk_updated = False
+        for page in db.query(Page).filter(Page.slug.in_(chunk)).all():
+            seed_image_url = seed_by_slug[page.slug]["image_url"]
+            if page.content.get("image_url") == seed_image_url:
+                continue
+            content = copy.deepcopy(page.content)
+            content["image_url"] = seed_image_url
+            content["image_attribution"] = seed_by_slug[page.slug].get("image_attribution")
+            page.content = content
+            updated.append(page.slug)
+            chunk_updated = True
+        if chunk_updated:
+            db.commit()
 
     return {"updated_count": len(updated), "updated_slugs": updated}
 
