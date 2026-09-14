@@ -84,9 +84,11 @@ export interface LinkRef {
 // placeholder. Attribution is required by Unsplash's API terms and good
 // practice for Pexels.
 export interface ImageAttribution {
-  photographer: string;
-  photographer_url: string;
-  source: "unsplash" | "pexels";
+  // Both null for a manually-overridden photo (source === "manual_override")
+  // -- a reviewer pasted an exact URL with no known photographer to credit.
+  photographer: string | null;
+  photographer_url: string | null;
+  source: "unsplash" | "pexels" | "manual_override";
 }
 
 export interface Faq {

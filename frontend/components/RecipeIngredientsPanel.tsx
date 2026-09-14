@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { NutritionPerUnit, PanSize, RecipeIngredient } from "@/lib/types";
-import { formatUsQuantity, formatMetricQuantity } from "@/lib/format";
+import { formatUsQuantity, formatMetricQuantity, formatDurationMinutes } from "@/lib/format";
 import { pagePath } from "@/lib/seo";
 import ServingsScaler from "./ServingsScaler";
 import UnitToggle, { type Unit } from "./UnitToggle";
@@ -149,15 +149,15 @@ export default function RecipeIngredientsPanel({
       <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg border border-ink/10 p-4 text-sm sm:grid-cols-4">
         <div>
           <dt className="text-ink/50">Prep</dt>
-          <dd className="font-semibold">{prepTimeMinutes} min</dd>
+          <dd className="font-semibold">{formatDurationMinutes(prepTimeMinutes)}</dd>
         </div>
         <div>
           <dt className="text-ink/50">Cook</dt>
-          <dd className="font-semibold">{displayedCookTimeMinutes} min</dd>
+          <dd className="font-semibold">{formatDurationMinutes(displayedCookTimeMinutes)}</dd>
         </div>
         <div>
           <dt className="text-ink/50">Total</dt>
-          <dd className="font-semibold">{displayedTotalTimeMinutes} min</dd>
+          <dd className="font-semibold">{formatDurationMinutes(displayedTotalTimeMinutes)}</dd>
         </div>
         <div>
           <dt className="text-ink/50">Servings</dt>
