@@ -210,10 +210,10 @@ SEED_PAGES = [
                 "than a base cooking ingredient."
             ),
             "substitutes": [
-                {"name": "Scallion greens (green onion tops)", "ratio": "1:1", "note": "Slightly stronger onion flavor, but the closest visual and flavor match.", "ratio_multiplier": 1.0},
-                {"name": "Green onion, whole", "ratio": "1:1", "note": "Similar flavor profile to scallion greens, a bit more oniony overall.", "ratio_multiplier": 1.0},
-                {"name": "Parsley + a pinch of onion powder", "ratio": "1:1 (as parsley)", "note": "Use for the color/garnish effect without onion flavor; add onion powder separately to taste.", "ratio_multiplier": 1.0},
-                {"name": "Leek greens, finely minced", "ratio": "1:1", "note": "Milder and slightly sweeter; mince very finely since leek greens are more fibrous.", "ratio_multiplier": 1.0},
+                {"name": "Scallion greens (green onion tops)", "ratio": "1:1", "note": "Slightly stronger onion flavor, but the closest visual and flavor match.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 2, "protein_g": 0.1, "carbs_g": 0.3, "fat_g": 0.0}},
+                {"name": "Green onion, whole", "ratio": "1:1", "note": "Similar flavor profile to scallion greens, a bit more oniony overall.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 2, "protein_g": 0.1, "carbs_g": 0.4, "fat_g": 0.0}},
+                {"name": "Parsley + a pinch of onion powder", "ratio": "1:1 (as parsley)", "note": "Use for the color/garnish effect without onion flavor; add onion powder separately to taste.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 3, "protein_g": 0.2, "carbs_g": 0.7, "fat_g": 0.0}},
+                {"name": "Leek greens, finely minced", "ratio": "1:1", "note": "Milder and slightly sweeter; mince very finely since leek greens are more fibrous.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 3, "protein_g": 0.1, "carbs_g": 0.7, "fat_g": 0.0}},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1669,8 +1669,8 @@ SEED_PAGES = [
                 "creamier from warmer Gulf waters."
             ),
             "substitutes": [
-                {"name": "Clams", "ratio": "1:1 by count", "note": "Similar brine and texture raw or cooked, though generally less plump.", "ratio_multiplier": 1.0},
-                {"name": "Mussels", "ratio": "1:1 by count", "note": "Works for cooked preparations (grilled, baked) but is a poor stand-in raw, different texture and flavor.", "ratio_multiplier": 1.0},
+                {"name": "Clams", "ratio": "1:1 by count", "note": "Similar brine and texture raw or cooked, though generally less plump.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 11, "protein_g": 1.9, "carbs_g": 0.4, "fat_g": 0.15}},
+                {"name": "Mussels", "ratio": "1:1 by count", "note": "Works for cooked preparations (grilled, baked) but is a poor stand-in raw, different texture and flavor.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 9, "protein_g": 1.2, "carbs_g": 0.4, "fat_g": 0.2}},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1755,8 +1755,8 @@ SEED_PAGES = [
                 "casseroles."
             ),
             "substitutes": [
-                {"name": "Smoked andouille sausage", "ratio": "1:1", "note": "Spicier and more heavily smoked, but a close textural match.", "ratio_multiplier": 1.0},
-                {"name": "Smoked bratwurst", "ratio": "1:1", "note": "Milder flavor than kielbasa; works well in soups and skillet dishes.", "ratio_multiplier": 1.0},
+                {"name": "Smoked andouille sausage", "ratio": "1:1", "note": "Spicier and more heavily smoked, but a close textural match.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 100, "protein_g": 4.7, "carbs_g": 1.0, "fat_g": 8.5}},
+                {"name": "Smoked bratwurst", "ratio": "1:1", "note": "Milder flavor than kielbasa; works well in soups and skillet dishes.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 92, "protein_g": 4.0, "carbs_g": 0.5, "fat_g": 7.8}},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -1842,8 +1842,8 @@ SEED_PAGES = [
                 "simmered, unlike sour cream, which makes it useful in hot sauces."
             ),
             "substitutes": [
-                {"name": "Sour cream", "ratio": "1:1", "note": "Tangier and lower-fat; fine cold or as a finishing swirl, but can split if boiled.", "ratio_multiplier": 1.0},
-                {"name": "Mascarpone thinned with a little cream", "ratio": "1:1", "note": "Milder and richer, closer to crème fraîche's fat content.", "ratio_multiplier": 1.0},
+                {"name": "Sour cream", "ratio": "1:1", "note": "Tangier and lower-fat; fine cold or as a finishing swirl, but can split if boiled.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 23, "protein_g": 0.3, "carbs_g": 0.5, "fat_g": 2.3}},
+                {"name": "Mascarpone thinned with a little cream", "ratio": "1:1", "note": "Milder and richer, closer to crème fraîche's fat content.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 48, "protein_g": 0.6, "carbs_g": 0.5, "fat_g": 5}},
             ],
             "substitute_page_slug": "creme-fraiche-substitute",
             "storage": (
@@ -2103,8 +2103,8 @@ SEED_PAGES = [
                 "melt smoothly."
             ),
             "substitutes": [
-                {"name": "Cotija cheese", "ratio": "1:1", "note": "Saltier and drier, doesn't crumble quite as creamily, but a close flavor match.", "ratio_multiplier": 1.0},
-                {"name": "Goat cheese", "ratio": "1:1", "note": "Softer and tangier in a different way; works well in salads.", "ratio_multiplier": 1.0},
+                {"name": "Cotija cheese", "ratio": "1:1", "note": "Saltier and drier, doesn't crumble quite as creamily, but a close flavor match.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 100, "protein_g": 6, "carbs_g": 1, "fat_g": 8}},
+                {"name": "Goat cheese", "ratio": "1:1", "note": "Softer and tangier in a different way; works well in salads.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 103, "protein_g": 6.1, "carbs_g": 0.3, "fat_g": 8.5}},
             ],
             "substitute_page_slug": None,
             "storage": (
