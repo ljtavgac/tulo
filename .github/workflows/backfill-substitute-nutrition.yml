@@ -1,0 +1,66 @@
+name: Backfill substitute nutrition data
+
+# Manual, re-runnable tool: runs
+# content/scripts/backfill_substitute_nutrition.py against the ~962
+# ingredient_hub pages whose substitutes still have a ratio_multiplier but
+# no nutrition_per_unit -- the one-time catch-up for the gap
+# INGREDIENT_HUB_SCHEMA already closed for new hubs going forward. See that
+# script's own module docstring for the full rationale (one real-time
+# Messages API call per hub, AST-position source patching that preserves
+# every existing comment in seed_templates.py).
+#
+# limit/slugs inputs exist specifically so a small pilot run (e.g. limit=5)
+# can be reviewed on staging before committing to the full ~962-hub run --
+# same "verify on a sample first" discipline this repo has used for every
+# other backfill. The script itself commits and pushes straight to staging
+# (matching audit_and_bake_all_images.py's pattern); syncing to main stays
+# a separate, human-gated step.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Only process the first N hubs needing backfill (leave blank for all). Ignored if slugs is set."
+        required: false
+        type: string
+      slugs:
+        description: "Comma-separated hub slugs to process (overrides limit). Leave blank to use limit/all."
+        required: false
+        type: string
+      concurrency:
+        description: "Concurrent real-time API requests"
+        required: false
+        type: string
+        default: "10"
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run nutrition backfill
+        env:
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          args=(--concurrency "${{ inputs.concurrency || '10' }}")
+          if [ -n "${{ inputs.slugs }}" ]; then
+            args+=(--slugs "${{ inputs.slugs }}")
+          elif [ -n "${{ inputs.limit }}" ]; then
+            args+=(--limit "${{ inputs.limit }}")
+          fi
+          echo "Running: python3 content/scripts/backfill_substitute_nutrition.py ${args[*]}"
+          python3 content/scripts/backfill_substitute_nutrition.py "${args[@]}"
