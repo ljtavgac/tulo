@@ -153,7 +153,7 @@ def extract_needs() -> list[dict]:
 def build_request_params(hub: dict) -> dict:
     return {
         "model": MODEL,
-        "max_tokens": 2000,
+        "max_tokens": 3000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": build_user_prompt(hub["title"], hub["description"], hub["substitutes"])}],
         "output_config": {"format": {"type": "json_schema", "schema": RESPONSE_SCHEMA}},
@@ -181,7 +181,17 @@ def call_one(hub: dict, api_key: str) -> dict:
             with urllib.request.urlopen(req, timeout=120) as resp:
                 message = json.loads(resp.read())
             text = "".join(block["text"] for block in message["content"] if block["type"] == "text")
-            parsed = json.loads(text)
+            try:
+                parsed = json.loads(text)
+            except json.JSONDecodeError as e:
+                # Real, confirmed (2026-09-14): a full 957-hub run hit this
+                # on 20 hubs, all 3 attempts, with a 200 OK but an empty or
+                # truncated `text` -- stop_reason here is exactly the clue
+                # needed to tell "ran out of max_tokens" (stop_reason ==
+                # "max_tokens", the actual bug) apart from some other
+                # response shape, without having to reproduce it blind.
+                stop_reason = message.get("stop_reason", "?")
+                raise ValueError(f"{e} (stop_reason={stop_reason}, response text length={len(text)})") from e
             returned_names = {s["name"] for s in parsed["substitutes"]}
             if returned_names != expected_names:
                 last_error = f"name mismatch: expected {expected_names}, got {returned_names}"
@@ -200,6 +210,14 @@ def call_one(hub: dict, api_key: str) -> dict:
                 time.sleep(5 * attempt)
         except Exception as e:
             last_error = str(e)
+            # A non-429 failure retried with zero delay in a
+            # concurrency=10 loop just repeats the same request under the
+            # same conditions -- confirmed live (2026-09-14): 20/957 hubs
+            # got an empty/malformed response on ALL 3 immediate-retry
+            # attempts. A short backoff gives a transient issue (API load,
+            # a momentary hiccup) an actual chance to have cleared by the
+            # next attempt instead of just re-hitting it instantly.
+            time.sleep(3 * attempt)
         print(f"  [{hub['slug']}] attempt {attempt}/{MAX_ATTEMPTS} failed: {last_error}")
     return {"slug": hub["slug"], "status": "errored", "error": last_error}
 
@@ -401,57 +419,55 @@ def main() -> None:
         print("Nothing to patch.")
         return
 
-    text = SEED_TEMPLATES_PATH.read_text()
-    parts = ENTRY_SPLIT_RE.split(text)
-    header, entries = parts[0], parts[1:]
-    entry_by_slug: dict[str, int] = {}
-    for i, entry in enumerate(entries):
-        m = re.search(r'"slug": "([^"]+)"', entry)
-        if m:
-            entry_by_slug[m.group(1)] = i
+    def build_patched_text() -> tuple[str, list[str]]:
+        """Reads seed_templates.py FRESH (not whatever was on disk when
+        this run started) and applies every succeeded result -- so a
+        retry after `git reset --hard origin/staging` re-patches onto
+        the latest content instead of the stale copy this process
+        started with."""
+        text = SEED_TEMPLATES_PATH.read_text()
+        parts = ENTRY_SPLIT_RE.split(text)
+        header, entries = parts[0], parts[1:]
+        entry_by_slug: dict[str, int] = {}
+        for i, entry in enumerate(entries):
+            m = re.search(r'"slug": "([^"]+)"', entry)
+            if m:
+                entry_by_slug[m.group(1)] = i
 
-    patched_slugs = []
-    for result in succeeded:
-        idx = entry_by_slug.get(result["slug"])
-        if idx is None:
-            print(f"WARNING: {result['slug']} not found in seed_templates.py entries, skipping")
-            continue
-        entries[idx] = patch_entry(entries[idx], result["slug"], result)
-        patched_slugs.append(result["slug"])
+        patched = []
+        for result in succeeded:
+            idx = entry_by_slug.get(result["slug"])
+            if idx is None:
+                print(f"WARNING: {result['slug']} not found in seed_templates.py entries, skipping")
+                continue
+            entries[idx] = patch_entry(entries[idx], result["slug"], result)
+            patched.append(result["slug"])
 
-    new_text = header + "".join(entries)
+        new_text = header + "".join(entries)
+        # Never trust this output without a real syntax check -- a single
+        # off-by-one in the AST-position math would silently corrupt the
+        # 275K-line file otherwise.
+        compile(new_text, str(SEED_TEMPLATES_PATH), "exec")
+        return new_text, patched
 
-    # Never trust this output without a real syntax check -- a single
-    # off-by-one in the AST-position math would silently corrupt the
-    # 275K-line file otherwise.
-    compile(new_text, str(SEED_TEMPLATES_PATH), "exec")
+    new_text, patched_slugs = build_patched_text()
     print(f"\nSyntax check passed. Patched {len(patched_slugs)} hub(s): {patched_slugs}")
 
     if args.dry_run:
         print("--dry-run: not writing seed_templates.py.")
         return
 
-    SEED_TEMPLATES_PATH.write_text(new_text)
-    print(f"Wrote {SEED_TEMPLATES_PATH}")
-
     if args.no_push:
-        print("--no-push: seed_templates.py left modified, uncommitted.")
+        SEED_TEMPLATES_PATH.write_text(new_text)
+        print(f"--no-push: wrote {SEED_TEMPLATES_PATH}, left modified and uncommitted.")
         return
 
-    status = subprocess.run(
-        ["git", "status", "--porcelain", str(SEED_TEMPLATES_PATH)],
-        cwd=str(REPO_ROOT), check=True, capture_output=True, text=True,
-    )
-    if not status.stdout.strip():
-        print("\nNo changes to commit (unexpected -- a successful patch should always change the file).")
-        return
-
-    def run(*cmd_args: str) -> None:
-        subprocess.run(cmd_args, cwd=str(REPO_ROOT), check=True)
+    def run(*cmd_args: str, check: bool = True) -> subprocess.CompletedProcess:
+        return subprocess.run(cmd_args, cwd=str(REPO_ROOT), check=check)
 
     run("git", "config", "user.name", "tulo-content-bot")
     run("git", "config", "user.email", "content-bot@users.noreply.github.com")
-    run("git", "add", str(SEED_TEMPLATES_PATH))
+
     message = (
         f"Backfill nutrition_per_unit for {len(patched_slugs)} ingredient_hub substitute(s)\n\n"
         "One-time catch-up run of content/scripts/backfill_substitute_nutrition.py "
@@ -461,9 +477,49 @@ def main() -> None:
         "any recipe whose ingredient resolves to one of these hubs.\n\n"
         "Staging-only until a human reviews and merges this to main.\n"
     )
-    run("git", "commit", "-m", message)
-    run("git", "push", "origin", "HEAD:staging")
-    print("\nCommitted and pushed to staging.")
+
+    # Commit + push with a fetch/reset/re-patch retry on a non-fast-forward
+    # rejection -- real, confirmed (2026-09-14): an unrelated commit landed
+    # on staging while this ran (a ~18-minute, 957-request real API job),
+    # and losing the push meant losing all 937 already-paid-for results
+    # with no way to recover them since the runner's workspace is gone the
+    # moment the job ends. Retrying is cheap; re-running the whole batch
+    # from scratch after a lost push is not.
+    MAX_PUSH_ATTEMPTS = 3
+    for push_attempt in range(1, MAX_PUSH_ATTEMPTS + 1):
+        SEED_TEMPLATES_PATH.write_text(new_text)
+        run("git", "add", str(SEED_TEMPLATES_PATH))
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--cached", str(SEED_TEMPLATES_PATH)],
+            cwd=str(REPO_ROOT), check=True, capture_output=True, text=True,
+        )
+        if not status.stdout.strip():
+            print("\nNo changes to commit (unexpected -- a successful patch should always change the file).")
+            return
+        run("git", "commit", "-m", message)
+        push_result = run("git", "push", "origin", "HEAD:staging", check=False)
+        if push_result.returncode == 0:
+            print("\nCommitted and pushed to staging.")
+            return
+        print(f"\nPush attempt {push_attempt}/{MAX_PUSH_ATTEMPTS} rejected (remote moved) -- "
+              "fetching, resetting to latest staging, and re-patching before retrying.")
+        run("git", "fetch", "origin", "staging")
+        run("git", "reset", "--hard", "origin/staging")
+        new_text, patched_slugs = build_patched_text()
+        print(f"Re-patched against latest staging: {len(patched_slugs)} hub(s): {patched_slugs}")
+
+    # All retries exhausted -- do NOT let 937+ hubs' worth of real,
+    # already-paid-for API output just vanish with the runner's workspace.
+    # Leave it on disk, uncommitted, so the workflow's own artifact-upload
+    # step (see backfill-substitute-nutrition.yml, `if: always()`) can
+    # still capture it for manual recovery even though this run "failed."
+    SEED_TEMPLATES_PATH.write_text(new_text)
+    print(
+        f"\nERROR: push still rejected after {MAX_PUSH_ATTEMPTS} attempts. "
+        f"Left the patched file at {SEED_TEMPLATES_PATH} (uncommitted) instead of losing it -- "
+        "recover it from this run's uploaded artifact and apply by hand."
+    )
+    sys.exit(1)
 
 
 if __name__ == "__main__":
