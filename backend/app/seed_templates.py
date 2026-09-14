@@ -136297,12 +136297,14 @@ SEED_PAGES = [
                     "ratio": "1:1",
                     "note": "Mix 2 tbsp buttermilk powder, 1 tsp each garlic and onion powder, 1 tsp dried dill, 1 tsp dried parsley, 1/2 tsp dried chives, 1/2 tsp salt, and a pinch of black pepper to match a standard packet.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 35, "protein_g": 1.4, "carbs_g": 5.5, "fat_g": 0.4},
                 },
                 {
                     "name": "Italian seasoning blend plus garlic powder and onion powder",
                     "ratio": "1:1, but omit added salt",
                     "note": "Loses the tangy buttermilk note but gives a similar herby, savory profile. Works fine in dips and on roasted vegetables, less convincing in dressing.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 20, "protein_g": 0.8, "carbs_g": 4.0, "fat_g": 0.5},
                 },
                 {
                     "name": "Bottled ranch dressing (in place of dry mix for dips or marinades)",
@@ -136315,6 +136317,7 @@ SEED_PAGES = [
                     "ratio": "1:1",
                     "note": "Milder tang than real buttermilk powder but blends well into dairy-free dips and dressings made with soaked cashews or vegan mayo.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 25, "protein_g": 2.2, "carbs_g": 3.0, "fat_g": 0.4},
                 },
             ],
             "storage": "Store dry ranch seasoning in an airtight container in a cool, dark cabinet for up to a year. Buttermilk powder can clump with humidity, so keep it away from steam and check for hardening before using.",
