@@ -1894,8 +1894,8 @@ SEED_PAGES = [
                 "version, often with added caramel color and thickeners."
             ),
             "substitutes": [
-                {"name": "Red wine vinegar + a little sugar or honey", "ratio": "1:1, plus sweetener to taste", "note": "Approximates the sweet-tart balance without balsamic's specific depth.", "ratio_multiplier": 1.0},
-                {"name": "Sherry vinegar", "ratio": "1:1", "note": "Different flavor profile (nuttier, less sweet) but works in most savory applications.", "ratio_multiplier": 1.0},
+                {"name": "Red wine vinegar + a little sugar or honey", "ratio": "1:1, plus sweetener to taste", "note": "Approximates the sweet-tart balance without balsamic's specific depth.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 19, "protein_g": 0, "carbs_g": 4.8, "fat_g": 0}},
+                {"name": "Sherry vinegar", "ratio": "1:1", "note": "Different flavor profile (nuttier, less sweet) but works in most savory applications.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 2, "protein_g": 0, "carbs_g": 0.2, "fat_g": 0}},
             ],
             "substitute_page_slug": None,
             "storage": (
@@ -42730,36 +42730,42 @@ SEED_PAGES = [
                     "ratio": "1:1",
                     "note": "Neutral flavor with a high smoke point (around 500°F), works well for high-heat searing where olive oil's flavor isn't needed.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 124, "protein_g": 0, "carbs_g": 0, "fat_g": 14.0},
                 },
                 {
                     "name": "Vegetable or canola oil",
                     "ratio": "1:1",
                     "note": "Neutral and inexpensive; a fine swap for baking or high-heat cooking, but leaves out olive oil's flavor entirely.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 124, "protein_g": 0, "carbs_g": 0, "fat_g": 14.0},
                 },
                 {
                     "name": "Melted butter",
                     "ratio": "1:1",
                     "note": "Adds richness and browning that oil can't, good in baked goods and sautes, but not suited for dressings or dishes served cold.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 102, "protein_g": 0.1, "carbs_g": 0, "fat_g": 11.5},
                 },
                 {
                     "name": "Refined (light) olive oil",
                     "ratio": "1:1",
                     "note": "Same fruit, much milder flavor and a higher smoke point; use in place of extra virgin for high-heat cooking.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 119, "protein_g": 0, "carbs_g": 0, "fat_g": 13.5},
                 },
                 {
                     "name": "Grapeseed oil",
                     "ratio": "1:1",
                     "note": "Very neutral and light, a good stand-in in vinaigrettes and marinades where a subtle background flavor is wanted.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 120, "protein_g": 0, "carbs_g": 0, "fat_g": 14.0},
                 },
                 {
                     "name": "Melted coconut oil",
                     "ratio": "1:1",
                     "note": "Adds a mild coconut flavor and solidifies when chilled, so best in baking or sauteing rather than dressings.",
                     "ratio_multiplier": 1.0,
+                    "nutrition_per_unit": {"calories": 117, "protein_g": 0, "carbs_g": 0, "fat_g": 13.6},
                 },
             ],
             "storage": "Keep olive oil in a cool, dark place away from the stove and direct sunlight, ideally in a dark glass or tin container. Heat and light both speed up rancidity. Once opened, use within two to three months for best flavor; it won't spoil dangerously after that but will taste flat or waxy.",
