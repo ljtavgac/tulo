@@ -424,8 +424,21 @@ def fetch_images(
     force: bool = False,
     only_slugs: set[str] | None = None,
     revalidate: bool = False,
+    query_overrides: dict[str, str] | None = None,
 ) -> tuple[int, int]:
     """Returns (pages_updated, images_written).
+
+    `query_overrides` maps a slug (must also be in `only_slugs`) to search
+    text that replaces the page's own query entirely for this one call --
+    the review queue's flag note, wired up this way so a reviewer typing
+    what's actually wrong with the photo ("raw eggplant, need it baked as
+    parmesan" / "wrong cuisine, want a taco not a burrito") drives the next
+    search directly instead of just being commentary nobody but a human
+    reading the queue ever sees. Only the query text changes -- the
+    relevance check still runs (via the same lenient, auto-derived
+    must_match every other tier uses, see _recipe_dish_must_match_terms),
+    so a search that comes back with nothing plausible still comes back
+    empty rather than accepting the first result no matter how unrelated.
 
     `only_slugs`, when given, restricts the run to exactly those pages and
     always re-fetches them (as if `force` were true just for them) -- for
@@ -571,7 +584,19 @@ def fetch_images(
         # 0 for every other branch, so the override behaves exactly as
         # before everywhere it's actually used today (ingredient_hub, etc).
         protected_attempts = 0
-        if page.template_type == "comparison":
+        note_override = (query_overrides or {}).get(page.slug)
+        if note_override:
+            # The reviewer's flag note, taken as the literal search text --
+            # see fetch_images()'s own docstring on query_overrides. Skips
+            # every template-specific query-building tier below entirely
+            # (the reviewer already said exactly what to search for, so
+            # falling back to the page's own auto-derived query would defeat
+            # the point) but keeps a real relevance check, via the same
+            # lenient auto-derived must_match every other tier uses, so a
+            # typo'd or too-obscure note still comes back empty rather than
+            # accepting whatever the search happens to return.
+            attempts = [(note_override, _recipe_dish_must_match_terms(note_override))]
+        elif page.template_type == "comparison":
             # Already has two clean, broad item names on hand -- no need to
             # derive anything from the title. Used to skip the relevance
             # check entirely here (reasoning: no single must_match term
@@ -728,12 +753,16 @@ def fetch_images(
         # just doesn't happen to repeat the dish name), individual pages
         # can opt into a required term via this optional content key.
         override_must_match = content.get("hero_image_must_match")
-        if override_must_match:
+        if override_must_match and not note_override:
             # Skips the first `protected_attempts` entries (the
             # salient_ingredient_query tier, when present) -- see
             # `protected_attempts`' own comment above for why blanket-
             # overriding that tier's independently-derived must_match with
             # the dish-level override would defeat the whole point of it.
+            # Skipped entirely when a note_override is active -- that's
+            # already the single, deliberate attempt built above, and this
+            # content-authored override exists for the page's own default
+            # query, not the reviewer's one-off replacement of it.
             attempts = [
                 (q, override_must_match) if i >= protected_attempts else (q, m)
                 for i, (q, m) in enumerate(attempts)
@@ -752,7 +781,7 @@ def fetch_images(
             if only_slugs is not None and content.get("image_url")
             else frozenset()
         )
-        print(f"  {page.slug}: searching '{query}'...")
+        print(f"  {page.slug}: searching '{note_override or query}'{' (note override)' if note_override else ''}...")
         try:
             if _apply_result(content, attempts, page.template_type, used_urls, extra_exclude=self_exclude):
                 return page, content, 1
