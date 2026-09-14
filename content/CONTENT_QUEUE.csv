@@ -2008,7 +2008,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 6,not_started,molcajete dish,ingredient_hub,9900.0,13.0,Tier 1,9900.0,Molcajete Dish Recipe,seo_target,
 6,not_started,air fry asparagus,recipe_or_dish,9900.0,29.0,Tier 1,9900.0,Air Fry Asparagus Recipe,seo_target,
 6,not_started,corn souffle recipe,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,corn souffle recipe,seo_target,allrecipes_mobile_find
-6,not_started,jelly vs jam,comparison,8100.0,19.0,Tier 1,8100.0,jelly vs jam,seo_target,keyword_gap_find
+6,excluded_duplicate,jelly vs jam,comparison,8100.0,19.0,Tier 1,8100.0,jelly vs jam,seo_target,keyword_gap_find
 6,not_started,how to ripen bananas,howto_technique,8100.0,19.0,Tier 1,8100.0,how to ripen bananas,seo_target,keyword_gap_find
 6,not_started,hot tottie how to make,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,hot tottie how to make,seo_target,keyword_gap_find
 6,not_started,burger temp,ingredient_hub,8100.0,15.0,Tier 1,8100.0,burger temp,seo_target,keyword_gap_find

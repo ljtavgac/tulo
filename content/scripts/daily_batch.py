@@ -186,6 +186,40 @@ def run_generation(subset_csv: Path) -> Path:
     return OUTPUT_DIR / f"{subset_csv.stem}_results.jsonl"
 
 
+# Mirrors seed_templates.py's own _TITLE_DEDUP_STOPWORDS/_normalize_title_
+# for_dedup exactly -- see _existing_normalized_titles' docstring for why
+# this needs its own copy here rather than importing seed_templates.py.
+_TITLE_DEDUP_STOPWORDS = {"a", "an", "the", "of", "to", "for", "how", "what", "s", "vs"}
+_EXISTING_TITLE_RE = re.compile(r'"template_type":\s*"([^"]+)",\s*\n\s*"title":\s*"([^"]*)"')
+
+
+def _normalize_title_for_dedup(title: str) -> str:
+    words = re.findall(r"[a-z0-9]+", title.lower())
+    words = [w for w in words if w not in _TITLE_DEDUP_STOPWORDS]
+    return " ".join(sorted(words))
+
+
+def _existing_normalized_titles() -> dict[tuple[str, str], str]:
+    """(template_type, normalized-word-bag) -> one real existing title that
+    produced it, for every page already in seed_templates.py. A second,
+    independent regex pass over the same file rather than importing
+    seed_templates.py's own _normalize_title_for_dedup -- importing would
+    pull in the whole backend package, the same reason
+    extract_existing_pages() in build_batch_requests.py already
+    regex-parses instead. Exists so validate_results (below) can catch a
+    fresh title colliding with EXISTING published content -- the actual
+    failure hit on this pipeline's first live run: a newly generated
+    "jelly vs jam" collided with an already-published "jam-vs-jelly", not
+    caught until local_verify()'s import-time guard, which crashed the
+    whole batch (all 4 other, genuinely clean pages included) instead of
+    just skipping the one offending title the way every other validation
+    failure already does."""
+    seen: dict[tuple[str, str], str] = {}
+    for template_type, title in _EXISTING_TITLE_RE.findall(SEED_TEMPLATES_PATH.read_text()):
+        seen[(template_type, _normalize_title_for_dedup(title))] = title
+    return seen
+
+
 def validate_results(subset_csv: Path, results_path: Path, id_to_row: dict) -> tuple[list[str], list[str]]:
     """The same validation validate_batch_results.py's main() runs
     (schema, type, depth-check, and title-convention checks via
@@ -193,11 +227,19 @@ def validate_results(subset_csv: Path, results_path: Path, id_to_row: dict) -> t
     to that script, since this needs the actual clean/bad custom_id lists
     back as data to drive integration and CONTENT_QUEUE.csv's status
     update, not a printed report a human would otherwise read and act on
-    by hand. Returns (clean_ids, bad_ids)."""
+    by hand. Also checks each candidate's title against both existing
+    published content and every other title already accepted in this same
+    batch (see _existing_normalized_titles) -- the same duplicate-title
+    collision seed_templates.py's own import-time guard checks, just
+    applied per-candidate here so one bad title is skipped like any other
+    validation failure instead of surfacing only at local_verify() and
+    taking the whole batch down with it. Returns (clean_ids, bad_ids)."""
     existing_slugs, collections, techniques, hubs = extract_existing_pages()
     collection_slugs = {c["slug"] for c in collections}
     technique_slugs = {t["slug"] for t in techniques}
     hub_slugs = {h["slug"] for h in hubs}
+    existing_titles = _existing_normalized_titles()
+    batch_titles: dict[tuple[str, str], str] = {}
 
     with results_path.open() as f:
         results = [json.loads(line) for line in f]
@@ -222,6 +264,16 @@ def validate_results(subset_csv: Path, results_path: Path, id_to_row: dict) -> t
             bad_ids.append(custom_id)
             continue
         issues = validate_content(custom_id, row["template_type"], content, collection_slugs, technique_slugs, hub_slugs)
+
+        if not issues:
+            new_title = content.get("title") or ""
+            key = (row["template_type"], _normalize_title_for_dedup(new_title))
+            dupe_of = existing_titles.get(key) or batch_titles.get(key)
+            if dupe_of:
+                issues = [f"[{custom_id}] title {new_title!r} duplicates {dupe_of!r} (same template_type, same normalized words)"]
+            else:
+                batch_titles[key] = new_title
+
         if issues:
             for issue in issues:
                 print(f"  {issue}")
