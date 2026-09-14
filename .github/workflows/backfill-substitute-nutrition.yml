@@ -64,3 +64,19 @@ jobs:
           fi
           echo "Running: python3 content/scripts/backfill_substitute_nutrition.py ${args[*]}"
           python3 content/scripts/backfill_substitute_nutrition.py "${args[@]}"
+
+      - name: Upload seed_templates.py as a recovery artifact if the push failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seed_templates-recovery
+          path: backend/app/seed_templates.py
+          retention-days: 14
+          # Real, confirmed incident (2026-09-14): a full ~957-hub real-API
+          # run's own push was rejected (an unrelated commit landed on
+          # staging mid-run) and, with no artifact upload at the time, all
+          # of that already-paid-for output was lost the moment the runner
+          # tore down. The script itself now retries the push after a
+          # fetch+reset+re-patch, but this upload is the last-resort net
+          # if even that's exhausted -- whatever's on disk at that point
+          # (patched, uncommitted) is recoverable by hand instead of gone.
