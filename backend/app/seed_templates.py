@@ -245801,6 +245801,146 @@ SEED_PAGES = [
             "pan_size": None,
         },
     },
+
+    # --- Batch: daily_batch_6.csv (2026-09-12), generated via
+    # content/scripts/build_batch_requests.py + Batch API, integrated via
+    # content/scripts/integrate_batch_results.py.
+    {
+        "slug": "chicken-tempura",
+        "template_type": "ingredient_hub",
+        "title": "Chicken Tempura",
+        "batch_number": 6,
+        "content": {
+            "meta_description": "What chicken tempura is, the best substitutes for it in rolls and rice bowls, how to keep it crisp, and how to store and reheat leftovers.",
+            "hero_image_query": "crispy chicken tempura pieces on a plate",
+            "image_alt": "Golden, lacy-battered chicken tempura pieces stacked on a wire rack with a small bowl of dipping sauce beside them.",
+            "description": "Chicken tempura is boneless chicken, usually thigh or breast, cut into strips or bite-sized pieces and coated in a thin, cold tempura batter of flour, cornstarch, and ice water before being deep-fried. The batter fries up light, lacy, and shatteringly crisp rather than thick and bready like standard fried chicken coating, and it's meant to showcase the chicken underneath rather than dominate it.",
+            "substitutes": [
+                {
+                    "name": "Panko-fried chicken (katsu-style)",
+                    "ratio": "1:1 by weight",
+                    "note": "Crisper and sturdier under sauce than tempura, holds up better in bowls and sandwiches, but the crust is thicker and crunchier rather than light and lacy.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Shrimp tempura",
+                    "ratio": "1:1 by piece count",
+                    "note": "Same batter and frying method, useful if a recipe calls for chicken tempura as a topping and shrimp is on hand instead; cooks faster, about 2 minutes versus 4 to 5.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Vegetable tempura (sweet potato, green beans, or onion)",
+                    "ratio": "1:1 by piece count",
+                    "note": "A vegetarian swap for tempura toppings on rice bowls or ramen; use pieces of similar thickness so fry times match.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Plain fried chicken tenders, sliced",
+                    "ratio": "1:1 by weight",
+                    "note": "Not the same texture at all, but works in a pinch for rice bowls or salads where the tempura is mainly there for crunch and protein.",
+                    "ratio_multiplier": 1.0,
+                },
+            ],
+            "storage": "Chicken tempura loses its crispness fast once it cools, so it's best fried and eaten within about 15 minutes. If storing leftovers, let them cool completely, refrigerate in a single layer in a container lined with paper towel for up to 2 days, and reheat in a 400°F oven or air fryer for 6 to 8 minutes rather than in a microwave, which turns the batter soft and chewy.",
+            "uses": "Serve chicken tempura with tentsuyu (a light dashi, soy, and mirin dipping sauce) or plain soy sauce and grated daikon, slice it over rice for a chicken tempura don, or use it as a crunchy topping for udon, ramen, or a California-style sushi roll.",
+            "nutrition_note": "Deep-frying adds a meaningful amount of fat and calories to lean chicken; a typical serving of chicken tempura runs higher in fat than grilled or baked chicken of the same weight, mainly from the oil absorbed by the batter.",
+            "buying_tips": "For homemade tempura, boneless, skinless chicken thigh holds moisture better through frying than breast meat, which can dry out under high heat. If buying premade frozen chicken tempura, check that the batter looks pale and lacy rather than thick and golden, a sign it was made in the standard tempura style rather than as generic fried chicken.",
+            "pairing_suggestions": "Pairs well with steamed short-grain rice, pickled ginger, shredded cabbage with sesame dressing, and light broths like dashi or miso soup that won't compete with the delicate batter.",
+            "variety_notes": "Tempura batter itself comes in a few variations: some cooks add a splash of soda water or an egg yolk for extra lightness, and some restaurants use a slightly thicker batter for chicken than for vegetables or shrimp since chicken needs a longer fry time to cook through.",
+            "faqs": [
+                {
+                    "question": "Why is chicken tempura batter so much thinner than regular fried chicken batter?",
+                    "answer": "Tempura batter is mixed briefly and kept cold, which limits gluten development and keeps the coating thin and lacy instead of thick and bready; regular fried chicken batter or breading is meant to build a heavier, more substantial crust.",
+                },
+                {
+                    "question": "Can chicken tempura be made ahead and frozen?",
+                    "answer": "Yes. Fry the pieces, cool them fully on a rack, then freeze in a single layer before transferring to a bag. Reheat straight from frozen in a 400°F oven for about 12 minutes to restore crispness.",
+                },
+                {
+                    "question": "Why does chicken tempura go soggy so quickly?",
+                    "answer": "The batter is thin and low in structure by design, so trapped steam from the hot chicken softens it fast once it's off the heat; draining on a wire rack instead of paper towel and serving within minutes helps it stay crisp longer.",
+                },
+                {
+                    "question": "Is chicken tempura the same as chicken katsu?",
+                    "answer": "No. Chicken katsu is coated in panko breadcrumbs for a thick, crunchy crust, while chicken tempura uses a wet batter that fries into a thin, lacy shell.",
+                },
+            ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
+        },
+    },
+    {
+        "slug": "junmai-sake",
+        "template_type": "ingredient_hub",
+        "title": "Junmai Sake",
+        "batch_number": 6,
+        "content": {
+            "meta_description": "What junmai sake is, the best substitutes with ratios, how to store an opened bottle, and how to use it in Japanese cooking without overpowering a dish.",
+            "hero_image_query": "junmai sake bottle and small ceramic cup",
+            "image_alt": "A bottle of junmai sake next to a filled ceramic cup, with rice grains scattered on the wood surface beside it.",
+            "description": "Junmai sake is a class of Japanese rice wine brewed only from rice, water, koji mold, and yeast, with no distilled alcohol added during production. That pure-rice base gives it a fuller body, higher acidity, and more pronounced umami than other sake grades, which makes it useful both for drinking and as a cooking ingredient in marinades, glazes, and simmered dishes.",
+            "substitutes": [
+                {
+                    "name": "Dry sherry (fino or amontillado)",
+                    "ratio": "1:1",
+                    "note": "Adds a nuttier, slightly oxidized character; works well in braises and pan sauces where junmai sake would be simmered down.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Shaoxing wine",
+                    "ratio": "1:1",
+                    "note": "Common substitute in savory Japanese and Chinese cooking alike; check the label, since some brands include added salt.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Dry white vermouth",
+                    "ratio": "1:1",
+                    "note": "More herbal and botanical than sake, but the acidity and alcohol level are close enough for deglazing and marinades.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Honjozo sake",
+                    "ratio": "1:1",
+                    "note": "A different sake grade with a small amount of added distilled alcohol; slightly lighter body but nearly interchangeable for cooking.",
+                    "ratio_multiplier": 1.0,
+                },
+                {
+                    "name": "Rice vinegar diluted with water",
+                    "ratio": "1:1, using half the amount of vinegar to water",
+                    "note": "A non-alcoholic option; it supplies acidity but not the sweetness or tenderizing effect of real sake, so it works best in small amounts within a larger sauce.",
+                    "ratio_multiplier": 1.0,
+                },
+            ],
+            "storage": "Unopened, junmai sake keeps well in a cool, dark place for a year or more since it isn't fortified for long aging. Once opened, refrigerate and use within two to three weeks; the pure-rice base oxidizes faster than sake with added distilled alcohol, and flavor flattens noticeably after that window.",
+            "uses": "Used in marinades for teriyaki and yakitori, added to simmering liquid for nimono (Japanese simmered dishes), splashed into pan sauces to deglaze after searing fish or chicken, and stirred into dashi-based broths to round out umami. It's also simmered briefly on its own to cook off harsh alcohol notes before combining with soy sauce and mirin in glazes.",
+            "nutrition_note": "Junmai sake runs about 15-16% alcohol by volume and contributes roughly 40 calories per ounce, mostly from alcohol and residual rice sugars, with no fat and only trace carbohydrates once cooked into a dish.",
+            "buying_tips": "Check that the label actually says 'Junmai' rather than just 'sake,' since standard sake and honjozo grades include added brewer's alcohol. For cooking, an inexpensive junmai is fine; save higher-grade junmai ginjo or daiginjo, which have more rice polished away and a more delicate aroma, for drinking rather than simmering into a sauce.",
+            "pairing_suggestions": "Pairs naturally with soy sauce, mirin, and fresh ginger in glazes for salmon, chicken, and short ribs, and rounds out dashi-based soups and simmered vegetables. As a drink, it suits grilled and simmered dishes, sushi, and richer, umami-heavy foods better than lighter, fruitier sake grades.",
+            "variety_notes": "Junmai sake differs from honjozo, ginjo, and daiginjo sakes mainly in whether distilled alcohol is added and how much the rice is polished. Junmai uses no added alcohol and can be made from rice polished to 70% or less of its original size, giving it a heavier, more savory character. Junmai ginjo and junmai daiginjo use more highly polished rice for a lighter, more fragrant result, and are generally better suited to drinking than to cooking.",
+            "faqs": [
+                {
+                    "question": "Is junmai sake the same as the 'cooking sake' sold in grocery stores?",
+                    "answer": "No. Bottles labeled 'cooking sake' or 'ryorishu' usually have salt added to make them non-potable for tax reasons, which changes the seasoning balance of a recipe. Junmai sake is a drinking-grade sake with no added salt.",
+                },
+                {
+                    "question": "Can mirin replace junmai sake in a recipe?",
+                    "answer": "Not directly. Mirin is much sweeter and lower in alcohol, so swapping it in one-for-one will make a dish overly sweet; if substituting, reduce the mirin amount and add a splash of water or vinegar to balance.",
+                },
+                {
+                    "question": "Does the alcohol in junmai sake fully cook off?",
+                    "answer": "Not entirely unless simmered for several minutes uncovered; a quick 30-second deglaze retains more alcohol than a sauce reduced for 10 minutes or longer.",
+                },
+                {
+                    "question": "What's the practical difference between junmai and junmai ginjo for cooking?",
+                    "answer": "Junmai ginjo is more expensive and has a more delicate, fruity aroma from the higher rice polishing ratio, but those subtle notes are mostly lost once heated into a sauce, so standard junmai is the better value for cooking.",
+                },
+            ],
+            "substitute_page_slug": None,
+            "recipe_slugs": [],
+            "related_ingredient_slugs": [],
+        },
+    },
 ]
 
 
