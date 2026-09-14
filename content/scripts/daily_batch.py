@@ -404,18 +404,50 @@ def wait_for_deploy(sample_slug: str, timeout_seconds: int = 15 * 60) -> None:
     raise RuntimeError(f"Staging never picked up {sample_slug} within {timeout_seconds}s")
 
 
+
+# Real, live incident (2026-09-14): the first-ever 100-slug batch (batch 8,
+# Monday's post-canary run) sent every slug to /admin/fetch-images in one
+# request. fetch_images() downloads and relevance-checks each image (real
+# bytes, not just a URL check) with CONCURRENCY=6 workers sustained for the
+# whole call -- fine for the 2- and 5-slug runs this pipeline had only ever
+# done before, but sustaining that for 100 slugs in one long-lived request
+# on the same process serving live site traffic exceeded staging's memory
+# limit and forced a Render auto-restart (a real, confirmed 504 for
+# whoever hit the site during the restart). Chunking bounds how much of
+# the batch is ever mid-flight in a single request, and the pause between
+# chunks gives the process a chance to actually give memory back rather
+# than staying elevated for the whole 100-slug run.
+_IMAGE_FETCH_CHUNK_SIZE = 20
+_IMAGE_FETCH_CHUNK_PAUSE_SECONDS = 15
+
+
 def fetch_images_for_batch(new_slugs: list[str]) -> tuple[int, int]:
     base = os.environ["BACKEND_BASE_URL"].rstrip("/")
     token = os.environ["ADMIN_TASK_TOKEN"]
-    r = requests.get(
-        f"{base}/admin/fetch-images",
-        params={"token": token, "slugs": ",".join(new_slugs)},
-        timeout=1800,
-    )
-    r.raise_for_status()
-    result = r.json()
-    print(f"Images: {result['pages_updated']} pages updated, {result['images_written']} images written.")
-    return result["pages_updated"], result["images_written"]
+    total_pages_updated = 0
+    total_images_written = 0
+    chunks = [
+        new_slugs[i : i + _IMAGE_FETCH_CHUNK_SIZE]
+        for i in range(0, len(new_slugs), _IMAGE_FETCH_CHUNK_SIZE)
+    ]
+    for i, chunk in enumerate(chunks):
+        r = requests.get(
+            f"{base}/admin/fetch-images",
+            params={"token": token, "slugs": ",".join(chunk)},
+            timeout=1800,
+        )
+        r.raise_for_status()
+        result = r.json()
+        total_pages_updated += result["pages_updated"]
+        total_images_written += result["images_written"]
+        print(
+            f"Images (chunk {i + 1}/{len(chunks)}, {len(chunk)} slugs): "
+            f"{result['pages_updated']} pages updated, {result['images_written']} images written."
+        )
+        if i < len(chunks) - 1:
+            time.sleep(_IMAGE_FETCH_CHUNK_PAUSE_SECONDS)
+    print(f"Images: {total_pages_updated} pages updated, {total_images_written} images written.")
+    return total_pages_updated, total_images_written
 
 
 def write_job_summary(batch_number: int, page_count: int, images_written: int) -> None:
