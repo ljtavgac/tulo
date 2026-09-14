@@ -258796,6 +258796,12 @@ SEED_PAGES = [
         "title": "Beets Recipes",
         "batch_number": 8,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8696556/pexels-photo-8696556.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Beets recipes organized by cooking method, roasted, boiled, pickled, and blended into soup, with real dishes instead of an auto-generated list.",
             "intro": "Beets go from earthy and firm to sweet and tender depending on how long and how hot they're cooked, and the cooking method changes what you can do with them next, whether that's a cold salad, a pot of borscht, or a jar of pickles.",
             "recipe_cards": [
