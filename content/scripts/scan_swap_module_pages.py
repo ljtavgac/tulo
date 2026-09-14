@@ -33,19 +33,29 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib
 import subprocess
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "backend"))
 
 
 def _load_seed_pages_from_text(module_text: str, module_name: str):
-    """Execs seed_templates.py's source text as a standalone module (no
-    import machinery / package needed) and returns its SEED_PAGES list."""
-    mod_globals: dict = {"__name__": module_name, "__file__": f"{module_name}.py"}
-    exec(compile(module_text, f"{module_name}.py", "exec"), mod_globals)
-    return mod_globals["SEED_PAGES"]
+    """Returns SEED_PAGES from the given seed_templates.py source text.
+    Can't just exec() it as a standalone script -- it has a real relative
+    import (`from .content_audit import ...`), which only works when the
+    module is loaded as part of its actual package. Writes it into the
+    (already-on-sys.path) app package under a throwaway name and imports
+    it properly instead."""
+    tmp_path = REPO_ROOT / "backend" / "app" / f"_{module_name}.py"
+    tmp_path.write_text(module_text)
+    try:
+        mod = importlib.import_module(f"app._{module_name}")
+        return mod.SEED_PAGES
+    finally:
+        tmp_path.unlink()
 
 
 def _hub_titles(seed_pages: list[dict]) -> dict[str, str]:
