@@ -39,3 +39,29 @@ export function formatUsQuantity(value: number): string {
 export function formatMetricQuantity(value: number): string {
   return String(Math.round(value));
 }
+
+// Prep/cook/total time is stored in raw minutes, and total_time_minutes
+// routinely runs into the hundreds or thousands once a recipe has a real
+// inactive step (chilling, marinating, proofing, an overnight ferment, even
+// a week-long sourdough starter) -- the recipe's own data is correct in
+// those cases (confirmed by scanning the whole corpus: every large gap
+// between total and prep+cook traces to a real described inactive step,
+// not bad data), but showing it as a bare "1500 min" reads as broken to a
+// reader who has no reason to do that division in their head. Converts to
+// the coarsest units that keep the number readable, dropping minutes once
+// a duration reaches day-scale (a bare few minutes stops mattering next to
+// multi-day figures like a 7-day starter).
+export function formatDurationMinutes(totalMinutes: number): string {
+  const minutes = Math.round(totalMinutes);
+  if (minutes < 60) return `${minutes} min`;
+
+  const days = Math.floor(minutes / 1440);
+  const hours = Math.floor((minutes % 1440) / 60);
+  const mins = minutes % 60;
+
+  const parts: string[] = [];
+  if (days > 0) parts.push(`${days} day${days === 1 ? "" : "s"}`);
+  if (hours > 0) parts.push(`${hours} hr`);
+  if (mins > 0 && days === 0) parts.push(`${mins} min`);
+  return parts.join(" ");
+}
