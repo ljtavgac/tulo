@@ -237,7 +237,15 @@ export default function RecipeIngredientsPanel({
 
         <ul className="mt-4 space-y-2">
           {ingredients.map((ing) => {
-            const activeSubstitute = ing.available_substitutes?.find((sub) => sub.name === swaps[ing.name]);
+            // A substitute with a ratio_multiplier but no nutrition_per_unit
+            // can't move the "Nutrition per serving" block below when
+            // swapped in -- offering it anyway would silently keep showing
+            // the original ingredient's numbers with no indication anything
+            // is wrong (a real bug, see roasted-beets-with-balsamic). Until
+            // every hub has real nutrition data backfilled, hide rather than
+            // offer a swap that can't actually recalculate.
+            const swappableSubstitutes = ing.available_substitutes?.filter((sub) => sub.nutrition_per_unit) ?? [];
+            const activeSubstitute = swappableSubstitutes.find((sub) => sub.name === swaps[ing.name]);
             // Defaults to 1 (no change) when nothing's swapped in -- the
             // substitute's ratio_multiplier is "amount of substitute per 1
             // unit of the original," so it multiplies the same base_qty the
@@ -272,7 +280,7 @@ export default function RecipeIngredientsPanel({
                   )}
                 </div>
 
-                {ing.available_substitutes && ing.available_substitutes.length > 0 ? (
+                {swappableSubstitutes.length > 0 ? (
                   <select
                     value={swaps[ing.name] ?? ""}
                     onChange={(e) => {
@@ -287,7 +295,7 @@ export default function RecipeIngredientsPanel({
                     className="mt-1 rounded border border-ink/15 bg-ink/[0.02] px-2 py-0.5 text-xs text-ink/60"
                   >
                     <option value="">I don&apos;t have {ing.name}?</option>
-                    {ing.available_substitutes.map((sub) => (
+                    {swappableSubstitutes.map((sub) => (
                       <option key={sub.name} value={sub.name}>
                         Use {sub.name} instead
                       </option>
