@@ -92,8 +92,15 @@ def _patch_entry(entry: str, image_url: str, image_attribution: dict | None) -> 
     return entry[:insert_at] + insertion + entry[insert_at:]
 
 
-def bake(base_url: str, token: str, slugs: list[str]) -> None:
-    export = fetch_export(base_url, token, slugs)
+def bake(base_url: str, token: str, slugs: list[str], export: dict | None = None) -> None:
+    """`export` lets a caller that already has slug -> {image_url,
+    image_attribution} data from somewhere other than /admin/export-images
+    (see audit_and_bake_all_images.py, which sources it from the public
+    GET /pages?template_type=... listing instead, to discover every
+    eligible slug at once rather than needing to already know which ones
+    to ask for) skip the fetch_export() round trip entirely."""
+    if export is None:
+        export = fetch_export(base_url, token, slugs)
 
     text = SEED_TEMPLATES_PATH.read_text()
     entry_pattern = re.compile(r'(?=    \{\n        "slug")')

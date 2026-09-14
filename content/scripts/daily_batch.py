@@ -72,6 +72,7 @@ from pathlib import Path
 import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
+from bake_images_from_staging import bake  # noqa: E402
 from build_batch_requests import extract_existing_pages, load_id_to_row_from_manifest  # noqa: E402
 from generate_companion_recipes import find_unlinked_cards  # noqa: E402
 from validation import extract_content, validate_content  # noqa: E402
@@ -628,6 +629,59 @@ def fetch_images_for_batch(new_slugs: list[str]) -> tuple[int, int]:
     return total_pages_updated, total_images_written
 
 
+def bake_batch_images(new_slugs: list[str], batch_number: int) -> int:
+    """Bakes this batch's own just-fetched images (see fetch_images_for_batch,
+    called right before this everywhere it's used) into seed_templates.py as
+    literal data, then commits that under the SAME batch_number trailer --
+    so a future "approve batch N for prod" cherry-picks this commit right
+    alongside the batch's own content, with no changes needed in
+    merge-approved-batch.yml at all.
+
+    Closes a real gap found live (2026-09-14): batch 8 was approved and
+    merged to main with none of its images baked in (see
+    bake_images_from_staging.py's own docstring for why image_url never
+    reaches git on its own). Production re-fetched every one of those
+    images independently, blind to whatever staging's review queue had
+    already confirmed was correct, producing visible mismatches (a
+    collection thumbnail showing the wrong dish entirely). Baking
+    automatically, right here, right after the fetch that populates the
+    data this needs, means that gap can't recur for any future batch.
+    Passing category_roundup slugs (if any are in new_slugs) is harmless --
+    bake()/export-images already skip those gracefully, they have no
+    page-level image_url of their own to export.
+
+    Safe to no-op: if nothing actually changed (e.g. a re-run, or every
+    slug already matched what was baked), no commit is made."""
+    bake(os.environ["BACKEND_BASE_URL"], os.environ["ADMIN_TASK_TOKEN"], new_slugs)
+
+    status = subprocess.run(
+        ["git", "status", "--porcelain", str(SEED_TEMPLATES_PATH)],
+        cwd=str(REPO_ROOT), check=True, capture_output=True, text=True,
+    )
+    if not status.stdout.strip():
+        print("Bake: no changes (nothing to bake, or already up to date).")
+        return 0
+
+    def run(*args: str) -> None:
+        subprocess.run(args, cwd=str(REPO_ROOT), check=True)
+
+    run("git", "config", "user.name", "tulo-content-bot")
+    run("git", "config", "user.email", "content-bot@users.noreply.github.com")
+    run("git", "add", str(SEED_TEMPLATES_PATH))
+    message = (
+        f"Bake batch {batch_number}'s fetched images into seed_templates.py\n\n"
+        f"image_url only ever lives in the runtime database until baked -- "
+        f"see bake_images_from_staging.py's own docstring. Automatic as of "
+        f"this run, so this batch's photos survive the merge to prod instead "
+        f"of production re-fetching them blind.\n\n"
+        f"Tulo-Batch-Number: {batch_number}\n"
+    )
+    run("git", "commit", "-m", message)
+    run("git", "push", "origin", "HEAD:staging")
+    print(f"Baked and committed batch {batch_number}'s images.")
+    return 1
+
+
 def write_job_summary(batch_number: int, page_count: int, images_written: int) -> None:
     """Writes the review-queue link and batch stats to GitHub Actions'
     own job summary (the GITHUB_STEP_SUMMARY file, rendered on the
@@ -743,6 +797,7 @@ def run_companions_only(collection_slug: str) -> None:
 
     wait_for_deploy(new_slugs[0])
     _, images_written = fetch_images_for_batch(new_slugs)
+    bake_batch_images(new_slugs, batch_number)
     print(f"\nDone: {added} companion recipe(s) for {collection_slug!r}, {images_written} images.")
 
 
@@ -823,6 +878,7 @@ def main() -> None:
 
     wait_for_deploy(new_slugs[0])
     _, images_written = fetch_images_for_batch(new_slugs)
+    bake_batch_images(new_slugs, batch_number)
 
     write_job_summary(batch_number, total_new_pages, images_written)
     if os.environ.get("GMAIL_SMTP_USER") and os.environ.get("GMAIL_SMTP_APP_PASSWORD"):
