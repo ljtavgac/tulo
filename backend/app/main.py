@@ -1971,6 +1971,53 @@ def export_images(
     return result
 
 
+@app.get("/admin/apply-baked-images")
+def apply_baked_images(token: str, db: Session = Depends(get_db)):
+    """One-time (safely re-runnable) fix for a real gap: resync_content()
+    and seed() both deliberately never touch an existing row's image_url/
+    image_attribution (see _RUNTIME_IMAGE_KEYS in seed_templates.py) --
+    correct behavior for protecting a live-fetched or admin-overridden
+    photo from a naive resync, but it also means baking a verified-correct
+    image_url into SEED_PAGES (see bake_images_from_staging.py /
+    audit_and_bake_all_images.py) never actually reaches an EXISTING
+    database row once deployed: seed() only ever inserts brand-new slugs,
+    and resync_content() skips these two keys on every existing one, on
+    purpose. Confirmed live (2026-09-14): a full-site image audit baked
+    2,132 already-reviewed-correct images into seed_templates.py and
+    merged to main, but production kept showing the old (or missing)
+    photo on every one of those pre-existing pages after redeploying --
+    nothing had ever pushed SEED_PAGES' newly-baked value onto the
+    already-live row.
+
+    This is the one deliberate exception: pushes SEED_PAGES' image_url/
+    image_attribution onto a matching existing row wherever SEED_PAGES
+    has a real (non-null) value that differs from what's currently
+    stored. Never nulls out an existing DB image just because SEED_PAGES
+    happens to have none for that slug -- only ever overwrites toward a
+    real baked value, the same one-directional intent as the bake scripts
+    themselves. Safe to re-run: a no-op for any row that already
+    matches."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    seed_by_slug = {p["slug"]: p["content"] for p in SEED_PAGES}
+    updated: list[str] = []
+    for page in db.query(Page).filter(Page.slug.in_(seed_by_slug.keys())).all():
+        seed_image_url = seed_by_slug[page.slug].get("image_url")
+        if not seed_image_url or page.content.get("image_url") == seed_image_url:
+            continue
+        content = copy.deepcopy(page.content)
+        content["image_url"] = seed_image_url
+        content["image_attribution"] = seed_by_slug[page.slug].get("image_attribution")
+        page.content = content
+        updated.append(page.slug)
+
+    if updated:
+        db.commit()
+
+    return {"updated_count": len(updated), "updated_slugs": updated}
+
+
 # One-off diagnostic for comparing Pexels vs. Unsplash search-result quality
 # side by side on the same queries -- a mix of terms Pexels previously had
 # no relevant match for (from the ingredient_hub backlog) and terms Pexels
