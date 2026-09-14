@@ -73,6 +73,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
 from build_batch_requests import extract_existing_pages, load_id_to_row_from_manifest  # noqa: E402
+from generate_companion_recipes import find_unlinked_cards  # noqa: E402
 from validation import extract_content, validate_content  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -311,6 +312,99 @@ def run_integration(subset_csv: Path, results_path: Path, bad_ids: list[str]) ->
     subprocess.run(args, check=True, cwd=str(REPO_ROOT))
 
 
+# Real incident (2026-09-14): a companion recipe generated for beets-recipes'
+# "Quick Pickled Beets" card duplicated the already-published "Pickled Beets
+# Recipe" (pickled-beets) -- same dish, different wording, so the strict
+# word-bag-equality dedup guard used elsewhere (_TITLE_DEDUP_STOPWORDS,
+# matching seed_templates.py's own import-time check) correctly did NOT
+# flag it as an exact duplicate, but it very much was one. A qualifier word
+# ("quick") plus "Recipe" was the entire difference between the two titles.
+# Stripped here on top of the normal stopwords, specifically for this
+# generation-time "does a matching recipe already exist" check -- not
+# folded into _TITLE_DEDUP_STOPWORDS itself, which guards every template
+# type site-wide and needs to stay conservative (stripping "classic" or
+# "homemade" globally would risk collapsing two genuinely different
+# comparison/definition pages that happen to share a qualifier word).
+_NEAR_DUP_QUALIFIERS = {
+    "quick", "easy", "simple", "classic", "homemade", "best", "perfect",
+    "traditional", "authentic", "ultimate", "basic", "real", "recipe",
+}
+
+
+def _normalize_for_near_dup(title: str) -> frozenset[str]:
+    words = re.findall(r"[a-z0-9]+", title.lower())
+    return frozenset(w for w in words if w not in _TITLE_DEDUP_STOPWORDS and w not in _NEAR_DUP_QUALIFIERS)
+
+
+def _published_recipe_titles_and_slugs() -> list[tuple[str, str]]:
+    """(title, slug) for every PUBLISHED recipe_or_dish page -- unlike
+    _existing_normalized_titles (which intentionally includes unpublished
+    pages too, since a taken slug/title stays taken either way), a card
+    linked by run_companion_recipes below has to resolve to a real, live
+    page: main.py's own /pages/{slug} 404s outright on an
+    unpublished one (see its own comment -- indistinguishable from a slug
+    that was never seeded), so linking a card to one would just trade an
+    unclickable card for a clickable-but-broken one."""
+    text = SEED_TEMPLATES_PATH.read_text()
+    matches = list(_PAGE_HEADER_RE.finditer(text))
+    # _PAGE_HEADER_RE matches every template_type, not just recipe_or_dish --
+    # re-derive template_type per match to filter, same source text so the
+    # block boundaries below (next match's start, or EOF) line up correctly
+    # regardless of what's interleaved between recipe_or_dish pages.
+    type_re = re.compile(r'"template_type":\s*"([^"]+)"')
+    published: list[tuple[str, str]] = []
+    for i, m in enumerate(matches):
+        block_start = m.end()
+        block_end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        header_and_block = text[m.start():block_end]
+        type_m = type_re.search(header_and_block)
+        if not type_m or type_m.group(1) != "recipe_or_dish":
+            continue
+        block = text[block_start:block_end]
+        if '"unpublished": True' in block:
+            continue
+        title_m = re.search(r'"title":\s*"((?:[^"\\]|\\.)*)"', header_and_block)
+        if title_m:
+            published.append((title_m.group(1), m.group(1)))
+    return published
+
+
+def _link_cards_to_existing_recipes(collection_slugs: list[str]) -> None:
+    """For every still-unlinked card on each collection, checks whether a
+    published recipe_or_dish page already covers essentially the same dish
+    (see _normalize_for_near_dup) and, if so, hand-sets that card's slug
+    directly to the existing page rather than letting a companion recipe
+    get generated for it -- the fix for the real duplicate this run once
+    produced (see the module comment above _NEAR_DUP_QUALIFIERS). Mutates
+    seed_templates.py in place; run_companion_recipes' later call to
+    generate_companion_recipes.py re-scans the file itself and naturally
+    skips any card this already linked (find_unlinked_cards only matches
+    a literal `"slug": None`)."""
+    published = _published_recipe_titles_and_slugs()
+    by_norm: dict[frozenset[str], tuple[str, str]] = {}
+    for title, slug in published:
+        by_norm.setdefault(_normalize_for_near_dup(title), (title, slug))
+
+    for collection_slug in collection_slugs:
+        _, cards = find_unlinked_cards(collection_slug)
+        for card in cards:
+            match = by_norm.get(_normalize_for_near_dup(card["title"]))
+            if match is None:
+                continue
+            existing_title, existing_slug = match
+            text = SEED_TEMPLATES_PATH.read_text()
+            old = f'"title": "{card["title"]}",\n                    "slug": None,'
+            new = f'"title": "{card["title"]}",\n                    "slug": "{existing_slug}",'
+            if old not in text:
+                print(f"  WARNING: expected unlinked-card text not found for "
+                      f"{card['title']!r} on {collection_slug!r} -- skipping the link, "
+                      f"leaving it for generation instead")
+                continue
+            SEED_TEMPLATES_PATH.write_text(text.replace(old, new, 1))
+            print(f"  {collection_slug!r}: linked card {card['title']!r} directly to "
+                  f"existing {existing_slug!r} ({existing_title!r}) instead of generating a duplicate")
+
+
 def run_companion_recipes(collection_slugs: list[str], batch_number: int) -> int:
     """For every category_roundup page in `collection_slugs`, generates
     real recipe_or_dish pages for its still-unlinked recipe_cards (see
@@ -327,9 +421,18 @@ def run_companion_recipes(collection_slugs: list[str], batch_number: int) -> int
     Reuses validate_results() as-is for the schema/depth/duplicate-title
     checks -- its `subset_csv` param is never read in the function body,
     only `results_path` and `id_to_row`, so a companion results file (no
-    CSV row behind it at all) fits without any change there."""
+    CSV row behind it at all) fits without any change there.
+
+    Before generating anything, links any card that already matches a
+    published recipe directly to it instead (see
+    _link_cards_to_existing_recipes) -- the fix for the real duplicate
+    this once produced (beets-recipes' "Quick Pickled Beets" card got its
+    own new page generated despite pickled-beets, "Pickled Beets Recipe",
+    already covering the same dish)."""
     if not collection_slugs:
         return 0
+
+    _link_cards_to_existing_recipes(collection_slugs)
 
     subprocess.run(
         [sys.executable, str(SCRIPTS_DIR / "generate_companion_recipes.py"), *collection_slugs],
