@@ -1,0 +1,68 @@
+name: Apply baked images to prod
+
+# Automatic version of the manual step this session did by hand several
+# times: after any push to main, calls GET /admin/apply-baked-images on
+# PRODUCTION so a newly-baked image_url/image_attribution in
+# seed_templates.py actually reaches an EXISTING prod database row, not
+# just a brand-new one seed() would insert complete on its own.
+#
+# Why this is needed at all: resync_content() and seed() both
+# deliberately never touch an already-existing row's image_url/
+# image_attribution (see _RUNTIME_IMAGE_KEYS in seed_templates.py) --
+# correct, so a routine redeploy never clobbers a live-fetched or
+# admin-overridden photo, but it also means a bake commit merging to main
+# does nothing for prod's existing rows without this endpoint. Real,
+# confirmed-live gap this closes (2026-09-14): the full-site image audit
+# and several targeted bakes all needed a human to click the endpoint's
+# URL by hand after every merge, easy to forget.
+#
+# Safe to run on every push, even ones with no image changes at all --
+# the endpoint only ever writes a row whose stored image_url differs from
+# what's now in SEED_PAGES, so an unrelated push is just a fast no-op
+# (updated_count: 0).
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  apply-baked-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /admin/apply-baked-images on prod (retrying for Render's own deploy to land first)
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          PROD_ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+        run: |
+          set -uo pipefail
+
+          if [ -z "${PROD_BACKEND_BASE_URL:-}" ] || [ -z "${PROD_ADMIN_TASK_TOKEN:-}" ]; then
+            echo "::warning::PROD_BACKEND_BASE_URL (repo variable) and/or PROD_ADMIN_TASK_TOKEN (repo secret) aren't configured yet -- skipping. Set both in Settings > Secrets and variables > Actions to enable this workflow. Until then, /admin/apply-baked-images still needs to be triggered by hand after a bake merges to main that touches an already-existing page."
+            exit 0
+          fi
+
+          # This workflow's own push event fires immediately -- Render's
+          # independent webhook-triggered deploy of this exact commit can
+          # easily still be mid-build at that point (this backend's own
+          # deploys have taken anywhere from under a minute to several
+          # minutes earlier this session). Calling the endpoint before that
+          # deploy lands isn't wrong, just useless: it would compare
+          # against the OLD, not-yet-updated SEED_PAGES and silently no-op
+          # (updated_count: 0) instead of applying the real change. Retrying
+          # a few times with real gaps between attempts, rather than a
+          # single fixed sleep, means this self-corrects across a wide
+          # range of actual deploy durations instead of guessing one delay
+          # and hoping it's long enough.
+          for attempt in 1 2 3 4; do
+            echo "--- attempt $attempt ---"
+            response="$(curl -sS -f "$PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=$PROD_ADMIN_TASK_TOKEN")" && {
+              echo "$response"
+              count="$(echo "$response" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("updated_count", "?"))' 2>/dev/null || echo '?')"
+              echo "Updated $count page(s) on prod (attempt $attempt)."
+            } || echo "Request failed on attempt $attempt (prod may still be redeploying) -- will retry." >&2
+            if [ "$attempt" -lt 4 ]; then
+              sleep 90
+            fi
+          done
+
+          echo "Done. If prod's deploy took longer than this workflow's ~4.5-minute window, the endpoint can still be triggered by hand: $PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=<token>"
