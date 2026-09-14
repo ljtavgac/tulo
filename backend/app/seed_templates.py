@@ -246623,8 +246623,13 @@ SEED_PAGES = [
                     "image_alt": "A bowl of magenta borscht topped with a swirl of sour cream and chopped dill.",
                 },
                 {
+                    # Hand-set rather than left for the live title-match
+                    # auto-fill (see main.py's category_roundup serving path):
+                    # the matching real recipe is pickled-beets ("Pickled
+                    # Beets Recipe"), a different title than this card's, so
+                    # the auto-fill would never connect the two on its own.
                     "title": "Quick Pickled Beets",
-                    "slug": None,
+                    "slug": "pickled-beets",
                     "description": "Boiled beet slices cooled in a warm vinegar, sugar, and clove brine, ready to eat the next day.",
                     "image_query": "pickled beets jar",
                     "image_alt": "A glass jar packed with sliced pickled beets in a pink-tinted brine.",
@@ -261143,6 +261148,13 @@ SEED_PAGES = [
         "title": "Quick Pickled Beets",
         "batch_number": 8,
         "content": {
+            # Unpublished (2026-09-14): duplicate of pickled-beets ("Pickled
+            # Beets Recipe", batch 5) -- both are a boiled-then-brined pickled
+            # beets recipe, generated independently as a companion recipe for
+            # beets-recipes' "Quick Pickled Beets" card without checking for
+            # an existing near-match first. beets-recipes' card now points
+            # its slug directly at pickled-beets instead (see that page).
+            "unpublished": True,
             "meta_description": "Boiled beet slices cooled in a warm vinegar, sugar, and clove brine, ready to eat the next day. A simple refrigerator pickle with no canning required.",
             "hero_image_query": "pickled beet slices in jar",
             "image_alt": "Ruby red pickled beet slices layered with thin onion rings in a glass jar, submerged in a clear vinegar brine.",
