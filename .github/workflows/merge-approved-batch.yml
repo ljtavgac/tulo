@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
           ref: main
 
-      - name: Cherry-pick the approved batch's commit onto main
+      - name: Cherry-pick the approved batch's commit(s) onto main
         run: |
           set -euo pipefail
           git fetch origin staging
@@ -41,39 +41,56 @@ jobs:
           # than the same push access already used for everything else.
           # The trailing ([^0-9]|$) keeps batch 999 from matching batch
           # 9999's trailer.
-          SHA="$(git log origin/staging -E --grep="Tulo-Batch-Number: ${{ inputs.batch_number }}([^0-9]|\$)" --format=%H -n 1)"
-          if [ -z "$SHA" ]; then
+          #
+          # A batch can carry MORE than one trailer-stamped commit -- real
+          # incident (2026-09-14): batch 8 got a second commit later the
+          # same day (companion recipes generated for a category_roundup
+          # page's cards, see run_companion_recipes in daily_batch.py) on
+          # top of its original one, plus follow-up content fixes stamped
+          # with the same trailer once a real duplicate was found among
+          # those companions. Picking only the single most recent match
+          # (the old `-n 1` behavior) would cherry-pick a commit whose diff
+          # assumes the earlier one's content already exists on main --
+          # exactly what this run is approving, so it can't yet. Finding
+          # every match and applying them all, oldest first, is what
+          # actually reproduces the batch's real content on main.
+          SHAS="$(git log origin/staging -E --grep="Tulo-Batch-Number: ${{ inputs.batch_number }}([^0-9]|\$)" --format=%H --reverse)"
+          if [ -z "$SHAS" ]; then
             echo "No commit on staging carries Tulo-Batch-Number: ${{ inputs.batch_number }}" >&2
             exit 1
           fi
-          echo "Merging $SHA onto main"
+          echo "Merging the following commit(s) onto main, oldest first:"
+          echo "$SHAS"
           git config user.name "tulo-content-bot"
           git config user.email "content-bot@users.noreply.github.com"
 
-          if ! git cherry-pick "$SHA"; then
-            conflicted="$(git diff --name-only --diff-filter=U)"
-            # content/CONTENT_QUEUE.csv is pure pipeline bookkeeping --
-            # daily_batch.py is the only thing that ever writes it, and it
-            # always writes to staging, so staging's copy is the one true
-            # current state; main's copy is just a mirror for repo history
-            # and nothing running in prod ever reads it. A conflict here
-            # (confirmed for real on batch 6's first live merge: main's
-            # copy had never picked up any of staging's claim/publish
-            # churn, so a plain 3-way merge on this one file couldn't
-            # apply cleanly) is safe to resolve by taking staging's
-            # version outright rather than diffing row by row.
-            if [ "$conflicted" = "content/CONTENT_QUEUE.csv" ]; then
-              echo "Resolving CONTENT_QUEUE.csv conflict by taking staging's copy wholesale"
-              git checkout --theirs content/CONTENT_QUEUE.csv
-              git add content/CONTENT_QUEUE.csv
-              git -c core.editor=true cherry-pick --continue
-            else
-              echo "Cherry-pick conflict in more than just CONTENT_QUEUE.csv -- needs human resolution:" >&2
-              echo "$conflicted" >&2
-              git cherry-pick --abort
-              exit 1
+          for SHA in $SHAS; do
+            echo "--- cherry-picking $SHA ---"
+            if ! git cherry-pick "$SHA"; then
+              conflicted="$(git diff --name-only --diff-filter=U)"
+              # content/CONTENT_QUEUE.csv is pure pipeline bookkeeping --
+              # daily_batch.py is the only thing that ever writes it, and it
+              # always writes to staging, so staging's copy is the one true
+              # current state; main's copy is just a mirror for repo history
+              # and nothing running in prod ever reads it. A conflict here
+              # (confirmed for real on batch 6's first live merge: main's
+              # copy had never picked up any of staging's claim/publish
+              # churn, so a plain 3-way merge on this one file couldn't
+              # apply cleanly) is safe to resolve by taking staging's
+              # version outright rather than diffing row by row.
+              if [ "$conflicted" = "content/CONTENT_QUEUE.csv" ]; then
+                echo "Resolving CONTENT_QUEUE.csv conflict by taking staging's copy wholesale"
+                git checkout --theirs content/CONTENT_QUEUE.csv
+                git add content/CONTENT_QUEUE.csv
+                git -c core.editor=true cherry-pick --continue
+              else
+                echo "Cherry-pick conflict in more than just CONTENT_QUEUE.csv -- needs human resolution:" >&2
+                echo "$conflicted" >&2
+                git cherry-pick --abort
+                exit 1
+              fi
             fi
-          fi
+          done
 
           git push origin main
 
