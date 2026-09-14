@@ -490,7 +490,7 @@ def main() -> None:
         SEED_TEMPLATES_PATH.write_text(new_text)
         run("git", "add", str(SEED_TEMPLATES_PATH))
         status = subprocess.run(
-            ["git", "status", "--porcelain", "--cached", str(SEED_TEMPLATES_PATH)],
+            ["git", "status", "--porcelain", str(SEED_TEMPLATES_PATH)],
             cwd=str(REPO_ROOT), check=True, capture_output=True, text=True,
         )
         if not status.stdout.strip():
