@@ -208,7 +208,7 @@ export default function RecipeIngredientsPanel({
         {goalAdjustableIngredients.length > 0 ? (
           <div className="border-b border-ink/10 py-3 text-sm">
             <label className="flex flex-wrap items-center gap-2">
-              <span className="text-ink/60">Adjust for:</span>
+              <span className="text-ink/60">Dietary goal:</span>
               <select
                 value={goal}
                 onChange={(e) => applyGoal(e.target.value as Goal)}
