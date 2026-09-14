@@ -246628,9 +246628,16 @@ SEED_PAGES = [
                     # the matching real recipe is pickled-beets ("Pickled
                     # Beets Recipe"), a different title than this card's, so
                     # the auto-fill would never connect the two on its own.
-                    "title": "Quick Pickled Beets",
+                    # Title/description also rewritten (2026-09-14, was
+                    # "Quick Pickled Beets") to match the linked page for
+                    # real -- pickled-beets needs a full 24-hour refrigerate
+                    # before eating, so "Quick" was actively misleading, not
+                    # just a style mismatch. "Pickled Beets" also matches the
+                    # title an older, unrelated collection already uses for
+                    # a card linking to this same page.
+                    "title": "Pickled Beets",
                     "slug": "pickled-beets",
-                    "description": "Boiled beet slices cooled in a warm vinegar, sugar, and clove brine, ready to eat the next day.",
+                    "description": "Tender cooked beets steeped in a sweet-tart vinegar brine with warm spices, ready after a day in the fridge.",
                     "image_query": "pickled beets jar",
                     "image_alt": "A glass jar packed with sliced pickled beets in a pink-tinted brine.",
                 },
@@ -246672,7 +246679,7 @@ SEED_PAGES = [
                 {
                     "label": "Pickled and Preserved",
                     "items": [
-                        "Quick Pickled Beets",
+                        "Pickled Beets",
                     ],
                 },
                 {
