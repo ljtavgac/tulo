@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 
 from .content_audit import run_full_audit, scan_ai_tells, scan_image_relevance_risk
 from .database import Base, SessionLocal, engine, get_db
-from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _recipe_dish_must_match_terms, _search_query_for, fetch_images
+from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _category_fallback_query, _recipe_dish_must_match_terms, _search_query_for, fetch_images
 from .images import (
     ALLOWED_IMAGE_HOSTS,
     PEXELS_ACCESS_KEY,
@@ -2113,6 +2113,117 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="page not found")
 
     content = page.content
+
+    def render_candidates(provider: str, attempt_query: str, must_match) -> str:
+        candidates = _raw_candidates(provider, attempt_query)
+        if not candidates:
+            return '<p class="empty">No results (no key configured, or provider returned nothing).</p>'
+        rows = []
+        for c in candidates:
+            passes = _is_relevant(c["alt"], must_match)
+            host_ok = c["url"].startswith(ALLOWED_IMAGE_HOSTS)
+            css = "pass" if passes and host_ok else "fail"
+            reason = "" if passes else "no must_match term in alt text"
+            if not host_ok:
+                reason = "disallowed host"
+            rows.append(f"""
+            <div class="candidate {css}">
+              <img src="{c['url']}" alt="">
+              <div class="cand-info">
+                <div class="verdict">{"PASS" if passes and host_ok else "FAIL"} {f'<span class="reason">({reason})</span>' if reason else ""}</div>
+                <div class="alt">alt: "{c['alt'] or '(blank)'}"</div>
+                <div class="photog">by {c['photographer']} on {c['source']}</div>
+              </div>
+            </div>
+            """)
+        return "".join(rows)
+
+    page_style = """
+        body { font-family: -apple-system, sans-serif; padding: 24px; background: #faf9f7; max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 20px; }
+        h2 { font-size: 16px; margin-top: 32px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+        h3 { font-size: 13px; color: #666; margin: 16px 0 8px; }
+        .mm { font-size: 12px; color: #666; }
+        .candidate { display: flex; gap: 12px; padding: 8px; border-radius: 6px; margin-bottom: 6px; }
+        .candidate.pass { background: #e6f4ea; }
+        .candidate.fail { background: #fbe9e7; opacity: 0.6; }
+        .candidate img { width: 100px; height: 70px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+        .cand-info { font-size: 12px; }
+        .verdict { font-weight: 700; }
+        .reason { font-weight: 400; color: #888; }
+        .alt { color: #333; margin-top: 2px; }
+        .photog { color: #888; margin-top: 2px; }
+        .empty { color: #b00; font-style: italic; }
+        .card-block { margin-top: 28px; padding-top: 4px; }
+    """
+
+    if page.template_type == "category_roundup":
+        # A category_roundup page has no single hero image -- each card in
+        # recipe_cards gets its own photo (see process_category_roundup_page
+        # in fetch_stock_images.py) -- so this shows one section per card
+        # instead of the single-attempt view below. Mirrors that function's
+        # real attempt list exactly: the card's own image_query, then the
+        # page-title-derived category fallback (skipped if identical), both
+        # with must_match=None -- category_roundup cards get no relevance
+        # check at all today (see that function's own `attempts` line), so
+        # every reachable candidate below shows as PASS; this view still
+        # surfaces that clearly rather than pretending a check ran.
+        card_sections = []
+        for card in content.get("recipe_cards", []):
+            card_title = card.get("title") or "(untitled card)"
+            query = card.get("image_query")
+            if not query:
+                card_sections.append(f'<div class="card-block"><h2>{card_title}</h2><p class="empty">No image_query set on this card.</p></div>')
+                continue
+            fallback = _category_fallback_query(page.title)
+            queries = [query] if fallback.lower() == query.lower() else [query, fallback]
+            attempt_sections = []
+            for raw_query in queries:
+                search_query = _search_query_for(page.template_type, raw_query)
+                suffix_note = (
+                    f' <span class="suffix">(actually searched as "{search_query}")</span>'
+                    if search_query != raw_query
+                    else ""
+                )
+                attempt_sections.append(f"""
+                <section>
+                  <h3>Attempt: "{raw_query}"{suffix_note}</h3>
+                  <p class="mm">must_match: None (category_roundup cards get no relevance check)</p>
+                  <h3>Pexels</h3>
+                  {render_candidates("pexels", search_query, None)}
+                  <h3>Unsplash</h3>
+                  {render_candidates("unsplash", search_query, None)}
+                </section>
+                """)
+            current_card_url = card.get("image_url")
+            current_card_block = (
+                f'<img src="{current_card_url}" alt="" style="max-width:250px;border-radius:8px;">'
+                if current_card_url
+                else "<p>(no image_url set on this card)</p>"
+            )
+            card_sections.append(f"""
+            <div class="card-block">
+              <h2>{card_title}</h2>
+              <p><strong>Current photo:</strong></p>
+              {current_card_block}
+              {"".join(attempt_sections)}
+            </div>
+            """)
+
+        html = f"""
+        <html>
+        <head>
+          <title>Debug: {slug}</title>
+          <style>{page_style}</style>
+        </head>
+        <body>
+          <h1>Debug image search: {slug} (category_roundup -- one section per card)</h1>
+          {"".join(card_sections) or '<p class="empty">No recipe_cards on this page.</p>'}
+        </body>
+        </html>
+        """
+        return HTMLResponse(content=html)
+
     query_key = SINGLE_IMAGE_TEMPLATES.get(page.template_type)
     if query_key is None or query_key not in content:
         raise HTTPException(status_code=400, detail=f"template_type {page.template_type!r} has no image query")
@@ -2154,30 +2265,6 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
     dish_must_match = override_must_match if override_must_match else _recipe_dish_must_match_terms(query)
     dish_search_query = _search_query_for(page.template_type, query)
     attempts.append((query, query, dish_search_query, dish_must_match))
-
-    def render_candidates(provider: str, attempt_query: str, must_match) -> str:
-        candidates = _raw_candidates(provider, attempt_query)
-        if not candidates:
-            return '<p class="empty">No results (no key configured, or provider returned nothing).</p>'
-        rows = []
-        for c in candidates:
-            passes = _is_relevant(c["alt"], must_match)
-            host_ok = c["url"].startswith(ALLOWED_IMAGE_HOSTS)
-            css = "pass" if passes and host_ok else "fail"
-            reason = "" if passes else "no must_match term in alt text"
-            if not host_ok:
-                reason = "disallowed host"
-            rows.append(f"""
-            <div class="candidate {css}">
-              <img src="{c['url']}" alt="">
-              <div class="cand-info">
-                <div class="verdict">{"PASS" if passes and host_ok else "FAIL"} {f'<span class="reason">({reason})</span>' if reason else ""}</div>
-                <div class="alt">alt: "{c['alt'] or '(blank)'}"</div>
-                <div class="photog">by {c['photographer']} on {c['source']}</div>
-              </div>
-            </div>
-            """)
-        return "".join(rows)
 
     sections = []
     for label, raw_query, search_query, must_match in attempts:
