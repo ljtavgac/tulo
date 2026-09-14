@@ -1912,11 +1912,21 @@ def export_images(
     fetch race from zero the moment the batch's code merges, reproducing
     the exact problem the staging pipeline exists to solve.
 
-    Only covers single-hero-image templates (SINGLE_IMAGE_TEMPLATES) --
-    category_roundup has no image_url of its own to export; its cards
-    render each linked recipe's own (already-baked) photo live at serve
-    time (see get_page()'s category_roundup branch), so there's nothing
-    for this endpoint to bake for a collection slug.
+    Covers single-hero-image templates (SINGLE_IMAGE_TEMPLATES) plus
+    category_roundup -- a collection normally has no image_url of its own
+    (its cards render each linked recipe's own, already-baked photo live
+    at serve time, see _resolved_category_roundup_cards), but a reviewer
+    can still set one directly via /admin/review-queue's general-purpose
+    override-image escape hatch, which writes content["image_url"]
+    unconditionally regardless of template_type -- get_page() and
+    _summary_image() both already check for and prioritize that real,
+    stored value over the computed card fallback. Without this endpoint
+    also willing to export it, that override only ever existed on
+    staging: confirmed live (2026-09-14) on beets-recipes, whose
+    manually-overridden thumbnail never reached production because this
+    endpoint rejected the whole template_type outright. Every OTHER
+    template_type still gets the same "nothing to export" error, since
+    they never carry a real image_url outside SINGLE_IMAGE_TEMPLATES.
 
     Gated behind the same ADMIN_TASK_TOKEN as the other /admin/* routes.
     Meant to be called against staging's own base URL, with staging's own
@@ -1938,7 +1948,7 @@ def export_images(
         if page is None:
             result[slug] = {"error": "not found"}
             continue
-        if page.template_type not in SINGLE_IMAGE_TEMPLATES:
+        if page.template_type not in SINGLE_IMAGE_TEMPLATES and page.template_type != "category_roundup":
             result[slug] = {
                 "error": f"template_type {page.template_type!r} has no page-level image_url to export"
             }

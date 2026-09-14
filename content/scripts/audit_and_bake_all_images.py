@@ -45,15 +45,15 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from bake_images_from_staging import SEED_TEMPLATES_PATH, bake  # noqa: E402
+from bake_images_from_staging import SEED_TEMPLATES_PATH, bake, fetch_export  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # Mirrors backend/app/fetch_stock_images.py's SINGLE_IMAGE_TEMPLATES keys --
-# the only template types with a page-level image_url of their own.
-# category_roundup is deliberately excluded: it has no image_url to export,
-# its cards render each linked recipe's own (already-baked) photo live at
-# serve time (see main.py's get_page()).
+# the only template types with a page-level image_url of their own. Their
+# real value is safe to read straight off the public /pages listing, since
+# PageSummary.image_url for these types is always the page's own stored
+# content.image_url, never a computed fallback.
 SINGLE_IMAGE_TEMPLATES = [
     "recipe_or_dish",
     "ingredient_hub",
@@ -74,7 +74,7 @@ def fetch_all_pages(base_url: str, template_type: str) -> list[dict]:
         return json.loads(resp.read())
 
 
-def build_export(base_url: str) -> dict:
+def build_export(base_url: str, token: str) -> dict:
     export: dict = {}
     for template_type in SINGLE_IMAGE_TEMPLATES:
         pages = fetch_all_pages(base_url, template_type)
@@ -87,6 +87,35 @@ def build_export(base_url: str) -> dict:
                 }
                 with_image += 1
         print(f"{template_type}: {len(pages)} page(s), {with_image} with a real image_url.")
+
+    # category_roundup pages don't normally have their own image_url (see
+    # main.py's _resolved_category_roundup_cards -- the thumbnail is
+    # computed live from the first linked card's own recipe instead), but
+    # a reviewer can still set one directly via /admin/review-queue's
+    # general-purpose override-image escape hatch, which writes
+    # content.image_url unconditionally regardless of template_type. That
+    # raw value needs baking exactly like everything else, or it only ever
+    # exists on staging -- confirmed live (2026-09-14): beets-recipes' own
+    # manually-overridden thumbnail never reached production because this
+    # scan used to skip category_roundup entirely. The public /pages
+    # listing can't be used to detect this safely here -- its image_url
+    # for a category_roundup page is _summary_image()'s COMPUTED fallback,
+    # indistinguishable there from a real override -- so this uses the
+    # admin-gated raw export instead (now extended to allow category_roundup
+    # through, see main.py's export_images), which returns exactly what's
+    # stored on the row and nothing computed.
+    roundup_slugs = [p["slug"] for p in fetch_all_pages(base_url, "category_roundup")]
+    with_image = 0
+    if roundup_slugs:
+        raw = fetch_export(base_url, token, roundup_slugs)
+        for slug, result in raw.items():
+            if result.get("image_url"):
+                export[slug] = {
+                    "image_url": result["image_url"],
+                    "image_attribution": result.get("image_attribution"),
+                }
+                with_image += 1
+    print(f"category_roundup: {len(roundup_slugs)} page(s), {with_image} with a real manually-overridden image_url.")
     return export
 
 
@@ -97,7 +126,7 @@ def main() -> None:
     parser.add_argument("--no-push", action="store_true", help="Bake locally and leave the change staged/uncommitted -- for local dry runs.")
     args = parser.parse_args()
 
-    export = build_export(args.base_url)
+    export = build_export(args.base_url, args.token)
     slugs = sorted(export.keys())
     print(f"\n{len(slugs)} slug(s) across all templates have a real image_url on staging -- baking...")
 
