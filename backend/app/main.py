@@ -1472,7 +1472,7 @@ def review_queue(
               <input type="hidden" name="slug" value="{r['slug']}">
               <input type="hidden" name="batch" value="{target_batch}">
               <input type="hidden" name="show" value="{show}">
-              <input type="text" name="note" placeholder="what's wrong (optional)" value="{r['note'] or ''}">
+              <input type="text" name="note" placeholder="describe the photo you want -- used as the re-search (optional)" value="{r['note'] or ''}">
               <button type="submit" name="status" value="flagged" class="btn-flag">Flag</button>
               <button type="submit" name="status" value="approved" class="btn-approve-one">approve just this one</button>
             </form>
@@ -1635,10 +1635,15 @@ def review_queue_mark(
     current photo from the new search, exactly "try something other than
     the one that's wrong" with zero new logic needed) so the reviewer
     sees a fresh candidate on the very next page load instead of the same
-    bad photo staring back at them. Best-effort: a search hiccup here
-    (rate limit, network error -- fetch_images already catches and logs
-    per-page errors internally) never blocks saving the flag itself,
-    since the note is the part of this action that must never get lost."""
+    bad photo staring back at them. The note field doubles as that
+    re-fetch's search text (see fetch_images' query_overrides) -- the note
+    has no other purpose in this tool, so a reviewer typing what's
+    actually wrong ("raw eggplant, need it baked as parmesan") gets that
+    used as the next search instead of just being commentary. Best-effort:
+    a search hiccup here (rate limit, network error -- fetch_images
+    already catches and logs per-page errors internally) never blocks
+    saving the flag itself, since the note is the part of this action
+    that must never get lost."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
     if status not in ("approved", "flagged"):
@@ -1654,7 +1659,8 @@ def review_queue_mark(
 
     if status == "flagged":
         try:
-            fetch_images(db, only_slugs={slug})
+            query_overrides = {slug: note.strip()} if note.strip() else None
+            fetch_images(db, only_slugs={slug}, query_overrides=query_overrides)
         except Exception as e:
             print(f"  review-queue auto-refetch for {slug} failed: {e}")
 
