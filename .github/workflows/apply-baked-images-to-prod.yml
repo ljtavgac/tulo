@@ -56,11 +56,18 @@ jobs:
           # and hoping it's long enough.
           for attempt in 1 2 3 4; do
             echo "--- attempt $attempt ---"
-            response="$(curl -sS -f "$PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=$PROD_ADMIN_TASK_TOKEN")" && {
+            # --connect-timeout/--max-time are load-bearing, not cosmetic:
+            # without them a single unresponsive attempt (Render mid-deploy,
+            # a dropped connection, anything short of a clean error) hangs
+            # this whole job indefinitely instead of failing fast into the
+            # next retry -- confirmed live (2026-09-14), a first version of
+            # this workflow without them ran 13+ minutes on one hung attempt
+            # before it had to be cancelled by hand.
+            response="$(curl -sS -f --connect-timeout 15 --max-time 60 "$PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=$PROD_ADMIN_TASK_TOKEN")" && {
               echo "$response"
               count="$(echo "$response" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("updated_count", "?"))' 2>/dev/null || echo '?')"
               echo "Updated $count page(s) on prod (attempt $attempt)."
-            } || echo "Request failed on attempt $attempt (prod may still be redeploying) -- will retry." >&2
+            } || echo "Request failed or timed out on attempt $attempt (prod may still be redeploying) -- will retry." >&2
             if [ "$attempt" -lt 4 ]; then
               sleep 90
             fi
