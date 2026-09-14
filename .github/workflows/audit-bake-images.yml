@@ -1,0 +1,43 @@
+name: Full-site image audit + bake
+
+# Manual, one-off (re-runnable) tool: runs
+# content/scripts/audit_and_bake_all_images.py against staging, which
+# discovers every single-hero-image page's live image_url via the public
+# GET /pages?template_type=... listing and bakes any that don't match
+# what's currently committed in seed_templates.py -- closing the gap where
+# a batch's images, or a manual /admin/review-queue fix, were never baked
+# into git and so had no path to reaching production. See that script's
+# own docstring for the full rationale.
+#
+# Commits straight to staging if anything changed (same pattern as
+# daily-batch.yml); syncing the result to main/prod stays the normal,
+# separate, human-gated approval step.
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  audit-bake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run full-site image audit + bake
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          python3 content/scripts/audit_and_bake_all_images.py \
+            --base-url "$BACKEND_BASE_URL" \
+            --token "$ADMIN_TASK_TOKEN"
