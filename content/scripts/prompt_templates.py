@@ -273,8 +273,33 @@ INGREDIENT_HUB_SCHEMA = {
                         "type": ["number", "null"],
                         "description": "A precise 'amount of substitute per 1 unit of original' multiplier, or null if the substitute can't be reduced to one.",
                     },
+                    "nutrition_per_unit": {
+                        "type": ["object", "null"],
+                        "description": (
+                            "Real per-1-unit nutrition for this substitute, in the SAME unit "
+                            "the ingredient this hub is about is normally measured in (e.g. per "
+                            "tablespoon for an oil or vinegar, per cup for a flour) -- this is what "
+                            "lets a recipe page's live nutrition counter actually update when a "
+                            "reader swaps this substitute in, instead of silently reusing the "
+                            "original ingredient's numbers (a real bug: ratio_multiplier alone was "
+                            "already enough to offer the swap in the UI, so a substitute with a "
+                            "multiplier but no nutrition data here made the swap change the "
+                            "displayed ingredient but never move the calorie count). Required "
+                            "(a real object, not null) whenever ratio_multiplier is a number -- a "
+                            "swappable substitute needs real nutrition to compute against. Null "
+                            "only when ratio_multiplier is also null (nothing to compute for a "
+                            "substitute that isn't a clean 1-multiplier swap)."
+                        ),
+                        "properties": {
+                            "calories": {"type": "number"},
+                            "protein_g": {"type": "number"},
+                            "carbs_g": {"type": "number"},
+                            "fat_g": {"type": "number"},
+                        },
+                        "required": ["calories", "protein_g", "carbs_g", "fat_g"],
+                    },
                 },
-                "required": ["name", "ratio", "note", "ratio_multiplier"],
+                "required": ["name", "ratio", "note", "ratio_multiplier", "nutrition_per_unit"],
             },
         },
         "storage": {"type": "string"},
@@ -537,8 +562,8 @@ EXAMPLES = {
         "image_alt": "What chives are, the best substitutes with ratios, how to store them so they don't wilt, and how to use them without losing their flavor.",
         "description": "Chives (Allium schoenoprasum) are the mildest member of the onion family, grown for their thin, hollow, grass-like green stems. They deliver a delicate onion flavor without the sharpness of scallions or raw onion.",
         "substitutes": [
-            {"name": "Scallion greens (green onion tops)", "ratio": "1:1", "note": "Slightly stronger onion flavor, but the closest visual and flavor match.", "ratio_multiplier": 1.0},
-            {"name": "Leek greens, finely minced", "ratio": "1:1", "note": "Milder and slightly sweeter; mince very finely since leek greens are more fibrous.", "ratio_multiplier": 1.0},
+            {"name": "Scallion greens (green onion tops)", "ratio": "1:1", "note": "Slightly stronger onion flavor, but the closest visual and flavor match.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 2, "protein_g": 0.1, "carbs_g": 0.4, "fat_g": 0.0}},
+            {"name": "Leek greens, finely minced", "ratio": "1:1", "note": "Milder and slightly sweeter; mince very finely since leek greens are more fibrous.", "ratio_multiplier": 1.0, "nutrition_per_unit": {"calories": 3, "protein_g": 0.1, "carbs_g": 0.7, "fat_g": 0.0}},
         ],
         "storage": "Fresh chives wilt quickly. Wrap loosely in a damp paper towel and store in a sealed container in the refrigerator crisper drawer for about a week.",
         "uses": "Snip with scissors directly onto finished dishes, baked potatoes, scrambled eggs, soups, and salads. Add at the very end since chives lose flavor if cooked long.",
