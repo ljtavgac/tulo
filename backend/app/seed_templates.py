@@ -11996,14 +11996,14 @@ SEED_PAGES = [
             "total_time_minutes": 300,
             "servings": 9,
             "ingredients": [
-                {"name": "egg yolks", "base_qty": 6, "unit_us": "large", "base_qty_metric": 6, "unit_metric": "large", "hub_slug": None},
-                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None},
-                {"name": "mascarpone cheese, room temperature", "base_qty": 16, "unit_us": "oz", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None},
-                {"name": "heavy cream, cold", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None},
-                {"name": "strong brewed espresso, cooled", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 350, "unit_metric": "ml", "hub_slug": None},
-                {"name": "coffee liqueur (optional)", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None},
-                {"name": "ladyfingers (savoiardi)", "base_qty": 24, "unit_us": "count", "base_qty_metric": 24, "unit_metric": "count", "hub_slug": None},
-                {"name": "unsweetened cocoa powder, for dusting", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None},
+                {"name": "egg yolks", "base_qty": 6, "unit_us": "large", "base_qty_metric": 6, "unit_metric": "large", "hub_slug": None, "nutrition_per_unit": {"calories": 55, "protein_g": 2.7, "carbs_g": 0.6, "fat_g": 4.5}},
+                {"name": "granulated sugar", "base_qty": 0.75, "unit_us": "cup", "base_qty_metric": 150, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 774, "protein_g": 0, "carbs_g": 200, "fat_g": 0}},
+                {"name": "mascarpone cheese, room temperature", "base_qty": 16, "unit_us": "oz", "base_qty_metric": 450, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 126, "protein_g": 1.3, "carbs_g": 1, "fat_g": 13}},
+                {"name": "heavy cream, cold", "base_qty": 1, "unit_us": "cup", "base_qty_metric": 240, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 821, "protein_g": 4.9, "carbs_g": 6.6, "fat_g": 88}},
+                {"name": "strong brewed espresso, cooled", "base_qty": 1.5, "unit_us": "cups", "base_qty_metric": 350, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 2, "protein_g": 0.3, "carbs_g": 0, "fat_g": 0}},
+                {"name": "coffee liqueur (optional)", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 30, "unit_metric": "ml", "hub_slug": None, "nutrition_per_unit": {"calories": 91, "protein_g": 0, "carbs_g": 11, "fat_g": 0}},
+                {"name": "ladyfingers (savoiardi)", "base_qty": 24, "unit_us": "count", "base_qty_metric": 24, "unit_metric": "count", "hub_slug": None, "nutrition_per_unit": {"calories": 40, "protein_g": 1, "carbs_g": 7, "fat_g": 1}},
+                {"name": "unsweetened cocoa powder, for dusting", "base_qty": 2, "unit_us": "tbsp", "base_qty_metric": 12, "unit_metric": "g", "hub_slug": None, "nutrition_per_unit": {"calories": 12, "protein_g": 1, "carbs_g": 3, "fat_g": 0.7}},
             ],
             "instructions": [
                 "Combine the egg yolks and sugar in a heatproof bowl and whisk over a pot of gently simmering water (not touching the water) for 5-7 minutes, until pale, thickened, and doubled in volume.",
@@ -28045,6 +28045,17 @@ SEED_PAGES = [
         "title": "Classic Tiramisu Recipe",
         "batch_number": 1,
         "content": {
+            # Unpublished (2026-09-14): duplicate of tiramisu ("Tiramisu
+            # Recipe", batch 5) -- same dish covered independently under a
+            # different slug. Kept tiramisu since it's the one already
+            # linked from italian-recipes' recipe_cards; this page had zero
+            # references anywhere else. Its more complete nutrition_per_unit
+            # data was backfilled onto tiramisu's own ingredients (a real,
+            # different technique -- whipped cream/coffee liqueur here vs
+            # egg whites/Marsala there -- not a straight copy) before
+            # unpublishing, so nothing of real value was lost.
+            "unpublished": True,
+            "redirect_to": "tiramisu",
             "image_url": "https://images.pexels.com/photos/20150549/pexels-photo-20150549.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
                 "photographer": "Change C.C",
@@ -86711,7 +86722,11 @@ SEED_PAGES = [
             # Unpublished (2026-09-10): duplicate of homemade-half-and-half,
             # same topic covered independently under a different slug (see
             # _check_no_duplicate_titles). User chose to keep the other one.
+            # redirect_to added later (2026-09-14, see main.py's GET
+            # /redirects) so an old link/bookmark to this slug lands on the
+            # real page instead of 404ing.
             "unpublished": True,
+            "redirect_to": "homemade-half-and-half",
             "meta_description": "Make your own half and half at home with just two ingredients: whole milk and heavy cream. Ready in under 5 minutes, with a live scaler and US/metric toggle.",
             "hero_image_query": "half and half pouring into coffee",
             "image_alt": "A small glass pitcher of homemade half and half being poured into a cup of coffee, with a measuring cup of whole milk and heavy cream in the background.",
@@ -101007,8 +101022,12 @@ SEED_PAGES = [
             # Unpublished (2026-09-10): duplicate of
             # chocolate-covered-pretzels, same topic covered independently
             # under a different slug (see _check_no_duplicate_titles).
-            # User chose to keep the other one.
+            # User chose to keep the other one. redirect_to added later
+            # (2026-09-14, see main.py's GET /redirects) so an old
+            # link/bookmark to this slug lands on the real page instead of
+            # 404ing.
             "unpublished": True,
+            "redirect_to": "chocolate-covered-pretzels",
             "meta_description": "Easy chocolate covered pretzel rods dipped in melted chocolate and finished with a contrasting drizzle. Ready in under an hour with a live serving-size scaler.",
             "hero_image_query": "chocolate covered pretzel rods",
             "image_alt": "Rows of chocolate-dipped pretzel rods drizzled with white chocolate and topped with rainbow sprinkles, cooling on a parchment-lined baking sheet.",
@@ -105530,6 +105549,14 @@ SEED_PAGES = [
         "title": "Classic Homemade Hummus Recipe",
         "batch_number": 2,
         "content": {
+            # Unpublished (2026-09-14): duplicate of hummus ("Hummus",
+            # batch 1) -- same dish covered independently under a different
+            # slug. Kept hummus (the shorter, cleaner slug, and a more
+            # thorough technique: simmering the chickpeas with baking soda
+            # to loosen the skins rather than hand-rubbing them). This page
+            # had zero references anywhere else in the site.
+            "unpublished": True,
+            "redirect_to": "hummus",
             "image_url": "https://images.pexels.com/photos/1618898/pexels-photo-1618898.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
                 "photographer": "Zak Chapman",
@@ -241201,7 +241228,11 @@ SEED_PAGES = [
             # Unpublished (2026-09-10): duplicate of ham-and-beans, same
             # topic covered independently under a different slug (see
             # _check_no_duplicate_titles). User chose to keep the other one.
+            # redirect_to added later (2026-09-14, see main.py's GET
+            # /redirects) so an old link/bookmark to this slug lands on the
+            # real page instead of 404ing.
             "unpublished": True,
+            "redirect_to": "ham-and-beans",
             "meta_description": "A slow-simmered ham and beans recipe made with a leftover ham bone, dried great northern beans, and a savory broth. Includes a serving-size scaler and US/metric toggle.",
             "hero_image_query": "ham and bean soup",
             "image_alt": "A bowl of creamy ham and white bean soup with shredded ham, diced carrots, and cracked black pepper, served with a wedge of cornbread on the side.",
@@ -250439,6 +250470,16 @@ SEED_PAGES = [
         "title": "Pasteles Recipe (Puerto Rican Pasteles)",
         "batch_number": 4,
         "content": {
+            # Unpublished (2026-09-14): duplicate of puerto-rican-pasteles
+            # ("Puerto Rican Pasteles Recipe", batch 4) -- same dish (both
+            # verified as banana-leaf-wrapped Puerto Rican pasteles, not
+            # different regional dishes sharing a similar name) covered
+            # independently under a different slug. Kept
+            # puerto-rican-pasteles: the cleaner slug/title, and more
+            # complete nutrition_per_unit coverage across its ingredient
+            # list. This page had zero references anywhere else.
+            "unpublished": True,
+            "redirect_to": "puerto-rican-pasteles",
             "image_url": "https://images.pexels.com/photos/36866905/pexels-photo-36866905.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
                 "photographer": "Firman Marek_Brew",
@@ -273953,7 +273994,11 @@ SEED_PAGES = [
             # beets-recipes' "Quick Pickled Beets" card without checking for
             # an existing near-match first. beets-recipes' card now points
             # its slug directly at pickled-beets instead (see that page).
+            # redirect_to added later the same day (see main.py's GET
+            # /redirects) so an old link/bookmark to this slug lands on the
+            # real page instead of 404ing.
             "unpublished": True,
+            "redirect_to": "pickled-beets",
             "meta_description": "Boiled beet slices cooled in a warm vinegar, sugar, and clove brine, ready to eat the next day. A simple refrigerator pickle with no canning required.",
             "hero_image_query": "pickled beet slices in jar",
             "image_alt": "Ruby red pickled beet slices layered with thin onion rings in a glass jar, submerged in a clear vinegar brine.",
