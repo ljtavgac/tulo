@@ -1157,9 +1157,11 @@ def content_audit(token: str, db: Session = Depends(get_db)):
 # Mirrors frontend/lib/seo.ts's TEMPLATE_ROUTES -- the one other place
 # this mapping is defined. Kept as its own small copy here rather than
 # threaded through from the frontend (there's no shared package between
-# the two apps to put it in) since it only needs to build a human-facing
-# link for /admin/image-relevance-review below, not drive real routing.
-_ADMIN_TEMPLATE_ROUTES: dict[str, str] = {
+# the two apps to put it in). Originally just for building a human-facing
+# link in the admin image-review tools below; also backs the public
+# /redirects endpoint now, so no longer admin-only despite the name's
+# old history.
+_FRONTEND_TEMPLATE_ROUTES: dict[str, str] = {
     "recipe_or_dish": "recipes",
     "ingredient_hub": "ingredients",
     "howto_technique": "how-to",
@@ -1171,13 +1173,53 @@ _ADMIN_TEMPLATE_ROUTES: dict[str, str] = {
 }
 
 
-def _admin_page_path(template_type: str, slug: str) -> str:
+def _frontend_page_path(template_type: str, slug: str) -> str:
     if template_type == "homepage":
         return "/"
     if template_type == "static_page":
         return f"/{slug}"
-    prefix = _ADMIN_TEMPLATE_ROUTES.get(template_type)
+    prefix = _FRONTEND_TEMPLATE_ROUTES.get(template_type)
     return f"/food/{prefix}/{slug}" if prefix else f"/food/{slug}"
+
+
+@app.get("/redirects")
+def list_redirects(db: Session = Depends(get_db)):
+    """Public, unauthenticated -- {source, destination} path pairs for
+    every page that's been unpublished as a duplicate of another, still-
+    published page. content["redirect_to"] (a slug), set alongside
+    content["unpublished"] (see seed_templates.py's own convention), is
+    the one thing this reads.
+
+    Read by frontend/next.config.mjs's redirects() at build time, the
+    same mechanism that already backs this site's hand-maintained
+    permanent redirects (e.g. /food/vs -> /food/comparisons) -- this just
+    computes entries instead of requiring a next.config.mjs edit every
+    time a duplicate gets unpublished, which would be easy to forget (a
+    real, confirmed-live gap: quick-pickled-beets was unpublished as a
+    duplicate of pickled-beets with no redirect at all, so an old link or
+    bookmark to it 404s outright rather than landing on the real page).
+
+    Only ever returns a redirect whose destination is a real, currently-
+    published page -- redirect_to naming an unpublished, deleted, or
+    nonexistent slug is skipped rather than ever sending a reader to
+    another dead end or into a loop.
+    """
+    pages_by_slug = {p.slug: p for p in db.query(Page).all()}
+    redirects = []
+    for page in pages_by_slug.values():
+        target_slug = page.content.get("redirect_to")
+        if not target_slug:
+            continue
+        target = pages_by_slug.get(target_slug)
+        if target is None or target.content.get("unpublished"):
+            continue
+        redirects.append(
+            {
+                "source": _frontend_page_path(page.template_type, page.slug),
+                "destination": _frontend_page_path(target.template_type, target.slug),
+            }
+        )
+    return redirects
 
 
 @app.get("/admin/image-relevance-review", response_class=HTMLResponse)
@@ -1215,7 +1257,7 @@ def image_relevance_review(token: str, db: Session = Depends(get_db)):
             if image_url
             else '<div class="no-image">no image_url</div>'
         )
-        live_url = f"{frontend_origin}{_admin_page_path(r['template_type'], r['slug'])}"
+        live_url = f"{frontend_origin}{_frontend_page_path(r['template_type'], r['slug'])}"
         debug_url = f"/admin/debug-page-image?token={token}&slug={r['slug']}"
         signals_html = "".join(f"<li>{s}</li>" for s in r["signals"])
         cards.append(f"""
@@ -1448,7 +1490,7 @@ def review_queue(
 
     def card(r: dict) -> str:
         img_html = f'<img src="{r["image_url"]}" alt="">' if r["image_url"] else '<div class="no-image">no image_url</div>'
-        live_url = f"{frontend_origin}{_admin_page_path(r['template_type'], r['slug'])}"
+        live_url = f"{frontend_origin}{_frontend_page_path(r['template_type'], r['slug'])}"
         debug_url = f"/admin/debug-page-image?token={token}&slug={r['slug']}"
         signals_html = "".join(f'<li class="{"crit" if crit else ""}">{s}</li>' for s, crit in r["signals"])
         note_html = f'<div class="note">note: {r["note"]}</div>' if r["note"] else ""
