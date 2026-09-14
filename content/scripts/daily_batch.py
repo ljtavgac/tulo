@@ -105,6 +105,25 @@ def _slugs_for_batch(batch_number: int) -> list[str]:
     return [m.group(1) for m in _PAGE_HEADER_RE.finditer(text) if int(m.group(2)) == batch_number]
 
 
+# Matches _PAGE_HEADER_RE above but pinned to template_type "category_roundup"
+# specifically -- used right after the main batch's own integration to find
+# any collection pages this run just created, so their still-unlinked cards
+# (see generate_companion_recipes.py) get real matching recipes generated
+# for them in the same run, instead of shipping a collection whose cards
+# aren't clickable (the exact gap hit live on beets-recipes, batch 8: the
+# roundup page published fine, but nothing ever generated its 6 cards'
+# actual recipes).
+_CATEGORY_ROUNDUP_HEADER_RE = re.compile(
+    r'"slug":\s*"([^"]+)",\s*\n\s*"template_type":\s*"category_roundup",\s*\n'
+    r'\s*"title":\s*"(?:[^"\\]|\\.)*",\s*\n\s*"batch_number":\s*(\d+),'
+)
+
+
+def _category_roundup_slugs_for_batch(batch_number: int) -> list[str]:
+    text = SEED_TEMPLATES_PATH.read_text()
+    return [m.group(1) for m in _CATEGORY_ROUNDUP_HEADER_RE.finditer(text) if int(m.group(2)) == batch_number]
+
+
 def _write_queue_csv(path: Path, rows: list[dict]) -> None:
     """The one place CONTENT_QUEUE.csv (or a subset of it) ever gets
     written -- csv.DictWriter defaults to '\\r\\n' line endings per the
@@ -290,6 +309,62 @@ def run_integration(subset_csv: Path, results_path: Path, bad_ids: list[str]) ->
     if bad_ids:
         args += ["--skip", *bad_ids]
     subprocess.run(args, check=True, cwd=str(REPO_ROOT))
+
+
+def run_companion_recipes(collection_slugs: list[str], batch_number: int) -> int:
+    """For every category_roundup page in `collection_slugs`, generates
+    real recipe_or_dish pages for its still-unlinked recipe_cards (see
+    generate_companion_recipes.py's own docstring for how a card becomes
+    clickable once its matching recipe exists) and integrates them under
+    the SAME batch_number as their parent collection -- so a reviewer sees
+    the collection and its recipes together in one review-queue batch, and
+    approving that batch for prod promotes both in the same click, rather
+    than a collection going live with clickless cards and its recipes
+    trickling in separately. No-ops (returns 0) if `collection_slugs` is
+    empty, the normal case for the vast majority of batches, which don't
+    include a category_roundup row at all.
+
+    Reuses validate_results() as-is for the schema/depth/duplicate-title
+    checks -- its `subset_csv` param is never read in the function body,
+    only `results_path` and `id_to_row`, so a companion results file (no
+    CSV row behind it at all) fits without any change there."""
+    if not collection_slugs:
+        return 0
+
+    subprocess.run(
+        [sys.executable, str(SCRIPTS_DIR / "generate_companion_recipes.py"), *collection_slugs],
+        check=True, cwd=str(REPO_ROOT), env=os.environ.copy(),
+    )
+
+    total_integrated = 0
+    for slug in collection_slugs:
+        results_path = OUTPUT_DIR / f"companion_{slug}.jsonl"
+        if not results_path.exists():
+            print(f"  {slug}: generate_companion_recipes.py wrote no output file -- skipping")
+            continue
+        with results_path.open() as f:
+            results = [json.loads(line) for line in f]
+        if not results:
+            print(f"  {slug}: 0 unlinked cards, nothing to generate")
+            continue
+
+        id_to_row = {r["custom_id"]: {"template_type": "recipe_or_dish"} for r in results}
+        clean_ids, bad_ids = validate_results(results_path, results_path, id_to_row)
+        if not clean_ids:
+            print(f"  {slug}: all {len(bad_ids)} companion recipe(s) failed validation -- nothing integrated")
+            continue
+
+        args = [
+            sys.executable, str(SCRIPTS_DIR / "integrate_batch_results.py"),
+            "--template-type", "recipe_or_dish", "--batch-number", str(batch_number),
+            str(results_path),
+        ]
+        if bad_ids:
+            args += ["--skip", *bad_ids]
+        subprocess.run(args, check=True, cwd=str(REPO_ROOT))
+        total_integrated += len(clean_ids)
+
+    return total_integrated
 
 
 def finalize_queue_status(selected: list[dict], id_to_row: dict, clean_ids: list[str], bad_ids: list[str]) -> None:
@@ -520,11 +595,69 @@ def send_notification_email(batch_number: int, page_count: int, images_written: 
     print(f"Sent notification email to {to_addr}")
 
 
+def run_companions_only(collection_slug: str) -> None:
+    """One-off repair mode for a collection whose companion recipes never
+    got generated (e.g. any batch pushed before run_companion_recipes()
+    existed -- beets-recipes, batch 8, the live case this was built for).
+    Not part of the normal daily flow; invoked via --companions-for.
+
+    Finds the collection's own batch_number from its already-published
+    seed_templates.py entry (not a freshly claimed one -- this collection
+    is already live) and integrates its new companion recipes under that
+    SAME batch_number, so they land in the review queue alongside the
+    collection they belong to instead of a fresh batch of their own.
+
+    Fetches images ONLY for the slugs this call actually adds, not
+    _slugs_for_batch(batch_number)'s full membership -- that batch may
+    already contain dozens of other, already-reviewed pages with real
+    photos, and fetch_images() force-refetches every slug it's given
+    explicitly (see fetch_stock_images.py's only_slugs), so passing the
+    whole batch here would silently re-roll every one of those good
+    photos for no reason."""
+    if not os.environ.get("PIPELINE_ANTHROPIC_API_KEY"):
+        raise RuntimeError("PIPELINE_ANTHROPIC_API_KEY is not set.")
+
+    text = SEED_TEMPLATES_PATH.read_text()
+    matches = {m.group(1): int(m.group(2)) for m in _CATEGORY_ROUNDUP_HEADER_RE.finditer(text)}
+    if collection_slug not in matches:
+        raise RuntimeError(f"{collection_slug!r} is not a category_roundup page (or not found) in seed_templates.py")
+    batch_number = matches[collection_slug]
+
+    print(f"Backfilling companion recipes for {collection_slug!r} (batch {batch_number})...")
+    before = set(_slugs_for_batch(batch_number))
+    added = run_companion_recipes([collection_slug], batch_number)
+    if added == 0:
+        print("Nothing to do -- 0 companion recipes generated/integrated.")
+        return
+
+    local_verify()
+    git_commit_and_push(batch_number, added)
+
+    after = set(_slugs_for_batch(batch_number))
+    new_slugs = sorted(after - before)
+    if not new_slugs:
+        raise RuntimeError("run_companion_recipes reported pages added, but no new slugs found under this batch_number -- aborting before image fetch")
+
+    wait_for_deploy(new_slugs[0])
+    _, images_written = fetch_images_for_batch(new_slugs)
+    print(f"\nDone: {added} companion recipe(s) for {collection_slug!r}, {images_written} images.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--count", type=int, default=DEFAULT_COUNT)
     parser.add_argument("--dry-run", action="store_true", help="Stop after local verification -- no push, fetch, or email.")
+    parser.add_argument(
+        "--companions-for", metavar="COLLECTION_SLUG",
+        help="One-off repair: backfill companion recipes for an already-published category_roundup "
+             "page whose cards never got them (see run_companions_only). Skips the normal batch flow "
+             "entirely -- no CONTENT_QUEUE.csv rows are claimed.",
+    )
     args = parser.parse_args()
+
+    if args.companions_for:
+        run_companions_only(args.companions_for)
+        return
 
     # Fails fast, before claiming a single CONTENT_QUEUE.csv row, rather
     # than letting every one of `count` requests dial out and fail on a
@@ -542,10 +675,26 @@ def main() -> None:
     clean_ids, bad_ids = validate_results(subset_csv, results_path, id_to_row)
     run_integration(subset_csv, results_path, bad_ids)
     finalize_queue_status(selected, id_to_row, clean_ids, bad_ids)
+
+    # Any category_roundup page this run just published gets real recipes
+    # generated for its still-unlinked cards, integrated under this SAME
+    # batch_number -- see run_companion_recipes' own docstring. Before
+    # local_verify() so a broken companion insertion fails the run here,
+    # not on the next real deploy.
+    roundup_slugs = _category_roundup_slugs_for_batch(batch_number)
+    companions_added = 0
+    if roundup_slugs:
+        print(f"Batch {batch_number} includes {len(roundup_slugs)} category_roundup page(s) {roundup_slugs} "
+              "-- generating companion recipes for their cards...")
+        companions_added = run_companion_recipes(roundup_slugs, batch_number)
+        print(f"Added {companions_added} companion recipe page(s).")
+
     local_verify()
 
+    total_new_pages = len(clean_ids) + companions_added
+
     if args.dry_run:
-        print(f"--dry-run: stopping here. {len(clean_ids)} pages would have been pushed as batch {batch_number}.")
+        print(f"--dry-run: stopping here. {total_new_pages} pages would have been pushed as batch {batch_number}.")
         return
 
     if not clean_ids:
@@ -563,7 +712,7 @@ def main() -> None:
             "Check PIPELINE_ANTHROPIC_API_KEY and the validation output above."
         )
 
-    git_commit_and_push(batch_number, len(clean_ids))
+    git_commit_and_push(batch_number, total_new_pages)
 
     new_slugs = _slugs_for_batch(batch_number)
     if not new_slugs:
@@ -572,14 +721,14 @@ def main() -> None:
     wait_for_deploy(new_slugs[0])
     _, images_written = fetch_images_for_batch(new_slugs)
 
-    write_job_summary(batch_number, len(clean_ids), images_written)
+    write_job_summary(batch_number, total_new_pages, images_written)
     if os.environ.get("GMAIL_SMTP_USER") and os.environ.get("GMAIL_SMTP_APP_PASSWORD"):
-        send_notification_email(batch_number, len(clean_ids), images_written)
+        send_notification_email(batch_number, total_new_pages, images_written)
     else:
         print("GMAIL_SMTP_USER/GMAIL_SMTP_APP_PASSWORD not set -- skipping email, "
               "relying on GitHub's own workflow-run notification + the job summary above.")
 
-    print(f"\nDone: batch {batch_number}, {len(clean_ids)} pages, {images_written} images.")
+    print(f"\nDone: batch {batch_number}, {total_new_pages} pages, {images_written} images.")
 
 
 if __name__ == "__main__":

@@ -114,11 +114,27 @@ def main() -> None:
     # a fake CSV row just to satisfy this script -- a real gap found by
     # hitting it twice (the original pinwheel/blackstone companions, then
     # again for dip-recipes/juicing-recipes) with no clean way to do it.
+    # A companion batch is always integrated under the SAME batch_number as
+    # its parent category_roundup page (see daily_batch.py's
+    # run_companion_recipes) so the two show up together in the review
+    # queue and get promoted to prod in one click, rather than a collection
+    # going live with clickless cards and its recipes trickling in under a
+    # different batch later. Must come before --skip on the command line --
+    # --skip's own parsing above blindly consumes everything after it.
+    forced_batch_number = None
+    if "--batch-number" in sys.argv:
+        idx = sys.argv.index("--batch-number")
+        forced_batch_number = int(sys.argv[idx + 1])
+
     forced_template_type = None
     if "--template-type" in sys.argv:
         idx = sys.argv.index("--template-type")
         forced_template_type = sys.argv[idx + 1]
-        positional = [a for i, a in enumerate(sys.argv[1:], start=1) if i not in (idx, idx + 1) and a not in skip_ids and a != "--skip"]
+        excluded_indices = {idx, idx + 1}
+        if forced_batch_number is not None:
+            bn_idx = sys.argv.index("--batch-number")
+            excluded_indices |= {bn_idx, bn_idx + 1}
+        positional = [a for i, a in enumerate(sys.argv[1:], start=1) if i not in excluded_indices and a not in skip_ids and a != "--skip"]
         results_path = Path(positional[0])
         csv_path = None
     else:
@@ -132,7 +148,13 @@ def main() -> None:
     taken_slugs = set(existing_slugs)
 
     if forced_template_type is not None:
-        id_to_row = {r["custom_id"]: {"template_type": forced_template_type, "batch_number": 0} for r in results}
+        # Previously hardcoded to a 0 sentinel with no way to override it --
+        # harmless-looking, but batch_number = int(row.get("batch_number")
+        # or 1) below treats 0 as falsy and silently substitutes 1, which
+        # is BOTH a real, legacy, pre-pipeline batch number AND below
+        # main.py's _PIPELINE_START_BATCH -- a companion recipe integrated
+        # that way would never appear in the review queue at all.
+        id_to_row = {r["custom_id"]: {"template_type": forced_template_type, "batch_number": forced_batch_number or 1} for r in results}
     else:
         manifest_path = Path(__file__).parent / "output" / f"{csv_path.stem}_manifest.json"
         if manifest_path.exists():
