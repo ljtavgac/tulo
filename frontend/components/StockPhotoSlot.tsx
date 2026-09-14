@@ -140,7 +140,7 @@ export default function StockPhotoSlot({
           onError={() => setFailed(true)}
         />
       </div>
-      {attribution && showAttribution ? (
+      {attribution && showAttribution && attribution.photographer && attribution.photographer_url ? (
         <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
           Photo by{" "}
           <a href={attribution.photographer_url} className="underline hover:text-accent">

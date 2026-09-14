@@ -16,8 +16,17 @@ class PageOut(BaseModel):
 
 
 class ImageAttribution(BaseModel):
-    photographer: str
-    photographer_url: str
+    # Both optional: a manually-overridden photo (see main.py's
+    # /admin/review-queue/override-image, source == "manual_override")
+    # writes both as None -- there's no known photographer for a URL a
+    # reviewer just pasted in. Real live bug (2026-09-14): these were
+    # required strings, which meant the first page anyone ever used that
+    # override on took down every non-lean /pages list response (homepage
+    # carousels, section index pages, search) with a 500 the moment
+    # Pydantic tried to validate it -- individual /pages/{slug} fetches
+    # were unaffected since they don't go through this model at all.
+    photographer: str | None
+    photographer_url: str | None
     source: str
 
 
