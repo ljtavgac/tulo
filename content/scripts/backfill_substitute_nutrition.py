@@ -153,7 +153,7 @@ def extract_needs() -> list[dict]:
 def build_request_params(hub: dict) -> dict:
     return {
         "model": MODEL,
-        "max_tokens": 3000,
+        "max_tokens": 4000,
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": build_user_prompt(hub["title"], hub["description"], hub["substitutes"])}],
         "output_config": {"format": {"type": "json_schema", "schema": RESPONSE_SCHEMA}},
