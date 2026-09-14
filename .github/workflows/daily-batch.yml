@@ -23,6 +23,15 @@ on:
         description: "Number of titles to generate this run"
         required: false
         default: '100'
+      companions_for:
+        description: >-
+          One-off repair only: slug of an already-published category_roundup
+          page whose cards never got matching recipes generated (see
+          daily_batch.py's run_companions_only). Leave blank for a normal
+          run -- when set, this REPLACES the normal batch entirely (no
+          CONTENT_QUEUE.csv rows are claimed, `count` above is ignored).
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -39,6 +48,7 @@ jobs:
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
       count: ${{ steps.check.outputs.count }}
+      companions_for: ${{ steps.check.outputs.companions_for }}
     steps:
       - id: check
         run: |
@@ -46,6 +56,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
             echo "count=${{ github.event.inputs.count }}" >> "$GITHUB_OUTPUT"
+            echo "companions_for=${{ github.event.inputs.companions_for }}" >> "$GITHUB_OUTPUT"
           elif [[ "$today" < "2026-09-14" ]]; then
             echo "should_run=false" >> "$GITHUB_OUTPUT"
             echo "Scheduled run before the intended 9/14 start date -- skipping, not failing." >> "$GITHUB_STEP_SUMMARY"
@@ -95,4 +106,10 @@ jobs:
           # real email too, on top of that.
           GMAIL_SMTP_USER: ${{ secrets.GMAIL_SMTP_USER }}
           GMAIL_SMTP_APP_PASSWORD: ${{ secrets.GMAIL_SMTP_APP_PASSWORD }}
-        run: python3 content/scripts/daily_batch.py --count ${{ needs.gate.outputs.count }}
+          COMPANIONS_FOR: ${{ needs.gate.outputs.companions_for }}
+        run: |
+          if [ -n "$COMPANIONS_FOR" ]; then
+            python3 content/scripts/daily_batch.py --companions-for "$COMPANIONS_FOR"
+          else
+            python3 content/scripts/daily_batch.py --count ${{ needs.gate.outputs.count }}
+          fi
