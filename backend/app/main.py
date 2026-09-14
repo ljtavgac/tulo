@@ -2133,6 +2133,7 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
                 <div class="verdict">{"PASS" if passes and host_ok else "FAIL"} {f'<span class="reason">({reason})</span>' if reason else ""}</div>
                 <div class="alt">alt: "{c['alt'] or '(blank)'}"</div>
                 <div class="photog">by {c['photographer']} on {c['source']}</div>
+                <input type="text" class="url-box" readonly value="{c['url']}" onclick="this.select()">
               </div>
             </div>
             """)
@@ -2155,6 +2156,7 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
         .photog { color: #888; margin-top: 2px; }
         .empty { color: #b00; font-style: italic; }
         .card-block { margin-top: 28px; padding-top: 4px; }
+        .url-box { width: 100%; max-width: 280px; margin-top: 4px; font-size: 10px; font-family: monospace; padding: 3px 5px; border: 1px solid #ccc; border-radius: 3px; background: #fff; color: #555; }
     """
 
     if page.template_type == "category_roundup":
