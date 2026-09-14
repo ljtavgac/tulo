@@ -682,21 +682,35 @@ def get_page(slug: str, db: Session = Depends(get_db)):
         # search (see fetch_images()) had simply never been run against it.
         # Rather than depend on that offline job (or on remembering to run
         # it) for the common case where a linked card's dish already has
-        # its own recipe page and photo, this second pass backfills any
+        # its own recipe page and photo, this second pass syncs every
         # slug-bearing card's image directly from its own recipe on every
         # request -- the same "compute it live so nobody has to remember a
         # manual step" pattern already used for recipe_slugs/related_*
         # elsewhere in this file. fetch_images()'s independent card search
         # still matters for a genuinely aspirational card with no recipe.
-        cards_needing_image = [c for c in cards if c.get("slug") and not c.get("image_url")]
-        if cards_needing_image:
+        #
+        # Deliberately NOT scoped to cards missing an image (a real bug,
+        # confirmed live on beets-recipes: "Roasted Beets with Balsamic"
+        # already had its own independently stock-searched card image from
+        # before its companion recipe existed -- fetch_images() runs a
+        # separate search per card, by the card's own image_query, the
+        # moment a new category_roundup page publishes, regardless of
+        # whether the card is linked yet. Once it later got linked to
+        # roasted-beets-with-balsamic, that page's own independently
+        # searched photo was a different result for the same query text,
+        # and the card kept its now-stale one forever since it was never
+        # "missing"). A card the reader can click through to a real page
+        # should always show that exact page's photo, not a different
+        # stock result for a similar-sounding search.
+        linked_cards = [c for c in cards if c.get("slug")]
+        if linked_cards:
             recipes_by_slug = {
                 r.slug: r
                 for r in db.query(Page)
-                .filter(Page.slug.in_({c["slug"] for c in cards_needing_image}))
+                .filter(Page.slug.in_({c["slug"] for c in linked_cards}))
                 .all()
             }
-            for card in cards_needing_image:
+            for card in linked_cards:
                 recipe = recipes_by_slug.get(card["slug"])
                 if recipe is not None and recipe.content.get("image_url"):
                     card["image_url"] = recipe.content.get("image_url")
