@@ -27,6 +27,10 @@ jobs:
           fetch-depth: 0
           ref: main
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Cherry-pick the approved batch's commit(s) onto main
         run: |
           set -euo pipefail
@@ -92,7 +96,57 @@ jobs:
             fi
           done
 
-          git push origin main
+      # Real, confirmed incident (2026-09-14, batch 8; recurred 2026-09-15,
+      # batch 9): daily_batch.py bakes each batch's ORIGINAL auto-fetched
+      # images right after fetching them -- necessarily BEFORE a human ever
+      # reviews the batch (that commit is one of the ones the step above
+      # just cherry-picked). But the whole point of /admin/review-queue is
+      # to catch and fix a WRONG photo -- both the "flag it, a fresh
+      # candidate re-fetches automatically" path (review_queue_mark) and
+      # the "paste the exact URL" escape hatch (review_queue_override_image)
+      # write straight to staging's database and nothing else. Neither one
+      # produces a git commit, so a photo a reviewer corrects during review
+      # looked right on staging (reading straight from that database) but
+      # was never captured anywhere this cherry-pick step could find it --
+      # main, and therefore prod, still got the ORIGINAL wrong photo.
+      # Baking this batch's slugs' CURRENT staging image state (which
+      # reflects any review-time correction, on top of the original fetch)
+      # onto main right here, before the push below, closes that gap for
+      # every future batch: whatever the reviewer looked at and approved on
+      # staging is exactly what ships, not just whatever existed at
+      # generation time.
+      - name: Bake this batch's CURRENT staging image state onto main (captures review-time corrections)
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 content/scripts/batch_slugs.py "${{ inputs.batch_number }}" > /tmp/batch_slugs.txt
+          slug_count="$(wc -l < /tmp/batch_slugs.txt | tr -d ' ')"
+          echo "Batch ${{ inputs.batch_number }}: $slug_count slug(s) to check against staging's current image state."
+          if [ "$slug_count" -eq 0 ]; then
+            echo "No slugs found for this batch_number (unexpected -- the cherry-pick above should have added some) -- skipping bake."
+            exit 0
+          fi
+
+          python3 content/scripts/bake_images_from_staging.py \
+            --base-url "$BACKEND_BASE_URL" --token "$ADMIN_TASK_TOKEN" \
+            --slugs-file /tmp/batch_slugs.txt
+
+          status="$(git status --porcelain backend/app/seed_templates.py)"
+          if [ -z "$status" ]; then
+            echo "No image changes since the original auto-bake -- nothing to do."
+          else
+            git add backend/app/seed_templates.py
+            git commit \
+              -m "Bake batch ${{ inputs.batch_number }}'s current staging images onto main" \
+              -m "Captures any review-time image correction (a flag+re-fetch or a manual override-image URL paste in /admin/review-queue) made AFTER daily_batch.py's own original auto-bake, which necessarily ran before this batch was ever reviewed by a human. Without this, prod would ship whatever photo existed at generation time instead of whatever the reviewer actually approved on staging." \
+              -m "Tulo-Batch-Number: ${{ inputs.batch_number }}"
+            echo "Committed updated images for batch ${{ inputs.batch_number }}."
+          fi
+
+      - name: Push main
+        run: git push origin main
 
       - name: Report merged_at back to the backend
         run: |
