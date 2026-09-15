@@ -1,0 +1,66 @@
+name: Verify prod pages
+
+# Ad-hoc diagnostic: fetches one or more slugs from PRODUCTION's public
+# GET /pages/{slug} (no token needed -- this only ever reads what a real
+# visitor would see) and prints each ingredient's hub_slug/
+# available_substitutes so a deploy can be confirmed live and correct
+# from outside this sandbox's own network egress restrictions (this
+# sandbox's proxy blocks *.onrender.com directly -- this workflow runs on
+# a GitHub-hosted runner instead, which has no such restriction).
+#
+# Not tied to any specific fix -- reusable any time "did the thing I just
+# shipped actually land on prod, for these specific pages" needs a real
+# answer instead of a guess.
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Comma-separated recipe_or_dish slugs to fetch from prod"
+        required: true
+      wait_for_commit:
+        description: "Optional: git SHA to wait for prod's /health to report before fetching (leave blank to fetch immediately)"
+        required: false
+        default: ""
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Wait for prod to serve the target commit (optional)
+        if: inputs.wait_for_commit != ''
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+        run: |
+          set -uo pipefail
+          deadline=$((SECONDS + 720))
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            live_commit="$(curl -sS --connect-timeout 10 --max-time 20 "$PROD_BACKEND_BASE_URL/health" 2>/dev/null \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin).get("git_commit") or "")' 2>/dev/null || true)"
+            if [ "$live_commit" = "${{ inputs.wait_for_commit }}" ]; then
+              echo "Prod is now serving ${{ inputs.wait_for_commit }} -- landed after $((SECONDS))s."
+              exit 0
+            fi
+            echo "Prod is on '${live_commit:-<unreachable>}', waiting for ${{ inputs.wait_for_commit }} ($((SECONDS))s elapsed)..."
+            sleep 15
+          done
+          echo "::warning::Prod never reported ${{ inputs.wait_for_commit }} within 12 minutes -- fetching anyway."
+
+      - name: Fetch each slug and report swap-relevant fields
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+        run: |
+          set -uo pipefail
+          IFS=',' read -ra SLUGS <<< "${{ inputs.slugs }}"
+          for slug in "${SLUGS[@]}"; do
+            slug="$(echo "$slug" | xargs)"
+            echo "=== $slug ==="
+            curl -sS -f --connect-timeout 15 --max-time 30 "$PROD_BACKEND_BASE_URL/pages/$slug" 2>/dev/null \
+              | python3 content/scripts/print_swap_fields.py || echo "  (request failed)"
+            echo
+          done
