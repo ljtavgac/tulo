@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -66,14 +67,70 @@ def _hub_titles(seed_pages: list[dict]) -> dict[str, str]:
     }
 
 
-def _resolve_hub_slug(name: str, explicit: str | None, hub_titles: dict[str, str]) -> str | None:
-    if explicit:
-        return explicit
-    key = name.strip().lower()
+# Mirrors main.py's own _HUB_MATCH_LEADING_SAFE_WORDS /
+# _HUB_MATCH_TRAILING_CLAUSE_SAFE_WORDS / _resolve_hub_slug exactly -- see
+# that module for the full rationale (curated, food-noun-free descriptor
+# lists only, never a substring/fuzzy match, "ground" deliberately
+# excluded). Keep these two copies in sync by hand if either changes.
+_HUB_MATCH_LEADING_SAFE_WORDS = {
+    "fresh", "unsalted", "dried", "large", "small", "fine", "finely",
+    "granulated", "kosher", "powdered", "toasted", "unsweetened", "frozen",
+    "plain", "whole", "chopped", "minced", "diced", "sliced", "shredded",
+    "grated", "cubed", "crumbled", "raw", "cooked",
+}
+_HUB_MATCH_TRAILING_CLAUSE_SAFE_WORDS = {
+    "for", "chopped", "and", "sliced", "minced", "diced", "into", "cut",
+    "finely", "softened", "thinly", "inch", "peeled", "freshly",
+    "garnish", "melted", "or", "divided", "serving", "the", "on", "shredded",
+    "halved", "drained", "skinless", "frying", "smashed", "plus", "optional",
+    "rinsed", "cubed", "beaten", "quartered", "skin", "pieces", "thick",
+    "packed", "room", "temperature", "at", "to", "taste", "strips", "wedges",
+    "bite", "sized", "size", "crushed", "trimmed", "boneless",
+    "cubes", "julienned", "zested", "seeded", "stemmed",
+}
+
+
+def _exact_hub_match(key: str, hub_titles: dict[str, str]) -> str | None:
     if key in hub_titles:
         return hub_titles[key]
     if key.endswith("s") and key[:-1] in hub_titles:
         return hub_titles[key[:-1]]
+    return None
+
+
+def _resolve_hub_slug(name: str, explicit: str | None, hub_titles: dict[str, str]) -> str | None:
+    if explicit:
+        return explicit
+    key = name.strip().lower()
+
+    match = _exact_hub_match(key, hub_titles)
+    if match:
+        return match
+
+    stripped_paren = re.sub(r"\s*\([^)]*\)", "", key).strip()
+    if stripped_paren != key:
+        match = _exact_hub_match(stripped_paren, hub_titles)
+        if match:
+            return match
+        key = stripped_paren
+
+    if "," in key:
+        prefix, clause = key.split(",", 1)
+        prefix = prefix.strip()
+        clause_words = re.findall(r"[a-z]+", clause)
+        if clause_words and all(w in _HUB_MATCH_TRAILING_CLAUSE_SAFE_WORDS for w in clause_words):
+            match = _exact_hub_match(prefix, hub_titles)
+            if match:
+                return match
+            key = prefix
+
+    words = key.split()
+    while len(words) > 1 and words[0] in _HUB_MATCH_LEADING_SAFE_WORDS:
+        words = words[1:]
+        match = _exact_hub_match(" ".join(words), hub_titles)
+        if match:
+            return match
+
     return None
 
 
