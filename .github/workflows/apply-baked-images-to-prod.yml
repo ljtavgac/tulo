@@ -30,47 +30,77 @@ jobs:
   apply-baked-images:
     runs-on: ubuntu-latest
     steps:
-      - name: Call /admin/apply-baked-images on prod (retrying for Render's own deploy to land first)
+      - name: Check prerequisites
+        id: check
+        run: |
+          if [ -z "${{ vars.PROD_BACKEND_BASE_URL }}" ] || [ -z "${{ secrets.PROD_ADMIN_TASK_TOKEN }}" ]; then
+            echo "::warning::PROD_BACKEND_BASE_URL (repo variable) and/or PROD_ADMIN_TASK_TOKEN (repo secret) aren't configured yet -- skipping. Set both in Settings > Secrets and variables > Actions to enable this workflow. Until then, /admin/apply-baked-images still needs to be triggered by hand after a bake merges to main that touches an already-existing page."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Waits for the REAL signal (prod's own /health reporting it's
+      # actually serving this exact commit, via Render's built-in
+      # RENDER_GIT_COMMIT env var) instead of retrying blind on a fixed
+      # timer -- same "poll the real signal" pattern daily_batch.py's own
+      # wait_for_deploy() already uses for staging. Real, confirmed gap
+      # this replaces (2026-09-15): the previous version's fixed
+      # ~4.5-minute/4-attempt budget wasn't enough on a slower-than-usual
+      # Render deploy -- needed three separate manual re-triggers (~15+
+      # minutes total) before one finally landed after the deploy was
+      # actually live. This adapts to however long the deploy actually
+      # takes, up to a generous 12-minute bound, rather than guessing one
+      # fixed window and hoping it's long enough.
+      - name: Wait for prod to actually be serving this commit
+        id: wait
+        if: steps.check.outputs.ready == 'true'
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+        run: |
+          set -uo pipefail
+          deadline=$((SECONDS + 720))
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            live_commit="$(curl -sS --connect-timeout 10 --max-time 20 "$PROD_BACKEND_BASE_URL/health" 2>/dev/null \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin).get("git_commit") or "")' 2>/dev/null || true)"
+            if [ "$live_commit" = "${{ github.sha }}" ]; then
+              echo "Prod is now serving ${{ github.sha }} -- deploy landed after $((SECONDS))s."
+              echo "landed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Prod is on commit '${live_commit:-<unreachable>}', waiting for ${{ github.sha }} ($((SECONDS))s elapsed)..."
+            sleep 15
+          done
+          echo "::warning::Prod never reported serving ${{ github.sha }} within 12 minutes -- proceeding anyway (best-effort; the apply call below will just no-op if the deploy still hasn't landed, and can be re-triggered by hand once it has)."
+          echo "landed=false" >> "$GITHUB_OUTPUT"
+
+      - name: Call /admin/apply-baked-images on prod
+        if: steps.check.outputs.ready == 'true'
         env:
           PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
           PROD_ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
         run: |
           set -uo pipefail
-
-          if [ -z "${PROD_BACKEND_BASE_URL:-}" ] || [ -z "${PROD_ADMIN_TASK_TOKEN:-}" ]; then
-            echo "::warning::PROD_BACKEND_BASE_URL (repo variable) and/or PROD_ADMIN_TASK_TOKEN (repo secret) aren't configured yet -- skipping. Set both in Settings > Secrets and variables > Actions to enable this workflow. Until then, /admin/apply-baked-images still needs to be triggered by hand after a bake merges to main that touches an already-existing page."
-            exit 0
-          fi
-
-          # This workflow's own push event fires immediately -- Render's
-          # independent webhook-triggered deploy of this exact commit can
-          # easily still be mid-build at that point (this backend's own
-          # deploys have taken anywhere from under a minute to several
-          # minutes earlier this session). Calling the endpoint before that
-          # deploy lands isn't wrong, just useless: it would compare
-          # against the OLD, not-yet-updated SEED_PAGES and silently no-op
-          # (updated_count: 0) instead of applying the real change. Retrying
-          # a few times with real gaps between attempts, rather than a
-          # single fixed sleep, means this self-corrects across a wide
-          # range of actual deploy durations instead of guessing one delay
-          # and hoping it's long enough.
-          for attempt in 1 2 3 4; do
+          # The wait step above already confirmed (or gave its best shot
+          # at) the right commit being live, so this only needs to cover
+          # a genuinely transient blip, not deploy timing -- 2 attempts,
+          # a short gap. --connect-timeout/--max-time are load-bearing,
+          # not cosmetic: without them a single unresponsive attempt
+          # hangs this whole job indefinitely instead of failing fast --
+          # confirmed live (2026-09-14), a version without them ran 13+
+          # minutes on one hung attempt before it had to be cancelled by
+          # hand.
+          for attempt in 1 2; do
             echo "--- attempt $attempt ---"
-            # --connect-timeout/--max-time are load-bearing, not cosmetic:
-            # without them a single unresponsive attempt (Render mid-deploy,
-            # a dropped connection, anything short of a clean error) hangs
-            # this whole job indefinitely instead of failing fast into the
-            # next retry -- confirmed live (2026-09-14), a first version of
-            # this workflow without them ran 13+ minutes on one hung attempt
-            # before it had to be cancelled by hand.
             response="$(curl -sS -f --connect-timeout 15 --max-time 60 "$PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=$PROD_ADMIN_TASK_TOKEN")" && {
               echo "$response"
               count="$(echo "$response" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("updated_count", "?"))' 2>/dev/null || echo '?')"
               echo "Updated $count page(s) on prod (attempt $attempt)."
-            } || echo "Request failed or timed out on attempt $attempt (prod may still be redeploying) -- will retry." >&2
-            if [ "$attempt" -lt 4 ]; then
-              sleep 90
+              exit 0
+            } || echo "Request failed or timed out on attempt $attempt -- will retry." >&2
+            if [ "$attempt" -lt 2 ]; then
+              sleep 20
             fi
           done
 
-          echo "Done. If prod's deploy took longer than this workflow's ~4.5-minute window, the endpoint can still be triggered by hand: $PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=<token>"
+          echo "::warning::apply-baked-images didn't succeed after 2 attempts. If prod's deploy still hasn't landed, this can be re-triggered by hand: $PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=<token>"

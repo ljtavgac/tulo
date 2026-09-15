@@ -241,7 +241,17 @@ app.add_middleware(
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    # git_commit lets a caller tell "the deploy of commit X has actually
+    # landed and is serving requests" apart from "the service responds at
+    # all" -- RENDER_GIT_COMMIT is set automatically by Render for any
+    # service deployed from a connected git repo (unset outside Render,
+    # e.g. local dev, in which case this is just null and harmless).
+    # apply-baked-images-to-prod.yml polls this instead of blindly
+    # retrying on a fixed timer -- real, confirmed gap (2026-09-15): a
+    # slow-than-usual Render deploy needed three separate manual
+    # workflow re-triggers (~15+ minutes) before the fixed ~4.5-minute
+    # retry window ever lined up with the deploy actually being live.
+    return {"status": "ok", "git_commit": os.environ.get("RENDER_GIT_COMMIT")}
 
 
 class _PageRecord(NamedTuple):
