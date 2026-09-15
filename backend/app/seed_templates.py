@@ -278411,6 +278411,12 @@ SEED_PAGES = [
         "title": "Water Moccasin Shot Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8375106/pexels-photo-8375106.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Denys Gromov",
+                "photographer_url": "https://www.pexels.com/@jdgromov",
+                "source": "pexels",
+            },
             "meta_description": "A bold, three-liquor water moccasin shot made with Jägermeister, peach schnapps, and peppermint schnapps, shaken cold and strained into shot glasses in under 5 minutes.",
             "hero_image_query": "layered shot glasses cocktail bar",
             "image_alt": "Four chilled shot glasses filled with a golden-amber water moccasin shot mixture, garnished with a few ice crystals on a dark bar surface.",
@@ -278616,6 +278622,12 @@ SEED_PAGES = [
         "title": "Slow Cooker Chicken Tacos Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/17429140/pexels-photo-17429140.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Jonathan  Reynaga",
+                "photographer_url": "https://www.pexels.com/@jonathan-reynaga-861774",
+                "source": "pexels",
+            },
             "meta_description": "Tender, shreddable slow cooker chicken tacos made with chicken thighs, tomatoes with green chiles, and taco seasoning. Includes a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "slow cooker chicken tacos",
             "image_alt": "Shredded chicken tacos on warm corn tortillas topped with cilantro, diced onion, and a lime wedge, with a slow cooker visible in the background.",
@@ -278823,6 +278835,12 @@ SEED_PAGES = [
         "title": "Palmiers",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/12586643/pexels-photo-12586643.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Juan Manuel Montejano Lopez",
+                "photographer_url": "https://www.pexels.com/@pandaa",
+                "source": "pexels",
+            },
             "meta_description": "What palmiers are, the best substitutes with ratios, how to store them so they stay crisp, and how to use them in desserts and coffee service.",
             "hero_image_query": "palmier cookies puff pastry",
             "image_alt": "A stack of golden, caramelized palmier cookies shaped like hearts on a wire cooling rack, with visible sugar crystals on the crisp pastry layers.",
@@ -278919,6 +278937,12 @@ SEED_PAGES = [
         "title": "Gluten-Free Cornbread Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/34638000/pexels-photo-34638000.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Alejandro JV",
+                "photographer_url": "https://www.pexels.com/@vivanpunk",
+                "source": "pexels",
+            },
             "meta_description": "A moist, tender gluten-free cornbread made with a 1:1 gluten-free flour blend, fine cornmeal, and buttermilk, ready in about 40 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "gluten free cornbread skillet",
             "image_alt": "A golden wedge of gluten-free cornbread lifted from a cast iron skillet, showing a moist, tight crumb studded with visible cornmeal flecks.",
@@ -279142,6 +279166,12 @@ SEED_PAGES = [
         "title": "Sourdough French Toast Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/19842799/pexels-photo-19842799.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Amar  Preciado",
+                "photographer_url": "https://www.pexels.com/@amar",
+                "source": "pexels",
+            },
             "meta_description": "Thick-cut sourdough french toast with a custardy center and crisp, golden edges, made with a simple egg-and-milk soak. Ready in about 25 minutes.",
             "hero_image_query": "sourdough french toast",
             "image_alt": "Thick slices of golden-brown sourdough french toast stacked on a plate, dusted with powdered sugar and drizzled with maple syrup.",
@@ -279349,6 +279379,12 @@ SEED_PAGES = [
         "title": "Mango Margarita Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/31269850/pexels-photo-31269850.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Bon appétit",
+                "photographer_url": "https://www.pexels.com/@bon-appetit-2097728995",
+                "source": "pexels",
+            },
             "meta_description": "A frozen mango margarita made with fresh mango, tequila, lime juice, and orange liqueur, blended until slushy. Ready in 15 minutes with a live serving scaler.",
             "hero_image_query": "frozen mango margarita salt rim glass",
             "image_alt": "Two salt-rimmed margarita glasses filled with bright orange frozen mango margarita, garnished with lime wheels and a mango slice.",
@@ -279530,6 +279566,12 @@ SEED_PAGES = [
         "title": "Fruity Rum Punch Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/32199622/pexels-photo-32199622.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Tino Frappucino",
+                "photographer_url": "https://www.pexels.com/@tino-frappucino-2152196731",
+                "source": "pexels",
+            },
             "meta_description": "A big-batch fruity rum punch with pineapple, orange, and cranberry juice, balanced with two kinds of rum and a splash of grenadine. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "fruity rum punch in a glass pitcher with orange slices and cherries",
             "image_alt": "A glass pitcher of deep pink-orange fruity rum punch surrounded by ice-filled glasses garnished with orange slices and maraschino cherries.",
@@ -279754,6 +279796,12 @@ SEED_PAGES = [
         "title": "Chicken Chashu",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/17839679/pexels-photo-17839679.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Victor Oluwa",
+                "photographer_url": "https://www.pexels.com/@victor-oluwa-324310690",
+                "source": "pexels",
+            },
             "meta_description": "What chicken chashu is, how it differs from pork chashu, the best substitutes with ratios, and how to store and use it in ramen and rice bowls.",
             "hero_image_query": "sliced chicken chashu ramen topping",
             "image_alt": "Thin glossy slices of rolled chicken chashu fanned over a bowl of shoyu ramen with a soft-boiled egg and scallions",
@@ -279843,6 +279891,12 @@ SEED_PAGES = [
         "title": "How to Cook a 15 Pound Turkey",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4164520/pexels-photo-4164520.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Ivan S",
+                "photographer_url": "https://www.pexels.com/@ivan-s",
+                "source": "pexels",
+            },
             "meta_description": "How long to roast a 15 pound turkey at 325°F, with timing for stuffed vs. unstuffed birds and the internal temperatures that actually confirm it's done.",
             "hero_image_query": "whole roasted turkey on platter",
             "image_alt": "A golden-brown 15 pound turkey resting on a carving board with a meat thermometer inserted into the thigh.",
@@ -279904,6 +279958,12 @@ SEED_PAGES = [
         "title": "Copycat Wendy's Chili Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/14302291/pexels-photo-14302291.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Steve House",
+                "photographer_url": "https://www.pexels.com/@steve-house-22993839",
+                "source": "pexels",
+            },
             "meta_description": "A copycat Wendy's chili recipe made with ground beef, beans, and a simple tomato base, simmered low and slow for that familiar fast-food flavor. Includes a serving-size scaler and US/metric toggle.",
             "hero_image_query": "bowl of chili with cheese and onions",
             "image_alt": "A bowl of thick beef and bean chili topped with shredded cheddar and diced onion, served with a spoon resting on the rim.",
@@ -280181,6 +280241,12 @@ SEED_PAGES = [
         "title": "Cereal Bars",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7134663/pexels-photo-7134663.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Ella Wei",
+                "photographer_url": "https://www.pexels.com/@ewei2805",
+                "source": "pexels",
+            },
             "meta_description": "What cereal bars are, the best substitutes with ratios, how to store them so they stay crisp, and how to use them in recipes beyond the lunchbox.",
             "hero_image_query": "stacked cereal bars on a plate",
             "image_alt": "Several rectangular cereal bars stacked on a wooden plate, showing the compressed grain texture and a light glaze coating on top.",
@@ -280265,6 +280331,12 @@ SEED_PAGES = [
         "title": "Lamb Biryani",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/36934941/pexels-photo-36934941.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Mohamed  Olwy",
+                "photographer_url": "https://www.pexels.com/@mohamed9380",
+                "source": "pexels",
+            },
             "meta_description": "What goes into a real lamb biryani, which meats and proteins work as substitutes with ratios, how to store and reheat leftovers, and how to buy the right cut of lamb for it.",
             "hero_image_query": "lamb biryani in pot with saffron rice",
             "image_alt": "A pot of lamb biryani with layers of golden saffron rice, tender bone-in lamb pieces, crispy fried onions, and fresh mint scattered on top.",
@@ -280361,6 +280433,12 @@ SEED_PAGES = [
         "title": "Turmeric Powder Shots Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/15792769/pexels-photo-15792769.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Merve",
+                "photographer_url": "https://www.pexels.com/@merve-205352359",
+                "source": "pexels",
+            },
             "meta_description": "A quick turmeric powder shot recipe made with black pepper, fresh lemon juice, and ginger, ready in under 10 minutes with no juicer required.",
             "hero_image_query": "turmeric shot glasses with lemon and ginger",
             "image_alt": "Small glass shot bottles filled with bright orange turmeric liquid, garnished with a slice of fresh ginger and a wedge of lemon on a wooden tray.",
@@ -280528,6 +280606,12 @@ SEED_PAGES = [
         "title": "Sugar Cookie Frosting Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5702701/pexels-photo-5702701.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "KATRIN  BOLOVTSOVA",
+                "photographer_url": "https://www.pexels.com/@ekaterina-bolovtsova",
+                "source": "pexels",
+            },
             "meta_description": "A simple sugar cookie frosting that spreads smooth, sets firm enough to stack, and gets a glossy finish from a touch of corn syrup. No meringue powder or egg whites needed.",
             "hero_image_query": "white icing on star shaped sugar cookies",
             "image_alt": "A butter knife spreading glossy white icing over a star-shaped sugar cookie on a cooling rack, with a bowl of extra icing and a small dish of sprinkles beside it.",
@@ -280694,6 +280778,12 @@ SEED_PAGES = [
         "title": "Overnight Rhodes Cinnamon Rolls Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/3951306/pexels-photo-3951306.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "NastyaSensei",
+                "photographer_url": "https://www.pexels.com/@nastyasensei-66707",
+                "source": "pexels",
+            },
             "meta_description": "An easy overnight cinnamon roll recipe made with frozen Rhodes dinner roll dough, brown sugar, and butterscotch pudding mix, baked golden and finished with a vanilla glaze.",
             "hero_image_query": "overnight cinnamon rolls in baking dish with glaze",
             "image_alt": "A 9x13 baking dish of golden overnight Rhodes cinnamon rolls drizzled with white vanilla glaze, one roll pulled apart to show the soft interior.",
@@ -280901,6 +280991,12 @@ SEED_PAGES = [
         "title": "What Is Eel Sauce?",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1729544807821-0ae6fa70b274?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8ZWVsJTIwc2F1Y2UlMjBkcml6emxlZCUyMG92ZXIlMjBzdXNoaSUyMHJvbGx8ZW58MHx8fHwxNzg5NDY0MTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Carina S",
+                "photographer_url": "https://unsplash.com/@carinacs",
+                "source": "unsplash",
+            },
             "meta_description": "Eel sauce is a thick, sweet-savory glaze made from soy sauce, sugar, and mirin, used to top sushi rolls. Despite the name, it contains no eel.",
             "hero_image_query": "eel sauce drizzled over sushi roll",
             "image_alt": "A glass bottle of dark glossy eel sauce next to a sushi roll drizzled with the same thick brown glaze",
@@ -280937,6 +281033,12 @@ SEED_PAGES = [
         "title": "Cassoulet Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/16975183/pexels-photo-16975183.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Nadin Sh",
+                "photographer_url": "https://www.pexels.com/@nadin-sh-78971847",
+                "source": "pexels",
+            },
             "meta_description": "A classic French cassoulet with duck confit, pork shoulder, and garlic sausage simmered with white beans and baked until a deep, golden crust forms on top.",
             "hero_image_query": "cassoulet duck confit white beans",
             "image_alt": "A bubbling cassoulet in a round Dutch oven, showing duck confit legs and sausage nestled into white beans under a cracked golden-brown breadcrumb crust.",
@@ -281240,6 +281342,12 @@ SEED_PAGES = [
         "title": "How Long Does Bacon Last in the Fridge",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/36691294/pexels-photo-36691294.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Mohamed  Olwy",
+                "photographer_url": "https://www.pexels.com/@mohamed9380",
+                "source": "pexels",
+            },
             "meta_description": "How long raw and cooked bacon actually keeps in the refrigerator, plus the storage steps that stretch its shelf life and the signs it's gone bad.",
             "hero_image_query": "raw bacon strips in refrigerator packaging",
             "image_alt": "Vacuum-sealed package of raw bacon strips resting on a refrigerator shelf next to a container of cooked bacon slices.",
@@ -281296,6 +281404,12 @@ SEED_PAGES = [
         "title": "Highball",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4667185/pexels-photo-4667185.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "cottonbro studio",
+                "photographer_url": "https://www.pexels.com/@cottonbro",
+                "source": "pexels",
+            },
             "meta_description": "What a highball drink actually is, the best mixer substitutes with ratios, how to store carbonated mixers so they don't go flat, and how to build one properly.",
             "hero_image_query": "whiskey highball in tall glass with ice and club soda",
             "image_alt": "A tall highball glass filled with ice, whiskey, and club soda, with a lemon twist resting on the rim and small bubbles rising through the drink.",
@@ -281413,6 +281527,12 @@ SEED_PAGES = [
         "title": "Beef and Broccoli Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/31867670/pexels-photo-31867670.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Ivan Georgiev",
+                "photographer_url": "https://www.pexels.com/@ivandesignx",
+                "source": "pexels",
+            },
             "meta_description": "A classic Chinese-American beef and broccoli stir-fry with tender velveted steak, crisp-tender broccoli, and a glossy garlic-ginger sauce, ready in about 40 minutes.",
             "hero_image_query": "beef and broccoli stir fry",
             "image_alt": "A skillet of sliced beef and broccoli florets coated in a glossy dark brown sauce, garnished with sesame seeds, served over white rice.",
@@ -281786,6 +281906,12 @@ SEED_PAGES = [
         "title": "Low Salt Hummus Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6419386/pexels-photo-6419386.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Polina Tankilevitch",
+                "photographer_url": "https://www.pexels.com/@polina-tankilevitch",
+                "source": "pexels",
+            },
             "meta_description": "A creamy low sodium hummus made with no-salt-added chickpeas, tahini, lemon, and garlic, no salt needed thanks to bright acid and toasted spice. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "low salt hummus with olive oil and paprika",
             "image_alt": "A bowl of pale, creamy hummus swirled with a spoon, pooled with olive oil in the center and dusted with smoked paprika, served with cucumber slices and pita triangles.",
@@ -281980,6 +282106,12 @@ SEED_PAGES = [
         "title": "Red Bean Paste Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/31051765/pexels-photo-31051765.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Lisa Fotios",
+                "photographer_url": "https://www.pexels.com/@fotios-photos",
+                "source": "pexels",
+            },
             "meta_description": "A from-scratch red bean paste (anko) recipe using dried adzuki beans, sugar, and a pinch of salt, simmered until thick enough to fill buns, mochi, and pastries.",
             "hero_image_query": "red bean paste in bowl with adzuki beans",
             "image_alt": "A glossy dark red bean paste in a ceramic bowl, with a small pile of dried adzuki beans and a wooden spoon resting beside it.",
@@ -282214,6 +282346,12 @@ SEED_PAGES = [
         "title": "Ezekiel Bread Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/13416187/pexels-photo-13416187.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Mateusz Feliksik",
+                "photographer_url": "https://www.pexels.com/@mateusz-feliksik-1896604",
+                "source": "pexels",
+            },
             "meta_description": "A homemade Ezekiel bread recipe made by sprouting wheat, barley, spelt, millet, lentils, and beans, based on the Ezekiel 4:9 method. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "sprouted grain ezekiel bread loaf sliced",
             "image_alt": "A sliced loaf of dense, dark sprouted-grain bread on a wooden cutting board, the interior flecked with visible pieces of sprouted grain and legume and a thick golden-brown crust.",
@@ -282467,6 +282605,12 @@ SEED_PAGES = [
         "title": "How to Cook Meatballs in the Oven",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6248799/pexels-photo-6248799.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Gary  Barnes",
+                "photographer_url": "https://www.pexels.com/@gary-barnes",
+                "source": "pexels",
+            },
             "meta_description": "How long to bake meatballs in the oven by size and meat type, plus the internal temperature that guarantees they're done without drying out.",
             "hero_image_query": "baked meatballs on sheet pan",
             "image_alt": "A sheet pan of golden-brown baked meatballs, each about 1.5 inches wide, with one cut in half to show the fully cooked center.",
@@ -282523,6 +282667,12 @@ SEED_PAGES = [
         "title": "How Long to Roast a Whole Chicken (By Weight and Oven Temperature)",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6210959/pexels-photo-6210959.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Tim Douglas",
+                "photographer_url": "https://www.pexels.com/@tim-douglas",
+                "source": "pexels",
+            },
             "meta_description": "How long to roast a whole chicken depends on its weight and oven temperature, not the clock alone. Use these per-pound guidelines and internal temperature checks to time it right.",
             "hero_image_query": "whole roasted chicken in roasting pan with thermometer",
             "image_alt": "A golden roasted whole chicken resting in a pan with a meat thermometer inserted into the thigh",
@@ -282582,6 +282732,12 @@ SEED_PAGES = [
         "title": "Mornay Sauce",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/18530640/pexels-photo-18530640.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Click Jeth",
+                "photographer_url": "https://www.pexels.com/@click-jeth-703137695",
+                "source": "pexels",
+            },
             "meta_description": "What mornay sauce is, how it differs from plain béchamel, the best substitutes with ratios, and how to store and use it without it breaking or turning grainy.",
             "hero_image_query": "mornay sauce cheese sauce in saucepan",
             "image_alt": "A pale golden cheese sauce being stirred with a whisk in a stainless steel saucepan, with strands of melted gruyere visible against the cream-colored base.",
@@ -282671,6 +282827,12 @@ SEED_PAGES = [
         "title": "Protein Noodles",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4223948/pexels-photo-4223948.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "alleksana",
+                "photographer_url": "https://www.pexels.com/@alleksana",
+                "source": "pexels",
+            },
             "meta_description": "What protein noodles are made from, how they compare in protein and calories, the best substitutes with ratios, and how to cook and store them without turning them mushy.",
             "hero_image_query": "chickpea protein noodles tossed with sauce in a bowl",
             "image_alt": "A bowl of yellow-tinted chickpea protein noodles tossed with olive oil, cherry tomatoes, and basil, showing their slightly grainier texture than wheat pasta.",
@@ -282796,6 +282958,12 @@ SEED_PAGES = [
         "title": "Nonfat Greek Yogurt Ranch Dip Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/36378878/pexels-photo-36378878.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Fer ID",
+                "photographer_url": "https://www.pexels.com/@fer-id-830123815",
+                "source": "pexels",
+            },
             "meta_description": "A creamy ranch-style dip built on nonfat Greek yogurt instead of sour cream and mayo, ready in 10 minutes with a 30-minute chill for the herb flavors to develop.",
             "hero_image_query": "greek yogurt ranch dip with vegetables",
             "image_alt": "A white bowl of pale, thick yogurt dip flecked with chopped dill and chives, surrounded by carrot sticks, cucumber slices, and bell pepper strips for dipping.",
@@ -282960,6 +283128,12 @@ SEED_PAGES = [
         "title": "Apple Cider Vinaigrette Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/36794069/pexels-photo-36794069.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Matvei",
+                "photographer_url": "https://www.pexels.com/@matvei-2160105320",
+                "source": "pexels",
+            },
             "meta_description": "A simple 5-minute apple cider vinaigrette with dijon and honey, plus real answers on how long apple cider vinegar lasts and whether it actually expires.",
             "hero_image_query": "apple cider vinaigrette dressing in glass jar",
             "image_alt": "A glass jar of golden apple cider vinaigrette with a whisk resting beside it and a bottle of apple cider vinegar in the background.",
@@ -283118,6 +283292,12 @@ SEED_PAGES = [
         "title": "Boiled Cabbage Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/10595294/pexels-photo-10595294.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Yelena from Pexels",
+                "photographer_url": "https://www.pexels.com/@yelenaodintsova",
+                "source": "pexels",
+            },
             "meta_description": "A Southern-style boiled cabbage recipe simmered with bacon, onion, and broth until fork-tender, ready in under 40 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "boiled cabbage with bacon",
             "image_alt": "A pot of boiled cabbage wedges simmered with crumbled bacon and onion in a rich broth, served in a shallow bowl with a wooden spoon.",
@@ -283310,6 +283490,12 @@ SEED_PAGES = [
         "title": "Black and Tan Drink Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/1267302/pexels-photo-1267302.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "ELEVATE",
+                "photographer_url": "https://www.pexels.com/@elevate",
+                "source": "pexels",
+            },
             "meta_description": "A classic black and tan recipe layering pale ale and stout in one glass, with the pour technique that keeps the two beers from mixing together.",
             "hero_image_query": "black and tan beer layered in pint glass",
             "image_alt": "A pint glass showing a distinct dark stout layer floating on top of a lighter pale ale below it, with a tan-colored foam head.",
@@ -283401,6 +283587,12 @@ SEED_PAGES = [
         "title": "Chia Pudding Recipe (with the Ratio That Always Sets)",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5803159/pexels-photo-5803159.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Nataliya Vaitkevich",
+                "photographer_url": "https://www.pexels.com/@n-voitkevich",
+                "source": "pexels",
+            },
             "meta_description": "The chia pudding ratio that sets thick every time: 1 part chia seeds to 4 parts liquid. A simple make-ahead pudding with a live serving scaler and US/metric toggle.",
             "hero_image_query": "chia pudding in a glass jar with berries",
             "image_alt": "A glass jar layered with thick, set chia pudding topped with sliced strawberries and a drizzle of maple syrup, with a spoon resting beside it.",
@@ -283535,6 +283727,12 @@ SEED_PAGES = [
         "title": "How to Air Fry Bacon",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4781427/pexels-photo-4781427.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "cottonbro studio",
+                "photographer_url": "https://www.pexels.com/@cottonbro",
+                "source": "pexels",
+            },
             "meta_description": "How to air fry bacon so it comes out crisp and evenly cooked with no stovetop grease splatter, plus the timing and rack setup that make it work.",
             "hero_image_query": "crispy bacon strips in air fryer basket",
             "image_alt": "Strips of crispy bacon arranged in a single layer in an air fryer basket, edges curled and deeply browned.",
@@ -283592,6 +283790,12 @@ SEED_PAGES = [
         "title": "Flaming Dr Pepper Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8920135/pexels-photo-8920135.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Mikhail Nilov",
+                "photographer_url": "https://www.pexels.com/@mikhail-nilov",
+                "source": "pexels",
+            },
             "meta_description": "A classic bar shot that tastes like the soda: amaretto and high-proof rum set alight, then dropped into a mug of beer. Includes safety notes and a serving scaler.",
             "hero_image_query": "flaming dr pepper shot cocktail",
             "image_alt": "A shot glass of amaretto and 151 rum burning with a blue flame, held over a mug of beer ready for the drop.",
@@ -283696,6 +283900,12 @@ SEED_PAGES = [
         "title": "Bhindi Masala",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/12392915/pexels-photo-12392915.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Saveurs Secretes",
+                "photographer_url": "https://www.pexels.com/@saveurssecretes",
+                "source": "pexels",
+            },
             "meta_description": "What bhindi masala spice blend is made of, the best substitutes with ratios, how to store it so it stays potent, and how to use it beyond okra.",
             "hero_image_query": "bhindi masala spice powder in small bowl with dried okra",
             "image_alt": "A small steel bowl of reddish-brown bhindi masala powder next to sliced fresh okra and whole cumin and coriander seeds on a wooden board.",
@@ -283785,6 +283995,12 @@ SEED_PAGES = [
         "title": "Fried Sweet Plantains (Maduros) Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/12362305/pexels-photo-12362305.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "SC Studio",
+                "photographer_url": "https://www.pexels.com/@santaclarastudio",
+                "source": "pexels",
+            },
             "meta_description": "Learn how to prepare and pan-fry ripe plantains into caramelized maduros, with tips on picking ripe fruit, peeling, slicing, and getting a deep golden crust.",
             "hero_image_query": "fried sweet plantains maduros",
             "image_alt": "Golden-brown caramelized plantain slices piled on a white plate, glistening from frying with darker crisp edges visible.",
@@ -283897,6 +284113,12 @@ SEED_PAGES = [
         "title": "Brown Lentils",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6086414/pexels-photo-6086414.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Eva Bronzini",
+                "photographer_url": "https://www.pexels.com/@eva-bronzini",
+                "source": "pexels",
+            },
             "meta_description": "What brown lentils are, the best substitutes with ratios, how to store and cook them, and how they compare to green, red, and French lentils.",
             "hero_image_query": "dry brown lentils in a bowl",
             "image_alt": "A wooden bowl filled with dry brown lentils next to a smaller dish of cooked lentils showing their olive-brown color and slightly flattened shape.",
@@ -283998,6 +284220,12 @@ SEED_PAGES = [
         "title": "No-Carb Garlic Butter Steak Bites Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8477300/pexels-photo-8477300.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Los Muertos Crew",
+                "photographer_url": "https://www.pexels.com/@cristian-rojas",
+                "source": "pexels",
+            },
             "meta_description": "Seared steak bites finished in garlic herb butter, ready in under 20 minutes with zero carbs and no starchy filler. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "garlic butter steak bites in cast iron skillet",
             "image_alt": "Cubes of seared steak glazed in melted garlic herb butter in a cast iron skillet, with rosemary sprigs and a browned crust visible on each piece.",
@@ -284163,6 +284391,12 @@ SEED_PAGES = [
         "title": "Chuck Roast in the Oven",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4768954/pexels-photo-4768954.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Denys Gromov",
+                "photographer_url": "https://www.pexels.com/@jdgromov",
+                "source": "pexels",
+            },
             "meta_description": "A fork-tender oven chuck roast braised low and slow with carrots, potatoes, and a rich pan gravy. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "chuck roast in oven with vegetables",
             "image_alt": "A braised chuck roast in a Dutch oven, surrounded by carrots and potatoes, with the lid resting beside it and gravy pooling in the bottom of the pot.",
@@ -284413,6 +284647,12 @@ SEED_PAGES = [
         "title": "Sour Cream Donut Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37326858/pexels-photo-37326858.png?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Anh Nguyen",
+                "photographer_url": "https://www.pexels.com/@anh-nguyen-517648218",
+                "source": "pexels",
+            },
             "meta_description": "Old-fashioned sour cream donuts with a craggy, crackled exterior and tender, cakey center, fried until deep golden and dipped in a simple vanilla glaze.",
             "hero_image_query": "sour cream cake donuts glazed",
             "image_alt": "A stack of old-fashioned sour cream donuts with cracked golden exteriors, one dipped halfway in white vanilla glaze, cooling on a wire rack.",
@@ -284661,6 +284901,12 @@ SEED_PAGES = [
         "title": "Homemade Peanut Butter Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/23384624/pexels-photo-23384624.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Adrianna CA",
+                "photographer_url": "https://www.pexels.com/@adriannacalvo",
+                "source": "pexels",
+            },
             "meta_description": "A simple homemade peanut butter recipe made with just roasted peanuts, salt, and a food processor. Ready in about 15 minutes, no preservatives or added sugar needed.",
             "hero_image_query": "homemade peanut butter in glass jar with spoon",
             "image_alt": "A glass jar of freshly ground homemade peanut butter with a wooden spoon lifting a swirl, roasted peanuts scattered on the counter beside it.",
@@ -284779,6 +285025,12 @@ SEED_PAGES = [
         "title": "How to Prepare a Latte",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/16541078/pexels-photo-16541078.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Yasin Onuş",
+                "photographer_url": "https://www.pexels.com/@yasin-onus-520099596",
+                "source": "pexels",
+            },
             "meta_description": "How to prepare a latte at home with properly steamed milk and a balanced shot, plus the pouring and foam mistakes that turn it into a flat, bitter cup.",
             "hero_image_query": "latte with milk foam being poured into espresso",
             "image_alt": "A stainless steel pitcher pouring steamed milk into a glass of espresso, creating a thin white ring of foam on top.",
@@ -284835,6 +285087,12 @@ SEED_PAGES = [
         "title": "Thai Coconut Curry Chicken",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/9218608/pexels-photo-9218608.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Loren Castillo",
+                "photographer_url": "https://www.pexels.com/@lorencastillo",
+                "source": "pexels",
+            },
             "meta_description": "A rich, restaurant-style Thai coconut curry chicken made with full fat coconut milk, red curry paste, and fresh vegetables, ready in about 40 minutes.",
             "hero_image_query": "thai coconut curry chicken",
             "image_alt": "A shallow bowl of Thai coconut curry chicken in a deep orange-red sauce with sliced bell peppers, served over white rice and topped with fresh Thai basil leaves.",
@@ -285071,6 +285329,12 @@ SEED_PAGES = [
         "title": "How to Defrost Ground Beef",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7284305/pexels-photo-7284305.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Alexas Fotos",
+                "photographer_url": "https://www.pexels.com/@alexasfotos",
+                "source": "pexels",
+            },
             "meta_description": "How to defrost ground beef safely using the refrigerator, cold water, or microwave, plus the food safety mistake that lets bacteria multiply.",
             "hero_image_query": "frozen ground beef thawing in package",
             "image_alt": "A vacuum-sealed package of ground beef partially thawed, sitting in a bowl of cold water on a kitchen counter.",
@@ -285123,6 +285387,12 @@ SEED_PAGES = [
         "title": "Asian Salad Dressing Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/3296543/pexels-photo-3296543.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "cottonbro studio",
+                "photographer_url": "https://www.pexels.com/@cottonbro",
+                "source": "pexels",
+            },
             "meta_description": "A quick Asian salad dressing recipe that balances soy sauce, rice vinegar, sesame oil, and a little honey. Ready in 5 minutes with a live serving-size scaler.",
             "hero_image_query": "asian sesame salad dressing in a jar",
             "image_alt": "A small glass jar of amber Asian salad dressing with visible sesame seeds, next to a whisk and a bowl of shredded cabbage salad.",
@@ -285312,6 +285582,12 @@ SEED_PAGES = [
         "title": "Blackened Shrimp",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/33653815/pexels-photo-33653815.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Engin Akyurt",
+                "photographer_url": "https://www.pexels.com/@enginakyurt",
+                "source": "pexels",
+            },
             "meta_description": "What blackened shrimp is, the spice blend behind the crust, protein substitutes with nutrition, how to store and reheat it, and why it turns dark without burning.",
             "hero_image_query": "blackened shrimp in cast iron skillet",
             "image_alt": "A cast iron skillet of shrimp coated in a dark reddish-brown spice crust, seared and slightly charred at the edges, with a pat of melted butter pooling underneath.",
@@ -285401,6 +285677,12 @@ SEED_PAGES = [
         "title": "Smoothie Chick",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37341692/pexels-photo-37341692.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Erwin Bosman",
+                "photographer_url": "https://www.pexels.com/@erwin-bosman-118283",
+                "source": "pexels",
+            },
             "meta_description": "What Smoothie Chick smoothie packs are, how to substitute them with homemade blends, how to store the pouches, and how to build a comparable smoothie from scratch.",
             "hero_image_query": "frozen smoothie pack ingredients poured into blender",
             "image_alt": "A frozen fruit and vegetable smoothie pack being poured from its pouch into a blender pitcher next to a carton of almond milk.",
@@ -285473,6 +285755,12 @@ SEED_PAGES = [
         "title": "Lobster Tail Pastry Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/28052916/pexels-photo-28052916.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Arthur  Swiffen",
+                "photographer_url": "https://www.pexels.com/@arthur-swiffen-172080999",
+                "source": "pexels",
+            },
             "meta_description": "An Italian-American lobster tail pastry recipe with paper-thin, shattering layers wrapped around a cold vanilla pastry cream. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "lobster tail pastry",
             "image_alt": "A golden, cone-shaped lobster tail pastry with fanned, shattered layers dusted in powdered sugar, cut open to show thick vanilla pastry cream inside.",
@@ -285714,6 +286002,12 @@ SEED_PAGES = [
         "title": "Protein Smoothie Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/16797804/pexels-photo-16797804.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Gül Işık",
+                "photographer_url": "https://www.pexels.com/@ekrulila",
+                "source": "pexels",
+            },
             "meta_description": "A creamy banana peanut butter protein smoothie with about 30 grams of protein per serving, ready in 5 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "protein smoothie in glass with banana slices",
             "image_alt": "A thick banana peanut butter protein smoothie in a tall glass, topped with banana slices and a drizzle of peanut butter, with a metal straw and scattered peanuts on the counter.",
@@ -285847,6 +286141,12 @@ SEED_PAGES = [
         "title": "Quaker Oatmeal Cookie Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/1626666/pexels-photo-1626666.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Luis Quintero",
+                "photographer_url": "https://www.pexels.com/@jibarofoto",
+                "source": "pexels",
+            },
             "meta_description": "The classic Quaker-style oatmeal cookie recipe with crisp edges and chewy centers, studded with raisins and cinnamon. Includes a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "oatmeal raisin cookies stack",
             "image_alt": "A stack of golden-brown oatmeal raisin cookies with crisp edges, cooling on a wire rack next to a glass of milk.",
@@ -286106,6 +286406,12 @@ SEED_PAGES = [
         "title": "How to Smoke Ribs",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/13203940/pexels-photo-13203940.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Wijs (Wise)",
+                "photographer_url": "https://www.pexels.com/@wijs-wise-136435282",
+                "source": "pexels",
+            },
             "meta_description": "How to smoke pork ribs low and slow for tender, fall-off-the-bone results, including the 3-2-1 method and the mistakes that dry them out.",
             "hero_image_query": "smoked pork ribs on a smoker grate",
             "image_alt": "A rack of smoked pork spare ribs with a dark bark and pink smoke ring, resting on butcher paper next to a smoker.",
@@ -286164,6 +286470,12 @@ SEED_PAGES = [
         "title": "Award-Winning Chili Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/38485702/pexels-photo-38485702.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Larysa Stratiichuk",
+                "photographer_url": "https://www.pexels.com/@larysa-stratiichuk-1606923648",
+                "source": "pexels",
+            },
             "meta_description": "A deep, competition-style beef chili built from whole toasted dried chiles, browned chuck, and a slow two-hour simmer, thickened with masa harina instead of flour.",
             "hero_image_query": "bowl of texas beef chili",
             "image_alt": "A deep red bowl of thick beef chili topped with shredded cheddar, sour cream, and sliced jalapeños, with cornbread on the side.",
@@ -286522,6 +286834,12 @@ SEED_PAGES = [
         "title": "Savory Oatmeal",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27850088/pexels-photo-27850088.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Livilla Latini",
+                "photographer_url": "https://www.pexels.com/@livilla-latini-1678510737",
+                "source": "pexels",
+            },
             "meta_description": "What savory oatmeal is, how it differs from sweet oatmeal, grain substitutes with ratios, and how to build a savory bowl that doesn't turn out bland or gluey.",
             "hero_image_query": "savory oatmeal bowl with fried egg and scallions",
             "image_alt": "A bowl of creamy savory oatmeal topped with a fried egg, sliced scallions, shredded cheddar, and a drizzle of chili oil.",
@@ -286623,6 +286941,12 @@ SEED_PAGES = [
         "title": "Wild Mushrooms",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/28753804/pexels-photo-28753804.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Lora  Rikky",
+                "photographer_url": "https://www.pexels.com/@lora-rikky-247863707",
+                "source": "pexels",
+            },
             "meta_description": "What wild mushrooms are, the best substitutes with ratios, how to store them without turning slimy, and how to use them in a rustic nature dinner.",
             "hero_image_query": "assorted wild mushrooms chanterelles morels porcini",
             "image_alt": "A wooden basket holding fresh chanterelles, morels, and porcini mushrooms with visible dirt and forest debris still clinging to their stems.",
@@ -286703,6 +287027,12 @@ SEED_PAGES = [
         "title": "Koon Po Beef Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35228295/pexels-photo-35228295.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "黃Lunny 設計",
+                "photographer_url": "https://www.pexels.com/@lunny-2150661847",
+                "source": "pexels",
+            },
             "meta_description": "Crispy fried beef strips tossed in a sweet, tangy, garlic-chili sauce with scallions, this Koon Po beef recipe recreates the Chinese-American takeout favorite at home in about 45 minutes.",
             "hero_image_query": "crispy koon po beef with scallions",
             "image_alt": "A plate of crispy fried beef strips glazed in a glossy red-brown sauce, scattered with scallion pieces and dried red chilies, served over white rice.",
@@ -286986,6 +287316,12 @@ SEED_PAGES = [
         "title": "Mascarpone Cream",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/32228895/pexels-photo-32228895.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Teresa Jang",
+                "photographer_url": "https://www.pexels.com/@teresa-jang-6930116",
+                "source": "pexels",
+            },
             "meta_description": "What mascarpone cream is, the best substitutes with ratios, how to store it without it breaking, and how to use it in tiramisu and other desserts.",
             "hero_image_query": "mascarpone cream in a glass bowl with a whisk",
             "image_alt": "A bowl of pale yellow whipped mascarpone cream with visible soft peaks, next to a whisk and a ramekin of cocoa powder.",
@@ -287255,6 +287591,12 @@ SEED_PAGES = [
         "title": "Baked Lamb's Milk Cheese with Honey and Walnuts Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/33746240/pexels-photo-33746240.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "olga Volkovitskaia",
+                "photographer_url": "https://www.pexels.com/@olga-volkovitskaia-131638009",
+                "source": "pexels",
+            },
             "meta_description": "A warm, spoonable baked lamb's milk cheese recipe finished with honey, toasted walnuts, and fresh thyme, ready in about 30 minutes and served with crusty bread.",
             "hero_image_query": "baked sheep milk cheese with honey and walnuts",
             "image_alt": "A small round of baked lamb's milk cheese in a shallow dish, softened and slightly puffed, drizzled with honey and scattered with chopped walnuts and fresh thyme, with slices of baguette alongside.",
@@ -287424,6 +287766,12 @@ SEED_PAGES = [
         "title": "Grapes in Jelly Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/9770881/pexels-photo-9770881.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Lieke",
+                "photographer_url": "https://www.pexels.com/@lieke-69039370",
+                "source": "pexels",
+            },
             "meta_description": "A retro congealed salad recipe with halved seedless grapes suspended in lemon-lime gelatin, chilled until firm and topped with toasted pecans. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "grapes suspended in jelly salad",
             "image_alt": "A glass dish of lemon-lime gelatin salad with halved red and green grapes suspended throughout, topped with chopped toasted pecans.",
@@ -287586,6 +287934,12 @@ SEED_PAGES = [
         "title": "Sour Cream Pound Cake Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/19212840/pexels-photo-19212840.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Rahime Gül",
+                "photographer_url": "https://www.pexels.com/@rahimegul",
+                "source": "pexels",
+            },
             "meta_description": "A dense, tender sour cream pound cake with a golden crust and rich buttery crumb, baked in a bundt pan. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "sour cream pound cake bundt sliced",
             "image_alt": "A golden bundt-shaped sour cream pound cake sliced to show its dense, tight crumb, dusted with powdered sugar on a cake stand.",
@@ -287788,6 +288142,12 @@ SEED_PAGES = [
         "title": "How to Smoke a Brisket by Time and Temperature",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27101483/pexels-photo-27101483.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Alex Gonzo",
+                "photographer_url": "https://www.pexels.com/@alex-gonzo-1518705084",
+                "source": "pexels",
+            },
             "meta_description": "How long to smoke a brisket at 225°F vs 250°F, why the stall throws off every time estimate, and the internal temperature that actually signals doneness.",
             "hero_image_query": "smoked brisket resting on cutting board with bark",
             "image_alt": "A whole smoked brisket with dark bark sliced into thick pieces, showing a pink smoke ring and moist interior on a cutting board.",
@@ -287848,6 +288208,12 @@ SEED_PAGES = [
         "title": "Healthy Crackers",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/9524032/pexels-photo-9524032.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Karen Laårk Boshoff",
+                "photographer_url": "https://www.pexels.com/@laarkstudio",
+                "source": "pexels",
+            },
             "meta_description": "What separates a genuinely healthy cracker from a marketing claim, the best swaps with ratios and real nutrition, and how to store and pair them.",
             "hero_image_query": "assorted whole grain and seed crackers on a wooden board",
             "image_alt": "A wooden board with rows of dark seed crackers, whole grain wheat crackers, and rice cakes next to a small bowl of hummus",
@@ -287944,6 +288310,12 @@ SEED_PAGES = [
         "title": "Instant Pot Baked Potatoes",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/29640883/pexels-photo-29640883.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Ellie Burgin",
+                "photographer_url": "https://www.pexels.com/@ellie-burgin-1661546",
+                "source": "pexels",
+            },
             "meta_description": "Fluffy, tender baked potatoes made in the Instant Pot in about 40 minutes, with a quick broiler finish for crisp, blistered skins. Includes a serving-size scaler and US/metric toggle.",
             "hero_image_query": "instant pot baked potatoes",
             "image_alt": "Four split-open russet potatoes with fluffy white interiors, topped with melting butter, sour cream, and sliced chives, sitting on a baking sheet.",
@@ -288309,6 +288681,12 @@ SEED_PAGES = [
         "title": "Strawberry Yogurt",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/23332774/pexels-photo-23332774.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Esra Erdem",
+                "photographer_url": "https://www.pexels.com/@esrakorkmaz",
+                "source": "pexels",
+            },
             "meta_description": "What strawberry yogurt is, how to substitute it in recipes with real ratios, how to store it, and how to use it beyond the spoon.",
             "hero_image_query": "strawberry yogurt in a glass jar with fresh strawberries",
             "image_alt": "A glass jar of pink strawberry yogurt topped with sliced fresh strawberries and a drizzle of the fruit syrup running down the side.",
@@ -288482,6 +288860,12 @@ SEED_PAGES = [
         "title": "Classic Chicken Salad Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/9843970/pexels-photo-9843970.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Leonora Brebner",
+                "photographer_url": "https://www.pexels.com/@leonora-brebner-119111311",
+                "source": "pexels",
+            },
             "meta_description": "A creamy classic chicken salad recipe that shows exactly how much mayo to use for the right texture, plus the mayo-to-chicken ratio that keeps it from turning soupy or dry.",
             "hero_image_query": "creamy chicken salad in a bowl",
             "image_alt": "A wooden bowl of creamy chicken salad studded with diced celery and red onion, with a serving spoon resting on the side and a few crackers nearby.",
@@ -288681,6 +289065,12 @@ SEED_PAGES = [
         "title": "Tequila",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/18420415/pexels-photo-18420415.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Sun in Libra",
+                "photographer_url": "https://www.pexels.com/@sun-in-libra-670659714",
+                "source": "pexels",
+            },
             "meta_description": "What separates good tequila from cheap mixto, the best substitutes for cocktails and cooking with ratios, how to store an open bottle, and how to buy it.",
             "hero_image_query": "bottle of blanco tequila with lime and salt",
             "image_alt": "A bottle of blanco tequila next to a rocks glass, lime wedges, and coarse salt on a wooden bar surface",
@@ -288769,6 +289159,12 @@ SEED_PAGES = [
         "title": "Chocolate Cream Cheese Frosting Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/2680602/pexels-photo-2680602.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Anna Tukhfatullina Food Photographer/Stylist",
+                "photographer_url": "https://www.pexels.com/@myfoodie",
+                "source": "pexels",
+            },
             "meta_description": "A rich, tangy chocolate cream cheese frosting made with cocoa powder, softened cream cheese, and butter. Enough to frost a two-layer cake or 24 cupcakes.",
             "hero_image_query": "chocolate cream cheese frosting swirled on cake",
             "image_alt": "A spatula swirling dark chocolate cream cheese frosting over the top of a layer cake, with a smooth glossy finish.",
@@ -288937,6 +289333,12 @@ SEED_PAGES = [
         "title": "Protein Bowls",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/17888788/pexels-photo-17888788.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Berna",
+                "photographer_url": "https://www.pexels.com/@mibernaa",
+                "source": "pexels",
+            },
             "meta_description": "What a protein bowl actually is, how to swap the protein component with real ratios and nutrition, how to store bowls for meal prep, and how to build one that holds up.",
             "hero_image_query": "protein bowl with grilled chicken rice and vegetables",
             "image_alt": "A wide shallow bowl divided into sections of white rice, sliced grilled chicken breast, black beans, shredded carrot, avocado, and a drizzle of tahini sauce.",
@@ -289050,6 +289452,12 @@ SEED_PAGES = [
         "title": "Mozzarella Pizza Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35819048/pexels-photo-35819048.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Willians Huerta",
+                "photographer_url": "https://www.pexels.com/@willians-huerta-2157111846",
+                "source": "pexels",
+            },
             "meta_description": "A classic mozzarella pizza with a crisp, blistered crust, tangy tomato sauce, and pools of melted fresh mozzarella, ready in about 30 minutes of active time.",
             "hero_image_query": "mozzarella pizza fresh basil",
             "image_alt": "An overhead shot of a round mozzarella pizza with a charred crust, melted cheese pools, and torn basil leaves, sliced into wedges on a wooden board.",
@@ -289234,6 +289642,12 @@ SEED_PAGES = [
         "title": "Cheesecake Bites",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/38003551/pexels-photo-38003551.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "azra melek",
+                "photographer_url": "https://www.pexels.com/@melek",
+                "source": "pexels",
+            },
             "meta_description": "What cheesecake bites are, the best substitutes with ratios, how to store them without cracking or sweating, and how to use them in other desserts.",
             "hero_image_query": "bite-sized cheesecake pieces on a plate",
             "image_alt": "A dozen small cheesecake bites with graham cracker bottoms, some dipped in chocolate, arranged on a marble board with a dusting of crumbs.",
@@ -289419,6 +289833,12 @@ SEED_PAGES = [
         "title": "Brown Sugar Boba Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/17159276/pexels-photo-17159276.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Kraken  Media",
+                "photographer_url": "https://www.pexels.com/@kraken-media-392419767",
+                "source": "pexels",
+            },
             "meta_description": "Make brown sugar boba (bubble tea) at home with chewy tapioca pearls, a deep caramelized brown sugar syrup, and milk poured over ice for the classic tiger-stripe look.",
             "hero_image_query": "brown sugar boba milk tea tiger stripes",
             "image_alt": "A glass of brown sugar boba milk tea with dark caramelized syrup striping the inside of the glass and chewy tapioca pearls settled at the bottom.",
@@ -289568,6 +289988,12 @@ SEED_PAGES = [
         "title": "Sponge Candy",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/65547/pexels-photo-65547.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Caio",
+                "photographer_url": "https://www.pexels.com/@caio",
+                "source": "pexels",
+            },
             "meta_description": "What sponge candy is, how it's made, the best substitutes with ratios, how to store it without it turning sticky, and how to use it in desserts.",
             "hero_image_query": "chocolate covered sponge candy",
             "image_alt": "A dish of dark chocolate-coated sponge candy pieces broken open to reveal the pale, airy honeycomb interior underneath.",
@@ -289640,6 +290066,12 @@ SEED_PAGES = [
         "title": "Carne Asada Burrito Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27365296/pexels-photo-27365296.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Snappr",
+                "photographer_url": "https://www.pexels.com/@snappr",
+                "source": "pexels",
+            },
             "meta_description": "A carne asada burrito recipe with citrus-marinated grilled skirt steak, rice, beans, and melted cheese, wrapped tight like a taqueria burrito. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "carne asada burrito",
             "image_alt": "A carne asada burrito cut in half on a cutting board, showing grilled steak, rice, black beans, melted cheese, and pico de gallo inside a flour tortilla.",
@@ -289965,6 +290397,12 @@ SEED_PAGES = [
         "title": "Green Mango",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/23995795/pexels-photo-23995795.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "junaid shinwari",
+                "photographer_url": "https://www.pexels.com/@junaid-shinwari-498254823",
+                "source": "pexels",
+            },
             "meta_description": "What green mango is, how it differs from ripe mango, the best substitutes with ratios, how to store it, and how to use its sour crunch in cooking.",
             "hero_image_query": "sliced green mango",
             "image_alt": "A halved unripe green mango on a cutting board showing its firm pale green-white flesh next to thin julienned strips tossed with chili and lime for a salad.",
@@ -290140,6 +290578,12 @@ SEED_PAGES = [
         "title": "Milk Chocolate Chip Cookies Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/36446733/pexels-photo-36446733.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Kandice Boyd-Roberts",
+                "photographer_url": "https://www.pexels.com/@kandice-boyd-roberts-2151992603",
+                "source": "pexels",
+            },
             "meta_description": "Thick, soft-centered chocolate chip cookies made with milk chocolate chips for a sweeter, less bitter bite than classic semisweet versions. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "milk chocolate chip cookies",
             "image_alt": "A stack of thick, golden-brown chocolate chip cookies studded with melted milk chocolate chips, one broken in half showing a soft, gooey center.",
@@ -290335,6 +290779,12 @@ SEED_PAGES = [
         "title": "Pan-Seared Thin Pork Chops Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/332784/pexels-photo-332784.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Matthias Zomer",
+                "photographer_url": "https://www.pexels.com/@matthiaszomer",
+                "source": "pexels",
+            },
             "meta_description": "Juicy pan-seared thin pork chops with a golden crust and a quick garlic-lemon pan sauce, ready in 20 minutes. Includes a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "pan seared thin pork chops skillet",
             "image_alt": "Four golden-brown thin pork chops in a stainless steel skillet, glazed with a garlic and lemon pan sauce and topped with chopped parsley.",
@@ -290572,6 +291022,12 @@ SEED_PAGES = [
         "title": "Butternut Squash Ravioli Recipe",
         "batch_number": 9,
         "content": {
+            "image_url": "https://images.pexels.com/photos/20545313/pexels-photo-20545313.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Nadin Sh",
+                "photographer_url": "https://www.pexels.com/@nadin-sh-78971847",
+                "source": "pexels",
+            },
             "meta_description": "Homemade butternut squash ravioli filled with roasted squash, ricotta, and Parmesan, tossed in brown butter and crispy sage. Includes a serving scaler and US/metric toggle.",
             "hero_image_query": "butternut squash ravioli brown butter sage",
             "image_alt": "A white plate of golden butternut squash ravioli tossed in brown butter sauce, topped with crispy fried sage leaves and shaved Parmesan.",
