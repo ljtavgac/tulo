@@ -227,6 +227,13 @@ export interface DefinitionContent {
   usage_origin: string;
   substitute_note: string;
   substitute_page_slug: string | null;
+  // The Ingredient Hub page for the term this page defines, if one exists
+  // -- e.g. "What Is Gruyère?" -> the Gruyère hub page. Distinct from
+  // substitute_page_slug (a different cross-link, to a Substitute page),
+  // and from prose auto-linking (which only fires if the term happens to
+  // land in the site's capped 300-term dictionary) -- this is the one
+  // deliberate, always-present structural link back to the hub.
+  hub_page_slug: string | null;
   // Literal word forms (verb, gerund, past tense, ...) that should
   // auto-link to this page from other prose, in addition to the bare term
   // derived from the title. Only needed for technique pages: an
@@ -266,6 +273,14 @@ export interface ComparisonContent {
   faqs?: Faq[];
   item_a_link: LinkRef | null;
   item_b_link: LinkRef | null;
+  // Recipes where the comparison itself is directly relevant (e.g. a
+  // recipe that specifically calls for one of the two compared
+  // ingredients, or that the comparison's verdict would help someone
+  // choose between). Comparison pages had no structured path to a Recipe
+  // page at all before this -- confirmed live (2026-09-16) 0 of 27
+  // Comparison pages had one; a reader could only reach a recipe from here
+  // if the recipe's title happened to land in the auto-link dictionary.
+  related_recipe_slugs: string[];
 }
 
 export interface RankedSubstitute {

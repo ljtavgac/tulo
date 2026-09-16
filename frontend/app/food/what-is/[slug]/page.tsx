@@ -75,6 +75,14 @@ export default async function DefinitionPage({
       <p className="mt-2 text-ink/80">
         <LinkifiedText text={content.expanded_explanation} terms={linkTerms} />
       </p>
+      {content.hub_page_slug ? (
+        <Link
+          href={pagePath("ingredient_hub", content.hub_page_slug)}
+          className="mt-2 inline-block text-sm font-medium underline hover:text-accent"
+        >
+          Full ingredient guide →
+        </Link>
+      ) : null}
 
       <h2 className="mt-8 text-xl font-bold">Where it's used</h2>
       <p className="mt-2 text-ink/80">{content.usage_origin}</p>
