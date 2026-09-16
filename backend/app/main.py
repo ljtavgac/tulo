@@ -15,7 +15,7 @@ from typing import NamedTuple
 import requests
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 
@@ -2747,6 +2747,8 @@ def outreach_queue(
         <a href="/admin/outreach-queue?show=approved">approved</a>
         <a href="/admin/outreach-queue?show=rejected">rejected</a>
         <a href="/admin/outreach-queue?show=all">all</a>
+        &middot;
+        <a href="/admin/outreach-queue/export.csv?status=approved">export approved as CSV</a>
       </div>
       {rows_html}
     </body>
@@ -2782,6 +2784,57 @@ def outreach_queue_decide(
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+@app.get("/admin/outreach-queue/export.csv")
+def outreach_queue_export_csv(
+    status: str = Query(default="approved", description="approved | queued | rejected | all"),
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """CSV export of prospects, for manually importing into a campaign
+    tool's own UI -- a bridge until real send-API integration exists.
+
+    Built instead of a Snov.io API client: this session could confirm the
+    OAuth token-acquisition pattern (client_credentials grant to
+    api.snov.io) from search results, but not the actual send/campaign
+    endpoint paths and payload shapes -- both snov.io and api.snov.io are
+    blocked by this environment's own egress proxy, and no reachable
+    mirror had endpoint-level detail either. Writing a client against
+    guessed endpoint paths would ship code that looks complete but likely
+    isn't, with no way to test it here -- worse than not building it. CSV
+    import is a universal feature of essentially every campaign tool
+    (Snov.io included), so this gets the same prospects usably in front
+    of the user today without guessing at an unverified contract; real
+    API integration is a queued follow-up once the endpoints are
+    confirmed against reachable docs or real credentials.
+
+    Defaults to status=approved -- the "ready to act on" set -- not the
+    full queue, so the file downloaded here isn't accidentally imported
+    with still-pending or already-rejected rows mixed in."""
+    import csv
+    import io
+
+    query = db.query(OutreachProspect)
+    if status != "all":
+        query = query.filter(OutreachProspect.status == status)
+    rows = query.order_by(OutreachProspect.created_at.desc()).all()
+
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(
+        ["prospect_id", "pitch_type", "target_domain", "contact_name", "contact_email", "subject", "body_preview", "source_query", "status", "is_example"]
+    )
+    for r in rows:
+        writer.writerow(
+            [r.id, r.pitch_type, r.target_domain, r.contact_name or "", r.contact_email or "", r.subject, r.body_preview, r.source_query or "", r.status, r.is_example]
+        )
+
+    return Response(
+        content=buffer.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="outreach-prospects-{status}.csv"'},
+    )
 
 
 # Postmark's own recommended pattern -- see "Configure an inbound server"
