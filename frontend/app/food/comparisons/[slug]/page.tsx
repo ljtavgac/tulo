@@ -10,6 +10,7 @@ import FaqSection from "@/components/FaqSection";
 import StockPhotoSlot from "@/components/StockPhotoSlot";
 import AdSlot from "@/components/AdSlot";
 import LinkifiedText from "@/components/LinkifiedText";
+import RelatedLinks from "@/components/RelatedLinks";
 import Link from "next/link";
 import { getLinkTerms } from "@/lib/linkTerms";
 
@@ -116,6 +117,8 @@ export default async function ComparisonPage({
       ) : null}
 
       <FaqSection faqs={content.faqs} />
+
+      <RelatedLinks heading="Related recipes" templateType="recipe_or_dish" slugs={content.related_recipe_slugs} />
     </main>
   );
 }

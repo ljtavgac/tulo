@@ -434,6 +434,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -520,6 +521,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -3187,6 +3189,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3250,6 +3253,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3314,6 +3318,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3379,6 +3384,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3441,6 +3447,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["mango-ice-cream"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3504,6 +3511,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3566,6 +3574,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": "lard",
         },
     },
     {
@@ -3628,6 +3637,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": "yuzu",
         },
     },
     {
@@ -3691,6 +3701,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["amaretto-sour"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3754,6 +3765,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     # Technique glossary: definitions for the recipe-instruction jargon a
@@ -3832,6 +3844,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["banana-nut-bread", "mango-ice-cream"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3895,6 +3908,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["mango-ice-cream"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -3963,6 +3977,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["fried-green-tomatoes"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4034,6 +4049,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["peri-peri-chicken", "chilean-sea-bass"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4105,6 +4121,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["chicken-al-pastor", "chilean-sea-bass"],
+            "hub_page_slug": "searing",
         },
     },
     {
@@ -4177,6 +4194,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4249,6 +4267,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["mango-ice-cream"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4320,6 +4339,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["arroz-con-leche"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4386,6 +4406,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["amaretto-sour"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4456,6 +4477,7 @@ SEED_PAGES = [
                 },
             ],
             "related_recipe_slugs": ["chicken-al-pastor"],
+            "hub_page_slug": None,
         },
     },
     {
@@ -4533,6 +4555,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -4611,6 +4634,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -4690,6 +4714,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -4768,6 +4793,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -4849,6 +4875,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -4923,6 +4950,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -5002,6 +5030,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -5081,6 +5110,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -5161,6 +5191,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -5239,6 +5270,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -14699,6 +14731,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -15738,6 +15771,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -16366,6 +16400,7 @@ SEED_PAGES = [
             "verdict": "Choose Diet Coke if you like its lighter, more citrusy, distinct cola taste on its own merits. Choose Coke Zero if you want something that tastes as close as possible to regular Coca-Cola without the sugar or calories.",
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -17575,6 +17610,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -17842,6 +17878,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -18301,6 +18338,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -18687,6 +18725,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -19268,6 +19307,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
 
@@ -34838,6 +34878,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -35869,6 +35910,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -36519,6 +36561,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -36561,6 +36604,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -36924,6 +36968,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -36963,6 +37008,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -37005,6 +37051,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -37041,6 +37088,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": "creme-fraiche",
         },
     },
     {
@@ -37131,6 +37179,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -37231,6 +37280,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -37336,6 +37386,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -37378,6 +37429,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -37471,6 +37523,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -37739,6 +37792,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -37844,6 +37898,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -37968,6 +38023,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": "mezcal",
         },
     },
     {
@@ -38133,6 +38189,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -38238,6 +38295,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -158656,6 +158714,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -178784,6 +178843,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -182557,6 +182617,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -182975,6 +183036,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -183017,6 +183079,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -190499,6 +190562,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -205987,6 +206051,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -206723,6 +206788,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -207691,6 +207757,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -208044,6 +208111,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -217280,6 +217348,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -223329,6 +223398,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -224832,6 +224902,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -232500,6 +232571,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -242333,6 +242405,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -246015,6 +246088,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -246363,6 +246437,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -246468,6 +246543,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
     {
@@ -247217,6 +247293,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": "branzino",
         },
     },
     {
@@ -274905,6 +274982,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -279842,6 +279920,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -281079,6 +281158,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -286476,6 +286556,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -292199,6 +292280,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -294687,6 +294769,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": None,
         },
     },
     {
@@ -294865,6 +294948,7 @@ SEED_PAGES = [
             ],
             "substitute_page_slug": None,
             "related_recipe_slugs": [],
+            "hub_page_slug": "double-cream",
         },
     },
     {
