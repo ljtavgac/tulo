@@ -9,6 +9,7 @@ import time
 from collections import Counter
 from contextlib import asynccontextmanager, redirect_stdout
 from datetime import datetime, timezone
+from html import escape as escape_html
 from typing import NamedTuple
 
 import requests
@@ -31,7 +32,7 @@ from .images import (
     _search_unsplash,
     is_allowed_image_url,
 )
-from .models import BatchApproval, Page, PageReview
+from .models import BatchApproval, OutreachProspect, Page, PageReview
 from .schemas import PageOut, PageSummary
 from .seed_templates import SEED_PAGES, resync_content, seed
 
@@ -187,6 +188,7 @@ async def lifespan(app: FastAPI):
         # needs to reach already-seeded pages, not just freshly inserted
         # ones, without wiping out any photo already fetched for them.
         resync_content(db)
+        _seed_outreach_examples(db)
     finally:
         db.close()
 
@@ -2526,3 +2528,219 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
     </html>
     """
     return HTMLResponse(content=html)
+
+
+def _seed_outreach_examples(db: Session) -> None:
+    """Populates a handful of clearly-marked example rows the first time
+    outreach_prospects is empty, purely so /admin/outreach-queue (a shell
+    -- see OutreachProspect's own docstring for what's not built yet) has
+    something real to show and its Approve/Reject buttons have something
+    to act on, instead of shipping a page that looks broken empty. Every
+    example uses a fictitious .test domain and no real contact --
+    is_example=True keeps it visually and structurally distinguishable
+    from a real prospect once real sourcing exists. Idempotent: only
+    inserts when the table has zero rows, so a reviewer's real decisions
+    (or a future real prospect) are never touched by a redeploy."""
+    if db.query(OutreachProspect).first() is not None:
+        return
+    examples = [
+        OutreachProspect(
+            pitch_type="tool_pitch",
+            target_domain="example-cooking-blog.test",
+            contact_name="Jamie (example contact)",
+            contact_email="jamie@example-cooking-blog.test",
+            subject="A free pan-size converter your readers might like",
+            body_preview=(
+                "Hi Jamie -- I noticed your banana bread post mentions swapping pan sizes by eye. "
+                "We built a free pan-size/yield calculator that adjusts bake time too, thought it "
+                "might be a useful link for that post."
+            ),
+            is_example=True,
+        ),
+        OutreachProspect(
+            pitch_type="tool_pitch",
+            target_domain="example-nutrition-site.test",
+            contact_name="Morgan (example contact)",
+            contact_email="morgan@example-nutrition-site.test",
+            subject="A live recipe nutrition recalculator (swap-aware)",
+            body_preview=(
+                "Hi Morgan -- following your piece on recipe substitutions, we built a tool that "
+                "recalculates a recipe's nutrition live as you swap ingredients or change servings. "
+                "Could be a relevant link for readers making substitutions."
+            ),
+            is_example=True,
+        ),
+        OutreachProspect(
+            pitch_type="haro_reply",
+            target_domain="example-journalist-outlet.test",
+            contact_name="Reporter (example contact)",
+            contact_email=None,
+            source_query=(
+                "Looking for a home cook or food writer to comment on ingredient substitution "
+                "mistakes for a piece on baking fails."
+            ),
+            subject="Source for your ingredient-substitution piece",
+            body_preview=(
+                "Hi -- happy to help as a source. One common mistake: substituting baking soda for "
+                "baking powder 1:1 -- baking soda is roughly 3x stronger and needs its own acid to "
+                "activate, so the swap either falls flat or turns bitter. Happy to expand with a "
+                "couple more examples if useful."
+            ),
+            is_example=True,
+        ),
+    ]
+    db.add_all(examples)
+    db.commit()
+
+
+@app.get("/admin/outreach-queue", response_class=HTMLResponse)
+def outreach_queue(
+    token: str,
+    show: str = Query(default="queued", description="queued | approved | rejected | all"),
+    db: Session = Depends(get_db),
+):
+    """Portal shell for link-building outreach (tool-pitch emails and
+    HARO/Connectively-style query replies) -- see OutreachProspect's
+    docstring for exactly what is and isn't real yet. Nothing here can
+    send an email: that, real prospect sourcing, and hardened admin auth
+    are all still pending on settling an email-sending API + a
+    HARO/Connectively data source (see this session's research) before
+    they're built. Approve/Reject state itself is real and persists.
+
+    Same ADMIN_TASK_TOKEN-via-URL-param gate as every other /admin route
+    for now, which is fine for a shell with no real contact data -- but a
+    real approve/reject decision on a real prospect, and the sends that
+    would eventually follow it, are enough of a step up in stakes that
+    this deserves hardened auth (header/cookie instead of a URL param, a
+    separate scoped secret, ideally a confirm step) before it goes live
+    with real data, not just this shell's copy-of-the-existing-pattern."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    query = db.query(OutreachProspect)
+    if show != "all":
+        query = query.filter(OutreachProspect.status == show)
+    rows = query.order_by(OutreachProspect.created_at.desc()).all()
+
+    counts = Counter(r.status for r in db.query(OutreachProspect).all())
+
+    def card(r: OutreachProspect) -> str:
+        pitch_label = "Tool pitch" if r.pitch_type == "tool_pitch" else "HARO/query reply"
+        pitch_pill_class = "tool" if r.pitch_type == "tool_pitch" else "haro"
+        query_html = (
+            f'<div class="source-query">Query: {escape_html(r.source_query)}</div>' if r.source_query else ""
+        )
+        contact_bits = [
+            escape_html(v) for v in (r.contact_name, r.contact_email) if v
+        ]
+        contact_html = " &middot; ".join(contact_bits)
+        example_pill = '<span class="pill pill-example">example</span>' if r.is_example else ""
+        if r.status == "queued":
+            actions_html = f"""
+            <div class="actions">
+              <a class="btn-approve" href="/admin/outreach-queue/decide?token={token}&prospect_id={r.id}&status=approved&show={show}">Approve</a>
+              <a class="btn-reject" href="/admin/outreach-queue/decide?token={token}&prospect_id={r.id}&status=rejected&show={show}">Reject</a>
+            </div>
+            """
+        else:
+            decided_label = f"{r.decided_at:%Y-%m-%d %H:%M}" if r.decided_at else ""
+            actions_html = (
+                f'<div class="decided">decided {decided_label} &middot; '
+                f'<a href="/admin/outreach-queue/decide?token={token}&prospect_id={r.id}&status=queued&show={show}">undo</a></div>'
+            )
+        return f"""
+        <div class="card status-{r.status}">
+          <div class="info">
+            <div class="title">{escape_html(r.subject)}
+              <span class="pill pill-{pitch_pill_class}">{pitch_label}</span>{example_pill}
+              <span class="pill pill-status-{r.status}">{r.status}</span>
+            </div>
+            <div class="meta">{escape_html(r.target_domain)}{" &middot; " + contact_html if contact_html else ""}</div>
+            {query_html}
+            <div class="body-preview">{escape_html(r.body_preview)}</div>
+            {actions_html}
+          </div>
+        </div>
+        """
+
+    rows_html = "".join(card(r) for r in rows) if rows else '<p style="color:#888;font-size:13px;">Nothing here.</p>'
+
+    html = f"""
+    <html>
+    <head>
+      <title>Outreach queue</title>
+      <style>
+        body {{ font-family: -apple-system, sans-serif; margin: 24px; background: #fafafa; max-width: 900px; }}
+        h1 {{ font-size: 20px; margin-bottom: 4px; }}
+        .banner {{ font-size: 12px; color: #7a5b00; background: #fff6dd; border: 1px solid #f0dfa0; border-radius: 6px; padding: 10px 14px; margin-bottom: 18px; }}
+        .summary {{ font-size: 13px; color: #444; margin-bottom: 14px; }}
+        .filters {{ margin-bottom: 16px; }}
+        .filters a {{ margin-right: 10px; font-size: 13px; }}
+        .card {{ background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }}
+        .card.status-approved {{ border-color: #bde0c4; }}
+        .card.status-rejected {{ opacity: 0.6; }}
+        .title {{ font-weight: 600; font-size: 14px; }}
+        .pill {{ font-size: 10px; padding: 1px 7px; border-radius: 20px; margin-left: 4px; font-weight: 400; }}
+        .pill-tool {{ background: #e3ecfb; color: #24478a; }}
+        .pill-haro {{ background: #f0e6fb; color: #5b2d90; }}
+        .pill-example {{ background: #eee; color: #777; }}
+        .pill-status-queued {{ background: #eee; color: #666; }}
+        .pill-status-approved {{ background: #dcefe0; color: #276b3c; }}
+        .pill-status-rejected {{ background: #fbdada; color: #a00; }}
+        .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
+        .source-query {{ font-size: 12px; color: #5b2d90; background: #f7f2fc; border-radius: 4px; padding: 6px 8px; margin: 6px 0; }}
+        .body-preview {{ font-size: 12px; color: #333; margin: 8px 0; white-space: pre-wrap; }}
+        .actions {{ margin-top: 10px; }}
+        .btn-approve {{ background: #2f7d43; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; margin-right: 8px; }}
+        .btn-reject {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; }}
+        .decided {{ font-size: 11px; color: #888; margin-top: 8px; }}
+        .decided a {{ color: #06c; }}
+      </style>
+    </head>
+    <body>
+      <h1>Outreach queue</h1>
+      <div class="banner">
+        Portal shell -- approve/reject state is real and persists, but every row below is either an
+        example or, once real prospects exist, still not wired to any actual sending: the
+        email-sending API, HARO/Connectively data source, and admin auth hardening are still pending.
+      </div>
+      <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected</div>
+      <div class="filters">
+        <a href="/admin/outreach-queue?token={token}&show=queued">queued</a>
+        <a href="/admin/outreach-queue?token={token}&show=approved">approved</a>
+        <a href="/admin/outreach-queue?token={token}&show=rejected">rejected</a>
+        <a href="/admin/outreach-queue?token={token}&show=all">all</a>
+      </div>
+      {rows_html}
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html)
+
+
+@app.get("/admin/outreach-queue/decide")
+def outreach_queue_decide(
+    token: str,
+    prospect_id: int,
+    status: str,
+    show: str = "queued",
+    db: Session = Depends(get_db),
+):
+    """Records a human's approve/reject (or undo-back-to-queued) decision
+    on one prospect. Same GET-link-plus-redirect convention as
+    /admin/review-queue/mark -- these are internal, token-gated clicks,
+    not user-facing forms."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+    if status not in ("queued", "approved", "rejected"):
+        raise HTTPException(status_code=400, detail="status must be queued, approved, or rejected")
+
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+
+    prospect.status = status
+    prospect.decided_at = datetime.now(timezone.utc) if status != "queued" else None
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?token={token}&show={show}", status_code=303)
