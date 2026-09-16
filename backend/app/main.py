@@ -17,6 +17,7 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
 
 from .content_audit import run_full_audit, scan_ai_tells, scan_image_relevance_risk
@@ -174,9 +175,48 @@ async def _run_periodic_image_fetch() -> None:
         await asyncio.sleep(IMAGE_FETCH_INTERVAL_SECONDS)
 
 
+def _add_missing_columns(engine) -> None:
+    """Base.metadata.create_all() (called right after this in lifespan())
+    only creates tables that don't exist yet -- it never ALTERs an
+    existing table to add a column a newer version of a model defines.
+    This codebase has no migration framework (no Alembic), so a column
+    added to a model whose table was already deployed (e.g.
+    OutreachProspect.sent_at/send_error, added after outreach_prospects
+    already existed in live Postgres) needs to be added by hand here, or
+    every request that touches that column crashes with "column does not
+    exist" -- confirmed for real: both tulo-backend and
+    tulo-backend-staging failed to deploy on the commit that added those
+    two columns, because _seed_outreach_examples() queries the table at
+    startup.
+
+    Walks every mapped table/column pair; for any column the live
+    database doesn't have yet, issues a plain ALTER TABLE ADD COLUMN.
+    Idempotent and safe on every startup -- a no-op once a column exists,
+    same self-healing pattern as seed()/resync_content() below. Every
+    column added this way must be nullable (true of every column on
+    every model in this file so far) -- ADD COLUMN on a table with
+    existing rows needs a value for those rows, and a nullable column
+    with no explicit default just backfills NULL, which is exactly what
+    "this field didn't exist yet for old rows" should mean anyway."""
+    inspector = inspect(engine)
+    existing_tables = set(inspector.get_table_names())
+    with engine.begin() as conn:
+        for table in Base.metadata.sorted_tables:
+            if table.name not in existing_tables:
+                continue  # Brand-new table -- create_all() handles this case.
+            existing_columns = {c["name"] for c in inspector.get_columns(table.name)}
+            for column in table.columns:
+                if column.name in existing_columns:
+                    continue
+                col_type = column.type.compile(dialect=engine.dialect)
+                conn.execute(text(f'ALTER TABLE "{table.name}" ADD COLUMN "{column.name}" {col_type}'))
+                print(f"  _add_missing_columns: added {table.name}.{column.name} ({col_type})")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    _add_missing_columns(engine)
     # Render's free-tier disk is ephemeral (resets on redeploy) -- but
     # DATABASE_URL is set to a real, persistent Postgres instance in
     # production, so this seed/resync step is what keeps a *local* SQLite
@@ -2969,10 +3009,38 @@ _MAX_INGESTED_QUERY_CHARS = 8000
 
 def _strip_html_tags(html_text: str) -> str:
     """Crude HTML->text fallback for the rare inbound email that has no
-    TextBody at all (Postmark normally synthesizes one, but an
+    plain-text body at all (most providers synthesize one, but an
     unusually-formatted forwarded digest could still arrive HTML-only) --
     good enough for a human reviewer to read the gist, not a real parser."""
     return re.sub(r"<[^>]+>", " ", html_text)
+
+
+def _parse_inbound_email_payload(payload: dict) -> tuple[str, str, str]:
+    """Extracts (sender_email, subject, body) from either of two inbound
+    webhook JSON shapes, auto-detected by which keys are present --
+    covers both providers this session actually confirmed a real schema
+    for:
+
+    - Postmark Inbound: FromFull.Email (falls back to the legacy plain
+      From string), Subject, TextBody, HtmlBody.
+    - CloudMailin (JSON Normalised format): envelope.from,
+      headers.subject, plain, html.
+
+    Detection key is "envelope" or "plain" -> CloudMailin; anything else
+    is treated as Postmark's shape, since that was this integration's
+    original target. A third provider needs a third branch here, not a
+    guess -- same discipline as everywhere else this session pulled a
+    real schema before writing a parser for it."""
+    if "envelope" in payload or "plain" in payload:
+        sender_email = (payload.get("envelope") or {}).get("from") or ""
+        subject = (payload.get("headers") or {}).get("subject") or "(no subject)"
+        body = payload.get("plain") or _strip_html_tags(payload.get("html") or "")
+    else:
+        from_full = payload.get("FromFull") or {}
+        sender_email = from_full.get("Email") or payload.get("From") or ""
+        subject = payload.get("Subject") or "(no subject)"
+        body = payload.get("TextBody") or _strip_html_tags(payload.get("HtmlBody") or "")
+    return sender_email, subject.strip(), body.strip()
 
 
 @app.post("/admin/outreach-queue/ingest-email")
@@ -2984,10 +3052,17 @@ async def outreach_queue_ingest_email(
     """Receives one forwarded email (a HARO/Connectively-style query
     digest, or anything else routed to the inbound address) from an
     inbound-email-to-webhook provider and queues it as one new
-    OutreachProspect for human review. Parses Postmark's inbound JSON
-    schema (FromFull.Email / legacy From, Subject, TextBody, HtmlBody) --
-    the field names to change here if a different provider (e.g. Mailgun
-    Routes, whose POST is form-encoded, not JSON) gets set up instead.
+    OutreachProspect for human review. Parses either Postmark Inbound's
+    or CloudMailin's JSON schema (see _parse_inbound_email_payload) --
+    CloudMailin over Postmark Inbound specifically because Postmark
+    Inbound has no free tier, while CloudMailin's free tier (10,000
+    messages/month, not a time-limited trial) comfortably covers this
+    volume and, like Postmark, supports embedding Basic Auth credentials
+    directly in the registered target URL -- so it reuses
+    _require_outreach_auth exactly like Postmark would have, no separate
+    secret. A provider whose POST isn't JSON at all (e.g. Mailgun Routes,
+    which is form-encoded) would need a real code change here, not just a
+    new schema branch.
 
     Deliberately does NOT try to split a digest email containing many
     individual queries into separate prospects -- an automatic splitter
@@ -3002,14 +3077,9 @@ async def outreach_queue_ingest_email(
     individual prospects, or this gets revisited once real sample emails
     exist to build and verify a real splitter against."""
     payload = await request.json()
-
-    from_full = payload.get("FromFull") or {}
-    sender_email = from_full.get("Email") or payload.get("From") or ""
+    sender_email, subject, body = _parse_inbound_email_payload(payload)
     sender_domain = sender_email.split("@")[-1].strip().lower() if "@" in sender_email else "unknown-sender"
 
-    subject = (payload.get("Subject") or "(no subject)").strip()
-    body = payload.get("TextBody") or _strip_html_tags(payload.get("HtmlBody") or "")
-    body = body.strip()
     truncated = len(body) > _MAX_INGESTED_QUERY_CHARS
     if truncated:
         body = body[:_MAX_INGESTED_QUERY_CHARS] + "\n\n[... truncated, see original email for the rest]"
