@@ -1,0 +1,36 @@
+name: Override staging images (explicit list)
+
+# One-off, explicit-list repair: calls /admin/review-queue/override-image
+# per slug -- exact URL, single page, no search -- for a fixed slug->URL
+# map passed in at dispatch time. Never a bulk or site-wide action, by
+# design: built after a forced site-wide-ish re-fetch overwrote several
+# manually-set staging images, so this only ever touches the exact slugs
+# named in the input, nothing else.
+on:
+  workflow_dispatch:
+    inputs:
+      slug_to_url_json:
+        description: 'JSON object mapping slug -> image_url, e.g. {"a": "https://images.pexels.com/..."}'
+        required: true
+
+jobs:
+  override:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Apply explicit image overrides
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          python3 content/scripts/override_images.py '${{ inputs.slug_to_url_json }}'
