@@ -5524,6 +5524,12 @@ SEED_PAGES = [
         "title": "Best Substitutes for Crème Fraîche",
         "batch_number": 2,
         "content": {
+            "image_url": "https://images.pexels.com/photos/33775650/pexels-photo-33775650.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Nano Erdozain",
+                "photographer_url": "https://www.pexels.com/@nano-erdozain-120534369",
+                "source": "pexels",
+            },
             "meta_description": (
                 "Out of crème fraîche? Here are three ranked substitutes, plus "
                 "how to make your own at home overnight."
@@ -5731,6 +5737,12 @@ SEED_PAGES = [
         "title": "Best Substitutes for Eggs in Baking",
         "batch_number": 2,
         "content": {
+            "image_url": "https://images.pexels.com/photos/14706041/pexels-photo-14706041.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Towfiqu barbhuiya",
+                "photographer_url": "https://www.pexels.com/@towfiqu-barbhuiya-3440682",
+                "source": "pexels",
+            },
             "meta_description": (
                 "Out of eggs, or baking vegan? Here are four ranked egg "
                 "substitutes with exact ratios for one egg."
@@ -37840,6 +37852,12 @@ SEED_PAGES = [
         "title": "Best Substitutes for Sesame Oil",
         "batch_number": 3,
         "content": {
+            "image_url": "https://images.pexels.com/photos/3850660/pexels-photo-3850660.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "ready made",
+                "photographer_url": "https://www.pexels.com/@readymade",
+                "source": "pexels",
+            },
             "meta_description": "Out of sesame oil? Here are six ranked substitutes with exact ratios, including which ones work for finishing dishes versus high-heat cooking.",
             "hero_image_query": "toasted sesame oil bottle with sesame seeds",
             "image_alt": "A small glass bottle of dark toasted sesame oil next to a pile of toasted sesame seeds and a ceramic spoon",
@@ -37958,6 +37976,12 @@ SEED_PAGES = [
         "title": "Best Substitutes for Dijon Mustard",
         "batch_number": 3,
         "content": {
+            "image_url": "https://images.pexels.com/photos/9025048/pexels-photo-9025048.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Андрей",
+                "photographer_url": "https://www.pexels.com/@84744238",
+                "source": "pexels",
+            },
             "meta_description": "Out of dijon mustard? Here are five ranked substitutes with exact ratios, including which ones work best in vinaigrettes, sauces, and glazes.",
             "hero_image_query": "jar of dijon mustard with spoon",
             "image_alt": "A glass jar of dijon mustard with a small wooden spoon resting in it, surrounded by whole mustard seeds on a wooden table",
@@ -38334,6 +38358,12 @@ SEED_PAGES = [
         "title": "Best Substitutes for Vegetable Oil",
         "batch_number": 3,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8113743/pexels-photo-8113743.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Annushka  Ahuja",
+                "photographer_url": "https://www.pexels.com/@annushka-ahuja",
+                "source": "pexels",
+            },
             "meta_description": "Out of vegetable oil? Here are six ranked substitutes with exact ratios, including which ones hold up best for baking, frying, and sautéing.",
             "hero_image_query": "bottle of vegetable oil pouring into measuring cup",
             "image_alt": "A glass measuring cup filled with pale yellow vegetable oil next to a plastic bottle of oil on a kitchen counter",
@@ -38605,6 +38635,12 @@ SEED_PAGES = [
         "title": "Best Substitutes for Evaporated Milk",
         "batch_number": 3,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7525104/pexels-photo-7525104.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "SHVETS production",
+                "photographer_url": "https://www.pexels.com/@shvets-production",
+                "source": "pexels",
+            },
             "meta_description": "Out of evaporated milk? Here are five ranked substitutes with exact ratios, including which ones work best for baking, custards, and savory sauces.",
             "hero_image_query": "can of evaporated milk poured into measuring cup",
             "image_alt": "Evaporated milk being poured from an open can into a glass measuring cup next to a saucepan of simmering whole milk",
