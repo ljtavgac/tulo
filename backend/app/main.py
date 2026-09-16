@@ -13,7 +13,7 @@ from html import escape as escape_html
 from typing import NamedTuple
 
 import requests
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -2782,3 +2782,87 @@ def outreach_queue_decide(
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+# Postmark's own recommended pattern -- see "Configure an inbound server"
+# in their docs -- is to embed HTTP Basic credentials straight into the
+# webhook URL you register with them (https://user:pass@host/path):
+# Postmark then sends that Authorization header on every POST with no
+# challenge/response round trip needed, since it's a server-to-server
+# call, not a browser visiting a page. That's exactly what
+# _require_outreach_auth already checks, so the inbound webhook reuses it
+# rather than inventing a second secret. Whichever inbound-email provider
+# actually gets set up (Postmark Inbound was this session's research
+# recommendation; Mailgun Routes is a close second) needs to be
+# configured to hit this URL with those credentials embedded.
+_MAX_INGESTED_QUERY_CHARS = 8000
+
+
+def _strip_html_tags(html_text: str) -> str:
+    """Crude HTML->text fallback for the rare inbound email that has no
+    TextBody at all (Postmark normally synthesizes one, but an
+    unusually-formatted forwarded digest could still arrive HTML-only) --
+    good enough for a human reviewer to read the gist, not a real parser."""
+    return re.sub(r"<[^>]+>", " ", html_text)
+
+
+@app.post("/admin/outreach-queue/ingest-email")
+async def outreach_queue_ingest_email(
+    request: Request,
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Receives one forwarded email (a HARO/Connectively-style query
+    digest, or anything else routed to the inbound address) from an
+    inbound-email-to-webhook provider and queues it as one new
+    OutreachProspect for human review. Parses Postmark's inbound JSON
+    schema (FromFull.Email / legacy From, Subject, TextBody, HtmlBody) --
+    the field names to change here if a different provider (e.g. Mailgun
+    Routes, whose POST is form-encoded, not JSON) gets set up instead.
+
+    Deliberately does NOT try to split a digest email containing many
+    individual queries into separate prospects -- an automatic splitter
+    would have to guess at each source's own formatting (HARO's and
+    Connectively's digest layouts differ, and a forwarding step can
+    mangle either further with quoted-reply markers), and this session
+    already has direct, hard-won evidence (the #2 near-miss ingredient
+    matcher, rejected after a ~60-70% false-positive rate on manual
+    sampling) that a guessed heuristic here would misfire silently rather
+    than obviously. One row per inbound email, holding the full raw text,
+    is the honest scope: a human reads it and manually creates/edits
+    individual prospects, or this gets revisited once real sample emails
+    exist to build and verify a real splitter against."""
+    payload = await request.json()
+
+    from_full = payload.get("FromFull") or {}
+    sender_email = from_full.get("Email") or payload.get("From") or ""
+    sender_domain = sender_email.split("@")[-1].strip().lower() if "@" in sender_email else "unknown-sender"
+
+    subject = (payload.get("Subject") or "(no subject)").strip()
+    body = payload.get("TextBody") or _strip_html_tags(payload.get("HtmlBody") or "")
+    body = body.strip()
+    truncated = len(body) > _MAX_INGESTED_QUERY_CHARS
+    if truncated:
+        body = body[:_MAX_INGESTED_QUERY_CHARS] + "\n\n[... truncated, see original email for the rest]"
+
+    prospect = OutreachProspect(
+        pitch_type="haro_reply",
+        target_domain=sender_domain,
+        contact_name=None,
+        contact_email=None,
+        source_query=body or "(empty body)",
+        subject=f"[Draft needed] Re: {subject}",
+        body_preview=(
+            "Raw forwarded digest -- likely contains multiple individual queries bundled together. "
+            "Read the source query above, pick the one(s) worth responding to, and replace this "
+            "placeholder with a real drafted reply (and split into separate prospects if more than "
+            "one query here is worth pursuing) before approving."
+        ),
+        is_example=False,
+        status="queued",
+    )
+    db.add(prospect)
+    db.commit()
+    db.refresh(prospect)
+
+    return {"created_prospect_id": prospect.id}
