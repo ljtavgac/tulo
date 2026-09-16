@@ -5469,12 +5469,6 @@ SEED_PAGES = [
         "title": "Best Substitutes for Butter",
         "batch_number": 2,
         "content": {
-            "image_url": "https://images.pexels.com/photos/7966386/pexels-photo-7966386.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
-            "image_attribution": {
-                "photographer": "Felicity Tai",
-                "photographer_url": "https://www.pexels.com/@felicity-tai",
-                "source": "pexels",
-            },
             # Unpublished (2026-09-10): duplicate of best-substitutes-for-butter,
             # same topic covered independently under a different slug (see
             # _check_no_duplicate_titles). User chose to keep the other one.
