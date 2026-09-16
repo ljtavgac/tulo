@@ -16,6 +16,7 @@ import requests
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 
 from .content_audit import run_full_audit, scan_ai_tells, scan_image_relevance_risk
@@ -1075,6 +1076,48 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
 # occasional manual maintenance action on a low-traffic site; rotate
 # ADMIN_TASK_TOKEN in Render if you ever suspect it's leaked.
 ADMIN_TASK_TOKEN = os.environ.get("ADMIN_TASK_TOKEN")
+
+# Outreach-specific admin auth -- deliberately a SEPARATE credential from
+# ADMIN_TASK_TOKEN above, not a reuse of it. Every other /admin/* route
+# guards an occasional maintenance action (re-fetch a photo, flag a page)
+# where a URL-embedded token leaking into a server/proxy log is a modest,
+# accepted risk. The outreach portal is different in kind: it will
+# eventually hold real third-party contact data and gate real sends, so a
+# real approve/reject decision deserves a real credential a browser
+# doesn't echo back into every log line and Referer header the way a
+# query param does. HTTPBasic is the smallest real step up available
+# without building a login/session system this codebase has nowhere else
+# -- the browser prompts once and remembers it, and the credential travels
+# in an Authorization header instead of the URL.
+#
+# Every other /admin/* route returns a bare 404 on a bad token specifically
+# to avoid confirming "this route exists, you just got the credential
+# wrong" to anyone probing it. Basic Auth can't preserve that: a browser
+# will only show its username/password prompt in response to a real 401
+# with a WWW-Authenticate challenge, so _require_outreach_auth below
+# trades that particular stealth property, on these routes only, for
+# actual auth stronger than a URL token -- a deliberate, scoped exception,
+# not an oversight.
+OUTREACH_ADMIN_USER = os.environ.get("OUTREACH_ADMIN_USER")
+OUTREACH_ADMIN_PASSWORD = os.environ.get("OUTREACH_ADMIN_PASSWORD")
+_outreach_basic_auth = HTTPBasic(auto_error=False)
+
+
+def _require_outreach_auth(credentials: HTTPBasicCredentials | None = Depends(_outreach_basic_auth)) -> None:
+    """FastAPI dependency guarding every /admin/outreach-queue* route.
+    404s (not 401) when the feature is simply unconfigured -- same
+    "inert without setup" convention as ADMIN_TASK_TOKEN elsewhere in this
+    file -- so the outreach portal is unreachable, not half-open, until
+    OUTREACH_ADMIN_USER/OUTREACH_ADMIN_PASSWORD are both set."""
+    if not OUTREACH_ADMIN_USER or not OUTREACH_ADMIN_PASSWORD:
+        raise HTTPException(status_code=404)
+    valid = (
+        credentials is not None
+        and secrets.compare_digest(credentials.username, OUTREACH_ADMIN_USER)
+        and secrets.compare_digest(credentials.password, OUTREACH_ADMIN_PASSWORD)
+    )
+    if not valid:
+        raise HTTPException(status_code=401, headers={"WWW-Authenticate": "Basic realm=\"outreach\""})
 
 
 @app.get("/admin/fetch-images")
@@ -2595,28 +2638,21 @@ def _seed_outreach_examples(db: Session) -> None:
 
 @app.get("/admin/outreach-queue", response_class=HTMLResponse)
 def outreach_queue(
-    token: str,
     show: str = Query(default="queued", description="queued | approved | rejected | all"),
     db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
 ):
     """Portal shell for link-building outreach (tool-pitch emails and
     HARO/Connectively-style query replies) -- see OutreachProspect's
-    docstring for exactly what is and isn't real yet. Nothing here can
-    send an email: that, real prospect sourcing, and hardened admin auth
-    are all still pending on settling an email-sending API + a
-    HARO/Connectively data source (see this session's research) before
-    they're built. Approve/Reject state itself is real and persists.
-
-    Same ADMIN_TASK_TOKEN-via-URL-param gate as every other /admin route
-    for now, which is fine for a shell with no real contact data -- but a
-    real approve/reject decision on a real prospect, and the sends that
-    would eventually follow it, are enough of a step up in stakes that
-    this deserves hardened auth (header/cookie instead of a URL param, a
-    separate scoped secret, ideally a confirm step) before it goes live
-    with real data, not just this shell's copy-of-the-existing-pattern."""
-    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
-        raise HTTPException(status_code=404)
-
+    docstring for exactly what is and isn't real yet. Real prospect
+    sourcing and real sending are still pending on settling an
+    email-sending API and a HARO/Connectively data source (see this
+    session's research). Approve/Reject state itself is real and
+    persists, and this route is now gated by _require_outreach_auth
+    (HTTPBasic, a credential separate from ADMIN_TASK_TOKEN) instead of
+    the URL-token pattern the rest of /admin uses -- see that
+    dependency's own docstring for why this portal specifically warrants
+    the step up."""
     query = db.query(OutreachProspect)
     if show != "all":
         query = query.filter(OutreachProspect.status == show)
@@ -2638,15 +2674,15 @@ def outreach_queue(
         if r.status == "queued":
             actions_html = f"""
             <div class="actions">
-              <a class="btn-approve" href="/admin/outreach-queue/decide?token={token}&prospect_id={r.id}&status=approved&show={show}">Approve</a>
-              <a class="btn-reject" href="/admin/outreach-queue/decide?token={token}&prospect_id={r.id}&status=rejected&show={show}">Reject</a>
+              <a class="btn-approve" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=approved&show={show}">Approve</a>
+              <a class="btn-reject" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=rejected&show={show}">Reject</a>
             </div>
             """
         else:
             decided_label = f"{r.decided_at:%Y-%m-%d %H:%M}" if r.decided_at else ""
             actions_html = (
                 f'<div class="decided">decided {decided_label} &middot; '
-                f'<a href="/admin/outreach-queue/decide?token={token}&prospect_id={r.id}&status=queued&show={show}">undo</a></div>'
+                f'<a href="/admin/outreach-queue/decide?prospect_id={r.id}&status=queued&show={show}">undo</a></div>'
             )
         return f"""
         <div class="card status-{r.status}">
@@ -2700,16 +2736,17 @@ def outreach_queue(
     <body>
       <h1>Outreach queue</h1>
       <div class="banner">
-        Portal shell -- approve/reject state is real and persists, but every row below is either an
-        example or, once real prospects exist, still not wired to any actual sending: the
-        email-sending API, HARO/Connectively data source, and admin auth hardening are still pending.
+        Portal shell -- approve/reject state is real and persists, and this page is now gated by its own
+        login (separate from the site's other admin tools), but every row below is either an example or,
+        once real prospects exist, still not wired to any actual sending until an email-sending API and a
+        HARO/Connectively data source are configured.
       </div>
       <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected</div>
       <div class="filters">
-        <a href="/admin/outreach-queue?token={token}&show=queued">queued</a>
-        <a href="/admin/outreach-queue?token={token}&show=approved">approved</a>
-        <a href="/admin/outreach-queue?token={token}&show=rejected">rejected</a>
-        <a href="/admin/outreach-queue?token={token}&show=all">all</a>
+        <a href="/admin/outreach-queue?show=queued">queued</a>
+        <a href="/admin/outreach-queue?show=approved">approved</a>
+        <a href="/admin/outreach-queue?show=rejected">rejected</a>
+        <a href="/admin/outreach-queue?show=all">all</a>
       </div>
       {rows_html}
     </body>
@@ -2720,18 +2757,19 @@ def outreach_queue(
 
 @app.get("/admin/outreach-queue/decide")
 def outreach_queue_decide(
-    token: str,
     prospect_id: int,
     status: str,
     show: str = "queued",
     db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
 ):
     """Records a human's approve/reject (or undo-back-to-queued) decision
     on one prospect. Same GET-link-plus-redirect convention as
-    /admin/review-queue/mark -- these are internal, token-gated clicks,
-    not user-facing forms."""
-    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
-        raise HTTPException(status_code=404)
+    /admin/review-queue/mark -- an internal click, not a user-facing form
+    -- gated by _require_outreach_auth (see its docstring) rather than a
+    URL token, so the browser's own remembered Basic Auth credential
+    carries across this redirect the same as any other same-origin
+    request."""
     if status not in ("queued", "approved", "rejected"):
         raise HTTPException(status_code=400, detail="status must be queued, approved, or rejected")
 
@@ -2743,4 +2781,4 @@ def outreach_queue_decide(
     prospect.decided_at = datetime.now(timezone.utc) if status != "queued" else None
     db.commit()
 
-    return RedirectResponse(url=f"/admin/outreach-queue?token={token}&show={show}", status_code=303)
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
