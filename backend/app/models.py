@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, DateTime, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .database import Base
@@ -78,3 +78,41 @@ class BatchApproval(Base):
     batch_number: Mapped[int] = mapped_column(Integer, unique=True, index=True)
     requested_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
     merged_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class OutreachProspect(Base):
+    """One link-building outreach target -- either a tool-pitch email to a
+    site that might link to one of Tulo's tools/calculators, or a drafted
+    reply to a HARO/Connectively-style source query -- queued for a human
+    to approve or reject before anything sends. This is the portal *shell*
+    only (see /admin/outreach-queue in main.py): the table exists and the
+    approve/reject workflow is real and persists, but nothing populates it
+    with real prospects and nothing here can actually send an email yet --
+    both of those are gated on settling an email-sending API, a
+    HARO/Connectively data source, and hardened admin auth (a real
+    send/reject decision on a real contact deserves more than the
+    URL-query-param ADMIN_TASK_TOKEN every other admin route uses) before
+    they're built. See a handful of clearly-marked example rows seeded by
+    _seed_outreach_examples() for what the real thing will look like.
+
+    status: "queued" (needs a decision) | "approved" | "rejected". No
+    "sent" value yet -- that only becomes meaningful once real sending
+    exists; approving a prospect here today is a decision recorded for
+    later, not a trigger."""
+
+    __tablename__ = "outreach_prospects"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    pitch_type: Mapped[str] = mapped_column(String)  # "tool_pitch" | "haro_reply"
+    target_domain: Mapped[str] = mapped_column(String)
+    contact_name: Mapped[str | None] = mapped_column(String, nullable=True)
+    contact_email: Mapped[str | None] = mapped_column(String, nullable=True)
+    # For a haro_reply: the source query being responded to. Null for a
+    # tool_pitch, which has no originating query.
+    source_query: Mapped[str | None] = mapped_column(String, nullable=True)
+    subject: Mapped[str] = mapped_column(String)
+    body_preview: Mapped[str] = mapped_column(String)
+    is_example: Mapped[bool] = mapped_column(Boolean, default=False)
+    status: Mapped[str] = mapped_column(String, default="queued")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
