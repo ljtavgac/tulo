@@ -1,0 +1,59 @@
+name: Apply baked images to staging
+
+# Staging counterpart to apply-baked-images-to-prod.yml, for the same
+# reason: resync_content() and seed() both deliberately never touch an
+# already-existing row's image_url/image_attribution (see
+# _RUNTIME_IMAGE_KEYS in seed_templates.py), so a bake commit that adds an
+# image_url for a page whose staging row already exists needs this
+# endpoint explicitly -- a redeploy alone won't push it onto the live row.
+# Normally staging never hits this gap (daily_batch.py's own
+# fetch_images_for_batch call sets image_url directly on a brand-new
+# row's first fetch), but it's exactly what's needed for an old page
+# whose real image was only ever restored into git after the row already
+# existed -- see the "Bake 6 old substitute pages' real image_url"
+# commit this was built for.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  apply-baked-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for staging to actually be serving this commit
+        id: wait
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: |
+          set -uo pipefail
+          deadline=$((SECONDS + 720))
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            live_commit="$(curl -sS --connect-timeout 10 --max-time 20 "$BACKEND_BASE_URL/health" 2>/dev/null \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin).get("git_commit") or "")' 2>/dev/null || true)"
+            if [ "$live_commit" = "${{ github.sha }}" ]; then
+              echo "Staging is now serving ${{ github.sha }} -- deploy landed after $((SECONDS))s."
+              exit 0
+            fi
+            echo "Staging is on commit '${live_commit:-<unreachable>}', waiting for ${{ github.sha }} ($((SECONDS))s elapsed)..."
+            sleep 15
+          done
+          echo "::warning::Staging never reported serving ${{ github.sha }} within 12 minutes -- proceeding anyway (best-effort; the apply call below will just no-op if the deploy still hasn't landed, and can be re-triggered by hand once it has)."
+
+      - name: Call /admin/apply-baked-images on staging
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -uo pipefail
+          for attempt in 1 2; do
+            echo "--- attempt $attempt ---"
+            response="$(curl -sS -f --connect-timeout 15 --max-time 60 "$BACKEND_BASE_URL/admin/apply-baked-images?token=$ADMIN_TASK_TOKEN")" && {
+              echo "$response"
+              count="$(echo "$response" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("updated_count", "?"))' 2>/dev/null || echo '?')"
+              echo "Updated $count page(s) on staging (attempt $attempt)."
+              exit 0
+            } || echo "Request failed or timed out on attempt $attempt -- will retry." >&2
+            if [ "$attempt" -lt 2 ]; then
+              sleep 20
+            fi
+          done
+          echo "::warning::apply-baked-images didn't succeed after 2 attempts. Can be re-triggered by hand: $BACKEND_BASE_URL/admin/apply-baked-images?token=<token>"
