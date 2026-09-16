@@ -2834,6 +2834,18 @@ def outreach_queue(
             send_status_html = f'<div class="send-error">send failed: {escape_html(r.send_error)}</div>'
         else:
             send_status_html = ""
+        if r.status == "queued" and r.pitch_type == "tool_pitch" and not r.contact_email:
+            contact_form_html = f"""
+            <form method="get" action="/admin/outreach-queue/update-contact" class="contact-form">
+              <input type="hidden" name="prospect_id" value="{r.id}">
+              <input type="hidden" name="show" value="{show}">
+              <input type="email" name="contact_email" placeholder="contact email -- required before this can send" required>
+              <input type="text" name="contact_name" placeholder="contact name (optional)">
+              <button type="submit" class="btn-save-contact">Save</button>
+            </form>
+            """
+        else:
+            contact_form_html = ""
         return f"""
         <div class="card status-{r.status}">
           <div class="info">
@@ -2845,6 +2857,7 @@ def outreach_queue(
             {query_html}
             <div class="body-preview">{escape_html(r.body_preview)}</div>
             {send_status_html}
+            {contact_form_html}
             {actions_html}
           </div>
         </div>
@@ -2877,6 +2890,9 @@ def outreach_queue(
         .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
         .source-query {{ font-size: 12px; color: #5b2d90; background: #f7f2fc; border-radius: 4px; padding: 6px 8px; margin: 6px 0; }}
         .body-preview {{ font-size: 12px; color: #333; margin: 8px 0; white-space: pre-wrap; }}
+        .contact-form {{ display: flex; gap: 6px; margin-top: 8px; align-items: center; }}
+        .contact-form input[type=email], .contact-form input[type=text] {{ flex: 1; min-width: 0; font-size: 12px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
+        .btn-save-contact {{ background: #555; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; }}
         .actions {{ margin-top: 10px; }}
         .btn-approve {{ background: #2f7d43; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; margin-right: 8px; }}
         .btn-reject {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; }}
@@ -2945,6 +2961,35 @@ def outreach_queue_decide(
     prospect.decided_at = datetime.now(timezone.utc) if status != "queued" else None
     if status == "approved" and prospect.pitch_type == "tool_pitch" and prospect.sent_at is None:
         _add_prospect_to_snov_list(prospect)
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+@app.get("/admin/outreach-queue/update-contact")
+def outreach_queue_update_contact(
+    prospect_id: int,
+    contact_email: str,
+    contact_name: str = "",
+    show: str = "queued",
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Fills in a missing contact_email (and optionally contact_name) on
+    a queued tool_pitch prospect -- the gap a sourcing script's own
+    research (e.g. Semrush's backlink data, which names domains but never
+    a contact) leaves behind. Without this, a real prospect sourced with
+    no contact_email could never actually be sent: _add_prospect_to_snov_list
+    refuses to add a prospect with no email, by design, rather than
+    guessing one. Same GET-link-plus-redirect convention as every other
+    outreach mutation in this file."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+
+    prospect.contact_email = contact_email.strip() or None
+    if contact_name.strip():
+        prospect.contact_name = contact_name.strip()
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
