@@ -1,0 +1,33 @@
+name: Read staging review queue (read-only)
+
+# Pure GET against /admin/review-queue/data -- no mutation, see that
+# endpoint's own docstring ("Plain-JSON twin of /admin/review-queue").
+# Built to check whether specific pages already carry a human's
+# approve/flag decision (PageReview row) before touching them again, after
+# a forced re-fetch incident overwrote several manually-set staging images
+# without checking live state first.
+on:
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: "batch_number, or 'all'"
+        required: true
+        default: "10"
+      show:
+        description: "pending | flagged | approved | all"
+        required: false
+        default: "all"
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch review-queue data
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -uo pipefail
+          curl -sS -f --connect-timeout 15 --max-time 30 \
+            "$BACKEND_BASE_URL/admin/review-queue/data?token=$ADMIN_TASK_TOKEN&batch=${{ inputs.batch }}&show=${{ inputs.show }}" \
+            | python3 -m json.tool
