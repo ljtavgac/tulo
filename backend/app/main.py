@@ -1120,6 +1120,110 @@ def _require_outreach_auth(credentials: HTTPBasicCredentials | None = Depends(_o
         raise HTTPException(status_code=401, headers={"WWW-Authenticate": "Basic realm=\"outreach\""})
 
 
+# Real Snov.io send integration, written against their published API docs
+# (client provided the full doc text directly -- not guessed at, unlike
+# the CSV-export fallback this replaces for tool_pitch prospects). Three
+# separate env vars, deliberately not reusing any other credential:
+#   SNOV_CLIENT_ID / SNOV_CLIENT_SECRET -- OAuth2 client_credentials pair
+#     from https://app.snov.io/account/api.
+#   SNOV_LIST_ID -- the Snov.io prospect list to add approved prospects
+#     to. Created once, by hand, in the Snov.io dashboard, along with the
+#     drip campaign that must already be marked active against that list
+#     -- per Snov.io's own docs, add-prospect-to-list is exactly the
+#     "automate adding prospects to lists with active email drip
+#     campaigns" pattern, so an active campaign on this list is what
+#     actually sends anything; this code only ever adds the prospect.
+#
+# IMPORTANT CAVEAT, not yet resolved: this has been verified against the
+# documented request/response shapes and compiles/type-checks, but could
+# NOT be exercised against a live api.snov.io call from this environment
+# -- both snov.io and api.snov.io are blocked by this environment's own
+# egress proxy (confirmed earlier via a direct curl, 403 from the proxy
+# itself). The first real approval after these env vars are set is this
+# integration's actual first live test; watch send_error on that first
+# approved prospect.
+SNOV_CLIENT_ID = os.environ.get("SNOV_CLIENT_ID")
+SNOV_CLIENT_SECRET = os.environ.get("SNOV_CLIENT_SECRET")
+SNOV_LIST_ID = os.environ.get("SNOV_LIST_ID")
+
+# Process-lifetime cache for the OAuth bearer token -- documented as
+# valid for 3600 seconds; refetched with a 5-minute safety margin rather
+# than on every single send, same "don't redo cheap-to-cache work every
+# request" reasoning as _cached_pages() elsewhere in this file.
+_snov_token_cache: dict[str, object] = {"token": None, "expires_at": 0.0}
+
+
+def _get_snov_access_token() -> str:
+    """POST https://api.snov.io/v1/oauth/access_token, client_credentials
+    grant. Raises requests.HTTPError / requests.RequestException on
+    failure -- callers (only _add_prospect_to_snov_list below) are
+    expected to catch and record it, never let a Snov.io outage break the
+    approve action itself."""
+    if _snov_token_cache["token"] and time.time() < float(_snov_token_cache["expires_at"]):
+        return _snov_token_cache["token"]  # type: ignore[return-value]
+
+    response = requests.post(
+        "https://api.snov.io/v1/oauth/access_token",
+        data={
+            "grant_type": "client_credentials",
+            "client_id": SNOV_CLIENT_ID,
+            "client_secret": SNOV_CLIENT_SECRET,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    data = response.json()
+    _snov_token_cache["token"] = data["access_token"]
+    _snov_token_cache["expires_at"] = time.time() + data["expires_in"] - 300
+    return data["access_token"]
+
+
+def _add_prospect_to_snov_list(prospect: OutreachProspect) -> None:
+    """POST https://api.snov.io/v1/add-prospect-to-list -- per Snov.io's
+    own docs, adding a prospect to a list with an already-active drip
+    campaign automatically enrolls and starts that campaign for them.
+    Sets prospect.sent_at on success or prospect.send_error on failure;
+    never raises, so a Snov.io-side problem shows up as a visible error
+    on the prospect in the portal instead of breaking the approve action.
+    Caller is responsible for the actual db.commit()."""
+    if not (SNOV_CLIENT_ID and SNOV_CLIENT_SECRET and SNOV_LIST_ID):
+        return  # Not configured -- approving just records the decision, same as before this existed.
+    if not prospect.contact_email:
+        prospect.send_error = "No contact_email set -- can't add to Snov.io without one."
+        return
+
+    try:
+        token = _get_snov_access_token()
+        name_parts = (prospect.contact_name or "").split(maxsplit=1)
+        first_name, last_name = (name_parts + [""])[:2] if name_parts else ("", "")
+
+        response = requests.post(
+            "https://api.snov.io/v1/add-prospect-to-list",
+            headers={"Authorization": f"Bearer {token}"},
+            data={
+                "email": prospect.contact_email,
+                "fullName": prospect.contact_name or "",
+                "firstName": first_name,
+                "lastName": last_name,
+                "companySite": f"https://{prospect.target_domain}" if prospect.target_domain else "",
+                "updateContact": "true",
+                "listId": SNOV_LIST_ID,
+            },
+            timeout=15,
+        )
+        response.raise_for_status()
+        result = response.json()
+        if result.get("success"):
+            prospect.sent_at = datetime.now(timezone.utc)
+            prospect.send_error = None
+        else:
+            prospect.send_error = str(result.get("errors") or "Snov.io returned success=false with no error detail.")
+    except requests.RequestException as e:
+        prospect.send_error = f"Snov.io request failed: {e}"
+    except (KeyError, ValueError) as e:
+        prospect.send_error = f"Unexpected Snov.io response shape: {e}"
+
+
 @app.get("/admin/fetch-images")
 def trigger_fetch_images(
     token: str,
@@ -2684,6 +2788,12 @@ def outreach_queue(
                 f'<div class="decided">decided {decided_label} &middot; '
                 f'<a href="/admin/outreach-queue/decide?prospect_id={r.id}&status=queued&show={show}">undo</a></div>'
             )
+        if r.sent_at:
+            send_status_html = f'<div class="send-ok">sent to Snov.io {r.sent_at:%Y-%m-%d %H:%M}</div>'
+        elif r.send_error:
+            send_status_html = f'<div class="send-error">send failed: {escape_html(r.send_error)}</div>'
+        else:
+            send_status_html = ""
         return f"""
         <div class="card status-{r.status}">
           <div class="info">
@@ -2694,6 +2804,7 @@ def outreach_queue(
             <div class="meta">{escape_html(r.target_domain)}{" &middot; " + contact_html if contact_html else ""}</div>
             {query_html}
             <div class="body-preview">{escape_html(r.body_preview)}</div>
+            {send_status_html}
             {actions_html}
           </div>
         </div>
@@ -2731,15 +2842,18 @@ def outreach_queue(
         .btn-reject {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; }}
         .decided {{ font-size: 11px; color: #888; margin-top: 8px; }}
         .decided a {{ color: #06c; }}
+        .send-ok {{ font-size: 11px; color: #276b3c; margin-top: 8px; }}
+        .send-error {{ font-size: 11px; color: #a00; margin-top: 8px; }}
       </style>
     </head>
     <body>
       <h1>Outreach queue</h1>
       <div class="banner">
-        Portal shell -- approve/reject state is real and persists, and this page is now gated by its own
-        login (separate from the site's other admin tools), but every row below is either an example or,
-        once real prospects exist, still not wired to any actual sending until an email-sending API and a
-        HARO/Connectively data source are configured.
+        Approving a real (non-example) Tool pitch prospect with a contact email now actually adds them to
+        a Snov.io list and can trigger a real send, once SNOV_CLIENT_ID/SNOV_CLIENT_SECRET/SNOV_LIST_ID are
+        configured -- check the send status under each approved row. HARO/query reply prospects still need
+        a human to send the reply themselves; every row below is otherwise either an example, or a real
+        prospect from the inbound-email webhook.
       </div>
       <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected</div>
       <div class="filters">
@@ -2771,7 +2885,15 @@ def outreach_queue_decide(
     -- gated by _require_outreach_auth (see its docstring) rather than a
     URL token, so the browser's own remembered Basic Auth credential
     carries across this redirect the same as any other same-origin
-    request."""
+    request.
+
+    Approving a tool_pitch prospect also attempts the real Snov.io send
+    (see _add_prospect_to_snov_list) -- a no-op until SNOV_CLIENT_ID/
+    SNOV_CLIENT_SECRET/SNOV_LIST_ID are all configured. A haro_reply is
+    never auto-sent this way (see OutreachProspect's docstring for why),
+    and un-approving (back to queued or rejected) never un-sends
+    something already added to Snov.io -- there's no real "undo" for a
+    prospect Snov.io has already started emailing."""
     if status not in ("queued", "approved", "rejected"):
         raise HTTPException(status_code=400, detail="status must be queued, approved, or rejected")
 
@@ -2781,6 +2903,8 @@ def outreach_queue_decide(
 
     prospect.status = status
     prospect.decided_at = datetime.now(timezone.utc) if status != "queued" else None
+    if status == "approved" and prospect.pitch_type == "tool_pitch" and prospect.sent_at is None:
+        _add_prospect_to_snov_list(prospect)
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
@@ -2793,21 +2917,13 @@ def outreach_queue_export_csv(
     _auth: None = Depends(_require_outreach_auth),
 ):
     """CSV export of prospects, for manually importing into a campaign
-    tool's own UI -- a bridge until real send-API integration exists.
-
-    Built instead of a Snov.io API client: this session could confirm the
-    OAuth token-acquisition pattern (client_credentials grant to
-    api.snov.io) from search results, but not the actual send/campaign
-    endpoint paths and payload shapes -- both snov.io and api.snov.io are
-    blocked by this environment's own egress proxy, and no reachable
-    mirror had endpoint-level detail either. Writing a client against
-    guessed endpoint paths would ship code that looks complete but likely
-    isn't, with no way to test it here -- worse than not building it. CSV
-    import is a universal feature of essentially every campaign tool
-    (Snov.io included), so this gets the same prospects usably in front
-    of the user today without guessing at an unverified contract; real
-    API integration is a queued follow-up once the endpoints are
-    confirmed against reachable docs or real credentials.
+    tool's own UI. Originally built as a bridge for tool_pitch prospects
+    before real Snov.io API docs were available (see git history) --
+    that gap is closed now (_add_prospect_to_snov_list), but this export
+    stays useful for: haro_reply prospects (never auto-sent -- see
+    OutreachProspect's docstring), any tool_pitch prospect whose send
+    failed or Snov.io isn't configured yet (send_error/sent_at columns
+    below show exactly why), and as a plain backup/audit trail.
 
     Defaults to status=approved -- the "ready to act on" set -- not the
     full queue, so the file downloaded here isn't accidentally imported
@@ -2823,11 +2939,11 @@ def outreach_queue_export_csv(
     buffer = io.StringIO()
     writer = csv.writer(buffer)
     writer.writerow(
-        ["prospect_id", "pitch_type", "target_domain", "contact_name", "contact_email", "subject", "body_preview", "source_query", "status", "is_example"]
+        ["prospect_id", "pitch_type", "target_domain", "contact_name", "contact_email", "subject", "body_preview", "source_query", "status", "is_example", "sent_at", "send_error"]
     )
     for r in rows:
         writer.writerow(
-            [r.id, r.pitch_type, r.target_domain, r.contact_name or "", r.contact_email or "", r.subject, r.body_preview, r.source_query or "", r.status, r.is_example]
+            [r.id, r.pitch_type, r.target_domain, r.contact_name or "", r.contact_email or "", r.subject, r.body_preview, r.source_query or "", r.status, r.is_example, r.sent_at or "", r.send_error or ""]
         )
 
     return Response(

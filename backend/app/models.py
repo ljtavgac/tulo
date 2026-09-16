@@ -84,21 +84,28 @@ class OutreachProspect(Base):
     """One link-building outreach target -- either a tool-pitch email to a
     site that might link to one of Tulo's tools/calculators, or a drafted
     reply to a HARO/Connectively-style source query -- queued for a human
-    to approve or reject before anything sends. This is the portal *shell*
-    only (see /admin/outreach-queue in main.py): the table exists and the
-    approve/reject workflow is real and persists, but nothing populates it
-    with real prospects and nothing here can actually send an email yet --
-    both of those are gated on settling an email-sending API, a
-    HARO/Connectively data source, and hardened admin auth (a real
-    send/reject decision on a real contact deserves more than the
-    URL-query-param ADMIN_TASK_TOKEN every other admin route uses) before
-    they're built. See a handful of clearly-marked example rows seeded by
-    _seed_outreach_examples() for what the real thing will look like.
+    to approve or reject before anything sends. See a handful of
+    clearly-marked example rows seeded by _seed_outreach_examples() for
+    what a not-yet-real row looks like.
 
-    status: "queued" (needs a decision) | "approved" | "rejected". No
-    "sent" value yet -- that only becomes meaningful once real sending
-    exists; approving a prospect here today is a decision recorded for
-    later, not a trigger."""
+    Approving a tool_pitch prospect with a contact_email, once
+    SNOV_CLIENT_ID/SNOV_CLIENT_SECRET/SNOV_LIST_ID are all configured,
+    calls Snov.io's add-prospect-to-list endpoint (see
+    _add_prospect_to_snov_list in main.py) -- which, per Snov.io's own
+    documented pattern, auto-enrolls the prospect into whatever
+    already-active drip campaign is attached to that list in the Snov.io
+    dashboard. That's a one-time manual setup on Snov.io's side (connect a
+    sending mailbox, write the campaign template, mark it active) this
+    code can't and shouldn't do on the user's behalf with real mailbox
+    credentials. haro_reply prospects are never auto-sent this way -- a
+    one-off personal reply to a specific journalist query doesn't fit a
+    one-template-many-recipients drip campaign, so those still require a
+    human to actually send the reply themselves once approved.
+
+    status: "queued" (needs a decision) | "approved" | "rejected".
+    sent_at/send_error record what happened when an approval tried to
+    actually send -- both stay null for a haro_reply, for an approval that
+    predates Snov.io being configured, or for one missing a contact_email."""
 
     __tablename__ = "outreach_prospects"
 
@@ -116,3 +123,5 @@ class OutreachProspect(Base):
     status: Mapped[str] = mapped_column(String, default="queued")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
     decided_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    sent_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    send_error: Mapped[str | None] = mapped_column(String, nullable=True)
