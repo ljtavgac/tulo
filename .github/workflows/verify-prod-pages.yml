@@ -21,6 +21,14 @@ on:
         description: "Optional: git SHA to wait for prod's /health to report before fetching (leave blank to fetch immediately)"
         required: false
         default: ""
+      mode:
+        description: "What to report per slug"
+        required: false
+        default: "swap_fields"
+        type: choice
+        options:
+          - swap_fields
+          - image_fields
 
 jobs:
   verify:
@@ -51,16 +59,21 @@ jobs:
           done
           echo "::warning::Prod never reported ${{ inputs.wait_for_commit }} within 12 minutes -- fetching anyway."
 
-      - name: Fetch each slug and report swap-relevant fields
+      - name: Fetch each slug and report fields
         env:
           PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
         run: |
           set -uo pipefail
+          if [ "${{ inputs.mode }}" = "image_fields" ]; then
+            SCRIPT=content/scripts/print_image_fields.py
+          else
+            SCRIPT=content/scripts/print_swap_fields.py
+          fi
           IFS=',' read -ra SLUGS <<< "${{ inputs.slugs }}"
           for slug in "${SLUGS[@]}"; do
             slug="$(echo "$slug" | xargs)"
             echo "=== $slug ==="
             curl -sS -f --connect-timeout 15 --max-time 30 "$PROD_BACKEND_BASE_URL/pages/$slug" 2>/dev/null \
-              | python3 content/scripts/print_swap_fields.py || echo "  (request failed)"
+              | python3 "$SCRIPT" || echo "  (request failed)"
             echo
           done
