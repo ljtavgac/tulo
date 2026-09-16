@@ -292213,6 +292213,12 @@ SEED_PAGES = [
         "title": "Manicotti Shells",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/38313068/pexels-photo-38313068.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Piotr Baranowski",
+                "photographer_url": "https://www.pexels.com/@piotrbaranowski",
+                "source": "pexels",
+            },
             "meta_description": "What manicotti shells are, the best substitutes for stuffed pasta bakes, how to boil them without tearing, and how to store them before and after filling.",
             "hero_image_query": "manicotti shells stuffed with ricotta baked in marinara sauce",
             "image_alt": "Six ridged manicotti tubes filled with ricotta and spinach, arranged in a baking dish and topped with marinara sauce and melted mozzarella.",
@@ -294841,6 +294847,12 @@ SEED_PAGES = [
         "title": "What Is Double Cream?",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/20379785/pexels-photo-20379785.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "C'Pho Ngondo R.Rouge",
+                "photographer_url": "https://www.pexels.com/@royalrouge",
+                "source": "pexels",
+            },
             "meta_description": "Double cream is a thick, high-fat British cream with around 48% butterfat, used for whipping, pouring, and enriching sauces.",
             "hero_image_query": "double cream pouring from jug into bowl",
             "image_alt": "Thick double cream being poured from a small glass jug, showing its heavy, slow-moving consistency as it pools in a white bowl.",
@@ -296449,6 +296461,12 @@ SEED_PAGES = [
         "title": "Crudit\u00e9 Platter",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/25390062/pexels-photo-25390062.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Valeria Boltneva",
+                "photographer_url": "https://www.pexels.com/@valeriya",
+                "source": "pexels",
+            },
             "meta_description": "What a crudité platter is, dip substitutes with ratios, how to keep the vegetables crisp for hours, and how to build one ahead of time without it going soggy.",
             "hero_image_query": "crudite platter with vegetables and dip",
             "image_alt": "A wooden serving board arranged with carrot sticks, celery, radishes, cherry tomatoes, cucumber spears, and blanched green beans fanned around a small bowl of ranch dip",
@@ -299040,6 +299058,12 @@ SEED_PAGES = [
         "title": "Irish Mule",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/31317403/pexels-photo-31317403.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Daniel Erlandson",
+                "photographer_url": "https://www.pexels.com/@daniel-erlandson-2150649940",
+                "source": "pexels",
+            },
             "meta_description": "What an Irish Mule is, the best whiskey substitutes with ratios, how to store the ingredients, and how to mix it right.",
             "hero_image_query": "Irish mule cocktail in copper mug with lime and ginger beer",
             "image_alt": "A copper mug filled with an Irish Mule cocktail, garnished with a lime wheel and crystallized ginger, condensation beading on the metal.",
@@ -300709,6 +300733,12 @@ SEED_PAGES = [
         "title": "Pho Broth",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6111932/pexels-photo-6111932.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Piotr Arnoldes",
+                "photographer_url": "https://www.pexels.com/@piotr-arnoldes-7862031",
+                "source": "pexels",
+            },
             "meta_description": "What pho broth is, how to substitute it with ratios and nutrition, how to store it, and how to use it beyond the noodle bowl.",
             "hero_image_query": "pho broth in bowl with star anise and charred onion",
             "image_alt": "A clear amber pho broth in a white bowl with star anise pods, a cinnamon stick, and charred ginger and onion halves floating at the surface.",
@@ -301645,6 +301675,12 @@ SEED_PAGES = [
         "title": "Cloud Cake",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1695052544296-63d0b132c63b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8Q2xvdWQlMjBDYWtlfGVufDB8fHx8MTc4OTU1MzEwNXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "sajeesh Gangadharan",
+                "photographer_url": "https://unsplash.com/@sajeesh88",
+                "source": "unsplash",
+            },
             "meta_description": "What cloud cake is, how it differs from angel food and chiffon cake, the best substitutes with ratios, and how to store it so it doesn't collapse.",
             "hero_image_query": "jiggly Japanese cloud cake slice with powdered sugar",
             "image_alt": "A tall, pale slice of cloud cake on a white plate, showing its dense network of tiny air pockets and a slight jiggle at the cut edge, dusted with powdered sugar.",
@@ -302100,6 +302136,12 @@ SEED_PAGES = [
         "title": "Seaweed Chips",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/34466116/pexels-photo-34466116.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Caleb Oquendo",
+                "photographer_url": "https://www.pexels.com/@caleboquendo",
+                "source": "pexels",
+            },
             "meta_description": "What seaweed chips are, the best substitutes with ratios, how to keep them crisp once opened, and how to use them beyond straight snacking.",
             "hero_image_query": "crispy seaweed chips snack bowl",
             "image_alt": "A small bowl of dark green-black seaweed chips with a crinkled, glossy surface, stacked next to a scatter of loose sesame seeds on a wooden board.",
@@ -302179,6 +302221,12 @@ SEED_PAGES = [
         "title": "Armadillo Eggs",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Polina Tankilevitch",
+                "photographer_url": "https://www.pexels.com/@polina-tankilevitch",
+                "source": "pexels",
+            },
             "meta_description": "What armadillo eggs are, how they differ from similar bacon-wrapped appetizers, real substitution options with nutrition, and how to store and reheat them.",
             "hero_image_query": "armadillo eggs jalapeno poppers wrapped in sausage and bacon on a smoker",
             "image_alt": "A tray of golden-brown armadillo eggs, whole jalapeños stuffed with cheese and encased in sausage and crosshatched bacon, resting on a wire rack after smoking.",
@@ -302442,6 +302490,12 @@ SEED_PAGES = [
         "title": "Stewed Apples",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7642865/pexels-photo-7642865.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Michael Telitsyn",
+                "photographer_url": "https://www.pexels.com/@michaeltelitsyn",
+                "source": "pexels",
+            },
             "meta_description": "What stewed apples are, the best substitutes with ratios, how to store a batch so it doesn't turn watery, and how to use them in both sweet and savory cooking.",
             "hero_image_query": "stewed apples in a bowl with cinnamon",
             "image_alt": "A bowl of soft, chunky stewed apples in cinnamon-spiced syrup, with a wooden spoon resting against the side and a few whole cinnamon sticks nearby.",
