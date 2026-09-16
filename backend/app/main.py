@@ -2950,6 +2950,59 @@ def outreach_queue_decide(
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
 
 
+@app.post("/admin/outreach-queue/create")
+async def outreach_queue_create(
+    request: Request,
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Inserts one real (is_example=False) prospect, queued for human
+    review -- the write side a sourcing script needs (see
+    content/scripts/add_outreach_prospects.py) to get researched
+    candidates into the live queue without a human retyping each one by
+    hand into a form that doesn't exist. JSON body:
+    {pitch_type, target_domain, subject, body_preview} required;
+    contact_name/contact_email/source_query optional. Same
+    _require_outreach_auth gate as every other outreach route -- a
+    sourcing script authenticates with OUTREACH_ADMIN_USER/PASSWORD from
+    a GitHub Actions secret, the same way override_images.py already
+    authenticates to /admin/review-queue/override-image with
+    ADMIN_TASK_TOKEN, so the real credential never has to pass through
+    chat.
+
+    Deliberately no dedup against existing rows: this is a one-off
+    research batch, not a recurring automated job, so a rerun creating a
+    duplicate is a human reject-and-move-on, not a real problem worth
+    the extra complexity of a same-domain/same-subject lookup here."""
+    payload = await request.json()
+
+    pitch_type = payload.get("pitch_type")
+    if pitch_type not in ("tool_pitch", "haro_reply"):
+        raise HTTPException(status_code=400, detail="pitch_type must be tool_pitch or haro_reply")
+    target_domain = (payload.get("target_domain") or "").strip()
+    subject = (payload.get("subject") or "").strip()
+    body_preview = (payload.get("body_preview") or "").strip()
+    if not (target_domain and subject and body_preview):
+        raise HTTPException(status_code=400, detail="target_domain, subject, and body_preview are required")
+
+    prospect = OutreachProspect(
+        pitch_type=pitch_type,
+        target_domain=target_domain,
+        contact_name=(payload.get("contact_name") or None),
+        contact_email=(payload.get("contact_email") or None),
+        source_query=(payload.get("source_query") or None),
+        subject=subject,
+        body_preview=body_preview,
+        is_example=False,
+        status="queued",
+    )
+    db.add(prospect)
+    db.commit()
+    db.refresh(prospect)
+
+    return {"created_prospect_id": prospect.id}
+
+
 @app.get("/admin/outreach-queue/export.csv")
 def outreach_queue_export_csv(
     status: str = Query(default="approved", description="approved | queued | rejected | all"),
