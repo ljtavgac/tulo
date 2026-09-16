@@ -292171,6 +292171,12 @@ SEED_PAGES = [
         "title": "What Is Shortening?",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7966382/pexels-photo-7966382.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Shortening is a solid, flavorless fat made from vegetable oil, used in baking to create tender, flaky textures. What it is, how it works, and what to swap in.",
             "hero_image_query": "block of white vegetable shortening on baking parchment",
             "image_alt": "A white block of vegetable shortening cut into cubes on a wooden counter next to a stack of measuring cups.",
@@ -292207,11 +292213,11 @@ SEED_PAGES = [
         "title": "Manicotti Shells",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/38313068/pexels-photo-38313068.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/12409905/pexels-photo-12409905.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Piotr Baranowski",
-                "photographer_url": "https://www.pexels.com/@piotrbaranowski",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What manicotti shells are, the best substitutes for stuffed pasta bakes, how to boil them without tearing, and how to store them before and after filling.",
             "hero_image_query": "manicotti shells stuffed with ricotta baked in marinara sauce",
@@ -292297,6 +292303,12 @@ SEED_PAGES = [
         "title": "Sujuk",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7813734/pexels-photo-7813734.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Engin Akyurt",
+                "photographer_url": "https://www.pexels.com/@enginakyurt",
+                "source": "pexels",
+            },
             "meta_description": "What sujuk is, the best substitutes with ratios for this spiced dry-cured beef sausage, how to store it, and how to cook it without drying it out.",
             "hero_image_query": "sliced sujuk sausage fried with eggs",
             "image_alt": "Flattened dark red-brown sujuk sausage sliced on a diagonal into thin ovals, some pieces frying in a skillet alongside cracked eggs.",
@@ -292476,10 +292488,10 @@ SEED_PAGES = [
         "title": "Gruy\u00e8re Cheese Fondue Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/12664810/pexels-photo-12664810.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/28559514/pexels-photo-28559514.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Gonzalo Acuña",
-                "photographer_url": "https://www.pexels.com/@gonzalo-acuna-166058093",
+                "photographer": "Jonathan Borba",
+                "photographer_url": "https://www.pexels.com/@jonathanborba",
                 "source": "pexels",
             },
             "meta_description": "A classic gruyère cheese fondue made with dry white wine, a touch of kirsch, and nutty Emmental for the perfect stretchy, dippable texture. Ready in 30 minutes.",
@@ -292674,11 +292686,11 @@ SEED_PAGES = [
         "title": "White Balsamic Vinaigrette Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/16946668/pexels-photo-16946668.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1661259892845-f84f22e79077?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8N3x8d2hpdGUlMjBiYWxzYW1pYyUyMHZpbmFpZ3JldHRlJTIwaW4lMjBnbGFzcyUyMGphciUyMHdpdGglMjBzYWxhZCUyMHBsYXRlZCUyMGRpc2h8ZW58MHx8fHwxNzg5NTYzODQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Agustin Muñiz",
-                "photographer_url": "https://www.pexels.com/@agusmnz",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A simple white balsamic vinaigrette that stays light and golden instead of muddy brown, perfect for delicate greens, grain salads, or as a quick marinade. Ready in 10 minutes.",
             "hero_image_query": "white balsamic vinaigrette in glass jar with salad",
@@ -292854,10 +292866,10 @@ SEED_PAGES = [
         "title": "Strawberry Pound Cake Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/11912069/pexels-photo-11912069.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/18852483/pexels-photo-18852483.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Alberto Guevara",
-                "photographer_url": "https://www.pexels.com/@alberto-guevara-183841134",
+                "photographer": "Boys in Bristol Photography",
+                "photographer_url": "https://www.pexels.com/@lebele",
                 "source": "pexels",
             },
             "meta_description": "A dense, buttery strawberry pound cake baked in a loaf pan with sour cream for tenderness and a lemon glaze on top. Includes a serving scaler and metric toggle.",
@@ -293124,10 +293136,10 @@ SEED_PAGES = [
         "title": "Perfect Stovetop White Rice Recipe (Plus What to Do If You Find Mold on It)",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/35553000/pexels-photo-35553000.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/34590137/pexels-photo-34590137.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Muhammad  Khawar Nazir",
-                "photographer_url": "https://www.pexels.com/@drmkhawarnazir",
+                "photographer": "Nour Alhoda",
+                "photographer_url": "https://www.pexels.com/@nour-alhoda-2151678059",
                 "source": "pexels",
             },
             "meta_description": "A foolproof stovetop white rice method, plus clear guidance on what to do if you spot mold on raw or cooked rice: when to toss it, why cooking won't save it, and how to store rice so it never happens again.",
@@ -293959,10 +293971,10 @@ SEED_PAGES = [
         "title": "Lamb Gyro Meat",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/37128330/pexels-photo-37128330.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/29906167/pexels-photo-29906167.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Kari Alfonso",
-                "photographer_url": "https://www.pexels.com/@kari-alfonso-2151442665",
+                "photographer": "Bruna Santos",
+                "photographer_url": "https://www.pexels.com/@brunafisantos",
                 "source": "pexels",
             },
             "meta_description": "What lamb gyro meat is, how it differs from doner and shawarma, the best substitutes with ratios, and how to store and reheat it without drying out.",
@@ -294322,11 +294334,11 @@ SEED_PAGES = [
         "title": "Cheesy Potato Soup Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/18866156/pexels-photo-18866156.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1721070952469-7b88f0138eec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8N3x8Y2hlZXN5JTIwcG90YXRvJTIwc291cCUyMGJvd2wlMjBiYWNvbiUyMGNoaXZlcyUyMHBsYXRlZCUyMGRpc2h8ZW58MHx8fHwxNzg5NTY1NzI1fDA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Jonathan Borba",
-                "photographer_url": "https://www.pexels.com/@jonathanborba",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A thick, creamy cheesy potato soup made with a butter-flour roux, sharp cheddar, and crispy bacon. Ready in under an hour, with a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "cheesy potato soup bowl bacon chives",
@@ -294596,10 +294608,10 @@ SEED_PAGES = [
         "title": "How to Boil Green Beans",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/32534259/pexels-photo-32534259.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/34387471/pexels-photo-34387471.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Nour Alhoda",
-                "photographer_url": "https://www.pexels.com/@nour-alhoda-2151678059",
+                "photographer": "Ram Kondisetti",
+                "photographer_url": "https://www.pexels.com/@ram-kondisetti-828660077",
                 "source": "pexels",
             },
             "meta_description": "How long to boil green beans for crisp-tender or fully tender results, with exact timing and the ice bath step that keeps them from turning gray.",
@@ -294701,11 +294713,11 @@ SEED_PAGES = [
         "title": "Gluten Free Bread Crumbs Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/12279174/pexels-photo-12279174.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/33753897/pexels-photo-33753897.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Max Griss",
-                "photographer_url": "https://www.pexels.com/@max-griss-16866522",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "Turn stale gluten-free bread into crisp, golden bread crumbs in about 40 minutes. Works with any gluten-free loaf and stores for months in the freezer.",
             "hero_image_query": "gluten free bread crumbs in a bowl",
@@ -295031,10 +295043,10 @@ SEED_PAGES = [
         "title": "How to Freeze Berries",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/4051588/pexels-photo-4051588.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/12992363/pexels-photo-12992363.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "alleksana",
-                "photographer_url": "https://www.pexels.com/@alleksana",
+                "photographer": "Daniela  Crucez",
+                "photographer_url": "https://www.pexels.com/@daniela-crucez-279979296",
                 "source": "pexels",
             },
             "meta_description": "How to freeze strawberries, blueberries, raspberries, and blackberries so they stay separate and firm instead of turning into a solid, mushy block.",
@@ -295578,10 +295590,10 @@ SEED_PAGES = [
         "title": "Brown Basmati Rice Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/5638541/pexels-photo-5638541.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/8994586/pexels-photo-8994586.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Shameel mukkath",
-                "photographer_url": "https://www.pexels.com/@shameel-mukkath-3421394",
+                "photographer": "I Own My Food Art",
+                "photographer_url": "https://www.pexels.com/@i-own-my-food-art-76108785",
                 "source": "pexels",
             },
             "meta_description": "Perfectly cooked brown basmati rice with a light, separate grain and nutty flavor, made on the stovetop with a simple rinse-and-simmer method. Includes a live serving-size scaler and US/metric unit toggle.",
@@ -295706,10 +295718,10 @@ SEED_PAGES = [
         "title": "Italian Rice Balls (Arancini) Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/34106026/pexels-photo-34106026.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/26182871/pexels-photo-26182871.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Nadin Sh",
-                "photographer_url": "https://www.pexels.com/@nadin-sh-78971847",
+                "photographer": "Aykut Aktemur",
+                "photographer_url": "https://www.pexels.com/@aykut-aktemur-489941105",
                 "source": "pexels",
             },
             "meta_description": "Crisp, golden Italian rice balls made from chilled risotto, stuffed with mozzarella and stirred with ragu, then breaded and fried until the crust shatters. Includes a live serving-size scaler and US/metric unit toggle.",
@@ -295920,6 +295932,12 @@ SEED_PAGES = [
         "title": "Melongene",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1604925496719-ff4e81f35282?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MTF8fHdob2xlJTIwcm9hc3RlZCUyMG1lbG9uZ2VuZSUyMGVnZ3BsYW50JTIwY2hhcnJlZCUyMHNraW58ZW58MHx8fHwxNzg5NTUwNDUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What melongene is, how it differs from eggplant in name only, the best substitutes with ratios, and how to roast it whole until the flesh collapses for dishes like baigan choka.",
             "hero_image_query": "whole roasted melongene eggplant charred skin",
             "image_alt": "A whole eggplant with blackened, blistered skin resting on a wire rack after roasting, split open along one side to show the soft, smoky flesh underneath.",
@@ -296099,10 +296117,10 @@ SEED_PAGES = [
         "title": "Parmigiano-Reggiano Rinds",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/37135644/pexels-photo-37135644.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/34037769/pexels-photo-34037769.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Guillermo Berlin",
-                "photographer_url": "https://www.pexels.com/@guillermo-berlin-1524368912",
+                "photographer": "Ahimsa -  OM",
+                "photographer_url": "https://www.pexels.com/@ahimsa",
                 "source": "pexels",
             },
             "meta_description": "What to do with Parmigiano-Reggiano rinds, how to store them, the best substitutes for adding savory depth to soups and sauces, and how long they'll keep in the freezer.",
@@ -296455,11 +296473,11 @@ SEED_PAGES = [
         "title": "Crudit\u00e9 Platter",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/25390062/pexels-photo-25390062.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/34227781/pexels-photo-34227781.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Valeria Boltneva",
-                "photographer_url": "https://www.pexels.com/@valeriya",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What a crudité platter is, dip substitutes with ratios, how to keep the vegetables crisp for hours, and how to build one ahead of time without it going soggy.",
             "hero_image_query": "crudite platter with vegetables and dip",
@@ -296623,10 +296641,10 @@ SEED_PAGES = [
         "title": "Mounds Candy",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/65547/pexels-photo-65547.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/14456511/pexels-photo-14456511.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Caio",
-                "photographer_url": "https://www.pexels.com/@caio",
+                "photographer": "Duygu Kamar",
+                "photographer_url": "https://www.pexels.com/@duygukamar",
                 "source": "pexels",
             },
             "meta_description": "What Mounds candy bars are made of, the best substitutes with ratios for baking, how to store them so the chocolate doesn't bloom, and how to use them in recipes.",
@@ -296857,11 +296875,11 @@ SEED_PAGES = [
         "title": "Broken Rice",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/19141541/pexels-photo-19141541.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/31555431/pexels-photo-31555431.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Thu Huynh",
-                "photographer_url": "https://www.pexels.com/@thu-huynh-639083784",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What broken rice is, how it differs from whole-grain rice, the best substitutes with ratios, and how to cook and store it.",
             "hero_image_query": "broken rice grains in bowl",
@@ -296955,11 +296973,11 @@ SEED_PAGES = [
         "title": "Baking Soda",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/28948767/pexels-photo-28948767.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/8477741/pexels-photo-8477741.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Beyzanur K.",
-                "photographer_url": "https://www.pexels.com/@thefullonmonet",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What baking soda actually does in a recipe, the best substitutes with exact ratios, how to store it so it stays active, and how to tell if yours has gone flat.",
             "hero_image_query": "box of baking soda with a measuring spoon",
@@ -297033,6 +297051,12 @@ SEED_PAGES = [
         "title": "Negitoro",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/15264013/pexels-photo-15264013.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What negitoro is, the best substitutes with ratios, how to store it safely, and how to use it without wasting the fish.",
             "hero_image_query": "negitoro tuna scallion rice bowl",
             "image_alt": "A bowl of glossy, finely minced negitoro tuna mixed with chopped scallion, served over sushi rice with a swirl of soy sauce and a sprinkle of sesame seeds.",
@@ -297129,6 +297153,12 @@ SEED_PAGES = [
         "title": "Quelites",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/33930756/pexels-photo-33930756.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What quelites are, the different wild greens the term covers, the best substitutes with ratios, and how to clean, store, and cook them.",
             "hero_image_query": "fresh quelites wild greens bunch",
             "image_alt": "A market bundle of mixed dark green quelites, including arrow-shaped and rounded leaves, tied with kitchen string next to a small pile of loose leaves.",
@@ -297230,11 +297260,11 @@ SEED_PAGES = [
         "title": "Milanesa Steak",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/39452689/pexels-photo-39452689.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/5526734/pexels-photo-5526734.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Deane Bayas",
-                "photographer_url": "https://www.pexels.com/@dbaler",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What milanesa steak is, the best substitutes with ratios, how to store the cutlets, and how to bread and fry them properly.",
             "hero_image_query": "raw milanesa steak cutlets",
@@ -297337,10 +297367,10 @@ SEED_PAGES = [
         "title": "How to Make a White Russian",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/19698381/pexels-photo-19698381.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/12340123/pexels-photo-12340123.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "quang vinh",
-                "photographer_url": "https://www.pexels.com/@v1nhdotcom",
+                "photographer": "Jared Kaeb",
+                "photographer_url": "https://www.pexels.com/@jared-kaeb-2910117",
                 "source": "pexels",
             },
             "meta_description": "How to build a White Russian with the right vodka-to-coffee-liqueur ratio and a proper cream float, so it doesn't turn out watery or too sweet.",
@@ -297394,11 +297424,11 @@ SEED_PAGES = [
         "title": "Dried Chile Sauce Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/29346015/pexels-photo-29346015.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1616945989867-74605b27eda7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NHx8ZHJpZWQlMjByZWQlMjBjaGlsZSUyMHNhdWNlJTIwaW4lMjBib3dsJTIwd2l0aCUyMGRyaWVkJTIwcGVwcGVycyUyMHBsYXRlZCUyMGRpc2h8ZW58MHx8fHwxNzg5NTY1NjQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Rohan Parwar",
-                "photographer_url": "https://www.pexels.com/@rohan-parwar-1780185235",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A traditional Mexican red chile sauce made by toasting and rehydrating dried guajillo, ancho, and chile de árbol peppers, then blending and frying the puree until deeply flavored.",
             "hero_image_query": "dried red chile sauce in bowl with dried peppers",
@@ -297988,6 +298018,12 @@ SEED_PAGES = [
         "title": "Chongos Zamoranos",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/9500932/pexels-photo-9500932.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What chongos zamoranos are, how the curdled-milk curds are made, the closest substitutes if you can't find them, and how to store and serve this Mexican dessert.",
             "hero_image_query": "chongos zamoranos in cinnamon syrup",
             "image_alt": "A glass bowl of pale golden milk curds cut into cubes, submerged in amber cinnamon syrup with a whole cinnamon stick resting across the top.",
@@ -298060,11 +298096,11 @@ SEED_PAGES = [
         "title": "Canned Ham",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/17649922/pexels-photo-17649922.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1607756794535-ba48a526b73a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8Y2FubmVkJTIwaGFtJTIwc2xpY2VkJTIwb24lMjBhJTIwcGxhdGV8ZW58MHx8fHwxNzg5NTUwNDQ3fDA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Gonzalo Mendiola",
-                "photographer_url": "https://www.pexels.com/@gonzalo-mendiola-95842233",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What canned ham is, how it differs from Spam, the best substitutes with ratios, how to store an opened can, and how to use it without it turning mushy.",
             "hero_image_query": "canned ham sliced on a plate",
@@ -298384,11 +298420,11 @@ SEED_PAGES = [
         "title": "Apples and Peanut Butter Snack Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/6659686/pexels-photo-6659686.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/6823301/pexels-photo-6823301.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "https://kaboompics.com/",
-                "photographer_url": "https://www.pexels.com/@karola-g",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A simple apples and peanut butter snack recipe with crisp apple slices, creamy peanut butter, and crunchy toppings, ready in 10 minutes with no cooking required.",
             "hero_image_query": "apple slices with peanut butter and toppings",
@@ -299052,10 +299088,10 @@ SEED_PAGES = [
         "title": "Irish Mule",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/31317403/pexels-photo-31317403.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/10779226/pexels-photo-10779226.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Daniel Erlandson",
-                "photographer_url": "https://www.pexels.com/@daniel-erlandson-2150649940",
+                "photographer": "Keegan Checks",
+                "photographer_url": "https://www.pexels.com/@keeganjchecks",
                 "source": "pexels",
             },
             "meta_description": "What an Irish Mule is, the best whiskey substitutes with ratios, how to store the ingredients, and how to mix it right.",
@@ -299154,11 +299190,11 @@ SEED_PAGES = [
         "title": "Vegetarian Lasagna Soup",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/30350310/pexels-photo-30350310.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1649500652778-ad433dcb5a49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NXx8dmVnZXRhcmlhbiUyMGxhc2FnbmElMjBzb3VwJTIwd2l0aCUyMHJpY290dGElMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTU2OTU4OXww&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Anthony Rahayel",
-                "photographer_url": "https://www.pexels.com/@anthony-rahayel-125801377",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A hearty vegetarian lasagna soup with broken lasagna noodles, marinara, and a dolloped ricotta topping, ready in about 45 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "vegetarian lasagna soup with ricotta",
@@ -299649,11 +299685,11 @@ SEED_PAGES = [
         "title": "Cherry Dump Cake Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/8960319/pexels-photo-8960319.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/34202446/pexels-photo-34202446.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Yulia Ilina",
-                "photographer_url": "https://www.pexels.com/@yuuilina",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A cherry dump cake made with cherry pie filling, crushed pineapple, and a box of yellow cake mix, no stirring required. Ready in under an hour with a golden, crumbly topping.",
             "hero_image_query": "cherry dump cake in baking dish",
@@ -299806,10 +299842,10 @@ SEED_PAGES = [
         "title": "Prawn Creole Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/38268455/pexels-photo-38268455.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/699544/pexels-photo-699544.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Sharafat Siddiqui",
-                "photographer_url": "https://www.pexels.com/@sharafat-siddiqui-3886239",
+                "photographer": "Cats Coming",
+                "photographer_url": "https://www.pexels.com/@catscoming",
                 "source": "pexels",
             },
             "meta_description": "A classic New Orleans-style prawn creole with a rich tomato and bell pepper sauce, simmered with the Cajun holy trinity and served over rice. Includes a live serving-size scaler and US/metric unit toggle.",
@@ -300078,11 +300114,11 @@ SEED_PAGES = [
         "title": "Crack Dip",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/37586242/pexels-photo-37586242.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1627279001696-cacf1b249e9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8Y3JhY2slMjBkaXAlMjB3aXRoJTIwYmFjb24lMjBhbmQlMjBjaGVkZGFyJTIwaW4lMjBhJTIwYm93bCUyMHdpdGglMjBjcmFja2Vyc3xlbnwwfHx8fDE3ODk1NTA0Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Tanha Tamanna  Syed",
-                "photographer_url": "https://www.pexels.com/@tanhatamannasyed",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What crack dip is, the best ingredient swaps with ratios, how to store and reheat it, and how to keep it from turning into a greasy mess.",
             "hero_image_query": "crack dip with bacon and cheddar in a bowl with crackers",
@@ -300168,6 +300204,12 @@ SEED_PAGES = [
         "title": "Enmoladas",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1667506170150-bbf8459ea3c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NHx8ZW5tb2xhZGFzJTIwbW9sZSUyMHNhdWNlJTIwdG9ydGlsbGFzfGVufDB8fHx8MTc4OTU1MDQ1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What enmoladas are, how they differ from enchiladas, mole sauce substitutes with ratios, and how to store and serve them without the tortillas going soggy.",
             "hero_image_query": "enmoladas mole sauce tortillas",
             "image_alt": "Corn tortillas folded and bathed in dark mole poblano sauce on a plate, topped with crumbled queso fresco, sliced white onion, and toasted sesame seeds.",
@@ -300411,6 +300453,12 @@ SEED_PAGES = [
         "title": "Pollaste",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1612156542176-87840e140c80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8d2hvbGUlMjByYXclMjBwb2xsYXN0ZSUyMHlvdW5nJTIwcm9vc3RlciUyMG9uJTIwYnV0Y2hlciUyMGJsb2NrfGVufDB8fHx8MTc4OTU1MDQzNnww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What pollaste (a young rooster, also called pollastre or pollastro) is, how it differs from a regular chicken, the best substitutes with ratios, and how to cook it so the firmer meat stays tender.",
             "hero_image_query": "whole raw pollaste young rooster on butcher block",
             "image_alt": "A whole raw pollaste with yellow-tinted skin and long legs resting on a wooden butcher block next to a boning knife",
@@ -300834,10 +300882,10 @@ SEED_PAGES = [
         "title": "Roquefort Cheese Sauce Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/33673991/pexels-photo-33673991.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/20582727/pexels-photo-20582727.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "pedro furtado",
-                "photographer_url": "https://www.pexels.com/@pedrofurtadoo",
+                "photographer": "Nadin Sh",
+                "photographer_url": "https://www.pexels.com/@nadin-sh-78971847",
                 "source": "pexels",
             },
             "meta_description": "A classic French bistro-style Roquefort cream sauce made in the same skillet you sear the steak in, ready in about 40 minutes. Includes a live serving-size scaler and US/metric toggle.",
@@ -301037,10 +301085,10 @@ SEED_PAGES = [
         "title": "Tonkotsu Broth",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/6111932/pexels-photo-6111932.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/29989995/pexels-photo-29989995.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Piotr Arnoldes",
-                "photographer_url": "https://www.pexels.com/@piotr-arnoldes-7862031",
+                "photographer": "Deane Bayas",
+                "photographer_url": "https://www.pexels.com/@dbaler",
                 "source": "pexels",
             },
             "meta_description": "What tonkotsu broth is, the best substitutes with ratios, how to store it without breaking the emulsion, and how to use it beyond ramen.",
@@ -301364,11 +301412,11 @@ SEED_PAGES = [
         "title": "Blue Lagoon Cocktail Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/25585750/pexels-photo-25585750.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1718030558645-c0988a57af4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8M3x8Ymx1ZSUyMGxhZ29vbiUyMGNvY2t0YWlsJTIwcGxhdGVkJTIwZGlzaHxlbnwwfHx8fDE3ODk1NjYxODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Jimmy Elizarraras",
-                "photographer_url": "https://www.pexels.com/@jimmyelizarraras",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A bright blue, citrusy cocktail made with vodka, blue curaçao, and lemon-lime soda over ice. Ready in under 5 minutes, with a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "blue lagoon cocktail",
@@ -301669,11 +301717,11 @@ SEED_PAGES = [
         "title": "Cloud Cake",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1695052544296-63d0b132c63b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8Q2xvdWQlMjBDYWtlfGVufDB8fHx8MTc4OTU1MzEwNXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/29211725/pexels-photo-29211725.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "sajeesh Gangadharan",
-                "photographer_url": "https://unsplash.com/@sajeesh88",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What cloud cake is, how it differs from angel food and chiffon cake, the best substitutes with ratios, and how to store it so it doesn't collapse.",
             "hero_image_query": "jiggly Japanese cloud cake slice with powdered sugar",
@@ -302130,11 +302178,11 @@ SEED_PAGES = [
         "title": "Seaweed Chips",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/34466116/pexels-photo-34466116.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1610933100814-cc000875aaf3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8Y3Jpc3B5JTIwc2Vhd2VlZCUyMGNoaXBzJTIwc25hY2slMjBib3dsfGVufDB8fHx8MTc4OTU1MzEwN3ww&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Caleb Oquendo",
-                "photographer_url": "https://www.pexels.com/@caleboquendo",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What seaweed chips are, the best substitutes with ratios, how to keep them crisp once opened, and how to use them beyond straight snacking.",
             "hero_image_query": "crispy seaweed chips snack bowl",
@@ -302215,11 +302263,11 @@ SEED_PAGES = [
         "title": "Armadillo Eggs",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/4110225/pexels-photo-4110225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/27098118/pexels-photo-27098118.png?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Polina Tankilevitch",
-                "photographer_url": "https://www.pexels.com/@polina-tankilevitch",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What armadillo eggs are, how they differ from similar bacon-wrapped appetizers, real substitution options with nutrition, and how to store and reheat them.",
             "hero_image_query": "armadillo eggs jalapeno poppers wrapped in sausage and bacon on a smoker",
@@ -302484,10 +302532,10 @@ SEED_PAGES = [
         "title": "Stewed Apples",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/7642865/pexels-photo-7642865.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/38924564/pexels-photo-38924564.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Michael Telitsyn",
-                "photographer_url": "https://www.pexels.com/@michaeltelitsyn",
+                "photographer": "Maryia Siutsova",
+                "photographer_url": "https://www.pexels.com/@maryia-siutsova-701640907",
                 "source": "pexels",
             },
             "meta_description": "What stewed apples are, the best substitutes with ratios, how to store a batch so it doesn't turn watery, and how to use them in both sweet and savory cooking.",
@@ -302586,11 +302634,11 @@ SEED_PAGES = [
         "title": "Apple Crisp with Oatmeal and Brown Sugar Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/17883685/pexels-photo-17883685.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/34275018/pexels-photo-34275018.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Samar  Hameed",
-                "photographer_url": "https://www.pexels.com/@samar-hameed-408236609",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A classic apple crisp with a crunchy oatmeal and brown sugar topping over cinnamon-spiced apples. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "apple crisp with oatmeal topping in baking dish",
@@ -302813,11 +302861,11 @@ SEED_PAGES = [
         "title": "Classic Beef Stew Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/37006564/pexels-photo-37006564.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/3981486/pexels-photo-3981486.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Talha Kuğu",
-                "photographer_url": "https://www.pexels.com/@talha-kugu-2160759144",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A hearty beef stew recipe made with chuck stew meat, carrots, and potatoes, slow-simmered until fork-tender. Includes a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "beef stew in a dutch oven",
@@ -303121,6 +303169,12 @@ SEED_PAGES = [
         "title": "Carne Adovada",
         "batch_number": 10,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6358974/pexels-photo-6358974.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Yash Maramangallam",
+                "photographer_url": "https://www.pexels.com/@yash-maramangallam-2756476",
+                "source": "pexels",
+            },
             "meta_description": "What carne adovada is, how it differs from carnitas and chili, the best substitutes with ratios, and how to store and use it in New Mexican cooking.",
             "hero_image_query": "carne adovada red chile pork stew in a bowl",
             "image_alt": "A bowl of deep red carne adovada with tender chunks of pork submerged in thick red chile sauce, garnished with chopped cilantro.",
@@ -303210,11 +303264,11 @@ SEED_PAGES = [
         "title": "Crab Stuffed Mushrooms Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/9219090/pexels-photo-9219090.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/10359397/pexels-photo-10359397.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Loren Castillo",
-                "photographer_url": "https://www.pexels.com/@lorencastillo",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "Rich, savory crab stuffed mushrooms with cream cheese, Parmesan, and Old Bay, baked until golden. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "crab stuffed mushrooms",
@@ -304034,11 +304088,11 @@ SEED_PAGES = [
         "title": "Carolina Gold BBQ Sauce Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/37228316/pexels-photo-37228316.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/33706247/pexels-photo-33706247.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Cristian Arteaga",
-                "photographer_url": "https://www.pexels.com/@cristian-arteaga-1679611",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A tangy, mustard-based South Carolina barbecue sauce ready in 20 minutes, built on yellow mustard, cider vinegar, and brown sugar. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "carolina gold mustard bbq sauce in jar with pulled pork",
@@ -304502,11 +304556,11 @@ SEED_PAGES = [
         "title": "Homemade Frozen Yogurt Recipe",
         "batch_number": 10,
         "content": {
-            "image_url": "https://images.pexels.com/photos/37414426/pexels-photo-37414426.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/15048304/pexels-photo-15048304.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Vero Lova",
-                "photographer_url": "https://www.pexels.com/@verolova",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A simple homemade frozen yogurt recipe made from plain yogurt, sugar, and vanilla, churned into a tangy, scoopable dessert. Includes a live serving-size scaler and answers on freezing yogurt.",
             "hero_image_query": "homemade frozen yogurt in bowl",
