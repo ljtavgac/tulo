@@ -11,7 +11,7 @@ import IngredientUnitConversion from "./IngredientUnitConversion";
 
 type Goal = "" | "lower_calorie" | "higher_protein" | "lower_fat";
 
-const GOAL_OPTIONS: { value: Exclude<Goal, "">; label: string; field: keyof NutritionPerUnit; direction: "min" | "max" }[] = [
+const GOAL_OPTIONS: { value: Exclude<Goal, "">; label: string; field: "calories" | "protein_g" | "fat_g"; direction: "min" | "max" }[] = [
   { value: "lower_calorie", label: "Lower calorie", field: "calories", direction: "min" },
   { value: "higher_protein", label: "Higher protein", field: "protein_g", direction: "max" },
   { value: "lower_fat", label: "Lower fat", field: "fat_g", direction: "min" },
@@ -29,6 +29,26 @@ const GOAL_OPTIONS: { value: Exclude<Goal, "">; label: string; field: keyof Nutr
 // while a lower bar like 3% let through recipes whose "material" swing was
 // still under a gram of protein.
 const MATERIALITY_THRESHOLD = 0.05;
+
+// A relative threshold alone breaks down when the baseline itself is
+// tiny -- confirmed live (2026-09-16) on the homemade bitters recipe:
+// swapping its 0g-protein simple syrup for honey (0.1g/unit) cleared 5%
+// relative because the whole 16-serving batch only had 2.55g of protein to
+// begin with, but the actual swing was 0.009g of protein PER SERVING (a
+// recipe used a few drops at a time, not eaten as food). A goal now also
+// needs to move the total recipe by at least this much per serving --
+// picked by looking at the per-serving deltas among pairs that already
+// cleared the 5% relative bar: for calories and fat the typical (median)
+// passing swap was tens of kcal / over a gram, so a small absolute floor
+// only trims the near-zero-baseline outliers: for protein specifically the
+// MEDIAN passing swap was under half a gram, so protein's floor does more
+// work, deliberately -- a "higher protein" claim over a fraction of a gram
+// isn't one a reader should be offered as a real dietary lever.
+const MATERIALITY_ABS_FLOOR_PER_SERVING: Record<(typeof GOAL_OPTIONS)[number]["field"], number> = {
+  calories: 10,
+  protein_g: 1,
+  fat_g: 1,
+};
 
 export default function RecipeIngredientsPanel({
   ingredients,
@@ -141,8 +161,9 @@ export default function RecipeIngredientsPanel({
             const best = isAdjustable ? bestOptionFor(ing, g.field, g.direction) : { npu: ing.nutrition_per_unit, mult: 1 };
             withGoal += ing.base_qty * best.mult * best.npu![g.field];
           }
-          if (baseline === 0) return withGoal !== 0;
-          return Math.abs(withGoal - baseline) / baseline >= MATERIALITY_THRESHOLD;
+          const absDelta = Math.abs(withGoal - baseline);
+          if (absDelta / baseServings < MATERIALITY_ABS_FLOOR_PER_SERVING[g.field]) return false;
+          return baseline === 0 || absDelta / baseline >= MATERIALITY_THRESHOLD;
         });
 
   function applyGoal(nextGoal: Goal) {
