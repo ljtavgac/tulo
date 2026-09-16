@@ -1,0 +1,33 @@
+name: Add sourced outreach prospects (one-off batch)
+
+# Loads a fixed, hand-curated batch of real (non-example) tool-pitch
+# prospects -- sourced via Semrush backlink-gap analysis + manual
+# filtering to real food blogs -- into the outreach portal's queue for
+# human review. See content/scripts/add_outreach_prospects.py for exactly
+# which domains and why. Never sends anything itself: every prospect
+# lands as status=queued, same as any other row in that portal.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  add-prospects:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Queue sourced prospects
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/add_outreach_prospects.py
