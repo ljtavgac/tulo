@@ -1,0 +1,31 @@
+name: Read staging image audit (read-only)
+
+# Pure GET against /admin/image-audit -- a direct DB read with no
+# mutation (see that endpoint's own docstring). Reports whether given
+# slugs are missing/broken, which a plain /pages/{slug} 404 can't
+# distinguish from "row doesn't exist" or "row is unpublished".
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Comma-separated slugs to check against the audit"
+        required: true
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch image audit and filter to given slugs
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -uo pipefail
+          IFS=',' read -ra SLUGS <<< "${{ inputs.slugs }}"
+          curl -sS -f --connect-timeout 15 --max-time 60 \
+            "$BACKEND_BASE_URL/admin/image-audit?token=$ADMIN_TASK_TOKEN" \
+            | python3 content/scripts/print_audit_for_slugs.py "${SLUGS[@]}"
