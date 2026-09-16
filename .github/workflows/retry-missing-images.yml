@@ -1,0 +1,45 @@
+name: Retry missing batch images
+
+# Manual, one-off tool for the gap daily-batch.yml's own log already names
+# explicitly ("Skipped N slug(s) with no image_url yet on staging (run
+# /admin/fetch-images there first)"): some fraction of a batch's stock-photo
+# searches don't find a usable match on the first pass. Re-runs the fetch
+# for just those slugs, then bakes+commits whatever it found -- the same
+# two steps daily_batch.py itself runs automatically for a batch's slugs,
+# re-targeted at the leftovers.
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Space or comma-separated slugs to re-fetch images for"
+        required: true
+      batch_number:
+        description: "Batch number these slugs belong to (for the bake commit's trailer)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Retry image fetch + bake
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          SLUGS="${{ inputs.slugs }}"
+          SLUGS="${SLUGS//,/ }"
+          python3 content/scripts/retry_missing_images.py --batch-number "${{ inputs.batch_number }}" $SLUGS
