@@ -181,6 +181,23 @@ def _page_text(html: str, max_chars: int = 6000) -> str:
     return text[:max_chars]
 
 
+CONTACT_PAGE_PATHS = ["/contact", "/contact-us", "/about", "/about-us"]
+
+
+def _contact_page_text(domain: str, max_chars: int = 2000) -> str:
+    """Best-effort: most blogs put their real contact email on a separate
+    Contact/About page, not the homepage -- confirmed on this pipeline's
+    first real run, where every accepted candidate came back with no
+    email found from the homepage alone. Tries a few common paths, stops
+    at the first that actually loads; a miss here just means
+    contact_email stays null, same as before, never blocks vetting."""
+    for path in CONTACT_PAGE_PATHS:
+        html = _fetch(f"https://{domain}{path}", timeout=10)
+        if html is not None:
+            return _page_text(html, max_chars)
+    return ""
+
+
 def _existing_domains(base: str, auth: tuple[str, str]) -> set[str]:
     r = requests.get(f"{base}/admin/outreach-queue/list.json", params={"status": "all"}, auth=auth, timeout=30)
     r.raise_for_status()
@@ -236,7 +253,8 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
         "You vet cold-outreach candidates for Tulo, a free food/recipe website building genuine, "
         "editorial backlinks -- never a link farm or PBN itself, and only interested in linking from "
         "real ones either.\n\n"
-        "Given the homepage text of one candidate site below, decide whether it's a real, credible, "
+        "Given the homepage (and, when available, Contact/About page) text of one candidate site "
+        "below, decide whether it's a real, credible, "
         "actively-run food/cooking blog: a genuine author voice or byline, evidence of a real "
         "audience (comments, social presence, an about-the-author bio), original writing that reads "
         "as human-written (not spun or AI-mill boilerplate), a real About/Contact section. Reject "
@@ -287,6 +305,14 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
         return None
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
+    # Despite being told not to, the model occasionally wraps its JSON in a
+    # markdown code fence (```json ... ```) -- confirmed live on this
+    # pipeline's very first real run, which lost an otherwise-good
+    # candidate (alexandracooks.com) to a bare JSONDecodeError over
+    # nothing but the fence. Stripping one if present costs nothing when
+    # there isn't one.
+    if raw.startswith("```"):
+        raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
     try:
         item = json.loads(raw)
     except json.JSONDecodeError:
@@ -363,6 +389,9 @@ def main() -> None:
         if len(text) < 200:
             print(f"  {domain}: homepage text too thin to judge, skipping")
             continue
+        contact_text = _contact_page_text(domain)
+        if contact_text:
+            text = f"{text}\n\n--- Contact/About page ---\n{contact_text}"
         result = _vet_and_draft(client, base, domain, text)
         if result is None:
             continue
