@@ -42,7 +42,13 @@ SECTION_TEMPLATE_TYPES = [
     "substitute",
 ]
 
-WALK_PAGE_SIZE = 50
+# Must match every section index page.tsx's own PAGE_SIZE (all 12 as of
+# this writing) -- a larger walk size can fetch straight past the exact
+# batch-boundary condition that triggers the bug, silently under-counting
+# real hidden pages for large sections (confirmed: a first pass at 50
+# found 0 candidates for recipe_or_dish/ingredient_hub, which is not
+# credible for datasets that size and was almost certainly this mistake).
+WALK_PAGE_SIZE = 12
 
 
 def _raw_slugs(base: str, template_type: str) -> set[str]:
