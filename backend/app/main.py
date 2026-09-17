@@ -1042,7 +1042,22 @@ def list_pages(
                 if len(items) >= limit:
                     break
             raw_offset += consumed
-            if len(batch) < limit:
+            # A short batch (`len(batch) < limit`) only proves there are no
+            # more raw rows *past this batch* -- it says nothing about
+            # whether the batch was fully scanned. When `items` hits
+            # `limit` partway through a batch, the `for` loop above breaks
+            # out early and `consumed` stops short of `len(batch)`, leaving
+            # an unscanned tail *inside this very batch* that can still
+            # contain more published pages (confirmed live: a batch of 12
+            # substitute rows with only 1 unpublished elsewhere already
+            # consumed the target `limit`, breaking out 1 row into a final
+            # 11-row batch -- the other 10 rows, 9 of them published, were
+            # silently dropped and `has_more` came back False). Only treat
+            # a short batch as genuine end-of-table proof once it's been
+            # consumed in full; a partial break must leave `exhausted`
+            # False so the next call re-fetches from the updated
+            # `raw_offset` and finishes scanning that same tail.
+            if consumed == len(batch) and len(batch) < limit:
                 exhausted = True
                 break
         return {
