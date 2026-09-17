@@ -84,10 +84,22 @@ class OutreachProspect(Base):
     """One link-building outreach target -- either a tool-pitch email to a
     site that might link to one of Tulo's tools/calculators, or a drafted
     reply to a HARO/Connectively-style source query -- queued for a human
-    to review (and, for a haro_reply's placeholder body, actually draft)
-    before approving or rejecting. See a handful of clearly-marked example
-    rows seeded by _seed_outreach_examples() for what a not-yet-real row
-    looks like.
+    to review before approving or rejecting. See a handful of
+    clearly-marked example rows seeded by _seed_outreach_examples() for
+    what a not-yet-real row looks like.
+
+    A haro_reply row is normally already a real drafted reply, not a
+    to-do: see _draft_haro_replies in main.py, which reads a forwarded
+    digest and creates one row per query it's a genuine fit for (with a
+    real contact_email/contact_name and a real proposed body) -- creating
+    nothing at all when no query in that digest is a real fit, rather
+    than a row for a human to triage by hand. Only falls back to the old
+    raw-digest-with-placeholder-body shape (body_preview exactly equal to
+    _UNDRAFTED_HARO_PLACEHOLDER in main.py) when ANTHROPIC_API_KEY isn't
+    configured or that call/parse fails -- see outreach_queue_ingest_email.
+    The portal hides Approve on that placeholder shape specifically (see
+    card() in main.py) since it has no real contact_email and isn't
+    meant to be sent as-is.
 
     subject/body_preview are the literal email -- exactly what gets sent,
     not a template or a preview of something composed elsewhere. A human
