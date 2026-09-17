@@ -2446,50 +2446,69 @@ def compare_images(token: str):
     return HTMLResponse(content=html)
 
 
-def _raw_candidates(provider: str, query: str, limit: int = 12) -> list[dict]:
+def _raw_candidates(provider: str, query: str, limit: int = 12) -> tuple[list[dict], str | None]:
     """Like images._search_pexels/_search_unsplash, but returns every
     candidate the API ranked (up to `limit`), not just the first one that
     passes every check -- for /admin/debug-page-image below, which needs to
-    show *why* a given photo won or lost, not just the final answer."""
-    if provider == "pexels":
-        if not PEXELS_ACCESS_KEY:
-            return []
+    show *why* a given photo won or lost, not just the final answer.
+
+    Returns (candidates, error) -- error is None on success. A single
+    /admin/debug-page-image load can make dozens of real provider calls (up
+    to 2 attempts x 2 providers x however many recipe_cards a
+    category_roundup page has), so this is far more exposed to a transient
+    rate-limit or provider outage than a normal fetch_images() run ever is.
+    Confirmed live (2026-09-17): an uncaught requests.HTTPError from
+    r.raise_for_status() here took down the *entire* page with a bare 500,
+    and once a provider's rate limit trips, every subsequent debug-page-image
+    load fails the same way regardless of slug, looking like a broad outage
+    rather than the one transient cause it actually is. Caught here instead
+    so one provider's bad moment shows as a clear inline error in that one
+    section -- the rest of the page (the other provider, the other
+    attempts, other cards) still renders."""
+    try:
+        if provider == "pexels":
+            if not PEXELS_ACCESS_KEY:
+                return [], None
+            r = requests.get(
+                "https://api.pexels.com/v1/search",
+                headers={"Authorization": PEXELS_ACCESS_KEY},
+                params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
+                timeout=10,
+            )
+            r.raise_for_status()
+            photos = r.json().get("photos", [])[:limit]
+            return [
+                {
+                    "url": p["src"]["large"],
+                    "alt": p.get("alt") or "",
+                    "photographer": p["photographer"],
+                    "source": "pexels",
+                }
+                for p in photos
+            ], None
+        if not UNSPLASH_ACCESS_KEY:
+            return [], None
         r = requests.get(
-            "https://api.pexels.com/v1/search",
-            headers={"Authorization": PEXELS_ACCESS_KEY},
+            "https://api.unsplash.com/search/photos",
+            headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
             params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
             timeout=10,
         )
         r.raise_for_status()
-        photos = r.json().get("photos", [])[:limit]
+        results = r.json().get("results", [])[:limit]
         return [
             {
-                "url": p["src"]["large"],
-                "alt": p.get("alt") or "",
-                "photographer": p["photographer"],
-                "source": "pexels",
+                "url": p["urls"]["regular"],
+                "alt": " ".join(filter(None, (p.get("alt_description"), p.get("description")))),
+                "photographer": p["user"]["name"],
+                "source": "unsplash",
             }
-            for p in photos
-        ]
-    if not UNSPLASH_ACCESS_KEY:
-        return []
-    r = requests.get(
-        "https://api.unsplash.com/search/photos",
-        headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
-        params={"query": query, "per_page": SEARCH_RESULTS_PER_PAGE},
-        timeout=10,
-    )
-    r.raise_for_status()
-    results = r.json().get("results", [])[:limit]
-    return [
-        {
-            "url": p["urls"]["regular"],
-            "alt": " ".join(filter(None, (p.get("alt_description"), p.get("description")))),
-            "photographer": p["user"]["name"],
-            "source": "unsplash",
-        }
-        for p in results
-    ]
+            for p in results
+        ], None
+    except requests.RequestException as e:
+        status = getattr(e.response, "status_code", None)
+        detail = f"HTTP {status}" if status else type(e).__name__
+        return [], f"{provider} request failed ({detail}) -- likely rate-limited or a transient provider error, try again shortly"
 
 
 @app.get("/admin/debug-page-image", response_class=HTMLResponse)
@@ -2514,7 +2533,9 @@ def debug_page_image(token: str, slug: str, db: Session = Depends(get_db)):
     content = page.content
 
     def render_candidates(provider: str, attempt_query: str, must_match) -> str:
-        candidates = _raw_candidates(provider, attempt_query)
+        candidates, error = _raw_candidates(provider, attempt_query)
+        if error:
+            return f'<p class="empty">{error}</p>'
         if not candidates:
             return '<p class="empty">No results (no key configured, or provider returned nothing).</p>'
         rows = []
