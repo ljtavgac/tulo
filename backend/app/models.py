@@ -93,7 +93,11 @@ class OutreachProspect(Base):
     digest and creates one row per query it's a genuine fit for (with a
     real contact_email/contact_name and a real proposed body) -- creating
     nothing at all when no query in that digest is a real fit, rather
-    than a row for a human to triage by hand. Only falls back to the old
+    than a row for a human to triage by hand. A non-empty contact_email
+    and a body containing a real Tulo URL are both enforced in code (see
+    _draft_haro_replies), not just asked for in the prompt -- a drafted
+    item failing either is dropped rather than turned into a row missing
+    one. Only falls back to the old
     raw-digest-with-placeholder-body shape (body_preview exactly equal to
     _UNDRAFTED_HARO_PLACEHOLDER in main.py) when ANTHROPIC_API_KEY isn't
     configured or that call/parse fails -- see outreach_queue_ingest_email.
