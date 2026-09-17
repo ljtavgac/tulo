@@ -897,35 +897,6 @@ def _summary_image(page: Page, db: Session) -> tuple[str | None, dict | None, st
     return None, None, content.get("hero_image_query"), content.get("image_alt")
 
 
-@app.get("/admin/debug-pages-raw")
-def debug_pages_raw(
-    token: str,
-    template_type: str,
-    offset: int = Query(default=0),
-    limit: int = Query(default=12),
-    db: Session = Depends(get_db),
-):
-    """TEMPORARY: dumps exactly what base_query.offset(offset).limit(limit)
-    returns for template_type -- id, slug, and the raw unpublished check --
-    to find why GET /pages's paged branch behaves differently on
-    production than an identical local reproduction. Remove once
-    resolved."""
-    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
-        raise HTTPException(status_code=404)
-    batch = (
-        db.query(Page)
-        .order_by(Page.id.desc())
-        .filter(Page.template_type == template_type)
-        .offset(offset)
-        .limit(limit)
-        .all()
-    )
-    return [
-        {"id": p.id, "slug": p.slug, "unpublished": bool(p.content.get("unpublished")), "content_keys": list(p.content.keys())}
-        for p in batch
-    ]
-
-
 @app.get("/pages")
 def list_pages(
     template_type: str | None = Query(default=None),
@@ -1071,7 +1042,22 @@ def list_pages(
                 if len(items) >= limit:
                     break
             raw_offset += consumed
-            if len(batch) < limit:
+            # A short batch (`len(batch) < limit`) only proves there are no
+            # more raw rows *past this batch* -- it says nothing about
+            # whether the batch was fully scanned. When `items` hits
+            # `limit` partway through a batch, the `for` loop above breaks
+            # out early and `consumed` stops short of `len(batch)`, leaving
+            # an unscanned tail *inside this very batch* that can still
+            # contain more published pages (confirmed live: a batch of 12
+            # substitute rows with only 1 unpublished elsewhere already
+            # consumed the target `limit`, breaking out 1 row into a final
+            # 11-row batch -- the other 10 rows, 9 of them published, were
+            # silently dropped and `has_more` came back False). Only treat
+            # a short batch as genuine end-of-table proof once it's been
+            # consumed in full; a partial break must leave `exhausted`
+            # False so the next call re-fetches from the updated
+            # `raw_offset` and finishes scanning that same tail.
+            if consumed == len(batch) and len(batch) < limit:
                 exhausted = True
                 break
         return {
