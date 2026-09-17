@@ -2021,6 +2021,13 @@ def review_queue_override_image(
     content["image_attribution"] = {"photographer": None, "photographer_url": None, "source": "manual_override"}
     page.content = content
     db.commit()
+    # Without this, the DB write is correct but the frontend's 1h page
+    # cache keeps serving the old (or missing) photo until that cache
+    # entry expires on its own -- confirmed live: overriding two prod
+    # images left both pages showing no change at all. trigger_fetch_images
+    # (the /admin/fetch-images endpoint) already does this after a real
+    # write; this manual-override path just never had the same call added.
+    _revalidate_frontend()
 
     return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
 
