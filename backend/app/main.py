@@ -2689,8 +2689,8 @@ def _seed_outreach_examples(db: Session) -> None:
             contact_email="jamie@example-cooking-blog.test",
             subject="A free pan-size converter your readers might like",
             body_preview=(
-                "Hi Jamie -- I noticed your banana bread post mentions swapping pan sizes by eye. "
-                "We built a free pan-size/yield calculator that adjusts bake time too -- here it is "
+                "Hi Jamie - I noticed your banana bread post mentions swapping pan sizes by eye. "
+                "We built a free pan-size/yield calculator that adjusts bake time too - here it is "
                 "live on our own banana bread recipe: https://tulo.io/food/recipes/banana-nut-bread. "
                 "Thought it might be a useful link for that post."
             ),
@@ -2703,8 +2703,8 @@ def _seed_outreach_examples(db: Session) -> None:
             contact_email="morgan@example-nutrition-site.test",
             subject="A live recipe nutrition recalculator (swap-aware)",
             body_preview=(
-                "Hi Morgan -- following your piece on recipe substitutions, we built a tool that "
-                "recalculates a recipe's nutrition live as you swap ingredients or change servings -- "
+                "Hi Morgan - following your piece on recipe substitutions, we built a tool that "
+                "recalculates a recipe's nutrition live as you swap ingredients or change servings - "
                 "here it is in action on our chicken broccoli rice casserole recipe: "
                 "https://tulo.io/food/recipes/chicken-broccoli-rice-casserole. Could be a relevant "
                 "link for readers making substitutions."
@@ -2722,8 +2722,8 @@ def _seed_outreach_examples(db: Session) -> None:
             ),
             subject="Source for your ingredient-substitution piece",
             body_preview=(
-                "Hi -- happy to help as a source. One common mistake: substituting baking soda for "
-                "baking powder 1:1 -- baking soda is roughly 3x stronger and needs its own acid to "
+                "Hi - happy to help as a source. One common mistake: substituting baking soda for "
+                "baking powder 1:1 - baking soda is roughly 3x stronger and needs its own acid to "
                 "activate, so the swap either falls flat or turns bitter. Full ratio breakdown here "
                 "if useful for the piece: https://tulo.io/food/substitutes/baking-soda-substitute. "
                 "Happy to expand with a couple more examples too."
@@ -3329,9 +3329,11 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "these keys: reporter_email, reporter_name, outlet, query_excerpt (the original query text "
         "for this one item, verbatim or lightly trimmed), subject, body (a short, specific, "
         "non-generic 3-5 sentence reply referencing the piece's actual topic, including exactly one "
-        "real URL -- from the fixed tools list or a search_tulo_content result, never invented). Two "
+        "real URL - from the fixed tools list or a search_tulo_content result, never invented; use a "
+        "single hyphen with spaces around it for a dash if you need one, e.g. 'word - word', never a "
+        "double hyphen or em dash). Two "
         "hard requirements, checked and enforced after your response: reporter_email must be a real, "
-        "non-empty address (every HARO/Connectively query has one -- if a query genuinely doesn't, "
+        "non-empty address (every HARO/Connectively query has one - if a query genuinely doesn't, "
         "it's not answerable, leave it out), and body must contain one of the real URLs verbatim. If "
         "there are zero fits, respond with exactly: []"
     )
