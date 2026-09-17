@@ -897,6 +897,35 @@ def _summary_image(page: Page, db: Session) -> tuple[str | None, dict | None, st
     return None, None, content.get("hero_image_query"), content.get("image_alt")
 
 
+@app.get("/admin/debug-pages-raw")
+def debug_pages_raw(
+    token: str,
+    template_type: str,
+    offset: int = Query(default=0),
+    limit: int = Query(default=12),
+    db: Session = Depends(get_db),
+):
+    """TEMPORARY: dumps exactly what base_query.offset(offset).limit(limit)
+    returns for template_type -- id, slug, and the raw unpublished check --
+    to find why GET /pages's paged branch behaves differently on
+    production than an identical local reproduction. Remove once
+    resolved."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+    batch = (
+        db.query(Page)
+        .order_by(Page.id.desc())
+        .filter(Page.template_type == template_type)
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+    return [
+        {"id": p.id, "slug": p.slug, "unpublished": bool(p.content.get("unpublished")), "content_keys": list(p.content.keys())}
+        for p in batch
+    ]
+
+
 @app.get("/pages")
 def list_pages(
     template_type: str | None = Query(default=None),
