@@ -84,28 +84,30 @@ class OutreachProspect(Base):
     """One link-building outreach target -- either a tool-pitch email to a
     site that might link to one of Tulo's tools/calculators, or a drafted
     reply to a HARO/Connectively-style source query -- queued for a human
-    to approve or reject before anything sends. See a handful of
-    clearly-marked example rows seeded by _seed_outreach_examples() for
-    what a not-yet-real row looks like.
+    to review (and, for a haro_reply's placeholder body, actually draft)
+    before approving or rejecting. See a handful of clearly-marked example
+    rows seeded by _seed_outreach_examples() for what a not-yet-real row
+    looks like.
 
-    Approving a tool_pitch prospect with a contact_email, once
-    SNOV_CLIENT_ID/SNOV_CLIENT_SECRET/SNOV_LIST_ID are all configured,
-    calls Snov.io's add-prospect-to-list endpoint (see
-    _add_prospect_to_snov_list in main.py) -- which, per Snov.io's own
-    documented pattern, auto-enrolls the prospect into whatever
-    already-active drip campaign is attached to that list in the Snov.io
-    dashboard. That's a one-time manual setup on Snov.io's side (connect a
-    sending mailbox, write the campaign template, mark it active) this
-    code can't and shouldn't do on the user's behalf with real mailbox
-    credentials. haro_reply prospects are never auto-sent this way -- a
-    one-off personal reply to a specific journalist query doesn't fit a
-    one-template-many-recipients drip campaign, so those still require a
-    human to actually send the reply themselves once approved.
+    subject/body_preview are the literal email -- exactly what gets sent,
+    not a template or a preview of something composed elsewhere. A human
+    can edit both on a queued card (see /admin/outreach-queue/update-content
+    in main.py) before deciding.
+
+    Approving any prospect (tool_pitch or haro_reply alike) with a
+    contact_email, once GMAIL_SMTP_USER/GMAIL_SMTP_APP_PASSWORD are
+    configured, sends subject/body_preview directly via Gmail SMTP (see
+    _send_outreach_email in main.py) to contact_email. Replaces an earlier
+    Snov.io add-prospect-to-list integration (see git history) that
+    handed the actual send to a separately-authored campaign template --
+    which meant this portal could never guarantee what a reviewer saw here
+    was what actually went out.
 
     status: "queued" (needs a decision) | "approved" | "rejected".
     sent_at/send_error record what happened when an approval tried to
-    actually send -- both stay null for a haro_reply, for an approval that
-    predates Snov.io being configured, or for one missing a contact_email."""
+    actually send -- both stay null for an approval that predates
+    GMAIL_SMTP_USER/GMAIL_SMTP_APP_PASSWORD being configured, or for one
+    missing a contact_email."""
 
     __tablename__ = "outreach_prospects"
 

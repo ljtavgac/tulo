@@ -4,16 +4,18 @@ import io
 import os
 import re
 import secrets
+import smtplib
 import threading
 import time
 from collections import Counter
 from contextlib import asynccontextmanager, redirect_stdout
 from datetime import datetime, timezone
+from email.mime.text import MIMEText
 from html import escape as escape_html
 from typing import NamedTuple
 
 import requests
-from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -1160,108 +1162,56 @@ def _require_outreach_auth(credentials: HTTPBasicCredentials | None = Depends(_o
         raise HTTPException(status_code=401, headers={"WWW-Authenticate": "Basic realm=\"outreach\""})
 
 
-# Real Snov.io send integration, written against their published API docs
-# (client provided the full doc text directly -- not guessed at, unlike
-# the CSV-export fallback this replaces for tool_pitch prospects). Three
-# separate env vars, deliberately not reusing any other credential:
-#   SNOV_CLIENT_ID / SNOV_CLIENT_SECRET -- OAuth2 client_credentials pair
-#     from https://app.snov.io/account/api.
-#   SNOV_LIST_ID -- the Snov.io prospect list to add approved prospects
-#     to. Created once, by hand, in the Snov.io dashboard, along with the
-#     drip campaign that must already be marked active against that list
-#     -- per Snov.io's own docs, add-prospect-to-list is exactly the
-#     "automate adding prospects to lists with active email drip
-#     campaigns" pattern, so an active campaign on this list is what
-#     actually sends anything; this code only ever adds the prospect.
+# Direct-send integration: replaces the earlier Snov.io add-prospect-to-list
+# approach (see git history), which handed the actual compose-and-send step
+# to a separately-authored Snov.io campaign template -- meaning approving a
+# prospect here never guaranteed what got sent matched what a reviewer saw
+# in this portal. Sending prospect.subject/body_preview literally, via the
+# same connected mailbox a human reviewed them against, closes that gap.
 #
-# IMPORTANT CAVEAT, not yet resolved: this has been verified against the
-# documented request/response shapes and compiles/type-checks, but could
-# NOT be exercised against a live api.snov.io call from this environment
-# -- both snov.io and api.snov.io are blocked by this environment's own
-# egress proxy (confirmed earlier via a direct curl, 403 from the proxy
-# itself). The first real approval after these env vars are set is this
-# integration's actual first live test; watch send_error on that first
-# approved prospect.
-SNOV_CLIENT_ID = os.environ.get("SNOV_CLIENT_ID")
-SNOV_CLIENT_SECRET = os.environ.get("SNOV_CLIENT_SECRET")
-SNOV_LIST_ID = os.environ.get("SNOV_LIST_ID")
-
-# Process-lifetime cache for the OAuth bearer token -- documented as
-# valid for 3600 seconds; refetched with a 5-minute safety margin rather
-# than on every single send, same "don't redo cheap-to-cache work every
-# request" reasoning as _cached_pages() elsewhere in this file.
-_snov_token_cache: dict[str, object] = {"token": None, "expires_at": 0.0}
+# Same credential shape content/scripts/daily_batch.py's own notification
+# email already uses: a Gmail/Google Workspace address and an App Password
+# for it (Google Account -> Security -> 2-Step Verification -> App
+# passwords -- a regular account password won't work for SMTP once 2FA is
+# on). GMAIL_SMTP_USER should be the mailbox that's also the site's public
+# contact address (info@tulo.io), so replies land somewhere a human is
+# actually watching.
+GMAIL_SMTP_USER = os.environ.get("GMAIL_SMTP_USER")
+GMAIL_SMTP_APP_PASSWORD = os.environ.get("GMAIL_SMTP_APP_PASSWORD")
 
 
-def _get_snov_access_token() -> str:
-    """POST https://api.snov.io/v1/oauth/access_token, client_credentials
-    grant. Raises requests.HTTPError / requests.RequestException on
-    failure -- callers (only _add_prospect_to_snov_list below) are
-    expected to catch and record it, never let a Snov.io outage break the
-    approve action itself."""
-    if _snov_token_cache["token"] and time.time() < float(_snov_token_cache["expires_at"]):
-        return _snov_token_cache["token"]  # type: ignore[return-value]
-
-    response = requests.post(
-        "https://api.snov.io/v1/oauth/access_token",
-        data={
-            "grant_type": "client_credentials",
-            "client_id": SNOV_CLIENT_ID,
-            "client_secret": SNOV_CLIENT_SECRET,
-        },
-        timeout=15,
-    )
-    response.raise_for_status()
-    data = response.json()
-    _snov_token_cache["token"] = data["access_token"]
-    _snov_token_cache["expires_at"] = time.time() + data["expires_in"] - 300
-    return data["access_token"]
-
-
-def _add_prospect_to_snov_list(prospect: OutreachProspect) -> None:
-    """POST https://api.snov.io/v1/add-prospect-to-list -- per Snov.io's
-    own docs, adding a prospect to a list with an already-active drip
-    campaign automatically enrolls and starts that campaign for them.
-    Sets prospect.sent_at on success or prospect.send_error on failure;
-    never raises, so a Snov.io-side problem shows up as a visible error
-    on the prospect in the portal instead of breaking the approve action.
-    Caller is responsible for the actual db.commit()."""
-    if not (SNOV_CLIENT_ID and SNOV_CLIENT_SECRET and SNOV_LIST_ID):
-        return  # Not configured -- approving just records the decision, same as before this existed.
+def _send_outreach_email(prospect: OutreachProspect) -> None:
+    """Sends prospect.subject/body_preview exactly as stored -- no template
+    substitution, no separate campaign content -- to prospect.contact_email
+    via Gmail SMTP. Applies to both pitch_type values: a tool_pitch and a
+    haro_reply are both, at this point, just a human-reviewed subject/body
+    pair addressed to a specific person. Sets prospect.sent_at on success or
+    prospect.send_error on failure; never raises, so a bad send shows up as
+    a visible error on the prospect in the portal instead of breaking the
+    approve action. Caller is responsible for the actual db.commit()."""
+    if not (GMAIL_SMTP_USER and GMAIL_SMTP_APP_PASSWORD):
+        prospect.send_error = "GMAIL_SMTP_USER/GMAIL_SMTP_APP_PASSWORD not configured -- approving just records the decision."
+        return
     if not prospect.contact_email:
-        prospect.send_error = "No contact_email set -- can't add to Snov.io without one."
+        prospect.send_error = "No contact_email set -- can't send without one."
         return
 
-    try:
-        token = _get_snov_access_token()
-        name_parts = (prospect.contact_name or "").split(maxsplit=1)
-        first_name, last_name = (name_parts + [""])[:2] if name_parts else ("", "")
+    msg = MIMEText(prospect.body_preview)
+    msg["Subject"] = prospect.subject
+    msg["From"] = GMAIL_SMTP_USER
+    msg["To"] = prospect.contact_email
 
-        response = requests.post(
-            "https://api.snov.io/v1/add-prospect-to-list",
-            headers={"Authorization": f"Bearer {token}"},
-            data={
-                "email": prospect.contact_email,
-                "fullName": prospect.contact_name or "",
-                "firstName": first_name,
-                "lastName": last_name,
-                "companySite": f"https://{prospect.target_domain}" if prospect.target_domain else "",
-                "updateContact": "true",
-                "listId": SNOV_LIST_ID,
-            },
-            timeout=15,
-        )
-        response.raise_for_status()
-        result = response.json()
-        if result.get("success"):
-            prospect.sent_at = datetime.now(timezone.utc)
-            prospect.send_error = None
-        else:
-            prospect.send_error = str(result.get("errors") or "Snov.io returned success=false with no error detail.")
-    except requests.RequestException as e:
-        prospect.send_error = f"Snov.io request failed: {e}"
-    except (KeyError, ValueError) as e:
-        prospect.send_error = f"Unexpected Snov.io response shape: {e}"
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
+            smtp.starttls()
+            smtp.login(GMAIL_SMTP_USER, GMAIL_SMTP_APP_PASSWORD)
+            smtp.send_message(msg)
+        prospect.sent_at = datetime.now(timezone.utc)
+        prospect.send_error = None
+    except smtplib.SMTPException as e:
+        prospect.send_error = f"SMTP send failed: {e}"
+    except OSError as e:
+        prospect.send_error = f"SMTP connection failed: {e}"
 
 
 @app.get("/admin/fetch-images")
@@ -2829,12 +2779,12 @@ def outreach_queue(
                 f'<a href="/admin/outreach-queue/decide?prospect_id={r.id}&status=queued&show={show}">undo</a></div>'
             )
         if r.sent_at:
-            send_status_html = f'<div class="send-ok">sent to Snov.io {r.sent_at:%Y-%m-%d %H:%M}</div>'
+            send_status_html = f'<div class="send-ok">sent {r.sent_at:%Y-%m-%d %H:%M}</div>'
         elif r.send_error:
             send_status_html = f'<div class="send-error">send failed: {escape_html(r.send_error)}</div>'
         else:
             send_status_html = ""
-        if r.status == "queued" and r.pitch_type == "tool_pitch" and not r.contact_email:
+        if r.status == "queued" and not r.contact_email:
             contact_form_html = f"""
             <form method="get" action="/admin/outreach-queue/update-contact" class="contact-form">
               <input type="hidden" name="prospect_id" value="{r.id}">
@@ -2846,6 +2796,25 @@ def outreach_queue(
             """
         else:
             contact_form_html = ""
+        if r.status == "queued":
+            # Editable, not just a static preview: this is exactly what
+            # _send_outreach_email sends on approve, so editing it here is
+            # the only way to change what goes out (see update-content).
+            content_html = f"""
+            <form method="post" action="/admin/outreach-queue/update-content" class="content-form">
+              <input type="hidden" name="prospect_id" value="{r.id}">
+              <input type="hidden" name="show" value="{show}">
+              <label>Subject (exactly what will send)
+                <input type="text" name="subject" value="{escape_html(r.subject)}" required>
+              </label>
+              <label>Body (exactly what will send)
+                <textarea name="body" rows="6" required>{escape_html(r.body_preview)}</textarea>
+              </label>
+              <button type="submit" class="btn-save-content">Save subject &amp; body</button>
+            </form>
+            """
+        else:
+            content_html = f'<div class="body-preview">{escape_html(r.body_preview)}</div>'
         return f"""
         <div class="card status-{r.status}">
           <div class="info">
@@ -2855,7 +2824,7 @@ def outreach_queue(
             </div>
             <div class="meta">{escape_html(r.target_domain)}{" &middot; " + contact_html if contact_html else ""}</div>
             {query_html}
-            <div class="body-preview">{escape_html(r.body_preview)}</div>
+            {content_html}
             {send_status_html}
             {contact_form_html}
             {actions_html}
@@ -2893,6 +2862,11 @@ def outreach_queue(
         .contact-form {{ display: flex; gap: 6px; margin-top: 8px; align-items: center; }}
         .contact-form input[type=email], .contact-form input[type=text] {{ flex: 1; min-width: 0; font-size: 12px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
         .btn-save-contact {{ background: #555; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; }}
+        .content-form {{ display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }}
+        .content-form label {{ font-size: 11px; color: #666; display: flex; flex-direction: column; gap: 2px; }}
+        .content-form input[type=text] {{ font-size: 12px; padding: 5px 6px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }}
+        .content-form textarea {{ font-size: 12px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; resize: vertical; }}
+        .btn-save-content {{ align-self: flex-start; background: #555; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 11px; cursor: pointer; }}
         .actions {{ margin-top: 10px; }}
         .btn-approve {{ background: #2f7d43; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; margin-right: 8px; }}
         .btn-reject {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; }}
@@ -2905,11 +2879,10 @@ def outreach_queue(
     <body>
       <h1>Outreach queue</h1>
       <div class="banner">
-        Approving a real (non-example) Tool pitch prospect with a contact email now actually adds them to
-        a Snov.io list and can trigger a real send, once SNOV_CLIENT_ID/SNOV_CLIENT_SECRET/SNOV_LIST_ID are
-        configured -- check the send status under each approved row. HARO/query reply prospects still need
-        a human to send the reply themselves; every row below is otherwise either an example, or a real
-        prospect from the inbound-email webhook.
+        Approving a real (non-example) prospect -- Tool pitch or HARO/query reply alike -- with a contact
+        email actually sends the subject/body shown below, exactly as written, once GMAIL_SMTP_USER/
+        GMAIL_SMTP_APP_PASSWORD are configured -- check the send status under each approved row. Edit the
+        subject/body on any queued card before approving; that's what goes out, not a separate template.
       </div>
       <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected</div>
       <div class="filters">
@@ -2943,13 +2916,13 @@ def outreach_queue_decide(
     carries across this redirect the same as any other same-origin
     request.
 
-    Approving a tool_pitch prospect also attempts the real Snov.io send
-    (see _add_prospect_to_snov_list) -- a no-op until SNOV_CLIENT_ID/
-    SNOV_CLIENT_SECRET/SNOV_LIST_ID are all configured. A haro_reply is
-    never auto-sent this way (see OutreachProspect's docstring for why),
-    and un-approving (back to queued or rejected) never un-sends
-    something already added to Snov.io -- there's no real "undo" for a
-    prospect Snov.io has already started emailing."""
+    Approving any prospect -- tool_pitch or haro_reply alike -- actually
+    sends it (see _send_outreach_email): exactly the subject/body a human
+    reviewed and, if needed, edited on this card, to contact_email. A
+    no-op (recorded as a send_error, not a crash) until GMAIL_SMTP_USER/
+    GMAIL_SMTP_APP_PASSWORD are configured, or if contact_email is still
+    missing. Un-approving (back to queued or rejected) never un-sends an
+    email that already went out -- there's no real "undo" for that."""
     if status not in ("queued", "approved", "rejected"):
         raise HTTPException(status_code=400, detail="status must be queued, approved, or rejected")
 
@@ -2959,8 +2932,8 @@ def outreach_queue_decide(
 
     prospect.status = status
     prospect.decided_at = datetime.now(timezone.utc) if status != "queued" else None
-    if status == "approved" and prospect.pitch_type == "tool_pitch" and prospect.sent_at is None:
-        _add_prospect_to_snov_list(prospect)
+    if status == "approved" and prospect.sent_at is None:
+        _send_outreach_email(prospect)
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
@@ -2975,14 +2948,18 @@ def outreach_queue_update_contact(
     db: Session = Depends(get_db),
     _auth: None = Depends(_require_outreach_auth),
 ):
-    """Fills in a missing contact_email (and optionally contact_name) on
-    a queued tool_pitch prospect -- the gap a sourcing script's own
-    research (e.g. Semrush's backlink data, which names domains but never
-    a contact) leaves behind. Without this, a real prospect sourced with
-    no contact_email could never actually be sent: _add_prospect_to_snov_list
-    refuses to add a prospect with no email, by design, rather than
-    guessing one. Same GET-link-plus-redirect convention as every other
-    outreach mutation in this file."""
+    """Fills in a missing contact_email (and optionally contact_name) on a
+    queued prospect of either pitch type -- the gap a sourcing script's own
+    research (e.g. Semrush's backlink data, which names domains but never a
+    contact) leaves behind for a tool_pitch, and the gap every haro_reply
+    starts with (the inbound webhook has no way to know which address in a
+    forwarded digest is the right one to reply to -- see
+    outreach_queue_ingest_email). Without this, a prospect missing
+    contact_email could never actually be sent: _send_outreach_email refuses
+    to send one with no address, by design, rather than guessing one. Same
+    GET-link-plus-redirect convention as every other simple-field outreach
+    mutation in this file (see update-content for why editing subject/body
+    specifically uses a POST form instead)."""
     prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
     if prospect is None:
         raise HTTPException(status_code=404)
@@ -2990,6 +2967,37 @@ def outreach_queue_update_contact(
     prospect.contact_email = contact_email.strip() or None
     if contact_name.strip():
         prospect.contact_name = contact_name.strip()
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+@app.post("/admin/outreach-queue/update-content")
+def outreach_queue_update_content(
+    prospect_id: int = Form(...),
+    subject: str = Form(...),
+    body: str = Form(...),
+    show: str = Form(default="queued"),
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Edits the exact subject/body a queued prospect will send once
+    approved -- see _send_outreach_email, which sends these two fields
+    literally, with no template substitution. A POST form, not this file's
+    usual GET-link-plus-redirect convention: a multi-paragraph body doesn't
+    fit safely in a query string (URL length limits, newline encoding),
+    unlike the short single-value edits everything else here makes."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+
+    subject = subject.strip()
+    body = body.strip()
+    if not (subject and body):
+        raise HTTPException(status_code=400, detail="subject and body are required")
+
+    prospect.subject = subject
+    prospect.body_preview = body
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
@@ -3054,14 +3062,11 @@ def outreach_queue_export_csv(
     db: Session = Depends(get_db),
     _auth: None = Depends(_require_outreach_auth),
 ):
-    """CSV export of prospects, for manually importing into a campaign
-    tool's own UI. Originally built as a bridge for tool_pitch prospects
-    before real Snov.io API docs were available (see git history) --
-    that gap is closed now (_add_prospect_to_snov_list), but this export
-    stays useful for: haro_reply prospects (never auto-sent -- see
-    OutreachProspect's docstring), any tool_pitch prospect whose send
-    failed or Snov.io isn't configured yet (send_error/sent_at columns
-    below show exactly why), and as a plain backup/audit trail.
+    """CSV export of prospects -- a plain backup/audit trail, and useful
+    for any prospect whose direct send failed or predates GMAIL_SMTP_USER/
+    GMAIL_SMTP_APP_PASSWORD being configured (send_error/sent_at columns
+    below show exactly why), or for manually importing into some other
+    tool entirely.
 
     Defaults to status=approved -- the "ready to act on" set -- not the
     full queue, so the file downloaded here isn't accidentally imported
