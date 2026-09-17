@@ -2765,10 +2765,24 @@ def outreach_queue(
         ]
         contact_html = " &middot; ".join(contact_bits)
         example_pill = '<span class="pill pill-example">example</span>' if r.is_example else ""
+        is_undrafted_digest = r.pitch_type == "haro_reply" and r.body_preview == _UNDRAFTED_HARO_PLACEHOLDER
         if r.status == "queued":
+            approve_html = (
+                ""
+                if is_undrafted_digest
+                else f'<a class="btn-approve" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=approved&show={show}">Approve</a>'
+            )
+            not_ready_html = (
+                '<div class="not-ready">Not approvable yet -- still the raw digest, not a drafted reply. '
+                "Edit the subject/body above (and add a real contact_email) once you've picked a query to "
+                "respond to.</div>"
+                if is_undrafted_digest
+                else ""
+            )
             actions_html = f"""
+            {not_ready_html}
             <div class="actions">
-              <a class="btn-approve" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=approved&show={show}">Approve</a>
+              {approve_html}
               <a class="btn-reject" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=rejected&show={show}">Reject</a>
             </div>
             """
@@ -2872,6 +2886,7 @@ def outreach_queue(
         .btn-reject {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; text-decoration: none; }}
         .decided {{ font-size: 11px; color: #888; margin-top: 8px; }}
         .decided a {{ color: #06c; }}
+        .not-ready {{ font-size: 11px; color: #7a5b00; background: #fff6dd; border: 1px solid #f0dfa0; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
         .send-ok {{ font-size: 11px; color: #276b3c; margin-top: 8px; }}
         .send-error {{ font-size: 11px; color: #a00; margin-top: 8px; }}
       </style>
@@ -3146,6 +3161,17 @@ def outreach_queue_export_csv(
 # configured to hit this URL with those credentials embedded.
 _MAX_INGESTED_QUERY_CHARS = 8000
 
+# Stamped as body_preview on every freshly-ingested haro_reply -- a to-do
+# note for a human, never meant to be sent as-is (see
+# outreach_queue_ingest_email). Shared with card()'s Approve-visibility
+# check below so the two can't drift apart.
+_UNDRAFTED_HARO_PLACEHOLDER = (
+    "Raw forwarded digest -- likely contains multiple individual queries bundled together. "
+    "Read the source query above, pick the one(s) worth responding to, and replace this "
+    "placeholder with a real drafted reply (and split into separate prospects if more than "
+    "one query here is worth pursuing) before approving."
+)
+
 
 def _strip_html_tags(html_text: str) -> str:
     """Crude HTML->text fallback for the rare inbound email that has no
@@ -3231,12 +3257,7 @@ async def outreach_queue_ingest_email(
         contact_email=None,
         source_query=body or "(empty body)",
         subject=f"[Draft needed] Re: {subject}",
-        body_preview=(
-            "Raw forwarded digest -- likely contains multiple individual queries bundled together. "
-            "Read the source query above, pick the one(s) worth responding to, and replace this "
-            "placeholder with a real drafted reply (and split into separate prospects if more than "
-            "one query here is worth pursuing) before approving."
-        ),
+        body_preview=_UNDRAFTED_HARO_PLACEHOLDER,
         is_example=False,
         status="queued",
     )
