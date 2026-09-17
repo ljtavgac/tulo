@@ -1,0 +1,26 @@
+name: DIAG raw paged batches (temporary)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check raw batches
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          PROD_ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+        run: |
+          python3 content/scripts/_diag_raw_batches.py
