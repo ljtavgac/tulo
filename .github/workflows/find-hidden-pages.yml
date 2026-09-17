@@ -1,0 +1,36 @@
+name: Find pagination-hidden pages
+
+# Read-only: finds every real, published page unreachable through its
+# section index's "Load more" pagination (a confirmed backend bug -- see
+# content/scripts/find_hidden_pages.py for the exact mechanism). Never
+# mutates anything.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  find-hidden:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Find hidden pages
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+        run: |
+          python3 content/scripts/find_hidden_pages.py | tee hidden_pages.txt
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: hidden-pages
+          path: hidden_pages.txt
