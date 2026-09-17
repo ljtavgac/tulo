@@ -11,6 +11,16 @@ Sourced two ways, both grounded in real data, neither guessed:
   generic platforms, aggregators, and non-food sites Semrush's raw list
   also included (yahoo.com, wikipedia.org, wordpress.org, etc.).
 
+Originally split into two pitch angles (pan-size vs. nutrition) matched
+to which competitor page each domain had linked to, describing tools that
+weren't directly linkable (the pan-size/yield resizing and live nutrition
+recalculation both live inside individual recipe pages, not as their own
+URL). Replaced with one unified pitch linking Tulo's three actual
+standalone tool pages instead -- every prospect gets the same real,
+clickable links regardless of which competitor page originally surfaced
+them, since there's no reason to split the pitch once it's not tied to a
+specific tool that needs its own separate framing.
+
 No contact_email for any of these -- Semrush's backlink data names a
 domain, never a person to contact. Left null on purpose rather than
 guessed at (see /admin/outreach-queue/update-contact, built specifically
@@ -29,29 +39,43 @@ import os
 
 import requests
 
-PAN_SIZE_PITCH = {
-    "subject": "A pan-size & yield calculator that adjusts bake time too",
+# Single source of truth for the tool-pitch template -- also duplicated
+# (deliberately, these scripts don't share a package) in
+# content/scripts/update_outreach_pitch_template.py, which backfills this
+# same text onto prospects created before this template existed.
+TOOL_PITCH = {
+    "subject": "Free kitchen tools your readers might like",
     "body_preview": (
-        "Hi -- I noticed you've linked to pan-size conversion resources before, so thought this might "
-        "be a useful addition: we built a free pan-size/yield calculator that recalculates bake time "
-        "along with the substitution (not just volume), for readers who only have a different pan on "
-        "hand. Happy to share the link if it'd be useful for a relevant post."
+        "Hi there,\n"
+        "\n"
+        "I came across your site while looking at kitchen conversion and nutrition resources -- good "
+        "stuff for readers.\n"
+        "\n"
+        "We've built a few free tools at Tulo that might be a useful addition alongside what you've "
+        "already got:\n"
+        "\n"
+        "Kitchen Conversion Calculator -- cups, tablespoons, grams, ounces, and oven temps, US <-> "
+        "metric: https://tulo.io/food/tools/conversion-calculator\n"
+        "\n"
+        "Cooking Time & Temperature Guide -- safe cook times and USDA minimum internal temps by protein "
+        "and method (oven, air fryer, grill): https://tulo.io/food/tools/time-temperature-guide\n"
+        "\n"
+        "Custom Recipe Generator -- built around whatever's already in a reader's kitchen: "
+        "https://tulo.io/food/tools/recipe-generator\n"
+        "\n"
+        "All free, no signup required. Happy to answer any questions if one of these would be a useful "
+        "addition to a relevant post.\n"
+        "\n"
+        "Thanks for your time,\n"
+        "\n"
+        "Tulo Team"
     ),
 }
 
-NUTRITION_PITCH = {
-    "subject": "A live, swap-aware recipe nutrition tool",
-    "body_preview": (
-        "Hi -- saw you've linked to nutrition-label tools before, so wanted to flag something a bit "
-        "different: we built a free tool that recalculates a recipe's nutrition live as a reader "
-        "changes servings or swaps an ingredient, rather than a single static label. Happy to share "
-        "the link if it'd be a useful addition to a relevant post."
-    ),
-}
-
-# domain -> which pitch angle (pan-size vs nutrition), based on which
-# competitor page Semrush found them already linking to.
-PAN_SIZE_PROSPECTS = [
+# Sourced via two separate Semrush backlink-gap queries (pan-size vs.
+# nutrition competitor pages); kept as one combined list since both now
+# get the same unified pitch above.
+PROSPECT_DOMAINS = [
     "natashaskitchen.com",
     "alexandracooks.com",
     "smittenkitchen.com",
@@ -62,9 +86,6 @@ PAN_SIZE_PROSPECTS = [
     "wellseasonedstudio.com",
     "sweetestmenu.com",
     "onelovelylife.com",
-]
-
-NUTRITION_PROSPECTS = [
     "cookieandkate.com",
     "themediterraneandish.com",
     "acouplecooks.com",
@@ -79,24 +100,22 @@ def main() -> None:
     base = os.environ["BACKEND_BASE_URL"].rstrip("/")
     auth = (os.environ["OUTREACH_ADMIN_USER"], os.environ["OUTREACH_ADMIN_PASSWORD"])
 
-    batches = [(PAN_SIZE_PROSPECTS, PAN_SIZE_PITCH), (NUTRITION_PROSPECTS, NUTRITION_PITCH)]
-    for domains, pitch in batches:
-        for domain in domains:
-            r = requests.post(
-                f"{base}/admin/outreach-queue/create",
-                auth=auth,
-                json={
-                    "pitch_type": "tool_pitch",
-                    "target_domain": domain,
-                    "subject": pitch["subject"],
-                    "body_preview": pitch["body_preview"],
-                },
-                timeout=30,
-            )
-            if r.status_code == 200:
-                print(f"{domain}: queued (id {r.json()['created_prospect_id']})")
-            else:
-                print(f"{domain}: FAILED ({r.status_code}) {r.text[:200]}")
+    for domain in PROSPECT_DOMAINS:
+        r = requests.post(
+            f"{base}/admin/outreach-queue/create",
+            auth=auth,
+            json={
+                "pitch_type": "tool_pitch",
+                "target_domain": domain,
+                "subject": TOOL_PITCH["subject"],
+                "body_preview": TOOL_PITCH["body_preview"],
+            },
+            timeout=30,
+        )
+        if r.status_code == 200:
+            print(f"{domain}: queued (id {r.json()['created_prospect_id']})")
+        else:
+            print(f"{domain}: FAILED ({r.status_code}) {r.text[:200]}")
 
 
 if __name__ == "__main__":
