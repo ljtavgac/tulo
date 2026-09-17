@@ -16,14 +16,19 @@ name: Apply baked images to prod
 # and several targeted bakes all needed a human to click the endpoint's
 # URL by hand after every merge, easy to forget.
 #
-# Safe to run on every push, even ones with no image changes at all --
-# the endpoint only ever writes a row whose stored image_url differs from
-# what's now in SEED_PAGES, so an unrelated push is just a fast no-op
-# (updated_count: 0).
+# Scoped to backend/app/seed_templates.py (the only file SEED_PAGES --
+# and therefore /admin/apply-baked-images -- ever reads from) rather than
+# every push to main: a push that doesn't touch this file is guaranteed
+# to be a no-op here (confirmed live 2026-09-17: an unrelated run of
+# same-day backend commits fired this workflow ~10 times, each a wasted
+# ~12-minute no-op with its own notification, since none of them touched
+# SEED_PAGES), so there's nothing lost by not running it for those.
 on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/app/seed_templates.py'
   workflow_dispatch: {}
 
 jobs:
