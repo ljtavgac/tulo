@@ -3178,14 +3178,16 @@ _UNDRAFTED_HARO_PLACEHOLDER = (
 )
 
 
-# Deliberately just these three -- Tulo's only pages with a stable,
-# always-real URL that doesn't depend on a specific recipe/ingredient
-# existing. _draft_haro_replies is instructed to never recommend anything
-# else, because an LLM asked to pick "the best matching Tulo page" out of
-# ~1,000+ recipe/ingredient slugs it hasn't actually seen would eventually
-# hallucinate a plausible-looking slug that doesn't exist -- a broken link
-# in a real pitch to a journalist is worse than a slightly-less-specific
-# but guaranteed-real one.
+# These three are always safe to recommend outright -- stable URLs that
+# don't depend on a specific recipe/ingredient page existing. Beyond
+# these, _draft_haro_replies can recommend any real, published content
+# page too, but only one actually returned by the search_tulo_content
+# tool below (see _search_tulo_content) -- never a guessed slug. An LLM
+# asked to pick "the best matching Tulo page" out of ~1,000+ recipe/
+# ingredient slugs it hasn't actually seen would eventually hallucinate a
+# plausible-looking one that doesn't exist; grounding every non-tool
+# recommendation in a real DB query closes that off structurally rather
+# than by instruction alone.
 _TULO_TOOLS_FOR_PITCHING = [
     {
         "name": "Kitchen Conversion Calculator",
@@ -3206,59 +3208,139 @@ _TULO_TOOLS_FOR_PITCHING = [
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 _HARO_DRAFTING_MODEL = "claude-sonnet-5"
+_HARO_DRAFTING_MAX_TOOL_TURNS = 25  # generous headroom for a ~20-query digest needing one search each
+
+_SEARCH_TULO_CONTENT_TOOL = {
+    "name": "search_tulo_content",
+    "description": (
+        "Searches Tulo's real, live content pages -- recipes, ingredient guides, cooking how-tos, "
+        "definitions, comparisons, substitute guides, collections -- by title keyword. Returns real "
+        "{slug, title, template_type, url} matches (up to 6), or an empty list if nothing matches. "
+        "This is the ONLY way to find or verify a page beyond the three fixed tools already given: "
+        "never recommend a URL that wasn't returned by this tool or listed among the fixed tools."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "query": {"type": "string", "description": "Title keywords to search for, e.g. 'chicken' or 'baking soda'"},
+        },
+        "required": ["query"],
+    },
+}
 
 
-def _draft_haro_replies(digest_text: str) -> list[dict]:
+def _search_tulo_content(db: Session, query: str, limit: int = 6) -> list[dict]:
+    """Real DB search grounding the search_tulo_content tool _draft_haro_replies
+    exposes to the model -- same title-ilike approach as GET /pages?q=...,
+    restricted to published pages (content["unpublished"] isn't a queryable
+    column, so filtered in Python same as list_pages()'s paged branch does),
+    and excluding tool_page/homepage/static_page (the three tools are given
+    directly; a homepage/static link is never a useful citation). This -- not
+    the model's own judgment -- is the actual guarantee that every non-tool
+    URL _draft_haro_replies recommends really exists."""
+    if not query.strip():
+        return []
+    rows = (
+        db.query(Page)
+        .filter(Page.title.ilike(f"%{query.strip()}%"))
+        .filter(Page.template_type.notin_(["tool_page", "homepage", "static_page"]))
+        .order_by(Page.id.desc())
+        .limit(limit * 3)  # over-fetch: some may be unpublished, filtered below
+        .all()
+    )
+    results = []
+    for page in rows:
+        if page.content.get("unpublished"):
+            continue
+        results.append(
+            {
+                "slug": page.slug,
+                "title": page.title,
+                "template_type": page.template_type,
+                "url": f"https://tulo.io{_frontend_page_path(page.template_type, page.slug)}",
+            }
+        )
+        if len(results) >= limit:
+            break
+    return results
+
+
+def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     """Uses Claude to triage one forwarded HARO/Connectively-style digest:
-    finds every individual query (a digest usually bundles several,
-    each with its own reporter/outlet/reply address) that's a genuine fit
-    for one of Tulo's three real tools (see _TULO_TOOLS_FOR_PITCHING), and
-    drafts a specific reply for each. Most digests are general-interest,
-    not food-specific -- returning an empty list is the expected, common
-    result, not a failure, and the model is explicitly told not to force a
-    match.
+    finds every individual query (a digest usually bundles several, each
+    with its own reporter/outlet/reply address) that's a genuine fit for
+    something real on Tulo, and drafts a specific reply for each. "Real"
+    means either one of Tulo's three fixed tools (_TULO_TOOLS_FOR_PITCHING)
+    or a page the model actually found via the search_tulo_content tool
+    (backed by _search_tulo_content, a real DB query) -- the model is given
+    tool access specifically so it can check the site's ~1,000+ recipe/
+    ingredient/how-to/comparison/substitute pages for a genuine match
+    instead of being limited to the three tools alone, without ever being
+    able to invent a slug that doesn't exist. Most digests are
+    general-interest, not food-specific -- returning an empty list is the
+    expected, common result, not a failure, and the model is explicitly
+    told not to force a match.
 
     Returns one dict per genuine fit: reporter_email, reporter_name,
     outlet, query_excerpt (the original query text, kept for a human to
-    audit the draft against), subject, body. Raises ValueError/on any
-    API or parsing problem -- callers fall back to the old
-    raw-placeholder-row behavior rather than silently dropping a possibly
-    real query because of a transient API hiccup. Never called anywhere
-    that skips human approval afterward -- see outreach_queue_decide,
-    unchanged: a drafted row still needs an explicit Approve before
-    _send_outreach_email ever fires."""
+    audit the draft against), subject, body. Raises on any API/tool-loop/
+    parsing problem -- callers fall back to the old raw-placeholder-row
+    behavior rather than silently dropping a possibly real query because
+    of a transient API hiccup. Never called anywhere that skips human
+    approval afterward -- see outreach_queue_decide, unchanged: a drafted
+    row still needs an explicit Approve before _send_outreach_email ever
+    fires."""
     from anthropic import Anthropic
 
     client = Anthropic(api_key=ANTHROPIC_API_KEY)
     tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in _TULO_TOOLS_FOR_PITCHING)
-    response = client.messages.create(
-        model=_HARO_DRAFTING_MODEL,
-        max_tokens=4096,
-        system=(
-            "You triage HARO/Connectively-style journalist source-request digests for Tulo, a free "
-            "food/recipe website. Tulo has exactly three real, linkable tools:\n"
-            f"{tools_block}\n\n"
-            "The digest below may contain zero, one, or many separate journalist queries, each "
-            "usually with its own reply email, reporter name, outlet, and deadline. Find every query "
-            "(if any) where recommending one of Tulo's three tools above would be a genuinely useful, "
-            "on-topic addition to that journalist's piece -- not a stretch, not a generic 'this could "
-            "maybe relate' fit. Cooking, baking, recipes, kitchen measurement/conversion, meal "
-            "planning, and food-safety-adjacent pieces are the kind of fit to look for. Most digests "
-            "will contain zero fits -- that is the expected, common answer, not a failure. Never "
-            "recommend a tool that isn't in the list above, and never invent a URL other than the "
-            "three given.\n\n"
-            "For each genuine fit, draft a short (3-5 sentence), specific, non-generic reply "
-            "addressed to that reporter, referencing their piece's actual topic, recommending "
-            "exactly one of the three tools above with its real URL, and offering to answer follow-up "
-            "questions.\n\n"
-            "Respond with ONLY a JSON array (no prose, no markdown fences), one object per genuine "
-            "fit, each with exactly these keys: reporter_email, reporter_name, outlet, query_excerpt "
-            "(the original query text for this one item, verbatim or lightly trimmed), subject, body. "
-            "If there are zero fits, respond with exactly: []"
-        ),
-        messages=[{"role": "user", "content": digest_text}],
+    system_prompt = (
+        "You triage HARO/Connectively-style journalist source-request digests for Tulo, a free "
+        "food/recipe website. Tulo has three fixed, always-real tools:\n"
+        f"{tools_block}\n\n"
+        "Tulo also has thousands of individual content pages -- recipes, ingredient guides, cooking "
+        "how-tos, definitions, comparisons, substitute guides. Use the search_tulo_content tool to "
+        "check for one of these before recommending it; never guess or invent a slug/URL for one of "
+        "these, only the search tool's real results are safe to use.\n\n"
+        "The digest below may contain zero, one, or many separate journalist queries, each usually "
+        "with its own reply email, reporter name, outlet, and deadline. For each query that's "
+        "plausibly food/cooking/kitchen-related, search for a real Tulo page (or check the three "
+        "fixed tools) that would genuinely help that specific piece -- not a stretch, not a generic "
+        "'this could maybe relate' fit. Most digests are general-interest with zero real fits -- that "
+        "is the expected, common answer, not a failure.\n\n"
+        "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
+        "no markdown fences, no further tool calls), one object per genuine fit, each with exactly "
+        "these keys: reporter_email, reporter_name, outlet, query_excerpt (the original query text "
+        "for this one item, verbatim or lightly trimmed), subject, body (a short, specific, "
+        "non-generic 3-5 sentence reply referencing the piece's actual topic, including exactly one "
+        "real URL -- from the fixed tools list or a search_tulo_content result, never invented). If "
+        "there are zero fits, respond with exactly: []"
     )
-    raw = response.content[0].text.strip()
+
+    messages: list[dict] = [{"role": "user", "content": digest_text}]
+    response = None
+    for _ in range(_HARO_DRAFTING_MAX_TOOL_TURNS):
+        response = client.messages.create(
+            model=_HARO_DRAFTING_MODEL,
+            max_tokens=4096,
+            system=system_prompt,
+            tools=[_SEARCH_TULO_CONTENT_TOOL],
+            messages=messages,
+        )
+        if response.stop_reason != "tool_use":
+            break
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        for block in response.content:
+            if block.type != "tool_use":
+                continue
+            results = _search_tulo_content(db, block.input.get("query", "")) if block.name == "search_tulo_content" else []
+            tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
+        messages.append({"role": "user", "content": tool_results})
+    else:
+        raise ValueError(f"Exceeded {_HARO_DRAFTING_MAX_TOOL_TURNS} tool-use turns without a final answer")
+
+    raw = "".join(block.text for block in response.content if block.type == "text").strip()
     parsed = json.loads(raw)
     if not isinstance(parsed, list):
         raise ValueError(f"Expected a JSON list from the model, got {type(parsed).__name__}")
@@ -3335,11 +3417,12 @@ async def outreach_queue_ingest_email(
     from this same project (the #2 near-miss ingredient matcher, rejected
     after a ~60-70% false-positive rate on manual sampling). That
     reasoning was specifically about pattern-matching, not about semantic
-    judgment from a model reading the actual text; _draft_haro_replies is
-    also restricted to recommending only Tulo's three fixed, always-real
-    tool URLs (never a guessed recipe/ingredient slug), which closes the
-    other half of that original risk (a broken link in a real pitch).
-    Falls back to the old single-row, raw-digest-with-placeholder-body
+    judgment from a model reading the actual text; _draft_haro_replies
+    also can't recommend a hallucinated URL -- every non-tool page it
+    proposes has to come back from the search_tulo_content tool (a real
+    DB query, see _search_tulo_content), which closes the other half of
+    that original risk (a broken link in a real pitch). Falls back to
+    the old single-row, raw-digest-with-placeholder-body
     behavior if the API key isn't configured or the call/parse fails, so
     a real query is never silently dropped because of an API hiccup --
     every created row (drafted or fallback) still needs an explicit human
@@ -3358,7 +3441,7 @@ async def outreach_queue_ingest_email(
         draft_error = "ANTHROPIC_API_KEY not configured"
     elif body:
         try:
-            drafts = _draft_haro_replies(body)
+            drafts = _draft_haro_replies(db, body)
         except Exception as e:  # noqa: BLE001 -- any failure here falls back, never crashes the webhook
             draft_error = f"{type(e).__name__}: {e}"
 
