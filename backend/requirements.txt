@@ -4,3 +4,4 @@ sqlalchemy==2.0.52
 requests==2.34.2
 psycopg2-binary==2.9.10
 python-multipart==0.0.12
+anthropic==1.6.0

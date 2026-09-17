@@ -1,6 +1,7 @@
 import asyncio
 import copy
 import io
+import json
 import os
 import re
 import secrets
@@ -2689,8 +2690,9 @@ def _seed_outreach_examples(db: Session) -> None:
             subject="A free pan-size converter your readers might like",
             body_preview=(
                 "Hi Jamie -- I noticed your banana bread post mentions swapping pan sizes by eye. "
-                "We built a free pan-size/yield calculator that adjusts bake time too, thought it "
-                "might be a useful link for that post."
+                "We built a free pan-size/yield calculator that adjusts bake time too -- here it is "
+                "live on our own banana bread recipe: https://tulo.io/food/recipes/banana-nut-bread. "
+                "Thought it might be a useful link for that post."
             ),
             is_example=True,
         ),
@@ -2702,8 +2704,10 @@ def _seed_outreach_examples(db: Session) -> None:
             subject="A live recipe nutrition recalculator (swap-aware)",
             body_preview=(
                 "Hi Morgan -- following your piece on recipe substitutions, we built a tool that "
-                "recalculates a recipe's nutrition live as you swap ingredients or change servings. "
-                "Could be a relevant link for readers making substitutions."
+                "recalculates a recipe's nutrition live as you swap ingredients or change servings -- "
+                "here it is in action on our chicken broccoli rice casserole recipe: "
+                "https://tulo.io/food/recipes/chicken-broccoli-rice-casserole. Could be a relevant "
+                "link for readers making substitutions."
             ),
             is_example=True,
         ),
@@ -2720,8 +2724,9 @@ def _seed_outreach_examples(db: Session) -> None:
             body_preview=(
                 "Hi -- happy to help as a source. One common mistake: substituting baking soda for "
                 "baking powder 1:1 -- baking soda is roughly 3x stronger and needs its own acid to "
-                "activate, so the swap either falls flat or turns bitter. Happy to expand with a "
-                "couple more examples if useful."
+                "activate, so the swap either falls flat or turns bitter. Full ratio breakdown here "
+                "if useful for the piece: https://tulo.io/food/substitutes/baking-soda-substitute. "
+                "Happy to expand with a couple more examples too."
             ),
             is_example=True,
         ),
@@ -3173,6 +3178,98 @@ _UNDRAFTED_HARO_PLACEHOLDER = (
 )
 
 
+# Deliberately just these three -- Tulo's only pages with a stable,
+# always-real URL that doesn't depend on a specific recipe/ingredient
+# existing. _draft_haro_replies is instructed to never recommend anything
+# else, because an LLM asked to pick "the best matching Tulo page" out of
+# ~1,000+ recipe/ingredient slugs it hasn't actually seen would eventually
+# hallucinate a plausible-looking slug that doesn't exist -- a broken link
+# in a real pitch to a journalist is worse than a slightly-less-specific
+# but guaranteed-real one.
+_TULO_TOOLS_FOR_PITCHING = [
+    {
+        "name": "Kitchen Conversion Calculator",
+        "url": "https://tulo.io/food/tools/conversion-calculator",
+        "description": "Converts cups, tablespoons, grams, ounces, and oven temperatures between US and metric.",
+    },
+    {
+        "name": "Cooking Time & Temperature Guide",
+        "url": "https://tulo.io/food/tools/time-temperature-guide",
+        "description": "Cook times and temps by protein/method (oven, air fryer, grill), plus USDA safe minimum internal temperatures.",
+    },
+    {
+        "name": "Custom Recipe Generator",
+        "url": "https://tulo.io/food/tools/recipe-generator",
+        "description": "Generates a recipe idea from whatever ingredients a reader already has in their kitchen.",
+    },
+]
+
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+_HARO_DRAFTING_MODEL = "claude-sonnet-5"
+
+
+def _draft_haro_replies(digest_text: str) -> list[dict]:
+    """Uses Claude to triage one forwarded HARO/Connectively-style digest:
+    finds every individual query (a digest usually bundles several,
+    each with its own reporter/outlet/reply address) that's a genuine fit
+    for one of Tulo's three real tools (see _TULO_TOOLS_FOR_PITCHING), and
+    drafts a specific reply for each. Most digests are general-interest,
+    not food-specific -- returning an empty list is the expected, common
+    result, not a failure, and the model is explicitly told not to force a
+    match.
+
+    Returns one dict per genuine fit: reporter_email, reporter_name,
+    outlet, query_excerpt (the original query text, kept for a human to
+    audit the draft against), subject, body. Raises ValueError/on any
+    API or parsing problem -- callers fall back to the old
+    raw-placeholder-row behavior rather than silently dropping a possibly
+    real query because of a transient API hiccup. Never called anywhere
+    that skips human approval afterward -- see outreach_queue_decide,
+    unchanged: a drafted row still needs an explicit Approve before
+    _send_outreach_email ever fires."""
+    from anthropic import Anthropic
+
+    client = Anthropic(api_key=ANTHROPIC_API_KEY)
+    tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in _TULO_TOOLS_FOR_PITCHING)
+    response = client.messages.create(
+        model=_HARO_DRAFTING_MODEL,
+        max_tokens=4096,
+        system=(
+            "You triage HARO/Connectively-style journalist source-request digests for Tulo, a free "
+            "food/recipe website. Tulo has exactly three real, linkable tools:\n"
+            f"{tools_block}\n\n"
+            "The digest below may contain zero, one, or many separate journalist queries, each "
+            "usually with its own reply email, reporter name, outlet, and deadline. Find every query "
+            "(if any) where recommending one of Tulo's three tools above would be a genuinely useful, "
+            "on-topic addition to that journalist's piece -- not a stretch, not a generic 'this could "
+            "maybe relate' fit. Cooking, baking, recipes, kitchen measurement/conversion, meal "
+            "planning, and food-safety-adjacent pieces are the kind of fit to look for. Most digests "
+            "will contain zero fits -- that is the expected, common answer, not a failure. Never "
+            "recommend a tool that isn't in the list above, and never invent a URL other than the "
+            "three given.\n\n"
+            "For each genuine fit, draft a short (3-5 sentence), specific, non-generic reply "
+            "addressed to that reporter, referencing their piece's actual topic, recommending "
+            "exactly one of the three tools above with its real URL, and offering to answer follow-up "
+            "questions.\n\n"
+            "Respond with ONLY a JSON array (no prose, no markdown fences), one object per genuine "
+            "fit, each with exactly these keys: reporter_email, reporter_name, outlet, query_excerpt "
+            "(the original query text for this one item, verbatim or lightly trimmed), subject, body. "
+            "If there are zero fits, respond with exactly: []"
+        ),
+        messages=[{"role": "user", "content": digest_text}],
+    )
+    raw = response.content[0].text.strip()
+    parsed = json.loads(raw)
+    if not isinstance(parsed, list):
+        raise ValueError(f"Expected a JSON list from the model, got {type(parsed).__name__}")
+    required_keys = {"reporter_email", "reporter_name", "outlet", "query_excerpt", "subject", "body"}
+    for item in parsed:
+        missing = required_keys - item.keys()
+        if missing:
+            raise ValueError(f"Drafted reply missing keys: {missing}")
+    return parsed
+
+
 def _strip_html_tags(html_text: str) -> str:
     """Crude HTML->text fallback for the rare inbound email that has no
     plain-text body at all (most providers synthesize one, but an
@@ -3217,9 +3314,8 @@ async def outreach_queue_ingest_email(
 ):
     """Receives one forwarded email (a HARO/Connectively-style query
     digest, or anything else routed to the inbound address) from an
-    inbound-email-to-webhook provider and queues it as one new
-    OutreachProspect for human review. Parses either Postmark Inbound's
-    or CloudMailin's JSON schema (see _parse_inbound_email_payload) --
+    inbound-email-to-webhook provider. Parses either Postmark Inbound's or
+    CloudMailin's JSON schema (see _parse_inbound_email_payload) --
     CloudMailin over Postmark Inbound specifically because Postmark
     Inbound has no free tier, while CloudMailin's free tier (10,000
     messages/month, not a time-limited trial) comfortably covers this
@@ -3230,18 +3326,24 @@ async def outreach_queue_ingest_email(
     which is form-encoded) would need a real code change here, not just a
     new schema branch.
 
-    Deliberately does NOT try to split a digest email containing many
-    individual queries into separate prospects -- an automatic splitter
-    would have to guess at each source's own formatting (HARO's and
-    Connectively's digest layouts differ, and a forwarding step can
-    mangle either further with quoted-reply markers), and this session
-    already has direct, hard-won evidence (the #2 near-miss ingredient
-    matcher, rejected after a ~60-70% false-positive rate on manual
-    sampling) that a guessed heuristic here would misfire silently rather
-    than obviously. One row per inbound email, holding the full raw text,
-    is the honest scope: a human reads it and manually creates/edits
-    individual prospects, or this gets revisited once real sample emails
-    exist to build and verify a real splitter against."""
+    Splits a digest into one real, drafted-reply prospect per genuinely
+    relevant query (see _draft_haro_replies) -- queues nothing at all when
+    the digest has no real fit, rather than a row a human has to triage by
+    hand. Earlier versions of this endpoint deliberately avoided any
+    automatic splitting, on the reasoning that a guessed heuristic (regex/
+    keyword matching) would misfire silently -- direct, hard-won evidence
+    from this same project (the #2 near-miss ingredient matcher, rejected
+    after a ~60-70% false-positive rate on manual sampling). That
+    reasoning was specifically about pattern-matching, not about semantic
+    judgment from a model reading the actual text; _draft_haro_replies is
+    also restricted to recommending only Tulo's three fixed, always-real
+    tool URLs (never a guessed recipe/ingredient slug), which closes the
+    other half of that original risk (a broken link in a real pitch).
+    Falls back to the old single-row, raw-digest-with-placeholder-body
+    behavior if the API key isn't configured or the call/parse fails, so
+    a real query is never silently dropped because of an API hiccup --
+    every created row (drafted or fallback) still needs an explicit human
+    Approve before anything sends (see outreach_queue_decide)."""
     payload = await request.json()
     sender_email, subject, body = _parse_inbound_email_payload(payload)
     sender_domain = sender_email.split("@")[-1].strip().lower() if "@" in sender_email else "unknown-sender"
@@ -3250,6 +3352,37 @@ async def outreach_queue_ingest_email(
     if truncated:
         body = body[:_MAX_INGESTED_QUERY_CHARS] + "\n\n[... truncated, see original email for the rest]"
 
+    drafts: list[dict] | None = None
+    draft_error: str | None = None
+    if not ANTHROPIC_API_KEY:
+        draft_error = "ANTHROPIC_API_KEY not configured"
+    elif body:
+        try:
+            drafts = _draft_haro_replies(body)
+        except Exception as e:  # noqa: BLE001 -- any failure here falls back, never crashes the webhook
+            draft_error = f"{type(e).__name__}: {e}"
+
+    if drafts is not None:
+        created_ids = []
+        for draft in drafts:
+            prospect = OutreachProspect(
+                pitch_type="haro_reply",
+                target_domain=draft.get("outlet") or sender_domain,
+                contact_name=draft.get("reporter_name") or None,
+                contact_email=draft.get("reporter_email") or None,
+                source_query=draft.get("query_excerpt") or "(no excerpt returned)",
+                subject=draft["subject"],
+                body_preview=draft["body"],
+                is_example=False,
+                status="queued",
+            )
+            db.add(prospect)
+            db.flush()
+            created_ids.append(prospect.id)
+        db.commit()
+        return {"created_prospect_ids": created_ids, "relevant_queries_found": len(created_ids)}
+
+    # Fallback: queue the raw digest as before, for a human to triage by hand.
     prospect = OutreachProspect(
         pitch_type="haro_reply",
         target_domain=sender_domain,
@@ -3265,4 +3398,4 @@ async def outreach_queue_ingest_email(
     db.commit()
     db.refresh(prospect)
 
-    return {"created_prospect_id": prospect.id}
+    return {"created_prospect_id": prospect.id, "auto_drafting_skipped_reason": draft_error}
