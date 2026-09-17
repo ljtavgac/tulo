@@ -15,6 +15,9 @@ import requests
 def main() -> None:
     base = os.environ["PROD_BACKEND_BASE_URL"].rstrip("/")
 
+    r = requests.get(f"{base}/health", timeout=30)
+    print(f"GET /health -> {r.status_code} {r.json() if r.status_code == 200 else ''}")
+
     r = requests.get(f"{base}/pages/baking-soda-substitute", timeout=30)
     print(f"GET /pages/baking-soda-substitute -> {r.status_code}")
     if r.status_code == 200:
