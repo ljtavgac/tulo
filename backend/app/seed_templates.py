@@ -305533,6 +305533,12 @@ SEED_PAGES = [
         "title": "Classic French Onion Soup Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1549203438-a7696aed4dac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8ZnJlbmNoJTIwb25pb24lMjBzb3VwJTIwd2l0aCUyMG1lbHRlZCUyMGdydXllcmUlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NTM0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "sheri silver",
+                "photographer_url": "https://unsplash.com/@sheri_silver",
+                "source": "unsplash",
+            },
             "meta_description": "A classic French onion soup recipe built on deeply caramelized onions, rich beef broth, and a broiled cheese-topped baguette slice. One of the easiest French recipes to make at home with pantry staples and patience.",
             "hero_image_query": "french onion soup with melted gruyere",
             "image_alt": "A crock of French onion soup topped with a toasted baguette slice and bubbling, browned gruyere cheese, set on a wooden table.",
@@ -306136,6 +306142,12 @@ SEED_PAGES = [
         "title": "Wa Chili",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1583119022894-919a68a3d0e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8Q2hpbGl8ZW58MHx8fHwxNzg5NjQ1MzQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Mockup Graphics",
+                "photographer_url": "https://unsplash.com/@mockupgraphics",
+                "source": "unsplash",
+            },
             "meta_description": "What Wa chili is, the best substitutes with ratios, how to store it so the flavor holds, and how to use this fiery Yunnan-style condiment.",
             "hero_image_query": "Wa chili sauce in small bowl with visible garlic and chili flecks",
             "image_alt": "A small ceramic dish of dark red Wa chili paste studded with garlic bits and chili flakes, glossy with oil, next to a spoon",
@@ -306462,6 +306474,12 @@ SEED_PAGES = [
         "title": "Suadero",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1617331721735-add8801a6ca2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8U3VhZGVyb3xlbnwwfHx8fDE3ODk2NDUzNDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Girl with red hat",
+                "photographer_url": "https://unsplash.com/@girlwithredhat",
+                "source": "unsplash",
+            },
             "meta_description": "What suadero is, where the cut comes from, the best beef substitutes with ratios, and how it's simmered and griddle-fried for authentic tacos de suadero.",
             "hero_image_query": "suadero meat tacos griddle",
             "image_alt": "Chopped suadero beef frying on a flat griddle with crisped edges, next to a stack of warm corn tortillas",
@@ -306659,6 +306677,12 @@ SEED_PAGES = [
         "title": "Pepper Jelly Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/16575688/pexels-photo-16575688.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Angela Khebou",
+                "photographer_url": "https://www.pexels.com/@angela-khebou-259135285",
+                "source": "pexels",
+            },
             "meta_description": "A classic red bell pepper and jalapeño jelly recipe with a proper pectin set, ready for water bath canning. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "pepper jelly jars",
             "image_alt": "Five small jars of glossy red-orange pepper jelly flecked with diced peppers, one jar open with a spoon drizzling jelly over a block of cream cheese on a cracker.",
@@ -306807,6 +306831,12 @@ SEED_PAGES = [
         "title": "Mayak Eggs",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1639194335563-d56b83f0060c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8RWdnc3xlbnwwfHx8fDE3ODk2NDUzNDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Raiyan Zakaria",
+                "photographer_url": "https://unsplash.com/@raiyanzakaria",
+                "source": "unsplash",
+            },
             "meta_description": "What mayak eggs are, how to substitute them with ratios, how long they keep in the marinade, and how to serve them so the yolk stays jammy.",
             "hero_image_query": "mayak eggs in soy marinade with scallions",
             "image_alt": "A bowl of soft-boiled mayak eggs halved to show jammy orange yolks, sitting in a dark soy marinade topped with sliced scallion and red chili flakes.",
@@ -306884,6 +306914,12 @@ SEED_PAGES = [
         "title": "Toor Dal",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1626500155537-93690c24099e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8RGFsfGVufDB8fHx8MTc4OTY0NTM0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "VD Photography",
+                "photographer_url": "https://unsplash.com/@vdphotography",
+                "source": "unsplash",
+            },
             "meta_description": "What toor dal is, the best substitutes with ratios, how to store it so it doesn't turn rancid, and how to cook it for sambar, dal fry, and rasam.",
             "hero_image_query": "toor dal split pigeon peas in bowl",
             "image_alt": "A bowl of dry, pale yellow split toor dal next to a smaller bowl of cooked, softened dal ready for tempering",
@@ -307196,6 +307232,12 @@ SEED_PAGES = [
         "title": "How to Juice a Lime (and How Much Juice to Expect)",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1581340752304-a781f821e8ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8TGltZSUyMCUyOGFuZCUyMEhvdyUyME11Y2glMjBKdWljZSUyMHRvJTIwRXhwZWN0JTI5fGVufDB8fHx8MTc4OTY0NTM0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Vino Li",
+                "photographer_url": "https://unsplash.com/@vinomamba24",
+                "source": "unsplash",
+            },
             "meta_description": "One average lime yields about 2 tablespoons of juice, but size, ripeness, and technique change that. Here's how to get the most juice out of every lime.",
             "hero_image_query": "lime halves being squeezed with juice dripping",
             "image_alt": "A lime cut in half being squeezed by hand over a small glass bowl, with juice pooling at the bottom and a few seeds caught at the edge.",
@@ -307445,6 +307487,12 @@ SEED_PAGES = [
         "title": "Gibson",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1508186736123-44a5fcb36f9f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8R2lic29ufGVufDB8fHx8MTc4OTY0NTM0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Mikkel Bech",
+                "photographer_url": "https://unsplash.com/@bechbox",
+                "source": "unsplash",
+            },
             "meta_description": "What a Gibson is, how it differs from a martini, ingredient substitutes with ratios, and how to store the vermouth and pickled onions that make it.",
             "hero_image_query": "Gibson cocktail with pickled onion garnish",
             "image_alt": "A clear Gibson cocktail in a chilled coupe glass with a single pickled cocktail onion resting on a pick against the rim.",
@@ -307529,6 +307577,12 @@ SEED_PAGES = [
         "title": "Sunday Brunch",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1646715574223-3ddce03d3a24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NXx8U3VuZGF5JTIwQnJ1bmNofGVufDB8fHx8MTc4OTY0NTM0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Michael Tri Wijaya",
+                "photographer_url": "https://unsplash.com/@michael3wijaya",
+                "source": "unsplash",
+            },
             "meta_description": "What counts as Sunday brunch, how it differs from breakfast, how much food and time to plan per guest, and how to store and reheat leftovers.",
             "hero_image_query": "sunday brunch spread table",
             "image_alt": "A wooden table set for Sunday brunch with a quiche, a platter of scrambled eggs and bacon, a bowl of fruit, pastries, and a carafe of orange juice and champagne for mimosas.",
@@ -308085,6 +308139,12 @@ SEED_PAGES = [
         "title": "Cuban Oregano",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1726996155550-d69c6a9118b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NHx8T3JlZ2Fub3xlbnwwfHx8fDE3ODk2NDUzNDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "360floralflaves",
+                "photographer_url": "https://unsplash.com/@360floralflaves",
+                "source": "unsplash",
+            },
             "meta_description": "What Cuban oregano is, how it differs from Mediterranean oregano, the best substitutes with ratios, and how to store and use it in Cuban cooking.",
             "hero_image_query": "fresh cuban oregano leaves on wood cutting board",
             "image_alt": "A bunch of thick, fuzzy, scalloped-edge Cuban oregano leaves next to a knife and a small pile of chopped leaves on a cutting board.",
@@ -308826,6 +308886,12 @@ SEED_PAGES = [
         "title": "Sopa de Pollo Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/29538431/pexels-photo-29538431.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Nano Erdozain",
+                "photographer_url": "https://www.pexels.com/@nano-erdozain-120534369",
+                "source": "pexels",
+            },
             "meta_description": "A traditional Mexican sopa de pollo simmered from bone-in chicken with carrots, potatoes, zucchini, and chayote. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "mexican chicken soup with vegetables in bowl",
             "image_alt": "A bowl of sopa de pollo with shredded chicken, sliced carrots, potatoes, and zucchini in a golden broth, topped with fresh cilantro and a lime wedge on the side.",
@@ -309420,6 +309486,12 @@ SEED_PAGES = [
         "title": "What Is Nougat?",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1741775667026-7522378fe75c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8c2xpY2VkJTIwbm91Z2F0JTIwY2FuZHklMjB3aXRoJTIwYWxtb25kcyUyMGFuZCUyMHBpc3RhY2hpb3N8ZW58MHx8fHwxNzg5NjQ1MzQzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Nougat Diane de Poytiers",
+                "photographer_url": "https://unsplash.com/@nougat_diane_de_poytiers",
+                "source": "unsplash",
+            },
             "meta_description": "Nougat is a confection made by whipping sugar or honey syrup into egg whites, then studding it with nuts. What it is, the different types, and how to substitute it.",
             "hero_image_query": "sliced nougat candy with almonds and pistachios",
             "image_alt": "A block of pale nougat studded with whole almonds and pistachios, sliced to show its chewy, aerated interior.",
@@ -311384,6 +311456,12 @@ SEED_PAGES = [
         "title": "Wonton Chips",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/32754749/pexels-photo-32754749.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Deane Bayas",
+                "photographer_url": "https://www.pexels.com/@dbaler",
+                "source": "pexels",
+            },
             "meta_description": "What wonton chips are, the best substitutes with ratios, how to store them so they stay crisp, and how to use them in salads and dips.",
             "hero_image_query": "crispy fried wonton chips",
             "image_alt": "A pile of golden, fried wonton chips cut into triangles, some dusted with sesame seeds, next to a small bowl of dipping sauce.",
@@ -311480,6 +311558,12 @@ SEED_PAGES = [
         "title": "Chicken Bacon Ranch Pasta Bake",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1619568759244-8372de67304a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8Y2hpY2tlbiUyMGJhY29uJTIwcmFuY2glMjBwYXN0YSUyMGJha2UlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NTM0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Hermes Rivera",
+                "photographer_url": "https://unsplash.com/@hermez777",
+                "source": "unsplash",
+            },
             "meta_description": "A creamy chicken bacon ranch pasta bake with crispy bacon, shredded cheddar, and a ranch-seasoned sauce, ready in about an hour. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "chicken bacon ranch pasta bake",
             "image_alt": "A baking dish of chicken bacon ranch pasta bake with melted cheddar cheese, crispy bacon bits, and sliced green onions on top, one corner scooped out to show the creamy pasta underneath.",
@@ -312693,6 +312777,12 @@ SEED_PAGES = [
         "title": "Stuffed Shells with Meat Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1691982799134-758c47a75768?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NHx8c3R1ZmZlZCUyMHNoZWxscyUyMHdpdGglMjBtZWF0JTIwc2F1Y2UlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NTM0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Harshit Suryawanshi",
+                "photographer_url": "https://unsplash.com/@harshit_suryawanshi",
+                "source": "unsplash",
+            },
             "meta_description": "Jumbo pasta shells stuffed with a seasoned ground beef and ricotta filling, baked under marinara and melted mozzarella. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "stuffed shells with meat sauce",
             "image_alt": "A baking dish of jumbo pasta shells stuffed with a beef and ricotta filling, topped with melted mozzarella and marinara, with one shell lifted onto a plate to show the cheesy interior.",
@@ -312975,6 +313065,12 @@ SEED_PAGES = [
         "title": "Pan con Pollo Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35292844/pexels-photo-35292844.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Aakash Shabeer",
+                "photographer_url": "https://www.pexels.com/@aakash-shabeer-521330641",
+                "source": "pexels",
+            },
             "meta_description": "A Puerto Rican-style pan con pollo recipe with sofrito-braised shredded chicken piled onto crusty rolls with a quick mayo-ketchup sauce. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "pan con pollo sandwich shredded chicken roll",
             "image_alt": "A crusty roll piled high with shredded sofrito-braised chicken, lettuce, tomato, and avocado, cut in half to show the filling.",
@@ -314639,6 +314735,12 @@ SEED_PAGES = [
         "title": "Whipped Cottage Cheese Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1777301401075-739121f0315f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Nnx8d2hpcHBlZCUyMGNvdHRhZ2UlMjBjaGVlc2UlMjBpbiUyMGElMjBib3dsJTIwcGxhdGVkJTIwZGlzaHxlbnwwfHx8fDE3ODk2NDUzNDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Gennady Zakharin",
+                "photographer_url": "https://unsplash.com/@gennady107",
+                "source": "unsplash",
+            },
             "meta_description": "A quick recipe for turning ordinary cottage cheese into a genuinely good, silky-smooth dip or spread using a blender, lemon, and good full-fat cottage cheese.",
             "hero_image_query": "whipped cottage cheese in a bowl",
             "image_alt": "A bowl of pale, silky-smooth whipped cottage cheese drizzled with olive oil and cracked pepper, served with toasted bread on the side.",
@@ -314870,6 +314972,12 @@ SEED_PAGES = [
         "title": "Red Beans and Rice Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1674468263746-3220aee4e394?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8cmVkJTIwYmVhbnMlMjBhbmQlMjByaWNlJTIwd2l0aCUyMHNhdXNhZ2UlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NTM0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Nigel Seah",
+                "photographer_url": "https://unsplash.com/@nigelseah24",
+                "source": "unsplash",
+            },
             "meta_description": "A classic Louisiana red beans and rice recipe with andouille sausage, smoked ham, and the holy trinity, simmered until creamy and served over white rice. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "red beans and rice with sausage",
             "image_alt": "A bowl of creamy red beans studded with sliced andouille sausage, served over white rice and topped with sliced green onions.",
@@ -315429,6 +315537,12 @@ SEED_PAGES = [
         "title": "Reflux-Friendly Baked Chicken and Rice Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/32023537/pexels-photo-32023537.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Helen Brudna",
+                "photographer_url": "https://www.pexels.com/@helen-brudna-2151730422",
+                "source": "pexels",
+            },
             "meta_description": "A gentle, low-fat baked chicken and rice recipe built around the foods to avoid with reflux esophagitis, skipping citrus, tomato, caffeine, alcohol, and heavy spice.",
             "hero_image_query": "baked chicken and rice casserole",
             "image_alt": "A casserole dish of baked chicken breasts nestled in herbed rice with diced carrots and zucchini, garnished with chopped parsley.",
@@ -315770,6 +315884,12 @@ SEED_PAGES = [
         "title": "Tortillas de Harina (Homemade Flour Tortillas)",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/30323513/pexels-photo-30323513.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Dilara",
+                "photographer_url": "https://www.pexels.com/@dilara-988605972",
+                "source": "pexels",
+            },
             "meta_description": "Soft, pliable tortillas de harina made with just five ingredients: flour, baking powder, salt, fat, and warm water. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "stack of homemade flour tortillas",
             "image_alt": "A stack of soft, lightly charred flour tortillas on a wooden board next to a rolling pin and a small bowl of dough balls.",
@@ -316183,6 +316303,12 @@ SEED_PAGES = [
         "title": "Salmon Sashimi",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1635527643921-ce2b9bbd5728?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MjZ8fFNhbG1vbiUyMFNhc2hpbWl8ZW58MHx8fHwxNzg5NjQ1MzQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Stefan Schauberger",
+                "photographer_url": "https://unsplash.com/@wuf2018",
+                "source": "unsplash",
+            },
             "meta_description": "What sashimi-grade salmon actually means, the safest substitutes with ratios, how to store and slice it, and how to tell if a fillet is safe to eat raw.",
             "hero_image_query": "sliced salmon sashimi on ice",
             "image_alt": "Glossy orange-pink salmon sashimi sliced into thick diagonal pieces arranged on a black plate with pickled ginger and a small dish of soy sauce",
@@ -316856,6 +316982,12 @@ SEED_PAGES = [
         "title": "Stick of Butter Rice Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6200044/pexels-photo-6200044.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Gustavo Santana",
+                "photographer_url": "https://www.pexels.com/@gustavo-santana-3928789",
+                "source": "pexels",
+            },
             "meta_description": "A classic Southern stick of butter rice casserole made with long-grain rice, French onion soup, and a full stick of butter, baked until tender. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "butter rice casserole in baking dish",
             "image_alt": "A golden baked rice casserole in a white ceramic dish, rice grains glistening with melted butter and flecked with cracked black pepper.",
