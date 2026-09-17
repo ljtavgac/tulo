@@ -1602,6 +1602,37 @@ def _eligible_batch_numbers() -> list[int]:
     )
 
 
+# One-off allowlist: real, published pages a confirmed bug in GET
+# /pages's paged branch makes unreachable via "Load more" on their
+# section index -- found by walking each section's actual pagination
+# flow and diffing against the full raw slug list (see
+# content/scripts/find_hidden_pages.py) against production on 2026-09-17.
+# Almost all predate the review pipeline (batch_number < _PIPELINE_START_
+# BATCH), which is exactly why they were never caught: they're real,
+# live, published pages that simply never came up for review. batch=
+# "hidden" is a deliberate, explicit bypass of the _PIPELINE_START_BATCH
+# guard for exactly this fixed list, not a general escape hatch -- add a
+# slug here only after independently confirming it's genuinely published
+# and genuinely unreachable via pagination, the same way this list itself
+# was built.
+_HIDDEN_PAGE_SLUGS: set[str] = {
+    # comparison (3)
+    "baking-powder-vs-baking-soda",
+    "cappuccino-vs-latte",
+    "gelato-vs-ice-cream",
+    # substitute (9)
+    "baking-soda-substitute",
+    "buttermilk-substitute",
+    "cardamom-substitute",
+    "creme-fraiche-substitute",
+    "fish-sauce-substitute",
+    "gruyere-cheese-substitute",
+    "sour-cream-substitute",
+    "tahini-substitute",
+    "vanilla-extract-substitute",
+}
+
+
 def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
     """Shared by /admin/review-queue and its approve-remaining action:
     resolves the `batch` query param (a batch_number, the literal "all",
@@ -1618,7 +1649,10 @@ def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
     if not all_batches:
         raise HTTPException(status_code=400, detail="No eligible batch_number values found in SEED_PAGES")
 
-    if batch == "all":
+    if batch == "hidden":
+        target: str | int = "hidden"
+        pages = [p for p in SEED_PAGES if p["slug"] in _HIDDEN_PAGE_SLUGS and not p["content"].get("unpublished")]
+    elif batch == "all":
         target: str | int = "all"
         pages = [
             p for p in SEED_PAGES
@@ -1641,7 +1675,7 @@ def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
 @app.get("/admin/review-queue", response_class=HTMLResponse)
 def review_queue(
     token: str,
-    batch: str | None = Query(default=None, description="batch_number to review, or 'all' to combine every batch's pending/flagged backlog; defaults to the newest batch_number present."),
+    batch: str | None = Query(default=None, description="batch_number to review, 'all' to combine every batch's pending/flagged backlog, or 'hidden' for the fixed _HIDDEN_PAGE_SLUGS allowlist; defaults to the newest batch_number present."),
     show: str = Query(default="pending", description="pending | flagged | approved | all"),
     db: Session = Depends(get_db),
 ):
@@ -1755,9 +1789,10 @@ def review_queue(
         </div>
         """
 
-    batch_label = "all batches" if target_batch == "all" else f"batch {target_batch}"
+    batch_label = "all batches" if target_batch == "all" else ("hidden pages" if target_batch == "hidden" else f"batch {target_batch}")
     batch_links = " &middot; ".join(
         [f'<a href="/admin/review-queue?token={token}&batch=all&show={show}">{"<b>all batches</b>" if target_batch == "all" else "all batches"}</a>']
+        + ([f'<a href="/admin/review-queue?token={token}&batch=hidden&show={show}">{"<b>hidden pages</b>" if target_batch == "hidden" else "hidden pages"}</a>'] if _HIDDEN_PAGE_SLUGS else [])
         + [
             f'<a href="/admin/review-queue?token={token}&batch={b}&show={show}">{"batch " + str(b) if b != target_batch else f"<b>batch {b}</b>"}</a>'
             for b in all_batches
