@@ -3056,6 +3056,43 @@ async def outreach_queue_create(
     return {"created_prospect_id": prospect.id}
 
 
+@app.get("/admin/outreach-queue/list.json")
+def outreach_queue_list_json(
+    status: str = Query(default="all", description="queued | approved | rejected | all"),
+    pitch_type: str | None = Query(default=None, description="tool_pitch | haro_reply, omit for both"),
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """JSON listing of prospects -- for a one-off script that needs to find
+    and act on existing rows (e.g. content/scripts/update_outreach_pitch_template.py,
+    bulk-editing subject/body on already-queued prospects) without scraping
+    the HTML portal, same way outreach_queue_create exists so a script can
+    add rows without a human clicking through a form. Same status filter as
+    the HTML view; pitch_type is an additional optional filter."""
+    query = db.query(OutreachProspect)
+    if status != "all":
+        query = query.filter(OutreachProspect.status == status)
+    if pitch_type:
+        query = query.filter(OutreachProspect.pitch_type == pitch_type)
+    rows = query.order_by(OutreachProspect.created_at.desc()).all()
+    return [
+        {
+            "id": r.id,
+            "pitch_type": r.pitch_type,
+            "target_domain": r.target_domain,
+            "contact_name": r.contact_name,
+            "contact_email": r.contact_email,
+            "subject": r.subject,
+            "body_preview": r.body_preview,
+            "status": r.status,
+            "is_example": r.is_example,
+            "sent_at": r.sent_at.isoformat() if r.sent_at else None,
+            "send_error": r.send_error,
+        }
+        for r in rows
+    ]
+
+
 @app.get("/admin/outreach-queue/export.csv")
 def outreach_queue_export_csv(
     status: str = Query(default="approved", description="approved | queued | rejected | all"),
