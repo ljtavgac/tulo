@@ -3283,16 +3283,22 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
 
     Returns one dict per genuine fit: reporter_email, reporter_name,
     outlet, query_excerpt (the original query text, kept for a human to
-    audit the draft against), subject, body. Two invariants are enforced
-    in code, not just asked for in the prompt -- an item failing either is
-    dropped (not returned), never silently sent through with a gap: a
-    non-empty reporter_email (a haro_reply with no address to send to
-    isn't a usable draft), and body containing a URL from the closed set
-    actually available this call (the three fixed tools plus every URL
-    _search_tulo_content actually returned) -- the model is instructed
-    never to invent one, but this is the structural guarantee, checked
-    the same way _search_tulo_content itself closes off a hallucinated
-    slug.
+    audit the draft against), subject, body. Three invariants are enforced
+    in code, not just asked for in the prompt -- an item failing any of
+    them is dropped (not returned), never silently sent through with a
+    gap: reporter_email is non-empty AND appears verbatim somewhere in
+    digest_text (a real per-query reply address, e.g. HARO's own
+    reply+<uuid>@helpareporter.com format, is always printed in the
+    source -- requiring it here rules out the model inventing one, though
+    not, in a multi-query digest, independently proving it's paired with
+    the *correct* query -- that's still the model's own reading
+    comprehension, not a regex re-parse of the digest, per this project's
+    own history with that approach); and body contains a URL from the
+    closed set actually available this call (the three fixed tools plus
+    every URL _search_tulo_content actually returned) -- the model is
+    instructed never to invent one, but this is the structural guarantee,
+    checked the same way _search_tulo_content itself closes off a
+    hallucinated slug.
 
     Raises on any API/tool-loop/parsing problem -- callers fall back to
     the old raw-placeholder-row behavior rather than silently dropping a
@@ -3371,8 +3377,22 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         missing = required_keys - item.keys()
         if missing:
             raise ValueError(f"Drafted reply missing keys: {missing}")
-        if not (item.get("reporter_email") or "").strip():
+        reporter_email = (item.get("reporter_email") or "").strip()
+        if not reporter_email:
             print(f"  _draft_haro_replies: dropping item with no reporter_email: {item.get('subject')!r}")
+            continue
+        if reporter_email not in digest_text:
+            # A real per-query reply address is always printed verbatim in the
+            # digest (e.g. HARO's own reply+<uuid>@helpareporter.com format) --
+            # requiring it to appear here rules out the model inventing one,
+            # the same way allowed_urls rules out inventing a page. Doesn't by
+            # itself prove it's paired with the *correct* query in a multi-query
+            # digest (that's still the model's own reading comprehension, not
+            # something worth a regex re-parse of the digest after this
+            # project's own history with that approach -- see
+            # outreach_queue_ingest_email's docstring), but it does guarantee
+            # the address is real, not fabricated.
+            print(f"  _draft_haro_replies: dropping item whose reporter_email isn't in the source digest: {reporter_email!r}")
             continue
         if not any(url in item["body"] for url in allowed_urls):
             print(f"  _draft_haro_replies: dropping item with no real Tulo URL in body: {item.get('subject')!r}")
