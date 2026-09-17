@@ -1,0 +1,35 @@
+name: Override prod images (explicit list)
+
+# Prod counterpart to override-staging-images.yml: same one-off, explicit-
+# list repair (content/scripts/override_images.py), just against
+# PROD_BACKEND_BASE_URL/PROD_ADMIN_TASK_TOKEN instead of staging's. Never a
+# bulk or site-wide action -- only touches the exact slugs named in the
+# input.
+on:
+  workflow_dispatch:
+    inputs:
+      slug_to_url_json:
+        description: 'JSON object mapping slug -> image_url, e.g. {"a": "https://images.pexels.com/..."}'
+        required: true
+
+jobs:
+  override:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Apply explicit image overrides
+        env:
+          BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+        run: |
+          python3 content/scripts/override_images.py '${{ inputs.slug_to_url_json }}'
