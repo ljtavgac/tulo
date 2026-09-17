@@ -305251,6 +305251,12 @@ SEED_PAGES = [
         "title": "Oaxacan Tlayudas Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/38366535/pexels-photo-38366535.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "César O'neill",
+                "photographer_url": "https://www.pexels.com/@cesar-o-neill-26650613",
+                "source": "pexels",
+            },
             "meta_description": "A recipe for authentic Oaxacan tlayudas: large crisp tortillas layered with asiento, black beans, quesillo, and chorizo, folded and toasted on a comal.",
             "hero_image_query": "Oaxacan tlayuda street food",
             "image_alt": "A large folded tlayuda on a comal with melted quesillo cheese, black beans, shredded cabbage, and avocado spilling from the edges, cut into wedges on a wooden board.",
@@ -305456,6 +305462,12 @@ SEED_PAGES = [
         "title": "Mini Cakes",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1694449053591-7563ae01dfe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MTB8fE1pbmklMjBDYWtlc3xlbnwwfHx8fDE3ODk2NDY0Mzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Jay",
+                "photographer_url": "https://unsplash.com/@ja024",
+                "source": "unsplash",
+            },
             "meta_description": "What mini cakes are, the best substitutes with ratios, how to store them without drying out, and how to bake and serve them for single portions.",
             "hero_image_query": "mini layer cakes on a dessert stand",
             "image_alt": "Four small frosted layer cakes, each about three inches wide, arranged on a marble cake stand with piped buttercream swirls and fresh raspberries on top.",
@@ -305776,6 +305788,12 @@ SEED_PAGES = [
         "title": "Pumpkin Bars with Cream Cheese Frosting",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/11512195/pexels-photo-11512195.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Soft, spiced pumpkin bars topped with tangy cream cheese frosting, made in one pan in about 45 minutes. Includes a serving-size scaler and US/metric units.",
             "hero_image_query": "pumpkin bars with cream cheese frosting",
             "image_alt": "A pan of frosted pumpkin bars cut into squares, showing the moist orange crumb and swirled cream cheese frosting on top, dusted with a little cinnamon.",
@@ -306058,6 +306076,12 @@ SEED_PAGES = [
         "title": "Tokyo Tea",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4013147/pexels-photo-4013147.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What Tokyo Tea is, how it differs from a Long Island Iced Tea, substitutes for the Midori that gives it its color, and how to serve it.",
             "hero_image_query": "green Tokyo Tea cocktail in a tall glass with lemon wheel",
             "image_alt": "A tall glass of bright green Tokyo Tea cocktail over ice, garnished with a lemon wheel and topped with a splash of lemon-lime soda.",
@@ -306237,6 +306261,12 @@ SEED_PAGES = [
         "title": "Cod Fish Tacos Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1593759608136-45eb2ad9507d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8Y29kJTIwZmlzaCUyMHRhY29zJTIwcGxhdGVkJTIwZGlzaHxlbnwwfHx8fDE3ODk2NDY0MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Quin Engle",
+                "photographer_url": "https://unsplash.com/@twistsandzests",
+                "source": "unsplash",
+            },
             "meta_description": "Crispy pan-seared cod fish tacos with a tangy lime slaw and chipotle crema, ready in about 30 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "cod fish tacos",
             "image_alt": "Corn tortillas filled with flaky golden-crusted cod, shredded purple cabbage slaw, and a drizzle of chipotle crema, arranged on a wooden board with lime wedges.",
@@ -306474,11 +306504,11 @@ SEED_PAGES = [
         "title": "Suadero",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1617331721735-add8801a6ca2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8U3VhZGVyb3xlbnwwfHx8fDE3ODk2NDUzNDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/29349424/pexels-photo-29349424.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Girl with red hat",
-                "photographer_url": "https://unsplash.com/@girlwithredhat",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What suadero is, where the cut comes from, the best beef substitutes with ratios, and how it's simmered and griddle-fried for authentic tacos de suadero.",
             "hero_image_query": "suadero meat tacos griddle",
@@ -306581,6 +306611,12 @@ SEED_PAGES = [
         "title": "Mince Meat",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27104034/pexels-photo-27104034.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What mince meat (ground meat) is, how it differs from sweet mincemeat, the best substitutes with ratios, safe storage times, and how to cook with it.",
             "hero_image_query": "raw ground beef mince in a bowl",
             "image_alt": "A mound of raw ground beef mince in a white bowl, showing its coarse, loosely packed texture and deep red color flecked with fat.",
@@ -306677,11 +306713,11 @@ SEED_PAGES = [
         "title": "Pepper Jelly Recipe",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.pexels.com/photos/16575688/pexels-photo-16575688.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.unsplash.com/photo-1702090872258-cd64ad38042f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8cGVwcGVyJTIwamVsbHklMjBqYXJzJTIwcGxhdGVkJTIwZGlzaHxlbnwwfHx8fDE3ODk2ODgxMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Angela Khebou",
-                "photographer_url": "https://www.pexels.com/@angela-khebou-259135285",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A classic red bell pepper and jalapeño jelly recipe with a proper pectin set, ready for water bath canning. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "pepper jelly jars",
@@ -306831,11 +306867,11 @@ SEED_PAGES = [
         "title": "Mayak Eggs",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1639194335563-d56b83f0060c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8RWdnc3xlbnwwfHx8fDE3ODk2NDUzNDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/31393431/pexels-photo-31393431.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Raiyan Zakaria",
-                "photographer_url": "https://unsplash.com/@raiyanzakaria",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What mayak eggs are, how to substitute them with ratios, how long they keep in the marinade, and how to serve them so the yolk stays jammy.",
             "hero_image_query": "mayak eggs in soy marinade with scallions",
@@ -306914,11 +306950,11 @@ SEED_PAGES = [
         "title": "Toor Dal",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1626500155537-93690c24099e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8RGFsfGVufDB8fHx8MTc4OTY0NTM0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/14965274/pexels-photo-14965274.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "VD Photography",
-                "photographer_url": "https://unsplash.com/@vdphotography",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What toor dal is, the best substitutes with ratios, how to store it so it doesn't turn rancid, and how to cook it for sambar, dal fry, and rasam.",
             "hero_image_query": "toor dal split pigeon peas in bowl",
@@ -307009,6 +307045,12 @@ SEED_PAGES = [
         "title": "Breakfast for Dinner Skillet Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1710533788728-800be38530a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8YnJlYWtmYXN0JTIwc2tpbGxldCUyMHdpdGglMjBlZ2dzJTJDJTIwYmFjb24lMkMlMjBhbmQlMjBwb3RhdG9lcyUyMHBsYXRlZCUyMGRpc2h8ZW58MHx8fHwxNzg5NjQ2NDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Luke Tokaryk",
+                "photographer_url": "https://unsplash.com/@lukelukeluke",
+                "source": "unsplash",
+            },
             "meta_description": "A one-pan breakfast for dinner skillet loaded with crispy potatoes, oven-baked bacon, and eggs baked right into the hash. Ready in under an hour with a live serving-size scaler.",
             "hero_image_query": "breakfast skillet with eggs, bacon, and potatoes",
             "image_alt": "A cast iron skillet filled with golden crispy potato hash, chopped bacon, melted cheddar, and six eggs baked into wells with soft, jammy yolks.",
@@ -307295,6 +307337,12 @@ SEED_PAGES = [
         "title": "Li\u00e8ge Waffles",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1568051243851-f9b136146e97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8V2FmZmxlc3xlbnwwfHx8fDE3ODk2NTAyNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Joyful",
+                "photographer_url": "https://unsplash.com/@joyfulcaptures",
+                "source": "unsplash",
+            },
             "meta_description": "What makes Liège waffles different from regular waffles, the best pearl sugar substitutes with ratios, how to store and reheat them, and how they're traditionally eaten.",
             "hero_image_query": "Liège waffles with caramelized pearl sugar crust",
             "image_alt": "A stack of golden Liège waffles showing their dense, uneven texture and pockets of caramelized sugar crystallized on the crust",
@@ -307396,6 +307444,12 @@ SEED_PAGES = [
         "title": "Sauteed Onions",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/29389680/pexels-photo-29389680.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Alejandro Aznar",
+                "photographer_url": "https://www.pexels.com/@alejandro-aznar-155337093",
+                "source": "pexels",
+            },
             "meta_description": "What sauteed onions are, how they differ from caramelized onions, the best substitutes with ratios, how to store and freeze them, and how to use them well.",
             "hero_image_query": "sauteed onions in a skillet",
             "image_alt": "Golden, softened onion slices being stirred in a stainless steel skillet with a wooden spoon, steam rising from the pan.",
@@ -307487,11 +307541,11 @@ SEED_PAGES = [
         "title": "Gibson",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1508186736123-44a5fcb36f9f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8R2lic29ufGVufDB8fHx8MTc4OTY0NTM0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/17127756/pexels-photo-17127756.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Mikkel Bech",
-                "photographer_url": "https://unsplash.com/@bechbox",
-                "source": "unsplash",
+                "photographer": "Tim Durand",
+                "photographer_url": "https://www.pexels.com/@tim-durand-361277653",
+                "source": "pexels",
             },
             "meta_description": "What a Gibson is, how it differs from a martini, ingredient substitutes with ratios, and how to store the vermouth and pickled onions that make it.",
             "hero_image_query": "Gibson cocktail with pickled onion garnish",
@@ -307577,11 +307631,11 @@ SEED_PAGES = [
         "title": "Sunday Brunch",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1646715574223-3ddce03d3a24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NXx8U3VuZGF5JTIwQnJ1bmNofGVufDB8fHx8MTc4OTY0NTM0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8c3VuZGF5JTIwYnJ1bmNoJTIwc3ByZWFkJTIwdGFibGV8ZW58MHx8fHwxNzg5NjQ1MzQ0fDA&ixlib=rb-4.1.0&q=80&w=1080",
             "image_attribution": {
-                "photographer": "Michael Tri Wijaya",
-                "photographer_url": "https://unsplash.com/@michael3wijaya",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What counts as Sunday brunch, how it differs from breakfast, how much food and time to plan per guest, and how to store and reheat leftovers.",
             "hero_image_query": "sunday brunch spread table",
@@ -307652,6 +307706,12 @@ SEED_PAGES = [
         "title": "Chinese Chicken",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/20152618/pexels-photo-20152618.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What recipes mean by \"Chinese chicken,\" the velveting technique that keeps it tender, the best substitutes with ratios, and how to store and cut it for stir-fries and salads.",
             "hero_image_query": "diced raw chicken thigh marinating in soy sauce and cornstarch in a glass bowl",
             "image_alt": "Cubed boneless chicken thigh coated in a glossy soy and cornstarch marinade in a glass bowl, ready for stir-frying.",
@@ -307741,6 +307801,12 @@ SEED_PAGES = [
         "title": "Chicken Wing Spice Rub Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27562875/pexels-photo-27562875.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "A smoky-sweet dry rub for chicken wings made with pantry spices, plus baking powder for shatter-crisp skin without frying. Includes a serving scaler.",
             "hero_image_query": "spice rubbed chicken wings baking sheet",
             "image_alt": "A pile of golden, deeply spiced baked chicken wings on a wire rack, with visible flecks of paprika and cracked pepper on the crisp skin.",
@@ -307965,6 +308031,12 @@ SEED_PAGES = [
         "title": "Spiced Pear Bourbon Smash Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7809746/pexels-photo-7809746.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "A craft-bar style bourbon smash with muddled pear, fresh sage, and a homemade cinnamon-clove syrup. Ready in about 20 minutes, with a live serving scaler and US/metric toggle.",
             "hero_image_query": "bourbon pear smash cocktail",
             "image_alt": "A rocks glass filled with crushed ice and an amber bourbon cocktail, garnished with a thin pear slice, a fresh sage leaf, and a dusting of ground cinnamon on a dark wood bar top.",
@@ -308139,11 +308211,11 @@ SEED_PAGES = [
         "title": "Cuban Oregano",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1726996155550-d69c6a9118b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8NHx8T3JlZ2Fub3xlbnwwfHx8fDE3ODk2NDUzNDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/30646021/pexels-photo-30646021.jpeg",
             "image_attribution": {
-                "photographer": "360floralflaves",
-                "photographer_url": "https://unsplash.com/@360floralflaves",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What Cuban oregano is, how it differs from Mediterranean oregano, the best substitutes with ratios, and how to store and use it in Cuban cooking.",
             "hero_image_query": "fresh cuban oregano leaves on wood cutting board",
@@ -308234,6 +308306,12 @@ SEED_PAGES = [
         "title": "Panes con Pollo (Puerto Rican Chicken Salad Sandwiches)",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27600334/pexels-photo-27600334.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Panes con pollo are Puerto Rican chicken salad sandwiches made with poached shredded chicken, a tangy mayo-ketchup dressing, and crunchy toasted bread. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "chicken salad sandwich puerto rican pan con pollo",
             "image_alt": "Two toasted sandwich rolls filled with shredded chicken salad, lettuce, and tomato slices, cut in half to show the filling, with crushed potato chips on the side.",
@@ -308498,6 +308576,12 @@ SEED_PAGES = [
         "title": "Low Country Boil Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35896424/pexels-photo-35896424.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Mike C",
+                "photographer_url": "https://www.pexels.com/@mike-c-2151163165",
+                "source": "pexels",
+            },
             "meta_description": "A classic low country boil with shrimp, andouille sausage, corn, and potatoes, all simmered together in one Old Bay-spiced pot. Includes a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "low country boil shrimp corn sausage potatoes",
             "image_alt": "A newspaper-lined table piled with a low country boil of pink shrimp, sliced andouille sausage, corn on the cob, and red potatoes, with lemon wedges scattered on top.",
@@ -308717,6 +308801,12 @@ SEED_PAGES = [
         "title": "Pumpkin Soup",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1764015939108-7963106fa73b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8cHVtcGtpbiUyMHNvdXAlMjBib3dsfGVufDB8fHx8MTc4OTY0NjQzOHww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Rob Wingate",
+                "photographer_url": "https://unsplash.com/@robwingate",
+                "source": "unsplash",
+            },
             "meta_description": "What pumpkin soup is made from, the best substitutes for pumpkin with ratios, how to store and reheat a batch, and ways to serve it beyond a cream swirl.",
             "hero_image_query": "pumpkin soup bowl",
             "image_alt": "A wide ceramic bowl of smooth orange pumpkin soup topped with a swirl of cream, toasted pumpkin seeds, and cracked black pepper, with a slice of crusty bread on the side.",
@@ -308806,6 +308896,12 @@ SEED_PAGES = [
         "title": "Meatloaf Glaze",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1705945021699-7374c3fd34cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8bWVhdGxvYWYlMjBnbGF6ZSUyMGJydXNoZWQlMjBvbiUyMGxvYWZ8ZW58MHx8fHwxNzg5NjUwMjcwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What goes into a classic meatloaf glaze, the best substitutes with ratios and nutrition, how to store extra, and when to brush it on so it doesn't burn.",
             "hero_image_query": "meatloaf glaze brushed on loaf",
             "image_alt": "A glossy reddish-brown glaze being brushed over a baked meatloaf with a pastry brush, thick glaze pooling and caramelizing at the edges of the pan",
@@ -309129,6 +309225,12 @@ SEED_PAGES = [
         "title": "Sangria Wine",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/20272823/pexels-photo-20272823.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What kind of wine sangria actually calls for, the best substitute wines with ratios, and how to store and pair it once it's mixed with fruit.",
             "hero_image_query": "pitcher of red sangria with wine bottle and fruit",
             "image_alt": "A glass pitcher of red sangria filled with orange slices, apple chunks, and cinnamon sticks, sitting next to an open bottle of dry Spanish red wine.",
@@ -309221,6 +309323,12 @@ SEED_PAGES = [
         "title": "Watermelon Margarita Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1782849206222-91d744d37b17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8M3x8d2F0ZXJtZWxvbiUyMG1hcmdhcml0YSUyMHNhbHQlMjByaW0lMjBnbGFzcyUyMHBsYXRlZCUyMGRpc2h8ZW58MHx8fHwxNzg5NjQ2NDM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Anastase Maragos",
+                "photographer_url": "https://unsplash.com/@visualsbyroyalz",
+                "source": "unsplash",
+            },
             "meta_description": "A fresh watermelon margarita made with real watermelon puree, tequila, lime, and orange liqueur. Ready in 15 minutes, with a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "watermelon margarita salt rim glass",
             "image_alt": "Two watermelon margaritas in salt-rimmed glasses garnished with lime wedges and a small watermelon wedge, with a bowl of cubed watermelon in the background.",
@@ -309402,6 +309510,12 @@ SEED_PAGES = [
         "title": "Chilacayote",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/34248635/pexels-photo-34248635.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What chilacayote is, the best substitutes with ratios for both savory cooking and candying, how to store the whole gourd, and how it's traditionally used in Mexican kitchens.",
             "hero_image_query": "chilacayote gourd whole and sliced showing white fibrous flesh",
             "image_alt": "A whole chilacayote with dark green mottled skin next to a cut half showing pale stringy flesh and black seeds",
@@ -309486,11 +309600,11 @@ SEED_PAGES = [
         "title": "What Is Nougat?",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1741775667026-7522378fe75c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8c2xpY2VkJTIwbm91Z2F0JTIwY2FuZHklMjB3aXRoJTIwYWxtb25kcyUyMGFuZCUyMHBpc3RhY2hpb3N8ZW58MHx8fHwxNzg5NjQ1MzQzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/37124551/pexels-photo-37124551.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Nougat Diane de Poytiers",
-                "photographer_url": "https://unsplash.com/@nougat_diane_de_poytiers",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "Nougat is a confection made by whipping sugar or honey syrup into egg whites, then studding it with nuts. What it is, the different types, and how to substitute it.",
             "hero_image_query": "sliced nougat candy with almonds and pistachios",
@@ -309528,6 +309642,12 @@ SEED_PAGES = [
         "title": "Greek Rice",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5863619/pexels-photo-5863619.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What Greek rice is, how to swap in different rice or pasta bases with real ratios, how to store and reheat it, and how it's traditionally served.",
             "hero_image_query": "greek lemon rice pilaf with herbs",
             "image_alt": "A bowl of Greek lemon rice pilaf studded with orzo and fresh dill, with a lemon wedge and olive oil drizzle on top",
@@ -309617,6 +309737,12 @@ SEED_PAGES = [
         "title": "Chicago Hot Dog Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/19065711/pexels-photo-19065711.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Nadin Sh",
+                "photographer_url": "https://www.pexels.com/@nadin-sh-78971847",
+                "source": "pexels",
+            },
             "meta_description": "An authentic Chicago-style hot dog recipe with all-beef franks, neon relish, sport peppers, and the full 'drag it through the garden' topping order, ready in 20 minutes.",
             "hero_image_query": "chicago style hot dog with all the toppings",
             "image_alt": "A steamed poppy seed bun loaded with an all-beef hot dog, yellow mustard, neon green relish, chopped onion, tomato wedges, a dill pickle spear, sport peppers, and a dash of celery salt.",
@@ -309809,6 +309935,12 @@ SEED_PAGES = [
         "title": "Awesome Sauce",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37924774/pexels-photo-37924774.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What awesome sauce actually is, the best substitutes with ratios, how to store it, and how to use it on burgers, fries, and sandwiches.",
             "hero_image_query": "awesome sauce condiment in small bowl with fries",
             "image_alt": "A ramekin of creamy pale-orange awesome sauce next to a pile of golden french fries, with a fry dipped halfway into the sauce.",
@@ -309910,6 +310042,12 @@ SEED_PAGES = [
         "title": "Sushi-Grade Tuna",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7245479/pexels-photo-7245479.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Olga Lioncat",
+                "photographer_url": "https://www.pexels.com/@olgalioncat",
+                "source": "pexels",
+            },
             "meta_description": "What sushi-grade tuna actually means, safe handling and storage, the best substitutes with ratios, and how to buy and serve it for sashimi and nigiri.",
             "hero_image_query": "sliced raw tuna sashimi on cutting board",
             "image_alt": "Deep red slices of raw tuna loin arranged on a dark board next to a whole trimmed tuna steak and a knife.",
@@ -310006,6 +310144,12 @@ SEED_PAGES = [
         "title": "Poppy Seed Dressing Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/3682189/pexels-photo-3682189.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "A quick, tangy-sweet poppy seed dressing made in one bowl or blender with sugar, vinegar, onion, and oil. Ready in 10 minutes with no cooking required.",
             "hero_image_query": "poppy seed dressing in glass jar",
             "image_alt": "A mason jar of creamy pale-yellow poppy seed dressing speckled with black poppy seeds, with a whisk resting against the jar and a spinach salad in the background.",
@@ -310171,6 +310315,12 @@ SEED_PAGES = [
         "title": "Watercress",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/12931140/pexels-photo-12931140.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Tom Fisk",
+                "photographer_url": "https://www.pexels.com/@tomfisk",
+                "source": "pexels",
+            },
             "meta_description": "What watercress is, the best substitutes with ratios, how to store it so it doesn't turn slimy, and how to use it in salads without losing its peppery bite.",
             "hero_image_query": "fresh watercress salad with lemon vinaigrette",
             "image_alt": "A bowl of bright green watercress leaves tossed with sliced radish, shaved parmesan, and a light lemon vinaigrette, with a wedge of lemon on the side.",
@@ -310255,6 +310405,12 @@ SEED_PAGES = [
         "title": "Liquid Aminos",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5737246/pexels-photo-5737246.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What liquid aminos are, how they differ from soy sauce and coconut aminos, the best substitutes with exact ratios, and how to store and use them.",
             "hero_image_query": "bottle of liquid aminos being poured into a small dish",
             "image_alt": "A dark amber bottle of liquid aminos next to a spoon holding a pool of the thin, soy-sauce-colored liquid",
@@ -310346,6 +310502,12 @@ SEED_PAGES = [
         "title": "Curry Chicken Salad Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7111537/pexels-photo-7111537.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Piotr Arnoldes",
+                "photographer_url": "https://www.pexels.com/@piotr-arnoldes-7862031",
+                "source": "pexels",
+            },
             "meta_description": "A creamy curry chicken salad recipe with celery, apple, dried cranberries, and almonds in a curry-mayo dressing. Ready in about 45 minutes, including chill time.",
             "hero_image_query": "curry chicken salad",
             "image_alt": "A bowl of curry chicken salad studded with diced apple, dried cranberries, and sliced almonds, served on a bed of lettuce with a croissant on the side.",
@@ -310582,6 +310744,12 @@ SEED_PAGES = [
         "title": "Cookie Cakes",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8893026/pexels-photo-8893026.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What a cookie cake is, the best substitutes with ratios and nutrition, how to store one so it stays soft, and how to serve and decorate it.",
             "hero_image_query": "chocolate chip cookie cake with buttercream border",
             "image_alt": "A round chocolate chip cookie cake on a cake stand with a piped buttercream border, cut into wedges showing a soft, slightly underbaked center.",
@@ -310670,6 +310838,12 @@ SEED_PAGES = [
         "title": "Pollo Guisado",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35156471/pexels-photo-35156471.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What pollo guisado is, how it differs across Puerto Rican, Dominican, and Cuban kitchens, close substitutes with ratios, and how to store and reheat it without drying out the chicken.",
             "hero_image_query": "pollo guisado puerto rican stewed chicken with potatoes and rice",
             "image_alt": "A wide pot of bone-in chicken thighs simmered in a reddish sofrito and tomato sauce with potato chunks, olives, and cilantro, served over white rice in a bowl.",
@@ -310754,6 +310928,12 @@ SEED_PAGES = [
         "title": "Pizza Rustica",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1566570757768-e2013eeb16ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8cGl6emElMjBydXN0aWNhJTIwc2xpY2UlMjBjcm9zcyUyMHNlY3Rpb258ZW58MHx8fHwxNzg5NjQ2NDM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What pizza rustica is, how it differs from other Italian savory pies, what to serve instead if you can't make it, and how to store and reheat it without ruining the crust.",
             "hero_image_query": "pizza rustica slice cross section",
             "image_alt": "A wedge of pizza rustica on a wooden board showing distinct layers of ricotta custard, chunks of salami and prosciutto, and a golden lattice-topped crust.",
@@ -310831,6 +311011,12 @@ SEED_PAGES = [
         "title": "Can You Boil Frozen Chicken? (Yes, Here's How)",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/28618639/pexels-photo-28618639.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Sergei Starostin",
+                "photographer_url": "https://www.pexels.com/@sejio402",
+                "source": "pexels",
+            },
             "meta_description": "Yes, you can boil chicken straight from frozen. This method covers exact times, safe internal temperature, and how to keep the texture from turning rubbery.",
             "hero_image_query": "boiled chicken breast in pot",
             "image_alt": "Two chicken breasts and a bay leaf simmering gently in a pot of broth, with a slotted spoon resting on the rim.",
@@ -310964,6 +311150,12 @@ SEED_PAGES = [
         "title": "Japanese Eggplant",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1629665291789-c8cb1f469ef9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MjB8fEphcGFuZXNlJTIwRWdncGxhbnR8ZW58MHx8fHwxNzg5NjUwMjc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Yuval Zukerman",
+                "photographer_url": "https://unsplash.com/@yuvalz",
+                "source": "unsplash",
+            },
             "meta_description": "What Japanese eggplant is, how it differs from Chinese and globe eggplant, the best substitutes with ratios, and how to store and cook it so it doesn't turn to mush.",
             "hero_image_query": "sliced japanese eggplant on cutting board",
             "image_alt": "Long, slender purple Japanese eggplants sliced diagonally into ovals on a wooden cutting board, showing the pale, seed-sparse flesh inside.",
@@ -311060,6 +311252,12 @@ SEED_PAGES = [
         "title": "Almond Extract",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/11852052/pexels-photo-11852052.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What almond extract is, how it differs from almond flavoring, the best substitutes with ratios, and how to store and use it without overpowering a recipe.",
             "hero_image_query": "almond extract bottle with almonds",
             "image_alt": "A small brown glass bottle of almond extract next to a scattering of whole almonds on a wood counter.",
@@ -311144,6 +311342,12 @@ SEED_PAGES = [
         "title": "Strawberry Crunch Cake Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/33469323/pexels-photo-33469323.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "A pink strawberry cake made with real freeze-dried strawberries, layered with cream cheese frosting and coated in a golden cookie crunch topping. Includes a serving scaler and US/metric toggle.",
             "hero_image_query": "strawberry crunch cake slice",
             "image_alt": "A frosted strawberry crunch cake sliced to show pink cake layers and cream cheese frosting, with the outside coated in golden cookie and strawberry crumb topping.",
@@ -311456,11 +311660,11 @@ SEED_PAGES = [
         "title": "Wonton Chips",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.pexels.com/photos/32754749/pexels-photo-32754749.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/16285402/pexels-photo-16285402.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Deane Bayas",
-                "photographer_url": "https://www.pexels.com/@dbaler",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What wonton chips are, the best substitutes with ratios, how to store them so they stay crisp, and how to use them in salads and dips.",
             "hero_image_query": "crispy fried wonton chips",
@@ -311558,11 +311762,11 @@ SEED_PAGES = [
         "title": "Chicken Bacon Ranch Pasta Bake",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1619568759244-8372de67304a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8Y2hpY2tlbiUyMGJhY29uJTIwcmFuY2glMjBwYXN0YSUyMGJha2UlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NTM0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/38103950/pexels-photo-38103950.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Hermes Rivera",
-                "photographer_url": "https://unsplash.com/@hermez777",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A creamy chicken bacon ranch pasta bake with crispy bacon, shredded cheddar, and a ranch-seasoned sauce, ready in about an hour. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "chicken bacon ranch pasta bake",
@@ -311790,6 +311994,12 @@ SEED_PAGES = [
         "title": "Bicol Express",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/16073914/pexels-photo-16073914.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What Bicol Express is, the substitutes worth using when you're missing an ingredient, how to store and reheat leftovers, and what to serve alongside it.",
             "hero_image_query": "Bicol Express pork in coconut milk with chili",
             "image_alt": "A pot of Bicol Express showing chunks of pork belly in a thick, orange-red coconut sauce studded with green chili peppers and scallions, served over steamed rice.",
@@ -311867,6 +312077,12 @@ SEED_PAGES = [
         "title": "How to Make Fudge That Doesn't Stick",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1615363990578-1d5e3d326fbc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8ZnVkZ2V8ZW58MHx8fHwxNzg5Njg1MDE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Frédéric Dupont",
+                "photographer_url": "https://unsplash.com/@fdcdupont",
+                "source": "unsplash",
+            },
             "meta_description": "How to line the pan, control sugar crystallization, and cool fudge properly so it releases cleanly instead of gluing itself to the pan or your teeth.",
             "hero_image_query": "chocolate fudge cut into squares on parchment paper",
             "image_alt": "Squares of fudge lifted out of a pan on a sheet of parchment paper, showing clean edges and no residue stuck to the lining.",
@@ -311922,6 +312138,12 @@ SEED_PAGES = [
         "title": "Hot Buttered Rum Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/17159191/pexels-photo-17159191.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Kraken  Media",
+                "photographer_url": "https://www.pexels.com/@kraken-media-392419767",
+                "source": "pexels",
+            },
             "meta_description": "A classic hot buttered rum recipe made with a spiced brown sugar butter batter that can be mixed ahead and kept in the fridge or freezer for weeks. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "hot buttered rum mug cinnamon stick",
             "image_alt": "A glass mug of hot buttered rum topped with a pat of melting spiced butter and a cinnamon stick, steam rising against a dark background.",
@@ -312129,6 +312351,12 @@ SEED_PAGES = [
         "title": "Gluten-Free Pita Bread Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/20604049/pexels-photo-20604049.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Esra Erdem",
+                "photographer_url": "https://www.pexels.com/@esrakorkmaz",
+                "source": "pexels",
+            },
             "meta_description": "A gluten-free pita bread recipe that actually puffs into a pocket, using a psyllium husk-strengthened dough cooked on a hot stone or skillet. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "gluten free pita bread",
             "image_alt": "A stack of puffed, golden-brown gluten-free pita breads on a wooden board, one torn open to show the hollow pocket inside.",
@@ -312308,6 +312536,12 @@ SEED_PAGES = [
         "title": "Chile Morita",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37829751/pexels-photo-37829751.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Noemí Jiménez",
+                "photographer_url": "https://www.pexels.com/@noemiji",
+                "source": "pexels",
+            },
             "meta_description": "What chile morita is, the best substitutes with ratios, how to store and rehydrate it, and how it differs from chipotle.",
             "hero_image_query": "dried chile morita peppers",
             "image_alt": "A small pile of dark reddish-brown, wrinkled dried morita chiles with intact stems, one split open to show the tan-orange flesh inside.",
@@ -312392,6 +312626,12 @@ SEED_PAGES = [
         "title": "Texas Toast Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/8480769/pexels-photo-8480769.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Thick-cut, golden-crusted Texas toast recipe made with garlic butter and a hot oven or griddle, ready in 15 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "texas toast golden garlic butter slices",
             "image_alt": "Thick slices of golden-brown Texas toast stacked on a plate, edges crisp and centers soft, flecked with melted garlic butter and parsley.",
@@ -312544,6 +312784,12 @@ SEED_PAGES = [
         "title": "Blueberry Crumble Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5427149/pexels-photo-5427149.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "A juicy blueberry crumble with a buttery oat topping, baked until bubbling and golden. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "blueberry crumble baked in dish",
             "image_alt": "An 8x8-inch baking dish of blueberry crumble with a golden oat topping and thick purple filling bubbling up at the edges, one corner scooped out onto a plate.",
@@ -313366,6 +313612,12 @@ SEED_PAGES = [
         "title": "Pita Pocket",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6419750/pexels-photo-6419750.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What a pita pocket is, why it forms a hollow center, the best substitutes with ratios, and how to store and reheat pita without it turning tough.",
             "hero_image_query": "pita pocket bread halved open",
             "image_alt": "A round pita bread sliced in half showing the hollow pocket inside, stuffed with lettuce, tomato, and falafel on a wooden board.",
@@ -313474,6 +313726,12 @@ SEED_PAGES = [
         "title": "Potato Rolls",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35856214/pexels-photo-35856214.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "tran duy anh",
+                "photographer_url": "https://www.pexels.com/@tran-duy-anh-550498125",
+                "source": "pexels",
+            },
             "meta_description": "What potato rolls are, the best substitutes with ratios, how to store them so they stay soft, and what to use them for beyond burgers.",
             "hero_image_query": "potato rolls",
             "image_alt": "A basket of golden-brown potato rolls with a soft, pillowy crumb, one torn open to show the moist, slightly yellow interior.",
@@ -313570,6 +313828,12 @@ SEED_PAGES = [
         "title": "Mango",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/16724967/pexels-photo-16724967.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Wil Carranza",
+                "photographer_url": "https://www.pexels.com/@cipotesv",
+                "source": "pexels",
+            },
             "meta_description": "What mango is, the best substitutes for dessert recipes with exact ratios, how to pick and store one that's actually ripe, and how to use it without turning a dish watery.",
             "hero_image_query": "ripe mango sliced into cubes on a cutting board",
             "image_alt": "A ripe mango cut into cheeks and diced into golden-orange cubes, with the pit and skin set aside on a wooden cutting board.",
@@ -313678,6 +313942,12 @@ SEED_PAGES = [
         "title": "Rutabaga Recipes",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/6280406/pexels-photo-6280406.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Rutabaga recipes organized by cooking method, mashed, roasted, in soups, and raw, plus what makes rutabaga different from turnip.",
             "intro": "Rutabaga is denser and sweeter than turnip, with a thick waxed skin that needs a sharp knife rather than a peeler. Its firm flesh holds up well to long roasting and simmering, and it takes on a custardy texture once mashed or pureed.",
             "recipe_cards": [
@@ -313778,6 +314048,12 @@ SEED_PAGES = [
         "title": "Japanese Soy Sauce Marinated Eggs (Ajitsuke Tamago) Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1635439811833-777cd1135214?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8c295JTIwc2F1Y2UlMjBtYXJpbmF0ZWQlMjByYW1lbiUyMGVnZ3MlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NjQzNnww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Alex 張飛",
+                "photographer_url": "https://unsplash.com/@zhangfeialex",
+                "source": "unsplash",
+            },
             "meta_description": "Soft-boiled eggs marinated in Japanese soy sauce, mirin, and sugar until the whites turn deep amber and the yolk stays jammy. The classic ramen topping, ready in about 4 hours.",
             "hero_image_query": "soy sauce marinated ramen eggs",
             "image_alt": "A halved soy sauce marinated egg with a jammy amber-tinged yolk resting on top of a bowl of ramen noodles in broth.",
@@ -313916,6 +314192,12 @@ SEED_PAGES = [
         "title": "Poffertjes",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/17751917/pexels-photo-17751917.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What poffertjes batter mix is, the best substitutes with ratios, how to store it, and how to cook it into proper puffy Dutch mini pancakes.",
             "hero_image_query": "poffertjes mini dutch pancakes in cast iron pan with butter and powdered sugar",
             "image_alt": "A dimpled cast iron poffertjes pan filled with small golden-brown mini pancakes, one plate dusted heavily with powdered sugar and topped with a pat of melting butter",
@@ -313993,6 +314275,12 @@ SEED_PAGES = [
         "title": "Virgin Pina Colada Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/10986589/pexels-photo-10986589.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Shameel mukkath",
+                "photographer_url": "https://www.pexels.com/@shameel-mukkath-3421394",
+                "source": "pexels",
+            },
             "meta_description": "A creamy, non-alcoholic pina colada made with pineapple juice, cream of coconut, and coconut milk, blended with ice until slushy. Ready in 5 minutes.",
             "hero_image_query": "virgin pina colada in glass with pineapple garnish",
             "image_alt": "A frosty virgin pina colada in a hurricane glass topped with a pineapple wedge and maraschino cherry, condensation beading on the glass.",
@@ -314142,6 +314430,12 @@ SEED_PAGES = [
         "title": "Hot Cocoa Bar Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1697899841037-da543603bd09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8aG90JTIwY29jb2ElMjBiYXIlMjB3aXRoJTIwdG9wcGluZ3MlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NjQzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "micheile henderson",
+                "photographer_url": "https://unsplash.com/@micheile",
+                "source": "unsplash",
+            },
             "meta_description": "A rich, make-ahead hot cocoa base plus a full topping bar lineup, ready in about 30 minutes and easy to scale for a crowd. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "hot cocoa bar with toppings",
             "image_alt": "A row of white mugs filled with steaming hot cocoa on a wooden table, surrounded by small bowls of mini marshmallows, crushed peppermint candy, whipped cream, and chocolate shavings.",
@@ -314389,6 +314683,12 @@ SEED_PAGES = [
         "title": "Coconut Jelly",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35855723/pexels-photo-35855723.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What coconut jelly (nata de coco) is, how it differs from coconut milk jelly, the best substitutes with ratios, and how to store and use it.",
             "hero_image_query": "coconut jelly cubes in syrup",
             "image_alt": "A glass bowl of translucent chewy coconut jelly cubes suspended in clear sugar syrup, ready to be spooned over shaved ice",
@@ -314485,6 +314785,12 @@ SEED_PAGES = [
         "title": "K\u00fcrbissuppe (German Pumpkin Soup) Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37292159/pexels-photo-37292159.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Lydia Griva",
+                "photographer_url": "https://www.pexels.com/@iris",
+                "source": "pexels",
+            },
             "meta_description": "A creamy German kürbissuppe made with roasted pumpkin, stock, and a splash of cream, finished with nutmeg and toasted pumpkin seeds. Ready in about an hour.",
             "hero_image_query": "german pumpkin soup kurbissuppe bowl",
             "image_alt": "A bowl of creamy orange pumpkin soup topped with a swirl of cream, toasted pumpkin seeds, and a sprinkle of chives, with crusty bread on the side.",
@@ -314876,6 +315182,12 @@ SEED_PAGES = [
         "title": "Green Seasoning",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/15508164/pexels-photo-15508164.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Zakhar Vozhdaienko",
+                "photographer_url": "https://www.pexels.com/@zakhar",
+                "source": "pexels",
+            },
             "meta_description": "What Caribbean green seasoning is, how to substitute it with sofrito, recaito, or a homemade blend, and how to store and use it for marinating meat and fish.",
             "hero_image_query": "Trinidadian green seasoning blended herb paste in a jar",
             "image_alt": "A glass jar of bright green Caribbean green seasoning paste flecked with cilantro, culantro, garlic, and pepper, next to a whole chicken being marinated.",
@@ -314972,11 +315284,11 @@ SEED_PAGES = [
         "title": "Red Beans and Rice Recipe",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1674468263746-3220aee4e394?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8OHx8cmVkJTIwYmVhbnMlMjBhbmQlMjByaWNlJTIwd2l0aCUyMHNhdXNhZ2UlMjBwbGF0ZWQlMjBkaXNofGVufDB8fHx8MTc4OTY0NTM0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/34590138/pexels-photo-34590138.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Nigel Seah",
-                "photographer_url": "https://unsplash.com/@nigelseah24",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A classic Louisiana red beans and rice recipe with andouille sausage, smoked ham, and the holy trinity, simmered until creamy and served over white rice. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "red beans and rice with sausage",
@@ -315228,6 +315540,12 @@ SEED_PAGES = [
         "title": "Almond Flour Banana Bread Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/4858248/pexels-photo-4858248.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Tereza Ondrejová",
+                "photographer_url": "https://www.pexels.com/@tereza-ondrejova-1249809",
+                "source": "pexels",
+            },
             "meta_description": "A moist, naturally gluten-free almond flour banana bread made with ripe bananas, eggs, and honey. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "almond flour banana bread sliced loaf",
             "image_alt": "A sliced loaf of almond flour banana bread on a wooden board, showing a moist, dense golden-brown crumb studded with chopped walnuts.",
@@ -315448,6 +315766,12 @@ SEED_PAGES = [
         "title": "Reina Pepiada",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/29496092/pexels-photo-29496092.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What reina pepiada is, how it differs from other Venezuelan arepa fillings, substitute options with ratios, and how to store and serve it.",
             "hero_image_query": "reina pepiada chicken avocado salad arepa filling",
             "image_alt": "A bowl of shredded chicken folded with mashed avocado, mayonnaise, and cilantro, served beside a split-open arepa.",
@@ -315537,10 +315861,10 @@ SEED_PAGES = [
         "title": "Reflux-Friendly Baked Chicken and Rice Recipe",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.pexels.com/photos/32023537/pexels-photo-32023537.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/32936796/pexels-photo-32936796.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Helen Brudna",
-                "photographer_url": "https://www.pexels.com/@helen-brudna-2151730422",
+                "photographer": "Ram Kondisetti",
+                "photographer_url": "https://www.pexels.com/@ram-kondisetti-828660077",
                 "source": "pexels",
             },
             "meta_description": "A gentle, low-fat baked chicken and rice recipe built around the foods to avoid with reflux esophagitis, skipping citrus, tomato, caffeine, alcohol, and heavy spice.",
@@ -315764,6 +316088,12 @@ SEED_PAGES = [
         "title": "Cake Mix Cookies Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/12557756/pexels-photo-12557756.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Soft, chewy cake mix cookies made with just four ingredients: a box of cake mix, eggs, oil, and mix-ins. Ready in under 30 minutes with a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "cake mix cookies on cooling rack",
             "image_alt": "A stack of soft chocolate chip cake mix cookies with crackled tops, cooling on a wire rack.",
@@ -316029,6 +316359,12 @@ SEED_PAGES = [
         "title": "Papa Rellena",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/19963516/pexels-photo-19963516.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What papa rellena is, the best substitutes with ratios, how to store and reheat it without drying out the potato shell, and how to serve it.",
             "hero_image_query": "papa rellena stuffed potato croquette cut in half",
             "image_alt": "A golden fried papa rellena sliced in half, showing the mashed potato shell wrapped around a filling of seasoned ground beef, olives, egg, and raisins.",
@@ -316118,6 +316454,12 @@ SEED_PAGES = [
         "title": "Peach Tea",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5598273/pexels-photo-5598273.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Anna Tarazevich",
+                "photographer_url": "https://www.pexels.com/@anntarazevich",
+                "source": "pexels",
+            },
             "meta_description": "What peach tea is, how to substitute it in recipes and cocktails with real ratios, how to store a brewed batch, and how to buy or brew it well.",
             "hero_image_query": "glass of iced peach tea with fresh peach slices",
             "image_alt": "A tall glass of iced peach tea with peach slices and a mint sprig, condensation beading on the outside of the glass on a wooden table.",
@@ -316214,6 +316556,12 @@ SEED_PAGES = [
         "title": "Mozzarella Balls",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/31625027/pexels-photo-31625027.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What mozzarella balls are, the best substitutes with ratios, how to store them without them turning rubbery, and how to use them in salads, skewers, and baking.",
             "hero_image_query": "fresh mozzarella balls in brine with basil",
             "image_alt": "A bowl of small fresh mozzarella balls glistening in brine, scattered with torn basil leaves and cherry tomatoes.",
@@ -316303,11 +316651,11 @@ SEED_PAGES = [
         "title": "Salmon Sashimi",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.unsplash.com/photo-1635527643921-ce2b9bbd5728?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MjZ8fFNhbG1vbiUyMFNhc2hpbWl8ZW58MHx8fHwxNzg5NjQ1MzQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_url": "https://images.pexels.com/photos/19897861/pexels-photo-19897861.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
             "image_attribution": {
-                "photographer": "Stefan Schauberger",
-                "photographer_url": "https://unsplash.com/@wuf2018",
-                "source": "unsplash",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "What sashimi-grade salmon actually means, the safest substitutes with ratios, how to store and slice it, and how to tell if a fillet is safe to eat raw.",
             "hero_image_query": "sliced salmon sashimi on ice",
@@ -316405,6 +316753,12 @@ SEED_PAGES = [
         "title": "Greek Lemon Chicken and Potatoes Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1680098021573-b9402ee336ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8Mnx8Z3JlZWslMjBsZW1vbiUyMGNoaWNrZW4lMjBhbmQlMjBwb3RhdG9lcyUyMHBsYXRlZCUyMGRpc2h8ZW58MHx8fHwxNzg5NjQ2NDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "Babs Gorniak",
+                "photographer_url": "https://unsplash.com/@babs_gorniak",
+                "source": "unsplash",
+            },
             "meta_description": "An easy Greek recipe for lemon-garlic chicken thighs and potatoes roasted together in one dish, ready in about 75 minutes. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "greek lemon chicken and potatoes",
             "image_alt": "Overhead view of golden-roasted bone-in chicken thighs and lemon potato wedges in a baking dish, topped with chopped parsley and crumbled feta.",
@@ -316642,6 +316996,12 @@ SEED_PAGES = [
         "title": "Homemade Pumpkin Puree Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5421505/pexels-photo-5421505.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "https://kaboompics.com/",
+                "photographer_url": "https://www.pexels.com/@karola-g",
+                "source": "pexels",
+            },
             "meta_description": "A simple homemade pumpkin puree recipe made from roasted sugar pie pumpkins, ready to use in pies, breads, and soups. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "homemade pumpkin puree in bowl",
             "image_alt": "A bowl of smooth, deep orange homemade pumpkin puree next to two roasted pumpkin halves and a wooden spoon.",
@@ -316733,6 +317093,12 @@ SEED_PAGES = [
         "title": "Fruit Desserts",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/10214312/pexels-photo-10214312.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What fruit desserts are, how to swap fresh, frozen, canned, and dried fruit in recipes with real ratios, plus storage, buying tips, and pairing ideas.",
             "hero_image_query": "assorted fruit desserts cobbler crisp and berries",
             "image_alt": "A rustic wooden table holding a bubbling peach cobbler in a cast iron skillet, a berry crisp with a golden oat topping, and a bowl of macerated strawberries topped with whipped cream.",
@@ -316829,6 +317195,12 @@ SEED_PAGES = [
         "title": "Skin-On Kiwi Smoothie Recipe",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/28053287/pexels-photo-28053287.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": "Umar Ali",
+                "photographer_url": "https://www.pexels.com/@umarali07",
+                "source": "pexels",
+            },
             "meta_description": "Yes, kiwi skin is edible. This skin-on kiwi smoothie recipe blends whole kiwis, fuzz and all, with banana and yogurt so you get the extra fiber without the fuzzy texture.",
             "hero_image_query": "whole kiwi fruit sliced with skin on next to green smoothie",
             "image_alt": "A tall glass of pale green kiwi smoothie beside two whole kiwis with their fuzzy brown skin intact, one sliced in half showing the skin blended smooth into the drink.",
@@ -316982,11 +317354,11 @@ SEED_PAGES = [
         "title": "Stick of Butter Rice Recipe",
         "batch_number": 11,
         "content": {
-            "image_url": "https://images.pexels.com/photos/6200044/pexels-photo-6200044.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_url": "https://images.pexels.com/photos/5863617/pexels-photo-5863617.jpeg",
             "image_attribution": {
-                "photographer": "Gustavo Santana",
-                "photographer_url": "https://www.pexels.com/@gustavo-santana-3928789",
-                "source": "pexels",
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
             },
             "meta_description": "A classic Southern stick of butter rice casserole made with long-grain rice, French onion soup, and a full stick of butter, baked until tender. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "butter rice casserole in baking dish",
@@ -317150,6 +317522,12 @@ SEED_PAGES = [
         "title": "Mustard Oil",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/35842500/pexels-photo-35842500.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "What mustard oil is, the best substitutes with ratios, how to store it so it doesn't turn rancid, and how raw versus heated mustard oil changes its flavor.",
             "hero_image_query": "mustard oil bottle with mustard seeds",
             "image_alt": "A glass bottle of dark golden mustard oil next to a small pile of brown mustard seeds and a steel bowl with oil poured into it",
@@ -317230,6 +317608,12 @@ SEED_PAGES = [
         "title": "Campari Tomatoes",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.unsplash.com/photo-1582284540020-8acbe03f4924?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDYxODc5fDB8MXxzZWFyY2h8MXx8VG9tYXRvZXN8ZW58MHx8fHwxNzg5NjUwMjc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "image_attribution": {
+                "photographer": "engin akyurt",
+                "photographer_url": "https://unsplash.com/@enginakyurt",
+                "source": "unsplash",
+            },
             "meta_description": "What Campari tomatoes are, the best substitutes with ratios, how to store them so they stay firm, and how to use them for the best flavor.",
             "hero_image_query": "campari tomatoes on the vine",
             "image_alt": "A cluster of small round Campari tomatoes still attached to the vine, their deep red skin glossy under kitchen light, next to two halved tomatoes showing juicy interior flesh.",
@@ -317330,6 +317714,12 @@ SEED_PAGES = [
         "title": "Mashed Rutabaga",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5718107/pexels-photo-5718107.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Boiled rutabaga mashed with butter and a little cream, a lower-carb stand-in for mashed potatoes with a slightly sweet, earthy flavor.",
             "hero_image_query": "mashed rutabaga bowl butter",
             "image_alt": "A bowl of golden mashed rutabaga topped with a pat of melting butter and a crack of black pepper.",
@@ -317483,6 +317873,12 @@ SEED_PAGES = [
         "title": "Roasted Rutabaga Cubes",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37202822/pexels-photo-37202822.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Rutabaga chunks roasted at high heat until the edges caramelize and the centers turn soft and sweet, with a live serving-size scaler and US/metric toggle.",
             "hero_image_query": "roasted rutabaga cubes on sheet pan",
             "image_alt": "Golden-brown rutabaga cubes with caramelized edges spread on a sheet pan, flecked with herbs and cracked pepper.",
@@ -317634,6 +318030,12 @@ SEED_PAGES = [
         "title": "Rutabaga Fries",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/5553389/pexels-photo-5553389.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Rutabaga cut into batons and roasted until crisp outside and tender inside, a sturdier alternative to potato fries. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "roasted rutabaga fries on baking sheet",
             "image_alt": "Golden-brown rutabaga fries piled on a parchment-lined baking sheet, edges crisped and centers tender, with a small bowl of dipping sauce alongside.",
@@ -317801,6 +318203,12 @@ SEED_PAGES = [
         "title": "Neeps and Tatties",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/27505766/pexels-photo-27505766.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Buttery mashed rutabaga and mashed potatoes served side by side, the traditional Burns Night pairing for haggis. Includes a live serving-size scaler and US/metric unit toggle.",
             "hero_image_query": "mashed rutabaga and mashed potatoes side by side",
             "image_alt": "Two mounds of mash on a plate, golden-orange mashed rutabaga next to pale mashed potatoes, both topped with melting butter, served alongside sliced haggis.",
@@ -317967,6 +318375,12 @@ SEED_PAGES = [
         "title": "Rutabaga and Root Vegetable Soup",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/32795462/pexels-photo-32795462.jpeg",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Rutabaga simmered with carrots, potato, and onion, then blended into a smooth, warming soup. An easy one-pot recipe with a live serving scaler and US/metric toggle.",
             "hero_image_query": "rutabaga root vegetable soup",
             "image_alt": "A bowl of pale golden pureed rutabaga soup topped with cracked black pepper and a swirl of cream, with a spoon resting beside it.",
@@ -318204,6 +318618,12 @@ SEED_PAGES = [
         "title": "Rutabaga Gratin",
         "batch_number": 11,
         "content": {
+            "image_url": "https://images.pexels.com/photos/37226786/pexels-photo-37226786.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Thin rutabaga slices layered with cream, garlic, and cheese, then baked until bubbling and browned on top. A rich, savory side that turns an underused root vegetable into the centerpiece.",
             "hero_image_query": "rutabaga gratin baked dish",
             "image_alt": "A baking dish of golden-brown rutabaga gratin with bubbling melted cheese on top and a corner scooped out showing thin creamy layers underneath.",
