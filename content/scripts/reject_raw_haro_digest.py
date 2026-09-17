@@ -30,7 +30,11 @@ def main() -> None:
         timeout=30,
     )
     r.raise_for_status()
-    rows = [row for row in r.json() if not row["is_example"] and row["subject"].startswith("HARO Queries for")]
+    rows = [
+        row
+        for row in r.json()
+        if not row["is_example"] and row["subject"].removeprefix("[Draft needed] Re: ").startswith("HARO Queries for")
+    ]
 
     print(f"{len(rows)} raw HARO digest row(s) to reject.")
     for row in rows:
