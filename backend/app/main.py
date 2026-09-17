@@ -2715,7 +2715,7 @@ def _seed_outreach_examples(db: Session) -> None:
             pitch_type="haro_reply",
             target_domain="example-journalist-outlet.test",
             contact_name="Reporter (example contact)",
-            contact_email=None,
+            contact_email="reporter@example-journalist-outlet.test",
             source_query=(
                 "Looking for a home cook or food writer to comment on ingredient substitution "
                 "mistakes for a piece on baking fails."
@@ -3283,13 +3283,23 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
 
     Returns one dict per genuine fit: reporter_email, reporter_name,
     outlet, query_excerpt (the original query text, kept for a human to
-    audit the draft against), subject, body. Raises on any API/tool-loop/
-    parsing problem -- callers fall back to the old raw-placeholder-row
-    behavior rather than silently dropping a possibly real query because
-    of a transient API hiccup. Never called anywhere that skips human
-    approval afterward -- see outreach_queue_decide, unchanged: a drafted
-    row still needs an explicit Approve before _send_outreach_email ever
-    fires."""
+    audit the draft against), subject, body. Two invariants are enforced
+    in code, not just asked for in the prompt -- an item failing either is
+    dropped (not returned), never silently sent through with a gap: a
+    non-empty reporter_email (a haro_reply with no address to send to
+    isn't a usable draft), and body containing a URL from the closed set
+    actually available this call (the three fixed tools plus every URL
+    _search_tulo_content actually returned) -- the model is instructed
+    never to invent one, but this is the structural guarantee, checked
+    the same way _search_tulo_content itself closes off a hallucinated
+    slug.
+
+    Raises on any API/tool-loop/parsing problem -- callers fall back to
+    the old raw-placeholder-row behavior rather than silently dropping a
+    possibly real query because of a transient API hiccup. Never called
+    anywhere that skips human approval afterward -- see
+    outreach_queue_decide, unchanged: a drafted row still needs an
+    explicit Approve before _send_outreach_email ever fires."""
     from anthropic import Anthropic
 
     client = Anthropic(api_key=ANTHROPIC_API_KEY)
@@ -3313,9 +3323,18 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "these keys: reporter_email, reporter_name, outlet, query_excerpt (the original query text "
         "for this one item, verbatim or lightly trimmed), subject, body (a short, specific, "
         "non-generic 3-5 sentence reply referencing the piece's actual topic, including exactly one "
-        "real URL -- from the fixed tools list or a search_tulo_content result, never invented). If "
+        "real URL -- from the fixed tools list or a search_tulo_content result, never invented). Two "
+        "hard requirements, checked and enforced after your response: reporter_email must be a real, "
+        "non-empty address (every HARO/Connectively query has one -- if a query genuinely doesn't, "
+        "it's not answerable, leave it out), and body must contain one of the real URLs verbatim. If "
         "there are zero fits, respond with exactly: []"
     )
+
+    # Closed set of URLs this call is actually allowed to recommend -- the
+    # three fixed tools plus every real result _search_tulo_content hands
+    # back below. A drafted item is only kept if its body contains at
+    # least one of these verbatim; see the filter after the loop.
+    allowed_urls = {t["url"] for t in _TULO_TOOLS_FOR_PITCHING}
 
     messages: list[dict] = [{"role": "user", "content": digest_text}]
     response = None
@@ -3335,6 +3354,7 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
             if block.type != "tool_use":
                 continue
             results = _search_tulo_content(db, block.input.get("query", "")) if block.name == "search_tulo_content" else []
+            allowed_urls.update(r["url"] for r in results)
             tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
         messages.append({"role": "user", "content": tool_results})
     else:
@@ -3344,12 +3364,21 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     parsed = json.loads(raw)
     if not isinstance(parsed, list):
         raise ValueError(f"Expected a JSON list from the model, got {type(parsed).__name__}")
+
     required_keys = {"reporter_email", "reporter_name", "outlet", "query_excerpt", "subject", "body"}
+    kept = []
     for item in parsed:
         missing = required_keys - item.keys()
         if missing:
             raise ValueError(f"Drafted reply missing keys: {missing}")
-    return parsed
+        if not (item.get("reporter_email") or "").strip():
+            print(f"  _draft_haro_replies: dropping item with no reporter_email: {item.get('subject')!r}")
+            continue
+        if not any(url in item["body"] for url in allowed_urls):
+            print(f"  _draft_haro_replies: dropping item with no real Tulo URL in body: {item.get('subject')!r}")
+            continue
+        kept.append(item)
+    return kept
 
 
 def _strip_html_tags(html_text: str) -> str:
