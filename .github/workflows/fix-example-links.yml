@@ -1,0 +1,31 @@
+name: Fix example row links (one-off batch)
+
+# Pushes the current (link-including) subject/body from
+# _seed_outreach_examples() onto the 3 already-existing live example
+# rows, which predate those links being added. See
+# content/scripts/fix_example_links.py.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  fix-example-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fix example links
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/fix_example_links.py
