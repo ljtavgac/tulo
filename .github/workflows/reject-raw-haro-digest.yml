@@ -1,0 +1,31 @@
+name: Reject raw HARO digest row (one-off batch)
+
+# Rejects the queued raw digest row(s) from before per-query drafting
+# existed. See content/scripts/reject_raw_haro_digest.py for exactly
+# which rows and why. Reject only flips status, reversible via the
+# portal's own undo link.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  reject-raw-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Reject raw digest row(s)
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/reject_raw_haro_digest.py
