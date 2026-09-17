@@ -25,8 +25,8 @@ UPDATES = {
     "example-cooking-blog.test": {
         "subject": "A free pan-size converter your readers might like",
         "body": (
-            "Hi Jamie -- I noticed your banana bread post mentions swapping pan sizes by eye. "
-            "We built a free pan-size/yield calculator that adjusts bake time too -- here it is "
+            "Hi Jamie - I noticed your banana bread post mentions swapping pan sizes by eye. "
+            "We built a free pan-size/yield calculator that adjusts bake time too - here it is "
             "live on our own banana bread recipe: https://tulo.io/food/recipes/banana-nut-bread. "
             "Thought it might be a useful link for that post."
         ),
@@ -34,8 +34,8 @@ UPDATES = {
     "example-nutrition-site.test": {
         "subject": "A live recipe nutrition recalculator (swap-aware)",
         "body": (
-            "Hi Morgan -- following your piece on recipe substitutions, we built a tool that "
-            "recalculates a recipe's nutrition live as you swap ingredients or change servings -- "
+            "Hi Morgan - following your piece on recipe substitutions, we built a tool that "
+            "recalculates a recipe's nutrition live as you swap ingredients or change servings - "
             "here it is in action on our chicken broccoli rice casserole recipe: "
             "https://tulo.io/food/recipes/chicken-broccoli-rice-casserole. Could be a relevant "
             "link for readers making substitutions."
@@ -44,8 +44,8 @@ UPDATES = {
     "example-journalist-outlet.test": {
         "subject": "Source for your ingredient-substitution piece",
         "body": (
-            "Hi -- happy to help as a source. One common mistake: substituting baking soda for "
-            "baking powder 1:1 -- baking soda is roughly 3x stronger and needs its own acid to "
+            "Hi - happy to help as a source. One common mistake: substituting baking soda for "
+            "baking powder 1:1 - baking soda is roughly 3x stronger and needs its own acid to "
             "activate, so the swap either falls flat or turns bitter. Full ratio breakdown here "
             "if useful for the piece: https://tulo.io/food/substitutes/baking-soda-substitute. "
             "Happy to expand with a couple more examples too."
