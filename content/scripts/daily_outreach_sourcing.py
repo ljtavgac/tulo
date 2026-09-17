@@ -113,7 +113,9 @@ TULO_TOOLS = [
 ]
 
 MODEL = "claude-sonnet-5"
-MAX_TOOL_TURNS = 6
+MAX_TOOL_TURNS = 12  # confirmed live: 6 was too tight -- a genuinely good candidate (altonbrown.com)
+# got dropped purely for exceeding it while still searching for a good content match, not for
+# any real credibility problem
 MAX_CANDIDATES_PER_RUN = 60  # hard cap on LLM calls regardless of --count, to bound cost/time
 
 SEARCH_TULO_CONTENT_TOOL = {
