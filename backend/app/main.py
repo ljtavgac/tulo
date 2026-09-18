@@ -2846,13 +2846,23 @@ def _resolve_pending_articles(db: Session) -> int:
             live = False
         if not live:
             continue
-        r.subject = f"Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"Following up: {r.proposed_title}"
-        r.body_preview = (
-            f"Hi{' ' + r.contact_name if r.contact_name else ''},\n\n"
-            f"Following up on this - we just published a page that directly answers it: {url}\n\n"
-            "Happy to answer any follow-up questions if it's useful for the piece.\n\n"
-            "Thanks for your time,\n\nTulo Team"
-        )
+        if r.ai_pitches_disallowed:
+            # Same reasoning as _draft_haro_replies' own reply-drafting
+            # path: this query said no AI pitches, so this templated
+            # follow-up (not itself LLM-written, but still an automated
+            # form letter a human never composed) doesn't get auto-filled
+            # either -- a human writes the actual words that reach this
+            # reporter, referencing the now-live url above.
+            r.subject = f"[No AI pitches -- write manually] Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"[No AI pitches -- write manually] Following up: {r.proposed_title}"
+            r.body_preview = _NO_AI_PITCHES_PLACEHOLDER
+        else:
+            r.subject = f"Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"Following up: {r.proposed_title}"
+            r.body_preview = (
+                f"Hi{' ' + r.contact_name if r.contact_name else ''},\n\n"
+                f"Following up on this - we just published a page that directly answers it: {url}\n\n"
+                "Happy to answer any follow-up questions if it's useful for the piece.\n\n"
+                "Thanks for your time,\n\nTulo Team"
+            )
         r.status = "queued"
         resolved += 1
     if resolved:
@@ -2897,20 +2907,29 @@ def outreach_queue(
         ]
         contact_html = " &middot; ".join(contact_bits)
         example_pill = '<span class="pill pill-example">example</span>' if r.is_example else ""
+        no_ai_pill = '<span class="pill pill-no-ai">no AI pitches</span>' if r.ai_pitches_disallowed else ""
         is_undrafted_digest = r.pitch_type == "haro_reply" and r.body_preview == _UNDRAFTED_HARO_PLACEHOLDER
+        is_no_ai_placeholder = r.pitch_type == "haro_reply" and r.body_preview == _NO_AI_PITCHES_PLACEHOLDER
         if r.status == "queued":
             approve_html = (
                 ""
-                if is_undrafted_digest
+                if is_undrafted_digest or is_no_ai_placeholder
                 else f'<a class="btn-approve" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=approved&show={show}">Approve</a>'
             )
-            not_ready_html = (
-                '<div class="not-ready">Not approvable yet -- still the raw digest, not a drafted reply. '
-                "Edit the subject/body above (and add a real contact_email) once you've picked a query to "
-                "respond to.</div>"
-                if is_undrafted_digest
-                else ""
-            )
+            if is_undrafted_digest:
+                not_ready_html = (
+                    '<div class="not-ready">Not approvable yet -- still the raw digest, not a drafted reply. '
+                    "Edit the subject/body above (and add a real contact_email) once you've picked a query to "
+                    "respond to.</div>"
+                )
+            elif is_no_ai_placeholder:
+                not_ready_html = (
+                    '<div class="not-ready">Not approvable yet -- this query said no AI pitches, so no '
+                    "AI-drafted body was generated. Write the reply yourself in the box above before "
+                    "approving.</div>"
+                )
+            else:
+                not_ready_html = ""
             actions_html = f"""
             {not_ready_html}
             <div class="actions">
@@ -2998,7 +3017,7 @@ def outreach_queue(
         <div class="card status-{r.status}">
           <div class="info">
             <div class="title">{escape_html(r.subject)}
-              <span class="pill pill-{pitch_pill_class}">{pitch_label}</span>{example_pill}
+              <span class="pill pill-{pitch_pill_class}">{pitch_label}</span>{example_pill}{no_ai_pill}
               <span class="pill pill-status-{r.status}">{r.status}</span>
             </div>
             <div class="meta">{escape_html(r.target_domain)}{" &middot; " + contact_html if contact_html else ""}</div>
@@ -3036,6 +3055,7 @@ def outreach_queue(
         .pill-status-approved {{ background: #dcefe0; color: #276b3c; }}
         .pill-status-rejected {{ background: #fbdada; color: #a00; }}
         .pill-status-article_pending, .pill-status-article_requested, .pill-status-article_pending_review {{ background: #fff6dd; color: #7a5b00; }}
+        .pill-no-ai {{ background: #fde8e8; color: #a3242a; }}
         .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
         .source-query {{ font-size: 12px; color: #5b2d90; background: #f7f2fc; border-radius: 4px; padding: 6px 8px; margin: 6px 0; }}
         .body-preview {{ font-size: 12px; color: #333; margin: 8px 0; white-space: pre-wrap; }}
@@ -3337,6 +3357,7 @@ def outreach_queue_list_json(
             "proposed_title": r.proposed_title,
             "proposed_template_type": r.proposed_template_type,
             "target_slug": r.target_slug,
+            "ai_pitches_disallowed": r.ai_pitches_disallowed,
         }
         for r in rows
     ]
@@ -3405,6 +3426,42 @@ _UNDRAFTED_HARO_PLACEHOLDER = (
     "placeholder with a real drafted reply (and split into separate prospects if more than "
     "one query here is worth pursuing) before approving."
 )
+
+# Stamped as body_preview whenever the source query itself said something
+# like "No AI Pitches Considered" (see _query_disallows_ai_pitches) --
+# distinct from _UNDRAFTED_HARO_PLACEHOLDER above because the query WAS a
+# genuine fit (a real subject/body was drafted), it's just never shown
+# here: the point of that note is that a human writes the actual words
+# that reach this reporter, not that a human merely reviews AI-written
+# ones first. Shared with card()'s Approve-visibility check, same as
+# _UNDRAFTED_HARO_PLACEHOLDER.
+_NO_AI_PITCHES_PLACEHOLDER = (
+    "This query said no AI pitches / AI submissions will not be considered -- write this "
+    "reply yourself from scratch. No AI-drafted text has been generated for it (see the "
+    "source query above for context on what to say)."
+)
+
+# Matches common real-world phrasings of a query explicitly ruling out an
+# AI-written pitch (confirmed live: a real HARO digest query marked "No AI
+# Pitches Considered"). Deliberately code-enforced rather than left to the
+# model's own judgment alone -- same reasoning as every other hard
+# invariant in _draft_haro_replies (reporter_email, real URL, valid
+# template type): the model is asked to preserve this note verbatim in
+# query_excerpt when present, but whether an AI-drafted body actually
+# reaches a reporter who explicitly said not to send one is exactly the
+# kind of thing that shouldn't depend on the model consistently noticing
+# and acting on its own prompt instruction.
+_AI_PITCH_RESTRICTION_RE = re.compile(
+    r"no\s+ai[\s-]*(?:generated\s+)?pitch(?:es)?"
+    r"|ai[\s-]*(?:generated\s+)?pitch(?:es)?\s+(?:will\s+not|won't|are\s+not|is\s+not|not)\s*(?:be\s+)?"
+    r"(?:considered|accepted|read|reviewed)"
+    r"|no\s+ai[\s-]*(?:generated\s+)?submissions?",
+    re.IGNORECASE,
+)
+
+
+def _query_disallows_ai_pitches(query_excerpt: str) -> bool:
+    return bool(_AI_PITCH_RESTRICTION_RE.search(query_excerpt or ""))
 
 
 # These three are always safe to recommend outright -- stable URLs that
@@ -3526,9 +3583,22 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
 
     Returns one dict per item, each tagged type: "reply" or
     "content_opportunity". Every item always carries reporter_email,
-    reporter_name, outlet, query_excerpt; a "reply" additionally carries
-    subject/body, a "content_opportunity" carries proposed_title/
-    proposed_template_type/rationale instead. Invariants enforced in code,
+    reporter_name, outlet, query_excerpt, ai_pitches_disallowed; a "reply"
+    additionally carries subject/body, a "content_opportunity" carries
+    proposed_title/proposed_template_type/rationale instead.
+    ai_pitches_disallowed is set in code, not by the model, by regex-
+    matching query_excerpt for phrasing like "No AI Pitches Considered"
+    (see _query_disallows_ai_pitches -- confirmed live: a real HARO query
+    this project triaged carried exactly that note). When true on a
+    "reply" item, its drafted body is discarded and replaced with
+    _NO_AI_PITCHES_PLACEHOLDER before this function returns -- the point
+    of that note is that a human writes the words that actually reach
+    this reporter, not that a human merely reviews AI-written ones first;
+    on a "content_opportunity" item the flag is only carried through for
+    outreach_queue_ingest_email to persist on the row, since the eventual
+    reply text for one of these isn't drafted until _resolve_pending_
+    articles, once the generated page goes live (see that function for
+    the matching check). Invariants enforced in code,
     not just asked for in the prompt -- an item failing any that apply to
     its type is dropped (not returned), never silently sent through with a
     gap: reporter_email is non-empty AND appears verbatim somewhere in
@@ -3583,7 +3653,9 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
         "no markdown fences, no further tool calls). Every object needs a \"type\" key, either "
         "\"reply\" or \"content_opportunity\", plus reporter_email, reporter_name, outlet, "
-        "query_excerpt (the original query text for this one item, verbatim or lightly trimmed). A "
+        "query_excerpt (the original query text for this one item, verbatim or lightly trimmed -- "
+        "always keep any note like 'No AI Pitches Considered' or similar if the source includes one "
+        "for this query, never trim it out). A "
         "\"reply\" additionally needs subject, body (a short, specific, non-generic 3-5 sentence "
         "reply referencing the piece's actual topic, including exactly one real URL - from the fixed "
         "tools list or a search_tulo_content result, never invented; use a single hyphen with spaces "
@@ -3673,6 +3745,20 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
             if item.get("proposed_template_type") not in _REAL_TEMPLATE_TYPES:
                 print(f"  _draft_haro_replies: dropping content_opportunity with invalid proposed_template_type: {item.get('proposed_template_type')!r}")
                 continue
+
+        # Checked against query_excerpt, not the model's own say-so -- see
+        # this function's docstring and _query_disallows_ai_pitches. Only
+        # a "reply" item's body is actually replaced here (there's nothing
+        # to replace yet on a content_opportunity; see
+        # _resolve_pending_articles for its later equivalent), but the
+        # flag itself is attached to every item type so
+        # outreach_queue_ingest_email can persist it either way.
+        item["ai_pitches_disallowed"] = _query_disallows_ai_pitches(item.get("query_excerpt"))
+        if item["ai_pitches_disallowed"] and item_type == "reply":
+            print(f"  _draft_haro_replies: query disallows AI pitches, discarding drafted body: {label!r}")
+            item["subject"] = f"[No AI pitches -- write manually] {item['subject']}"
+            item["body"] = _NO_AI_PITCHES_PLACEHOLDER
+
         kept.append(item)
     return kept
 
@@ -3794,6 +3880,7 @@ async def outreach_queue_ingest_email(
                     proposed_template_type=draft["proposed_template_type"],
                     is_example=False,
                     status="article_pending",
+                    ai_pitches_disallowed=draft.get("ai_pitches_disallowed", False),
                 )
             else:
                 prospect = OutreachProspect(
@@ -3806,6 +3893,7 @@ async def outreach_queue_ingest_email(
                     body_preview=draft["body"],
                     is_example=False,
                     status="queued",
+                    ai_pitches_disallowed=draft.get("ai_pitches_disallowed", False),
                 )
             db.add(prospect)
             db.flush()
