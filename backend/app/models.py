@@ -187,3 +187,20 @@ class OutreachProspect(Base):
     # reviews AI-written ones. The portal hides Approve on that
     # placeholder exactly like _UNDRAFTED_HARO_PLACEHOLDER (see card()).
     ai_pitches_disallowed: Mapped[bool] = mapped_column(Boolean, default=False)
+    # Reject Content -- an action independent of this row's own status
+    # above (which tracks the *reply/email* decision only): a human can
+    # reject a content-opportunity's generated page (remove it from
+    # staging) regardless of whether they've approved, rejected, or not
+    # yet decided on the eventual reply to the reporter. Set by the portal's
+    # own "Reject Content" button (see card() in main.py), only shown when
+    # target_slug is set and neither flag here is true yet. Backend has no
+    # git push credentials (same constraint as article generation, see the
+    # status docstring above), so this is a request, not an instant delete:
+    # content/scripts/reject_haro_article.py +
+    # .github/workflows/reject-haro-article.yml pick it up, actually
+    # remove the page from staging's seed_templates.py, and call
+    # POST /admin/outreach-queue/confirm-article-removed, which sets
+    # content_removed. target_slug is deliberately left in place after
+    # removal (a historical record of what was rejected), not cleared.
+    content_removal_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    content_removed: Mapped[bool] = mapped_column(Boolean, default=False)

@@ -3013,6 +3013,33 @@ def outreach_queue(
             """
         else:
             content_html = f'<div class="body-preview">{escape_html(r.body_preview)}</div>'
+
+        # Reject Content: independent of the email reply's own
+        # approve/reject decision (r.status above) -- see
+        # content_removal_requested's own docstring on OutreachProspect.
+        # Shown whenever a real generated page exists (target_slug set)
+        # and hasn't already been requested/completed for removal, no
+        # matter what r.status currently is.
+        if r.target_slug and not r.content_removal_requested and not r.content_removed:
+            content_reject_html = f"""
+            <form method="post" action="/admin/outreach-queue/reject-article-content" class="content-form">
+              <input type="hidden" name="prospect_id" value="{r.id}">
+              <input type="hidden" name="show" value="{show}">
+              <button type="submit" class="btn-reject">Reject Content (remove {escape_html(r.target_slug)} from staging)</button>
+            </form>
+            """
+        elif r.content_removal_requested and not r.content_removed:
+            content_reject_html = (
+                f'<div class="not-ready">Removal requested for <code>{escape_html(r.target_slug or "")}</code> -- '
+                f"trigger reject-haro-article.yml with prospect_id={r.id} to actually remove it from staging.</div>"
+            )
+        elif r.content_removed:
+            content_reject_html = (
+                f'<div class="decided">Content removed from staging (was <code>{escape_html(r.target_slug or "")}</code>).</div>'
+            )
+        else:
+            content_reject_html = ""
+
         return f"""
         <div class="card status-{r.status}">
           <div class="info">
@@ -3026,6 +3053,7 @@ def outreach_queue(
             {send_status_html}
             {contact_form_html}
             {actions_html}
+            {content_reject_html}
           </div>
         </div>
         """
@@ -3316,6 +3344,62 @@ async def outreach_queue_link_article(
     return {"linked_prospect_id": prospect.id, "target_slug": slug}
 
 
+@app.post("/admin/outreach-queue/reject-article-content")
+def outreach_queue_reject_article_content(
+    prospect_id: int = Form(...),
+    show: str = Form(default="all"),
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """The Reject Content click (see card() in outreach_queue()) -- an
+    action on the generated PAGE, deliberately independent of whatever
+    r.status says about the reply/email decision (a human can reject the
+    content whether the reply is still queued, already approved, or
+    already rejected). Same "record the request, do the real work
+    externally" split as create-article: this backend has no git push
+    credentials, so content/scripts/reject_haro_article.py +
+    .github/workflows/reject-haro-article.yml do the actual removal from
+    staging's seed_templates.py and call confirm-article-removed below
+    once it's pushed."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404, detail="prospect not found")
+    if not prospect.target_slug:
+        raise HTTPException(status_code=400, detail="prospect has no target_slug -- nothing to remove")
+    if prospect.content_removal_requested or prospect.content_removed:
+        raise HTTPException(status_code=400, detail="content removal already requested or completed")
+    prospect.content_removal_requested = True
+    db.commit()
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+@app.post("/admin/outreach-queue/confirm-article-removed")
+async def outreach_queue_confirm_article_removed(
+    request: Request,
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Called by content/scripts/reject_haro_article.py right after it
+    removes a status=content_removal_requested prospect's page from
+    staging's seed_templates.py and pushes. JSON body: {prospect_id}
+    required. target_slug is deliberately left in place (a record of what
+    was removed), only content_removed flips."""
+    payload = await request.json()
+    prospect_id = payload.get("prospect_id")
+    if not prospect_id:
+        raise HTTPException(status_code=400, detail="prospect_id is required")
+
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404, detail="prospect not found")
+    if not prospect.content_removal_requested:
+        raise HTTPException(status_code=400, detail="content removal was never requested for this prospect")
+
+    prospect.content_removed = True
+    db.commit()
+    return {"removed_prospect_id": prospect.id, "target_slug": prospect.target_slug}
+
+
 @app.get("/admin/outreach-queue/list.json")
 def outreach_queue_list_json(
     status: str = Query(default="all", description="queued | approved | rejected | all"),
@@ -3358,6 +3442,8 @@ def outreach_queue_list_json(
             "proposed_template_type": r.proposed_template_type,
             "target_slug": r.target_slug,
             "ai_pitches_disallowed": r.ai_pitches_disallowed,
+            "content_removal_requested": r.content_removal_requested,
+            "content_removed": r.content_removed,
         }
         for r in rows
     ]

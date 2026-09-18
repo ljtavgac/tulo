@@ -1,0 +1,42 @@
+name: Reject HARO opportunity article
+
+# Runs content/scripts/reject_haro_article.py for one outreach prospect
+# whose generated page a human has clicked "Reject Content" on in the
+# outreach portal (content_removal_requested=true -- see
+# OutreachProspect's docstring in backend/app/models.py). Manual dispatch
+# only: the portal's Reject Content button just flips a flag (it can't
+# push to git itself), so a human triggers this run with the prospect id
+# shown on that card. Independent of the prospect's own reply/email
+# status -- this only ever removes the generated page from staging.
+on:
+  workflow_dispatch:
+    inputs:
+      prospect_id:
+        description: "Outreach prospect id (from the 'Removal requested' card in /admin/outreach-queue)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  reject-haro-article:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Remove the article from staging
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/reject_haro_article.py --prospect-id "${{ github.event.inputs.prospect_id }}"
