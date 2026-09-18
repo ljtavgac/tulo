@@ -4016,7 +4016,21 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         raise ValueError(f"Exceeded {_HARO_DRAFTING_MAX_TOOL_TURNS} tool-use turns without a final answer")
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
-    parsed = json.loads(raw)
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError as e:
+        # Bare JSONDecodeError gives no way to tell "model wrote prose
+        # instead of JSON" apart from "response got truncated" (e.g.
+        # stop_reason="max_tokens" mid tool-call, leaving zero text
+        # blocks at all) -- both surface identically as "Expecting value:
+        # line 1 column 1 (char 0)" with no context. Re-raising with the
+        # actual stop_reason and a slice of what the model returned makes
+        # this diagnosable from auto_drafting_skipped_reason alone instead
+        # of requiring a live repro with ad hoc logging.
+        raise ValueError(
+            f"Model did not return valid JSON (stop_reason={response.stop_reason!r}, "
+            f"raw={raw[:500]!r}): {e}"
+        ) from e
     if not isinstance(parsed, list):
         raise ValueError(f"Expected a JSON list from the model, got {type(parsed).__name__}")
 
