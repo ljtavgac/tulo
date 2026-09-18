@@ -9,11 +9,26 @@ comparable competitor, that it's the kind of site that links out to
 food/cooking resources -- not just any domain that happened to appear on a
 roundup page.
 
+CURRENTLY NOT WIRED INTO daily-link-building.yml: there's no Semrush API
+subscription/key available right now (confirmed live -- every competitor
+lookup came back "400 Bad Request" with an empty key param). The script,
+this module, and its standalone backlink-gap-outreach.yml dispatch
+workflow are left in place for whenever Semrush access exists -- add a
+SEMRUSH_API_KEY secret and re-add this as daily-link-building.yml's first
+step (see that workflow's own comment) to turn it back on; it was
+designed to run first since it should be the best-qualified candidate
+pool of the six once real data is flowing.
+
 Discovery mechanism: Semrush's Backlink Analytics API (backlinks_refdomains
 report) -- the one part of this script that could not be verified against
 Semrush's live API documentation before shipping (this sandbox's network
 egress to developer.semrush.com is blocked, and no test API key was
-available here). _fetch_referring_domains() below is written from the
+available here). Confirmed live so far: a request with no valid key
+returns a plain HTTP 400 (caught fine by the existing requests.
+RequestException handling below) rather than a 200-with-"ERROR"-text
+response -- but the actual response *shape* on a genuinely successful
+call (column names, delimiter) is still unverified, since that requires a
+real key. _fetch_referring_domains() below is written from the
 well-established classic Semrush Analytics API shape (semicolon-delimited
 CSV response, "ERROR ..." line on failure) -- but if Semrush has since
 changed that shape, this function will raise loudly with the raw response

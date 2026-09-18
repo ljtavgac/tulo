@@ -1,6 +1,6 @@
 name: Daily link building
 
-# Runs all six automated outbound link-building sources once a day, in
+# Runs five automated outbound link-building sources once a day, in
 # priority order, against one SHARED daily queue quota (currently 30 --
 # see DAILY_QUEUE_CAP in each script) rather than each one queuing its own
 # count independently. Higher-quality/higher-intent sources run first and
@@ -12,16 +12,26 @@ name: Daily link building
 # keep in sync.
 #
 # Order:
-#   1. backlink_gap_outreach.py    -- Semrush competitor backlink-gap (needs SEMRUSH_API_KEY)
-#   2. roundup_inclusion_outreach.py -- recipe/tool roundup-post inclusion pitches
-#   3. broken_link_outreach.py     -- dead-link-on-a-resource-page replacement pitches
-#   4. unlinked_mention_outreach.py -- "you mentioned Tulo, here's the link" pitches
-#   5. resource_page_outreach.py   -- educational/dietitian resource-page inclusion pitches
-#   6. daily_outreach_sourcing.py  -- fixed food-blog directory crawl (fallback)
+#   1. roundup_inclusion_outreach.py -- recipe/tool roundup-post inclusion pitches
+#   2. broken_link_outreach.py     -- dead-link-on-a-resource-page replacement pitches
+#   3. unlinked_mention_outreach.py -- "you mentioned Tulo, here's the link" pitches
+#   4. resource_page_outreach.py   -- educational/dietitian resource-page inclusion pitches
+#   5. daily_outreach_sourcing.py  -- fixed food-blog directory crawl (fallback)
+#
+# backlink_gap_outreach.py (Semrush competitor backlink-gap) is NOT
+# included here -- there's no Semrush API subscription available, so a
+# live run there just fails every Semrush call and does nothing (confirmed
+# live: every competitor lookup came back "400 Bad Request" with an empty
+# key). The script, its vetting/dedup logic, and its standalone
+# backlink-gap-outreach.yml dispatch workflow are all still in the repo
+# for whenever Semrush access exists -- to re-enable it, add a
+# SEMRUSH_API_KEY secret and add its step back here as step 1 (it was
+# already written to slot in ahead of everything else, since it's the
+# best-qualified candidate pool of the six).
 #
 # continue-on-error is set on every step so a bug in one of the newer,
-# less-proven sources can never block a later one -- especially step 6,
-# the original, already-reliable mechanism.
+# less-proven sources can never block a later one -- especially the
+# final step, the original, already-reliable mechanism.
 on:
   schedule:
     - cron: '0 10 * * *'
@@ -47,21 +57,7 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 anthropic
 
-      - name: 1. Backlink-gap (Semrush)
-        continue-on-error: true
-        env:
-          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
-          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
-          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
-          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
-          SEMRUSH_API_KEY: ${{ secrets.SEMRUSH_API_KEY }}
-        run: |
-          set -uo pipefail
-          ARGS=""
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
-          python3 content/scripts/backlink_gap_outreach.py $ARGS
-
-      - name: 2. Roundup-inclusion targeting
+      - name: 1. Roundup-inclusion targeting
         continue-on-error: true
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
@@ -74,7 +70,7 @@ jobs:
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
           python3 content/scripts/roundup_inclusion_outreach.py $ARGS
 
-      - name: 3. Broken-link building
+      - name: 2. Broken-link building
         continue-on-error: true
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
@@ -87,7 +83,7 @@ jobs:
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
           python3 content/scripts/broken_link_outreach.py $ARGS
 
-      - name: 4. Unlinked-mention reclamation
+      - name: 3. Unlinked-mention reclamation
         continue-on-error: true
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
@@ -100,7 +96,7 @@ jobs:
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
           python3 content/scripts/unlinked_mention_outreach.py $ARGS
 
-      - name: 5. Resource-page link building
+      - name: 4. Resource-page link building
         continue-on-error: true
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
@@ -113,7 +109,7 @@ jobs:
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
           python3 content/scripts/resource_page_outreach.py $ARGS
 
-      - name: 6. Hub-page crawl (fallback)
+      - name: 5. Hub-page crawl (fallback)
         continue-on-error: true
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}

@@ -1,11 +1,12 @@
 name: Backlink-gap outreach (Semrush)
 
-# Standalone manual-dispatch entry for content/scripts/backlink_gap_outreach.py
-# (item 1 of daily-link-building.yml's 6 sources). Useful for an isolated
-# test run or producing a single review example (count=1) without running
-# the other 5 sources. Needs the SEMRUSH_API_KEY secret -- see that
-# script's module docstring for why its Semrush call shape is the one
-# part of this pipeline that needs a live first-run verification.
+# Standalone manual-dispatch entry for content/scripts/backlink_gap_outreach.py.
+# NOT currently part of daily-link-building.yml's daily run -- there's no
+# Semrush API subscription/key available right now (confirmed live: every
+# competitor lookup 400s with an empty key). Kept here so this source can
+# be tested or turned back on the moment a SEMRUSH_API_KEY secret exists --
+# see that script's module docstring for what else its Semrush call shape
+# still needs a live first-run verification once a real key is available.
 on:
   workflow_dispatch:
     inputs:
