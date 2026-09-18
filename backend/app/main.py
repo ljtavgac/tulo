@@ -3968,6 +3968,26 @@ _REAL_TEMPLATE_TYPES = {
 }
 
 
+def _strip_json_code_fence(raw: str) -> str:
+    """Strips a wrapping ```json ... ``` (or bare ``` ... ```) markdown
+    code fence around an otherwise-valid JSON response -- confirmed live
+    on a real digest (stop_reason="end_turn", not a truncation): despite
+    the system prompt requiring a bare JSON array, the model sometimes
+    wraps it in a fence anyway, and json.loads on the raw text fails with
+    an opaque "Expecting value: line 1 column 1" that looks identical to
+    a genuinely malformed response."""
+    text = raw.strip()
+    if not text.startswith("```"):
+        return text
+    text = text[3:]
+    if text[:4].lower() == "json":
+        text = text[4:]
+    text = text.lstrip("\n")
+    if text.rstrip().endswith("```"):
+        text = text.rstrip()[:-3]
+    return text.strip()
+
+
 def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     """Uses Claude to triage one forwarded journalist/expert-source-request
     digest -- HARO, Connectively, Qwoted, Featured.com/Terkel, SourceBottle,
@@ -4226,7 +4246,7 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
 
         raw = "".join(block.text for block in response.content if block.type == "text").strip()
         try:
-            parsed = json.loads(raw)
+            parsed = json.loads(_strip_json_code_fence(raw))
             break
         except json.JSONDecodeError as e:
             if attempt == _JSON_PARSE_MAX_ATTEMPTS:
