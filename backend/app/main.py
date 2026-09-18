@@ -3880,6 +3880,18 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     outreach_queue_ingest_email, which creates a status="article_pending"
     row for one of these instead of a normal drafted reply).
 
+    Usually one item per digest query, but not always: when a single
+    query genuinely bundles several distinct, independently-answerable
+    sub-topics (confirmed live: a Southern Living Connectively query
+    asking about wooden cutting boards, filet mignon vs. tenderloin, AND
+    coconut flake storage in one piece), the model may return more than
+    one item for it -- see the system prompt's own instruction on this.
+    Previously a bundled query like that could only ever produce a
+    single item, silently leaving its other sub-topics unaddressed (the
+    tenderloin sub-topic got a reply citing a real match; the cutting-
+    board and coconut-flake sub-topics, each a real content_opportunity
+    candidate, were never independently evaluated at all).
+
     Returns one dict per item, each tagged type: "reply" or
     "content_opportunity". Every item always carries reporter_email,
     reporter_name, outlet, query_excerpt, ai_pitches_disallowed; a "reply"
@@ -3970,6 +3982,18 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "'substitute' page Tulo doesn't have yet). Only propose this when it's a real, narrow, "
         "answerable topic -- not a stretch, and not something so niche or one-off it wouldn't be "
         "worth having as a permanent page regardless of this one query.\n\n"
+        "A single query occasionally bundles several genuinely distinct, independently-answerable "
+        "sub-topics under one reporter/outlet/deadline (e.g. one reporter asking, in the same piece, "
+        "about wooden cutting boards discoloring, filet mignon vs. tenderloin, AND coconut flake "
+        "storage -- three unrelated questions, not one). When that happens, don't collapse it into a "
+        "single item that only addresses the strongest sub-topic and mentions the rest as unanswered: "
+        "return one item per sub-topic that's a genuine fit, freely mixing types -- a \"reply\" for "
+        "whichever sub-topic(s) have a real existing match, separate \"content_opportunity\" items for "
+        "sub-topic(s) that don't but are each worth their own new page. Give each such item its own "
+        "narrow query_excerpt (the specific sub-question, not the whole bundled paragraph) so a "
+        "reviewer can tell them apart at a glance. Don't manufacture this split for a single coherent "
+        "question that just happens to be phrased with multiple clauses -- only when the sub-topics are "
+        "genuinely separate asks a reporter would accept separate answers to.\n\n"
         "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
         "no markdown fences, no further tool calls). Every object needs a \"type\" key, either "
         "\"reply\" or \"content_opportunity\", plus reporter_email, reporter_name, outlet, "
