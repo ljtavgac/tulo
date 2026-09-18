@@ -33,4 +33,12 @@ print(f"=== Frontend: GET {frontend_url} ===")
 r2 = requests.get(frontend_url, timeout=30, allow_redirects=True)
 print(f"status: {r2.status_code}")
 print(f"final url: {r2.url}")
-print(r2.text[:3000])
+print(r2.text[:500])
+
+print()
+existing_url = f"{frontend_base}/food/comparisons/cappuccino-vs-latte"
+print(f"=== Frontend (control, existing page): GET {existing_url} ===")
+r3 = requests.get(existing_url, timeout=30, allow_redirects=True)
+print(f"status: {r3.status_code}")
+print(f"final url: {r3.url}")
+print(r3.text[:500])
