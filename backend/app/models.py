@@ -174,3 +174,16 @@ class OutreachProspect(Base):
     proposed_title: Mapped[str | None] = mapped_column(String, nullable=True)
     proposed_template_type: Mapped[str | None] = mapped_column(String, nullable=True)
     target_slug: Mapped[str | None] = mapped_column(String, nullable=True)
+    # True when the source query itself said something like "No AI Pitches
+    # Considered" (see _query_disallows_ai_pitches in main.py) -- a real,
+    # not hypothetical, note found on an actual HARO query this project
+    # triaged. When true, body_preview is never the model's own AI-drafted
+    # prose, regardless of pitch_type: _draft_haro_replies replaces a
+    # "reply" item's drafted body with _NO_AI_PITCHES_PLACEHOLDER
+    # immediately, and _resolve_pending_articles does the same instead of
+    # its usual auto-filled template once a content_opportunity's article
+    # goes live -- in both cases the point is that a human writes the
+    # actual words that reach this reporter, not that a human merely
+    # reviews AI-written ones. The portal hides Approve on that
+    # placeholder exactly like _UNDRAFTED_HARO_PLACEHOLDER (see card()).
+    ai_pitches_disallowed: Mapped[bool] = mapped_column(Boolean, default=False)
