@@ -2048,6 +2048,7 @@ def review_queue_override_image(
     image_url: str,
     batch: str,
     show: str = "pending",
+    return_to: str | None = Query(default=None, description="Path to redirect to instead of /admin/review-queue -- must start with /admin/. Used by outreach_queue()'s embedded review card."),
     db: Session = Depends(get_db),
 ):
     """Manual escape hatch for when an automatic re-fetch (see
@@ -2086,7 +2087,9 @@ def review_queue_override_image(
     # write; this manual-override path just never had the same call added.
     _revalidate_frontend()
 
-    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
+    default_redirect = f"/admin/review-queue?token={token}&batch={batch}&show={show}"
+    redirect_url = return_to if (return_to and return_to.startswith("/admin/")) else default_redirect
+    return RedirectResponse(url=redirect_url, status_code=303)
 
 
 @app.get("/admin/delete-pages")
@@ -3023,6 +3026,15 @@ def _render_inline_article_review(prospect: OutreachProspect, show: str, db: Ses
             <button type="submit" name="status" value="flagged" class="ar-btn-flag">Flag</button>
             <button type="submit" name="status" value="approved" class="ar-btn-approve-one">approve this page</button>
           </form>
+          <form method="get" action="/admin/review-queue/override-image" class="ar-override-form">
+            <input type="hidden" name="token" value="{ADMIN_TASK_TOKEN}">
+            <input type="hidden" name="slug" value="{slug}">
+            <input type="hidden" name="batch" value="{batch_number}">
+            <input type="hidden" name="show" value="{show}">
+            <input type="hidden" name="return_to" value="{escape_html(return_to_raw)}">
+            <input type="text" name="image_url" placeholder="paste an exact images.pexels.com/... or images.unsplash.com/... URL">
+            <button type="submit" class="ar-btn-override">use this photo</button>
+          </form>
           <div class="ar-promo">{promo_html}</div>
         </div>
       </div>
@@ -3316,6 +3328,9 @@ def outreach_queue(
         .ar-mark-form input[type=text] {{ flex: 1; min-width: 0; font-size: 11px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
         .ar-btn-flag {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 4px 9px; font-size: 11px; cursor: pointer; white-space: nowrap; }}
         .ar-btn-approve-one {{ background: none; border: none; color: #888; font-size: 11px; cursor: pointer; text-decoration: underline; padding: 0; }}
+        .ar-override-form {{ display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }}
+        .ar-override-form input[type=text] {{ flex: 1; min-width: 0; font-size: 11px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
+        .ar-btn-override {{ background: #555; color: #fff; border: none; border-radius: 4px; padding: 4px 9px; font-size: 11px; cursor: pointer; white-space: nowrap; }}
         .ar-pill {{ font-size: 10px; padding: 1px 7px; border-radius: 20px; margin-left: 4px; font-weight: 400; background: #eee; color: #666; }}
         .ar-pill-approved {{ background: #dcefe0; color: #276b3c; }}
         .ar-pill-flagged {{ background: #fbdada; color: #a00; }}
