@@ -64,7 +64,7 @@ def main() -> None:
     base = os.environ["BACKEND_BASE_URL"].rstrip("/")
     auth = (os.environ["OUTREACH_ADMIN_USER"], os.environ["OUTREACH_ADMIN_PASSWORD"])
 
-    for old_id in (94, 95, 96, 97, 98, 99, 100, 101, 102, 103):
+    for old_id in (104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116):
         reject(base, auth, old_id)
 
     latte_ids = ingest(base, auth, "noreply@helpareporter.com", "HARO latte-mistakes query", LATTE_QUERY)
