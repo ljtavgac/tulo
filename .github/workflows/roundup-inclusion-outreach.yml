@@ -1,0 +1,49 @@
+name: Roundup-inclusion outreach
+
+# Standalone manual-dispatch entry for content/scripts/roundup_inclusion_outreach.py
+# (item 2 of daily-link-building.yml's 6 sources). Useful for an isolated
+# test run or producing a single review example (count=1) without running
+# the other 5 sources.
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Max prospects to queue this run (default: fill the full remaining shared daily quota)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'true = print what would be queued without creating anything'
+        required: false
+        default: 'false'
+
+jobs:
+  source-outreach:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 anthropic
+
+      - name: Source and queue outreach prospects
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ -n "${{ github.event.inputs.count }}" ]; then
+            ARGS="--count ${{ github.event.inputs.count }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python3 content/scripts/roundup_inclusion_outreach.py $ARGS
