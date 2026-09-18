@@ -1,0 +1,49 @@
+name: Generate HARO opportunity article
+
+# Runs content/scripts/generate_haro_article.py for one outreach prospect
+# that a human has already clicked "Create Article" on in the outreach
+# portal (status="article_requested" -- see OutreachProspect's status
+# docstring in backend/app/models.py for the full lifecycle). Manual
+# dispatch only: the portal's Create Article button just flips a status
+# flag (it can't push to git or wait out a real Anthropic call itself),
+# so a human triggers this run with the prospect id shown on that card.
+#
+# Pushes the generated page to staging only, same as daily-batch.yml --
+# it still needs the normal human content review before going live on
+# prod. Once the page is live on prod, the portal's own
+# _resolve_pending_articles drafts the real, sendable reply automatically
+# on the next page load -- no further action needed here.
+on:
+  workflow_dispatch:
+    inputs:
+      prospect_id:
+        description: "Outreach prospect id (from the article_requested card in /admin/outreach-queue)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  generate-haro-article:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Generate and push the article
+        env:
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/generate_haro_article.py --prospect-id "${{ github.event.inputs.prospect_id }}"

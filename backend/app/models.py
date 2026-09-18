@@ -119,7 +119,33 @@ class OutreachProspect(Base):
     which meant this portal could never guarantee what a reviewer saw here
     was what actually went out.
 
-    status: "queued" (needs a decision) | "approved" | "rejected".
+    status: "queued" (needs a decision) | "approved" | "rejected" | "article_pending"
+    | "article_requested" | "article_pending_review". The last three exist
+    only for a haro_reply whose query has no existing Tulo page/tool to
+    cite but is genuinely answerable by one new article (see
+    _draft_haro_replies' content-opportunity items, a separate outcome
+    from a normal drafted reply): "article_pending" is the freshly-flagged
+    opportunity, shown in the portal with a Create Article button instead
+    of Approve/Reject (no contact_email verbatim-body invariant applies
+    here since there's no body to send yet). Clicking it flips to
+    "article_requested" -- a fast, synchronous status change only; actual
+    generation needs a real Anthropic call plus a git commit+push to
+    staging, neither of which this backend process can do on its own (no
+    push credentials, and generation can run past a request timeout), so
+    it's picked up externally instead (see
+    content/scripts/generate_haro_article.py +
+    .github/workflows/generate-haro-article.yml). Once that script pushes
+    the new page to staging, it calls
+    POST /admin/outreach-queue/link-article to store target_slug and flip
+    to "article_pending_review" -- still not sendable, since the page is
+    only on staging pending the normal human content-review step, not
+    live on prod yet. outreach_queue()'s own render checks any
+    "article_pending_review" row's target_slug against prod's real
+    /pages/<slug> on every page load; once that page is confirmed live,
+    it's re-drafted with the real URL, subject/body_preview filled in,
+    and status flips to "queued" -- a normal, sendable row from that point
+    on, no different from any other haro_reply.
+
     sent_at/send_error record what happened when an approval tried to
     actually send -- both stay null for an approval that predates
     GMAIL_SMTP_USER/GMAIL_SMTP_APP_PASSWORD being configured, or for one
@@ -143,3 +169,8 @@ class OutreachProspect(Base):
     decided_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     sent_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     send_error: Mapped[str | None] = mapped_column(String, nullable=True)
+    # The following three are only ever set on a content-opportunity row
+    # (see the status docstring above) -- null on every ordinary prospect.
+    proposed_title: Mapped[str | None] = mapped_column(String, nullable=True)
+    proposed_template_type: Mapped[str | None] = mapped_column(String, nullable=True)
+    target_slug: Mapped[str | None] = mapped_column(String, nullable=True)

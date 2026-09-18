@@ -2813,9 +2813,56 @@ def _seed_outreach_examples(db: Session) -> None:
     db.commit()
 
 
+def _resolve_pending_articles(db: Session) -> int:
+    """Checked on every outreach_queue() page load: for any prospect
+    sitting in status="article_pending_review" (generate_haro_article.py
+    already pushed its page to staging and called
+    /admin/outreach-queue/link-article), checks whether target_slug is
+    now actually live on PROD -- the normal human content-review step
+    (staging review-queue -> batch approval -> merge to main) is what
+    gets it there, on whatever timeline a human does that, not anything
+    this function drives. Once live, this is the first point a citable
+    URL genuinely exists, so this is also where the row gets its real,
+    sendable subject/body for the first time -- turning it into an
+    ordinary status="queued" haro_reply, no different from one
+    _draft_haro_replies drafted directly. Returns how many were resolved
+    this call, for the summary banner.
+
+    A plain templated body, not a second LLM call: re-drafting via
+    _draft_haro_replies here would need the original digest_text again
+    (not stored -- only query_excerpt, a trimmed copy, is), and a portal
+    page load is the wrong place for a network-bound LLM round trip
+    anyway. The human still reviews and can freely edit this before
+    approving, same as every other queued card."""
+    pending = db.query(OutreachProspect).filter(OutreachProspect.status == "article_pending_review").all()
+    resolved = 0
+    for r in pending:
+        if not r.target_slug or not r.proposed_template_type:
+            continue
+        url = f"https://tulo.io{_frontend_page_path(r.proposed_template_type, r.target_slug)}"
+        try:
+            live = requests.get(url, timeout=8).status_code == 200
+        except requests.RequestException:
+            live = False
+        if not live:
+            continue
+        r.subject = f"Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"Following up: {r.proposed_title}"
+        r.body_preview = (
+            f"Hi{' ' + r.contact_name if r.contact_name else ''},\n\n"
+            f"Following up on this - we just published a page that directly answers it: {url}\n\n"
+            "Happy to answer any follow-up questions if it's useful for the piece.\n\n"
+            "Thanks for your time,\n\nTulo Team"
+        )
+        r.status = "queued"
+        resolved += 1
+    if resolved:
+        db.commit()
+    return resolved
+
+
 @app.get("/admin/outreach-queue", response_class=HTMLResponse)
 def outreach_queue(
-    show: str = Query(default="queued", description="queued | approved | rejected | all"),
+    show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | all"),
     db: Session = Depends(get_db),
     _auth: None = Depends(_require_outreach_auth),
 ):
@@ -2830,6 +2877,8 @@ def outreach_queue(
     the URL-token pattern the rest of /admin uses -- see that
     dependency's own docstring for why this portal specifically warrants
     the step up."""
+    _resolve_pending_articles(db)
+
     query = db.query(OutreachProspect)
     if show != "all":
         query = query.filter(OutreachProspect.status == show)
@@ -2869,6 +2918,39 @@ def outreach_queue(
               <a class="btn-reject" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=rejected&show={show}">Reject</a>
             </div>
             """
+        elif r.status == "article_pending":
+            # Flagged by _draft_haro_replies as a genuine content
+            # opportunity -- no existing page/tool to cite, so there's
+            # nothing sendable yet. Create Article just records the
+            # request (see outreach_queue_create_article); the real
+            # generation happens externally (see
+            # content/scripts/generate_haro_article.py), never inline in
+            # this request.
+            actions_html = f"""
+            <div class="not-ready">No existing Tulo page answers this query yet. Create Article requests a
+            new page for it -- generation runs separately and still needs the normal human content review
+            before this becomes a sendable reply.</div>
+            <form method="post" action="/admin/outreach-queue/create-article" class="content-form">
+              <input type="hidden" name="prospect_id" value="{r.id}">
+              <input type="hidden" name="show" value="{show}">
+              <button type="submit" class="btn-approve">Create Article</button>
+            </form>
+            <div class="actions">
+              <a class="btn-reject" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=rejected&show={show}">Reject</a>
+            </div>
+            """
+        elif r.status == "article_requested":
+            actions_html = (
+                '<div class="not-ready">Article requested -- will be generated on the next pipeline run, '
+                "then still needs the normal human content review before it's live and this becomes "
+                "sendable.</div>"
+            )
+        elif r.status == "article_pending_review":
+            actions_html = (
+                f'<div class="not-ready">Article generated (slug: <code>{escape_html(r.target_slug or "")}</code>) '
+                f'-- pending the normal human content review on staging. Once it\'s live on prod, this card '
+                f"auto-fills with a real, sendable reply on the next portal load.</div>"
+            )
         else:
             decided_label = f"{r.decided_at:%Y-%m-%d %H:%M}" if r.decided_at else ""
             actions_html = (
@@ -2953,6 +3035,7 @@ def outreach_queue(
         .pill-status-queued {{ background: #eee; color: #666; }}
         .pill-status-approved {{ background: #dcefe0; color: #276b3c; }}
         .pill-status-rejected {{ background: #fbdada; color: #a00; }}
+        .pill-status-article_pending, .pill-status-article_requested, .pill-status-article_pending_review {{ background: #fff6dd; color: #7a5b00; }}
         .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
         .source-query {{ font-size: 12px; color: #5b2d90; background: #f7f2fc; border-radius: 4px; padding: 6px 8px; margin: 6px 0; }}
         .body-preview {{ font-size: 12px; color: #333; margin: 8px 0; white-space: pre-wrap; }}
@@ -2982,11 +3065,12 @@ def outreach_queue(
         GMAIL_SMTP_APP_PASSWORD are configured -- check the send status under each approved row. Edit the
         subject/body on any queued card before approving; that's what goes out, not a separate template.
       </div>
-      <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected</div>
+      <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected &middot; {counts.get('article_pending', 0)} article opportunities &middot; {counts.get('article_requested', 0) + counts.get('article_pending_review', 0)} articles in progress</div>
       <div class="filters">
         <a href="/admin/outreach-queue?show=queued">queued</a>
         <a href="/admin/outreach-queue?show=approved">approved</a>
         <a href="/admin/outreach-queue?show=rejected">rejected</a>
+        <a href="/admin/outreach-queue?show=article_pending">article opportunities</a>
         <a href="/admin/outreach-queue?show=all">all</a>
         &middot;
         <a href="/admin/outreach-queue/export.csv?status=approved">export approved as CSV</a>
@@ -3154,6 +3238,64 @@ async def outreach_queue_create(
     return {"created_prospect_id": prospect.id}
 
 
+@app.post("/admin/outreach-queue/create-article")
+def outreach_queue_create_article(
+    prospect_id: int = Form(...),
+    show: str = Form(default="article_pending"),
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """The Create Article click on a status="article_pending" card (see
+    card() in outreach_queue()). Deliberately just a status flip, nothing
+    more: real generation needs a real Anthropic call plus a git
+    commit+push to staging, and this backend process has neither push
+    credentials nor a request-lifetime long enough to wait on that safely
+    -- see content/scripts/generate_haro_article.py, which does the
+    actual work externally and calls link-article below once it's pushed
+    the new page."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404, detail="prospect not found")
+    if prospect.status != "article_pending":
+        raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_pending")
+    prospect.status = "article_requested"
+    db.commit()
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+@app.post("/admin/outreach-queue/link-article")
+async def outreach_queue_link_article(
+    request: Request,
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Called by content/scripts/generate_haro_article.py right after it
+    pushes a new page to staging for one status="article_requested"
+    prospect -- records which real slug answers it and moves the row to
+    "article_pending_review" (see _resolve_pending_articles, which
+    watches this state for the slug actually going live on prod). JSON
+    body: {prospect_id, slug} required. Never touches subject/body here --
+    there's no citable URL yet until a human reviews and merges the new
+    page, so drafting the real reply text is _resolve_pending_articles'
+    job, once that's actually true."""
+    payload = await request.json()
+    prospect_id = payload.get("prospect_id")
+    slug = (payload.get("slug") or "").strip()
+    if not prospect_id or not slug:
+        raise HTTPException(status_code=400, detail="prospect_id and slug are required")
+
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404, detail="prospect not found")
+    if prospect.status != "article_requested":
+        raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_requested")
+
+    prospect.target_slug = slug
+    prospect.status = "article_pending_review"
+    db.commit()
+    return {"linked_prospect_id": prospect.id, "target_slug": slug}
+
+
 @app.get("/admin/outreach-queue/list.json")
 def outreach_queue_list_json(
     status: str = Query(default="all", description="queued | approved | rejected | all"),
@@ -3180,12 +3322,21 @@ def outreach_queue_list_json(
             "target_domain": r.target_domain,
             "contact_name": r.contact_name,
             "contact_email": r.contact_email,
+            "source_query": r.source_query,
             "subject": r.subject,
             "body_preview": r.body_preview,
             "status": r.status,
             "is_example": r.is_example,
             "sent_at": r.sent_at.isoformat() if r.sent_at else None,
             "send_error": r.send_error,
+            # Only ever set on a content-opportunity row (see the status
+            # docstring on OutreachProspect) -- null on every ordinary
+            # prospect. content/scripts/generate_haro_article.py reads
+            # these off an "article_requested" row to know what to
+            # generate.
+            "proposed_title": r.proposed_title,
+            "proposed_template_type": r.proposed_template_type,
+            "target_slug": r.target_slug,
         }
         for r in rows
     ]
@@ -3343,6 +3494,12 @@ def _search_tulo_content(db: Session, query: str, limit: int = 6) -> list[dict]:
     return results
 
 
+_REAL_TEMPLATE_TYPES = {
+    "recipe_or_dish", "ingredient_hub", "howto_technique", "definition",
+    "comparison", "substitute", "category_roundup",
+}
+
+
 def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     """Uses Claude to triage one forwarded HARO/Connectively-style digest:
     finds every individual query (a digest usually bundles several, each
@@ -3359,35 +3516,50 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     expected, common result, not a failure, and the model is explicitly
     told not to force a match.
 
-    Returns one dict per genuine fit: reporter_email, reporter_name,
-    outlet, query_excerpt (the original query text, kept for a human to
-    audit the draft against), subject, body. Three invariants are enforced
-    in code, not just asked for in the prompt -- an item failing any of
-    them is dropped (not returned), never silently sent through with a
+    A query that's genuinely on-topic but has no existing match becomes a
+    second kind of item instead of being dropped outright: a
+    "content_opportunity" (proposed_title/proposed_template_type/rationale
+    instead of subject/body) -- flagged for a human to decide whether it's
+    worth writing a real new page for, rather than silently lost (see
+    outreach_queue_ingest_email, which creates a status="article_pending"
+    row for one of these instead of a normal drafted reply).
+
+    Returns one dict per item, each tagged type: "reply" or
+    "content_opportunity". Every item always carries reporter_email,
+    reporter_name, outlet, query_excerpt; a "reply" additionally carries
+    subject/body, a "content_opportunity" carries proposed_title/
+    proposed_template_type/rationale instead. Invariants enforced in code,
+    not just asked for in the prompt -- an item failing any that apply to
+    its type is dropped (not returned), never silently sent through with a
     gap: reporter_email is non-empty AND appears verbatim somewhere in
-    digest_text (a real per-query reply address, e.g. HARO's own
-    reply+<uuid>@helpareporter.com format, is always printed in the
-    source -- requiring it here rules out the model inventing one, though
-    not, in a multi-query digest, independently proving it's paired with
-    the *correct* query -- that's still the model's own reading
+    digest_text for every item (a real per-query reply address, e.g.
+    HARO's own reply+<uuid>@helpareporter.com format, is always printed in
+    the source -- requiring it here rules out the model inventing one,
+    though not, in a multi-query digest, independently proving it's paired
+    with the *correct* query -- that's still the model's own reading
     comprehension, not a regex re-parse of the digest, per this project's
-    own history with that approach); and body contains a URL from the
-    closed set actually available this call (the three fixed tools plus
-    every URL _search_tulo_content actually returned) -- the model is
+    own history with that approach); a "reply"'s body contains a URL from
+    the closed set actually available this call (the three fixed tools
+    plus every URL _search_tulo_content actually returned) -- the model is
     instructed never to invent one, but this is the structural guarantee,
     checked the same way _search_tulo_content itself closes off a
-    hallucinated slug.
+    hallucinated slug; a "content_opportunity"'s proposed_template_type is
+    one of the seven real template types -- the model is never free to
+    invent an eighth kind of page this site doesn't actually support.
 
     Raises on any API/tool-loop/parsing problem -- callers fall back to
     the old raw-placeholder-row behavior rather than silently dropping a
     possibly real query because of a transient API hiccup. Never called
     anywhere that skips human approval afterward -- see
     outreach_queue_decide, unchanged: a drafted row still needs an
-    explicit Approve before _send_outreach_email ever fires."""
+    explicit Approve before _send_outreach_email ever fires, and a
+    content_opportunity needs an explicit Create Article click before
+    anything gets generated at all."""
     from anthropic import Anthropic
 
     client = Anthropic(api_key=ANTHROPIC_API_KEY)
     tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in _TULO_TOOLS_FOR_PITCHING)
+    template_types_block = ", ".join(sorted(_REAL_TEMPLATE_TYPES))
     system_prompt = (
         "You triage HARO/Connectively-style journalist source-request digests for Tulo, a free "
         "food/recipe website. Tulo has three fixed, always-real tools:\n"
@@ -3402,18 +3574,28 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "fixed tools) that would genuinely help that specific piece -- not a stretch, not a generic "
         "'this could maybe relate' fit. Most digests are general-interest with zero real fits -- that "
         "is the expected, common answer, not a failure.\n\n"
+        "When a query is genuinely on-topic but truly has no existing match, don't just drop it: "
+        "consider whether it could be answered well by ONE new, focused Tulo page instead (e.g. a "
+        "reporter asking about greasing pans with butter vs. other fats -- a natural 'comparison' or "
+        "'substitute' page Tulo doesn't have yet). Only propose this when it's a real, narrow, "
+        "answerable topic -- not a stretch, and not something so niche or one-off it wouldn't be "
+        "worth having as a permanent page regardless of this one query.\n\n"
         "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
-        "no markdown fences, no further tool calls), one object per genuine fit, each with exactly "
-        "these keys: reporter_email, reporter_name, outlet, query_excerpt (the original query text "
-        "for this one item, verbatim or lightly trimmed), subject, body (a short, specific, "
-        "non-generic 3-5 sentence reply referencing the piece's actual topic, including exactly one "
-        "real URL - from the fixed tools list or a search_tulo_content result, never invented; use a "
-        "single hyphen with spaces around it for a dash if you need one, e.g. 'word - word', never a "
-        "double hyphen or em dash). Two "
-        "hard requirements, checked and enforced after your response: reporter_email must be a real, "
-        "non-empty address (every HARO/Connectively query has one - if a query genuinely doesn't, "
-        "it's not answerable, leave it out), and body must contain one of the real URLs verbatim. If "
-        "there are zero fits, respond with exactly: []"
+        "no markdown fences, no further tool calls). Every object needs a \"type\" key, either "
+        "\"reply\" or \"content_opportunity\", plus reporter_email, reporter_name, outlet, "
+        "query_excerpt (the original query text for this one item, verbatim or lightly trimmed). A "
+        "\"reply\" additionally needs subject, body (a short, specific, non-generic 3-5 sentence "
+        "reply referencing the piece's actual topic, including exactly one real URL - from the fixed "
+        "tools list or a search_tulo_content result, never invented; use a single hyphen with spaces "
+        f"around it for a dash, never a double hyphen or em dash). A \"content_opportunity\" instead "
+        "needs proposed_title (a real, specific page title, not the query verbatim), "
+        f"proposed_template_type (exactly one of: {template_types_block}), and rationale (one "
+        "sentence, for a human reviewer, why this is worth a new page). Hard requirements, checked "
+        "and enforced after your response: reporter_email must be a real, non-empty address (every "
+        "HARO/Connectively query has one - if a query genuinely doesn't, it's not answerable, leave "
+        "it out); a reply's body must contain one of the real URLs verbatim; a content_opportunity's "
+        "proposed_template_type must be exactly one of the seven listed. If there are zero fits and "
+        "zero opportunities, respond with exactly: []"
     )
 
     # Closed set of URLs this call is actually allowed to recommend -- the
@@ -3451,15 +3633,23 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     if not isinstance(parsed, list):
         raise ValueError(f"Expected a JSON list from the model, got {type(parsed).__name__}")
 
-    required_keys = {"reporter_email", "reporter_name", "outlet", "query_excerpt", "subject", "body"}
+    common_keys = {"type", "reporter_email", "reporter_name", "outlet", "query_excerpt"}
+    reply_keys = {"subject", "body"}
+    opportunity_keys = {"proposed_title", "proposed_template_type", "rationale"}
     kept = []
     for item in parsed:
+        item_type = item.get("type")
+        if item_type not in ("reply", "content_opportunity"):
+            raise ValueError(f"Drafted item has unrecognized type: {item_type!r}")
+        required_keys = common_keys | (reply_keys if item_type == "reply" else opportunity_keys)
         missing = required_keys - item.keys()
         if missing:
-            raise ValueError(f"Drafted reply missing keys: {missing}")
+            raise ValueError(f"Drafted {item_type} missing keys: {missing}")
+
         reporter_email = (item.get("reporter_email") or "").strip()
+        label = item.get("subject") or item.get("proposed_title")
         if not reporter_email:
-            print(f"  _draft_haro_replies: dropping item with no reporter_email: {item.get('subject')!r}")
+            print(f"  _draft_haro_replies: dropping item with no reporter_email: {label!r}")
             continue
         if reporter_email not in digest_text:
             # A real per-query reply address is always printed verbatim in the
@@ -3474,9 +3664,15 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
             # the address is real, not fabricated.
             print(f"  _draft_haro_replies: dropping item whose reporter_email isn't in the source digest: {reporter_email!r}")
             continue
-        if not any(url in item["body"] for url in allowed_urls):
-            print(f"  _draft_haro_replies: dropping item with no real Tulo URL in body: {item.get('subject')!r}")
-            continue
+
+        if item_type == "reply":
+            if not any(url in item["body"] for url in allowed_urls):
+                print(f"  _draft_haro_replies: dropping item with no real Tulo URL in body: {label!r}")
+                continue
+        else:
+            if item.get("proposed_template_type") not in _REAL_TEMPLATE_TYPES:
+                print(f"  _draft_haro_replies: dropping content_opportunity with invalid proposed_template_type: {item.get('proposed_template_type')!r}")
+                continue
         kept.append(item)
     return kept
 
@@ -3577,17 +3773,40 @@ async def outreach_queue_ingest_email(
     if drafts is not None:
         created_ids = []
         for draft in drafts:
-            prospect = OutreachProspect(
-                pitch_type="haro_reply",
-                target_domain=draft.get("outlet") or sender_domain,
-                contact_name=draft.get("reporter_name") or None,
-                contact_email=draft.get("reporter_email") or None,
-                source_query=draft.get("query_excerpt") or "(no excerpt returned)",
-                subject=draft["subject"],
-                body_preview=draft["body"],
-                is_example=False,
-                status="queued",
-            )
+            if draft["type"] == "content_opportunity":
+                prospect = OutreachProspect(
+                    pitch_type="haro_reply",
+                    target_domain=draft.get("outlet") or sender_domain,
+                    contact_name=draft.get("reporter_name") or None,
+                    contact_email=draft.get("reporter_email") or None,
+                    source_query=draft.get("query_excerpt") or "(no excerpt returned)",
+                    subject=f"[Article opportunity] {draft['proposed_title']}",
+                    # Not a sendable body -- see the status docstring on
+                    # OutreachProspect. Shown as-is in the portal until a
+                    # Create Article click (and the article going live)
+                    # replaces it with a real, sendable draft.
+                    body_preview=(
+                        f"No existing Tulo page answers this query. Proposed new page: "
+                        f"\"{draft['proposed_title']}\" ({draft['proposed_template_type']}).\n\n"
+                        f"Why: {draft['rationale']}"
+                    ),
+                    proposed_title=draft["proposed_title"],
+                    proposed_template_type=draft["proposed_template_type"],
+                    is_example=False,
+                    status="article_pending",
+                )
+            else:
+                prospect = OutreachProspect(
+                    pitch_type="haro_reply",
+                    target_domain=draft.get("outlet") or sender_domain,
+                    contact_name=draft.get("reporter_name") or None,
+                    contact_email=draft.get("reporter_email") or None,
+                    source_query=draft.get("query_excerpt") or "(no excerpt returned)",
+                    subject=draft["subject"],
+                    body_preview=draft["body"],
+                    is_example=False,
+                    status="queued",
+                )
             db.add(prospect)
             db.flush()
             created_ids.append(prospect.id)
