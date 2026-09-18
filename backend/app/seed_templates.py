@@ -318856,6 +318856,97 @@ SEED_PAGES = [
             },
         },
     },
+
+    # --- HARO content opportunity (outreach prospect #38), generated via
+    # content/scripts/generate_haro_article.py.
+    {
+        "slug": "butter-vs-shortening-vs-oil-for-greasing-pans-which-works-best",
+        "template_type": "comparison",
+        "title": "Butter vs. Shortening vs. Oil for Greasing Pans: Which Works Best?",
+        "batch_number": 12,
+        "content": {
+            "meta_description": "Butter, shortening, and oil all grease a pan, but they don't perform the same in the oven. Here's why professional bakers usually reach for shortening or flour instead of butter.",
+            "hero_image_query": "greasing a metal cake pan with shortening on a paper towel next to a stick of butter and a bottle of oil",
+            "image_alt": "A metal round cake pan being coated with solid shortening on a paper towel, with a stick of butter and a bottle of neutral oil sitting nearby on the counter.",
+            "item_a_name": "Butter",
+            "item_b_name": "Shortening",
+            "comparison_table": [
+                {
+                    "attribute": "Water content",
+                    "item_a": "About 16-18% water plus milk solids",
+                    "item_b": "0% water, nearly pure fat",
+                },
+                {
+                    "attribute": "Behavior in a hot oven",
+                    "item_a": "Water turns to steam, milk solids brown and can scorch against metal",
+                    "item_b": "Melts cleanly without steaming or browning until well past baking temperatures",
+                },
+                {
+                    "attribute": "Coating power on pan walls",
+                    "item_a": "Thin, uneven layer that can pool or run before it sets",
+                    "item_b": "Thick, even layer that stays put through mixing and rising",
+                },
+                {
+                    "attribute": "Holds a flour dusting",
+                    "item_a": "Fair, but the water content can dissolve the flour into a gummy patch",
+                    "item_b": "Excellent, the dry fat grips flour and forms a stable release barrier",
+                },
+                {
+                    "attribute": "Sticking risk on detailed or dark pans",
+                    "item_a": "High, especially bundt pans, cast iron, and dark nonstick pans",
+                    "item_b": "Low, holds up well in intricate molds and dark pans",
+                },
+                {
+                    "attribute": "Best used for",
+                    "item_a": "Flavor in the batter, light greasing for simple sheet cakes baked at moderate heat",
+                    "item_b": "Cakes, bundts, muffins, and any pan with ridges, corners, or a dark finish",
+                },
+            ],
+            "verdict": "Shortening wins for pure release performance because it has no water to steam off and no milk solids to scorch, which is exactly why most bakeries and pastry kitchens keep a can of it just for greasing. Butter still has a place for flavor and for simple, shallow pans baked at moderate temperatures, but for bundt pans, muffin tins, dark metal, or anything with fine detail, shortening (or a shortening-and-flour paste) is the safer bet. Oil sits in between: fine for quick, low-sugar batters or when paired with parchment, but too thin on its own to hold a flour dusting or protect intricate pans.",
+            "sections": [
+                {
+                    "heading": "Why butter causes sticking",
+                    "body": "Butter is only about 82-84% fat. The rest is water and milk solids. In the oven, that water converts to steam and pushes up through the batter right at the pan surface, which can create pockets where cake batter fuses to the metal instead of sliding off it. The milk solids brown quickly, and on a pan that's been preheated or baked for 40+ minutes, they can scorch and darken into a slightly bitter, tacky residue that grips the cake rather than releasing it. This is most noticeable in bundt pans and cast iron, where batter sits against detailed metal for the entire bake.",
+                },
+                {
+                    "heading": "Why shortening releases more reliably",
+                    "body": "Solid vegetable shortening is essentially 100% fat with no water and no milk solids, so there's nothing to steam off or scorch. It stays put on vertical surfaces and in tight corners because it's firmer at room temperature than butter, and it has a notably higher smoke point (around 360-370°F versus butter's 300-350°F), so it tolerates the full length of a bake without breaking down. Pastry chefs commonly mix equal parts shortening and flour into a paste (sometimes called cake goop or pan release) and brush it into every crevice of a bundt or fluted pan before pouring batter, which is the most reliable homemade method for pans with sharp detail.",
+                },
+                {
+                    "heading": "Where oil fits in",
+                    "body": "Neutral oil (canola, vegetable, or a flavorless light olive oil) coats a pan quickly and evenly with a brush or paper towel, which makes it convenient for muffin cups, loaf pans, and quick breads. Its downside is that it's liquid at room temperature, so it doesn't hold a flour dusting the way butter or shortening does, the flour just slides off. Oil works best on its own for batters with enough sugar and fat to release easily, or as a light base coat under parchment paper rather than as the sole release agent for a delicate cake.",
+                },
+                {
+                    "heading": "Flour, parchment, and baking spray as backup",
+                    "body": "Dusting a greased pan with flour (or cocoa powder for chocolate cakes) adds a physical barrier that fat alone doesn't provide, catching any spot the grease missed. Parchment paper rounds cut for the pan bottom eliminate sticking almost entirely for cakes, since the paper releases from both the pan and the cake cleanly. Commercial baking sprays that already contain flour (like Baker's Joy or Pam for Baking) combine a light oil with flour and lecithin in one step, which is why many recipes that specify 'grease and flour' can be satisfied with a single spray instead of a separate flour dusting.",
+                },
+            ],
+            "faqs": [
+                {
+                    "question": "Is it ever fine to just use butter to grease a pan?",
+                    "answer": "Yes, for simple sheet cakes, brownies, and shallow pans without fine detail baked at 350°F or lower, butter's downsides are minor. The risk grows with bundt pans, dark nonstick finishes, and long bakes where the pan is exposed to heat for 45 minutes or more.",
+                },
+                {
+                    "question": "Why do professional bakers use shortening instead of butter for pan prep?",
+                    "answer": "Shortening has no water content and a higher smoke point than butter, so it doesn't steam or scorch against the hot metal during a long bake, which gives a more consistent, clean release across every pan in a batch.",
+                },
+                {
+                    "question": "Can I mix butter and flour instead of using shortening and flour?",
+                    "answer": "You can, but the water in butter tends to turn the flour into a slightly gummy paste rather than a dry, even barrier, so it's less reliable in pans with sharp corners or raised details than a shortening-flour paste.",
+                },
+                {
+                    "question": "Does a nonstick pan still need to be greased?",
+                    "answer": "Yes. Nonstick coatings reduce sticking but don't eliminate it, especially for cakes with high sugar content that can caramelize onto the surface, so most bakers still grease and often flour or line even a nonstick pan.",
+                },
+                {
+                    "question": "Is cooking spray the same as shortening for greasing?",
+                    "answer": "Plain cooking spray is usually just oil and an emulsifier, similar in performance to brushed-on oil. Baking-specific sprays are formulated differently, they include flour already mixed in, which makes them closer in performance to a shortening-and-flour paste.",
+                },
+            ],
+            "item_a_link": None,
+            "item_b_link": None,
+        },
+    },
 ]
 
 
