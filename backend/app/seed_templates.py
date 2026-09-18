@@ -318865,6 +318865,12 @@ SEED_PAGES = [
         "title": "Butter vs. Shortening vs. Oil for Greasing Pans: Which Works Best?",
         "batch_number": 12,
         "content": {
+            "image_url": "https://images.pexels.com/photos/7966386/pexels-photo-7966386.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+            "image_attribution": {
+                "photographer": None,
+                "photographer_url": None,
+                "source": "manual_override",
+            },
             "meta_description": "Butter, shortening, and oil all grease a pan, but they don't perform the same in the oven. Here's why professional bakers usually reach for shortening or flour instead of butter.",
             "hero_image_query": "greasing a metal cake pan with shortening on a paper towel next to a stick of butter and a bottle of oil",
             "image_alt": "A metal round cake pan being coated with solid shortening on a paper towel, with a stick of butter and a bottle of neutral oil sitting nearby on the counter.",
