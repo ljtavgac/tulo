@@ -4121,7 +4121,14 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         for _ in range(_HARO_DRAFTING_MAX_TOOL_TURNS):
             response = client.messages.create(
                 model=_HARO_DRAFTING_MODEL,
-                max_tokens=4096,
+                # Confirmed live: a many-sub-question query's now-required
+                # opening-paragraph-plus-bolded-per-question reply body,
+                # especially alongside one or more content_opportunity
+                # items for uncovered sub-questions, genuinely needs more
+                # room than a short single-question reply -- 4096 hit
+                # stop_reason="max_tokens" mid-JSON on a 12-question query
+                # on both retry attempts.
+                max_tokens=8192,
                 system=system_prompt,
                 tools=[_SEARCH_TULO_CONTENT_TOOL],
                 messages=messages,
