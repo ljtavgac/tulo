@@ -3134,6 +3134,17 @@ def outreach_queue(
         contact_html = " &middot; ".join(contact_bits)
         example_pill = '<span class="pill pill-example">example</span>' if r.is_example else ""
         no_ai_pill = '<span class="pill pill-no-ai">no AI pitches</span>' if r.ai_pitches_disallowed else ""
+        # Which of the 7 real page templates this content_opportunity
+        # would become -- see _TEMPLATE_TYPE_LABELS. Every row that
+        # reaches the portal already has one of these seven (anything
+        # else is dropped in _draft_haro_replies' own enforcement loop
+        # before a row is ever created), so this is purely visibility,
+        # not a new gate -- a real, reported confusion: the bucket an
+        # idea would land in wasn't shown anywhere in the portal.
+        template_type_pill = (
+            f'<span class="pill pill-template-type">{escape_html(_TEMPLATE_TYPE_LABELS.get(r.proposed_template_type, r.proposed_template_type))}</span>'
+            if r.proposed_template_type else ""
+        )
         is_undrafted_digest = r.pitch_type == "haro_reply" and r.body_preview == _UNDRAFTED_HARO_PLACEHOLDER
         is_no_ai_placeholder = r.pitch_type == "haro_reply" and r.body_preview == _NO_AI_PITCHES_PLACEHOLDER
         if r.status == "queued":
@@ -3332,7 +3343,7 @@ def outreach_queue(
         <div class="card status-{r.status}" id="prospect-{r.id}">
           <div class="info">
             <div class="title">{escape_html(r.subject)}
-              <span class="pill pill-{pitch_pill_class}">{pitch_label}</span>{example_pill}{no_ai_pill}
+              <span class="pill pill-{pitch_pill_class}">{pitch_label}</span>{template_type_pill}{example_pill}{no_ai_pill}
               <span class="pill pill-status-{r.status}">{r.status}</span>
             </div>
             <div class="meta">{escape_html(r.target_domain)}{" &middot; " + contact_html if contact_html else ""}</div>
@@ -3441,6 +3452,7 @@ def outreach_queue(
         .pill-status-article_pending, .pill-status-article_requested, .pill-status-article_pending_review {{ background: #fff6dd; color: #7a5b00; }}
         .pill-status-article_failed {{ background: #fbdada; color: #a00; }}
         .pill-no-ai {{ background: #fde8e8; color: #a3242a; }}
+        .pill-template-type {{ background: #ece4fa; color: #5b2d90; }}
         .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
         .source-query {{ font-size: 12px; color: #5b2d90; background: #f7f2fc; border-radius: 4px; padding: 6px 8px; margin: 6px 0; }}
         .body-preview {{ font-size: 12px; color: #333; margin: 8px 0; white-space: pre-wrap; }}
@@ -4144,6 +4156,21 @@ _REAL_TEMPLATE_TYPES = {
     "comparison", "substitute", "category_roundup",
 }
 
+# Friendly portal label for each of the 7 real template types -- see
+# card()'s content-opportunity pill. Anything outside _REAL_TEMPLATE_TYPES
+# is already dropped before a row is ever created (see the enforcement
+# loop in _draft_haro_replies), so every content_opportunity reaching the
+# portal always has a key here.
+_TEMPLATE_TYPE_LABELS: dict[str, str] = {
+    "recipe_or_dish": "Recipe",
+    "ingredient_hub": "Ingredient",
+    "howto_technique": "How-To",
+    "definition": "Definition",
+    "comparison": "Comparison",
+    "substitute": "Substitute",
+    "category_roundup": "Roundup",
+}
+
 
 def _strip_json_code_fence(raw: str) -> str:
     """Strips a wrapping ```json ... ``` (or bare ``` ... ```) markdown
@@ -4546,6 +4573,35 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
             item["body"] = _NO_AI_PITCHES_PLACEHOLDER
 
         kept.append(item)
+
+    # Consistency pass: a content_opportunity spun off from a numbered/
+    # bundled reply's [URL placeholder -- pending: "..."] tag (see the
+    # prompt guidance above) must actually be referenced by that exact
+    # tag in the reply -- confirmed live: the model sometimes tags a
+    # sub-question [can't produce a URL for this] in the reply while
+    # separately emitting a real content_opportunity for that same
+    # sub-question, leaving the two inconsistent (the reply reads like
+    # nothing is planned, while an idea with no way to complete the
+    # template sits orphaned elsewhere). Only enforced when there's
+    # exactly one reply in this whole digest -- the common case this
+    # bug actually occurs in; skipped for zero or multiple replies
+    # (a raw digest bundling several separate reporters' queries) since
+    # there's no reliable way to tell which reply a given
+    # content_opportunity belongs to without that context.
+    replies = [item for item in kept if item["type"] == "reply"]
+    if len(replies) == 1:
+        placeholder_titles = set(re.findall(r'\[URL placeholder -- pending: "([^"]+)"\]', replies[0]["body"]))
+        final = []
+        for item in kept:
+            if item["type"] == "content_opportunity" and item["proposed_title"] not in placeholder_titles:
+                print(
+                    f"  _draft_haro_replies: dropping content_opportunity not referenced by the reply's "
+                    f"placeholder tags: {item['proposed_title']!r}"
+                )
+                continue
+            final.append(item)
+        kept = final
+
     return kept
 
 
