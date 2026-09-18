@@ -3014,6 +3014,17 @@ def _render_inline_article_review(prospect: OutreachProspect, show: str, db: Ses
     """
 
 
+# Every valid OutreachProspect.pitch_type maps to (portal label, CSS pill
+# class -- see .pill-{class} rules below). A pitch_type missing here still
+# renders (card() falls back to the raw value + the "tool" pill style)
+# rather than 400ing the whole portal page.
+_PITCH_TYPE_LABELS: dict[str, tuple[str, str]] = {
+    "tool_pitch": ("Tool pitch", "tool"),
+    "haro_reply": ("HARO/query reply", "haro"),
+    "content_pitch": ("Content/link pitch", "content"),
+}
+
+
 @app.get("/admin/outreach-queue", response_class=HTMLResponse)
 def outreach_queue(
     show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | all"),
@@ -3058,8 +3069,9 @@ def outreach_queue(
     counts = Counter(r.status for r in db.query(OutreachProspect).all())
 
     def card(r: OutreachProspect) -> str:
-        pitch_label = "Tool pitch" if r.pitch_type == "tool_pitch" else "HARO/query reply"
-        pitch_pill_class = "tool" if r.pitch_type == "tool_pitch" else "haro"
+        pitch_label, pitch_pill_class = _PITCH_TYPE_LABELS.get(
+            r.pitch_type, (r.pitch_type, "tool")
+        )
         query_html = (
             f'<div class="source-query">Query: {escape_html(r.source_query)}</div>' if r.source_query else ""
         )
@@ -3239,6 +3251,7 @@ def outreach_queue(
         .pill {{ font-size: 10px; padding: 1px 7px; border-radius: 20px; margin-left: 4px; font-weight: 400; }}
         .pill-tool {{ background: #e3ecfb; color: #24478a; }}
         .pill-haro {{ background: #f0e6fb; color: #5b2d90; }}
+        .pill-content {{ background: #e2f5e8; color: #1e6b3c; }}
         .pill-example {{ background: #eee; color: #777; }}
         .pill-status-queued {{ background: #eee; color: #666; }}
         .pill-status-approved {{ background: #dcefe0; color: #276b3c; }}
@@ -3442,8 +3455,11 @@ async def outreach_queue_create(
     payload = await request.json()
 
     pitch_type = payload.get("pitch_type")
-    if pitch_type not in ("tool_pitch", "haro_reply"):
-        raise HTTPException(status_code=400, detail="pitch_type must be tool_pitch or haro_reply")
+    if pitch_type not in _PITCH_TYPE_LABELS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"pitch_type must be one of {', '.join(sorted(_PITCH_TYPE_LABELS))}",
+        )
     target_domain = (payload.get("target_domain") or "").strip()
     subject = (payload.get("subject") or "").strip()
     body_preview = (payload.get("body_preview") or "").strip()
@@ -3613,6 +3629,7 @@ def outreach_queue_list_json(
             "body_preview": r.body_preview,
             "status": r.status,
             "is_example": r.is_example,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
             "sent_at": r.sent_at.isoformat() if r.sent_at else None,
             "send_error": r.send_error,
             # Only ever set on a content-opportunity row (see the status
