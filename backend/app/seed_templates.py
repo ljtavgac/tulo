@@ -318951,6 +318951,7 @@ SEED_PAGES = [
             ],
             "item_a_link": None,
             "item_b_link": None,
+            "related_recipe_slugs": [],
         },
     },
 ]
