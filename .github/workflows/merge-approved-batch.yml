@@ -59,6 +59,25 @@ jobs:
           # every match and applying them all, oldest first, is what
           # actually reproduces the batch's real content on main.
           SHAS="$(git log origin/staging -E --grep="Tulo-Batch-Number: ${{ inputs.batch_number }}([^0-9]|\$)" --format=%H --reverse)"
+
+          # One-off, explicitly documented exception: batch 13's own
+          # generation commit predates the fix (in COMPARISON_SCHEMA) for
+          # a real crash-on-load bug (related_recipe_slugs entirely
+          # missing from comparison-page content -- confirmed live
+          # 2026-09-18 on the batch-12 HARO page, which hit this exact
+          # gap). The fix for batch 13's 4 affected pages already landed
+          # on staging as commit 3838a3e6, but that commit predates this
+          # exception being added and was never re-stamped with a
+          # Tulo-Batch-Number trailer -- retroactively rewriting it now
+          # would mean rebasing every staging commit pushed since, which
+          # is not worth the risk for one line of real content. Add a
+          # batch's number here (never remove one) only for a fix commit
+          # on staging that's known to be missing its own trailer, exactly
+          # this situation -- not a general escape hatch.
+          if [ "${{ inputs.batch_number }}" = "13" ]; then
+            SHAS="$SHAS"$'\n'"3838a3e6e4fb098cb5c380f1360b9f3e421769e8"
+          fi
+
           if [ -z "$SHAS" ]; then
             echo "No commit on staging carries Tulo-Batch-Number: ${{ inputs.batch_number }}" >&2
             exit 1
