@@ -374,6 +374,18 @@ DEFINITION_SCHEMA = {
 }
 
 COMPARISON_SCHEMA = {
+    # related_recipe_slugs was missing from this schema entirely (not just
+    # empty) until a real crash confirmed it live (2026-09-18):
+    # frontend/components/RelatedLinks.tsx reads slugs.length
+    # unconditionally, so a comparison page generated without this key at
+    # all throws on render, not just renders with a blank section. A
+    # one-off patch (patch_definition_comparison_links.py) backfilled []
+    # onto every comparison page that existed at the time, but never fixed
+    # the schema itself -- so any comparison page generated since then
+    # (batch pipeline or content/scripts/generate_haro_article.py alike)
+    # shipped broken again. Fixed at the root here, same
+    # ALWAYS_EMPTY_SLUGS_ARRAY pattern every other template's schema
+    # already uses for this exact field.
     "type": "object",
     "properties": {
         "title": {"type": "string", "description": "Phrased as 'X vs. Y: What's the Difference?', matching the example."},
@@ -411,11 +423,12 @@ COMPARISON_SCHEMA = {
         "faqs": {"type": "array", "items": FAQ_SCHEMA, "minItems": 3},
         "item_a_link": ALWAYS_NULL_SLUG,
         "item_b_link": ALWAYS_NULL_SLUG,
+        "related_recipe_slugs": ALWAYS_EMPTY_SLUGS_ARRAY,
     },
     "required": [
         "title", "meta_description", "hero_image_query", "image_alt", "item_a_name",
         "item_b_name", "comparison_table", "verdict", "sections", "faqs",
-        "item_a_link", "item_b_link",
+        "item_a_link", "item_b_link", "related_recipe_slugs",
     ],
 }
 
