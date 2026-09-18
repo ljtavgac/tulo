@@ -1,0 +1,48 @@
+name: VERIFY - Recipe JSON-LD (throwaway)
+
+# Runs the real, committed frontend (not a reimplementation) against the
+# real staging backend, and extracts the actual rendered JSON-LD script
+# tag from real pages -- confirms recipeCuisine/recipeInstructions[].name
+# are genuinely present in deployed-equivalent output, not just in the
+# source. Delete after use.
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Comma-separated recipe slugs to check"
+        required: true
+        default: "sweet-cornbread,indian-chicken-curry"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Start Next.js dev server against the real staging backend
+        working-directory: frontend
+        env:
+          API_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: |
+          nohup npm run dev -- -p 3000 > /tmp/next-dev.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -sS -f http://localhost:3000/ -o /dev/null 2>/dev/null; then
+              echo "Next.js dev server is up after ${i}s"
+              break
+            fi
+            sleep 2
+          done
+          curl -sS -f http://localhost:3000/ -o /dev/null || { echo "Server never came up"; cat /tmp/next-dev.log; exit 1; }
+
+      - name: Fetch each slug and extract JSON-LD
+        run: python3 content/scripts/_extract_jsonld.py "${{ inputs.slugs }}"
