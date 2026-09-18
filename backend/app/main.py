@@ -8,6 +8,7 @@ import secrets
 import smtplib
 import threading
 import time
+import uuid
 from collections import Counter
 from contextlib import asynccontextmanager, redirect_stdout
 from datetime import datetime, timezone
@@ -3096,6 +3097,17 @@ def outreach_queue(
 
     counts = Counter(r.status for r in db.query(OutreachProspect).all())
 
+    # Sibling lookup for the "linked items" note below -- built from every
+    # grouped prospect regardless of the current show= filter, since the
+    # whole point is warning about a sibling that's sitting in a
+    # *different* status tab (a content_opportunity spun off from the same
+    # query as a reply lands in "article_pending", not "queued" -- see
+    # source_group_id's own docstring for the reported confusion this
+    # fixes).
+    group_siblings: dict[str, list[OutreachProspect]] = {}
+    for gr in db.query(OutreachProspect).filter(OutreachProspect.source_group_id.isnot(None)).all():
+        group_siblings.setdefault(gr.source_group_id, []).append(gr)
+
     def card(r: OutreachProspect) -> str:
         pitch_label, pitch_pill_class = _PITCH_TYPE_LABELS.get(
             r.pitch_type, (r.pitch_type, "tool")
@@ -3249,8 +3261,26 @@ def outreach_queue(
         else:
             content_reject_html = ""
 
+        siblings = (
+            sorted((s for s in group_siblings.get(r.source_group_id, []) if s.id != r.id), key=lambda s: s.id)
+            if r.source_group_id else []
+        )
+        if siblings:
+            sibling_items_html = "".join(
+                f'<li><a href="/admin/outreach-queue?show=all#prospect-{s.id}">{escape_html(s.subject)}</a> '
+                f'<span class="pill pill-status-{s.status}">{s.status}</span></li>'
+                for s in siblings
+            )
+            linked_items_html = (
+                '<div class="linked-items">This same query also produced '
+                f'{len(siblings)} other item{"s" if len(siblings) != 1 else ""} -- check those before '
+                f'deciding this one in isolation:<ul>{sibling_items_html}</ul></div>'
+            )
+        else:
+            linked_items_html = ""
+
         return f"""
-        <div class="card status-{r.status}">
+        <div class="card status-{r.status}" id="prospect-{r.id}">
           <div class="info">
             <div class="title">{escape_html(r.subject)}
               <span class="pill pill-{pitch_pill_class}">{pitch_label}</span>{example_pill}{no_ai_pill}
@@ -3258,6 +3288,7 @@ def outreach_queue(
             </div>
             <div class="meta">{escape_html(r.target_domain)}{" &middot; " + contact_html if contact_html else ""}</div>
             {query_html}
+            {linked_items_html}
             {content_html}
             {send_status_html}
             {contact_form_html}
@@ -3311,6 +3342,10 @@ def outreach_queue(
         .decided {{ font-size: 11px; color: #888; margin-top: 8px; }}
         .decided a {{ color: #06c; }}
         .not-ready {{ font-size: 11px; color: #7a5b00; background: #fff6dd; border: 1px solid #f0dfa0; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
+        .linked-items {{ font-size: 11px; color: #1a4d7a; background: #e8f2fc; border: 1px solid #bcd9f2; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
+        .linked-items ul {{ margin: 4px 0 0; padding-left: 18px; }}
+        .linked-items a {{ color: #06c; }}
+        .linked-items .pill {{ vertical-align: middle; }}
         .send-ok {{ font-size: 11px; color: #276b3c; margin-top: 8px; }}
         .send-error {{ font-size: 11px; color: #a00; margin-top: 8px; }}
         .article-review {{ margin-top: 10px; border: 1px solid #e0d9ec; border-radius: 6px; padding: 10px 12px; background: #faf8fd; }}
@@ -3455,6 +3490,32 @@ def outreach_queue_update_source_platform(
         raise HTTPException(status_code=404)
 
     prospect.source_platform = source_platform.strip() or None
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
+@app.get("/admin/outreach-queue/update-source-group")
+def outreach_queue_update_source_group(
+    prospect_id: int,
+    source_group_id: str,
+    show: str = "queued",
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Sets source_group_id on a prospect that predates that field
+    existing (or was ingested before the many-item-per-digest split, so
+    it never got one automatically) -- lets the "linked items" note in
+    card() retroactively pick it up. source_group_id is just a shared
+    opaque string across the rows being linked, so any caller-supplied
+    value works as long as it matches across the prospects being tied
+    together; a script backfilling several rows at once should generate
+    one uuid and pass the same value for every call."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+
+    prospect.source_group_id = source_group_id.strip() or None
     db.commit()
 
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
@@ -3686,6 +3747,7 @@ def outreach_queue_list_json(
             "pitch_type": r.pitch_type,
             "target_domain": r.target_domain,
             "source_platform": r.source_platform,
+            "source_group_id": r.source_group_id,
             "contact_name": r.contact_name,
             "contact_email": r.contact_email,
             "source_query": r.source_query,
@@ -4433,6 +4495,9 @@ async def outreach_queue_ingest_email(
 
     if drafts is not None:
         created_ids = []
+        # Only worth a group id when there's more than one sibling to link
+        # to -- see source_group_id's own docstring on OutreachProspect.
+        group_id = uuid.uuid4().hex if len(drafts) > 1 else None
         for draft in drafts:
             if draft["type"] == "content_opportunity":
                 prospect = OutreachProspect(
@@ -4457,6 +4522,7 @@ async def outreach_queue_ingest_email(
                     status="article_pending",
                     ai_pitches_disallowed=draft.get("ai_pitches_disallowed", False),
                     source_platform=source_platform,
+                    source_group_id=group_id,
                 )
             else:
                 prospect = OutreachProspect(
@@ -4471,6 +4537,7 @@ async def outreach_queue_ingest_email(
                     status="queued",
                     ai_pitches_disallowed=draft.get("ai_pitches_disallowed", False),
                     source_platform=source_platform,
+                    source_group_id=group_id,
                 )
             db.add(prospect)
             db.flush()
