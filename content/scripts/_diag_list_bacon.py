@@ -44,6 +44,11 @@ def main() -> None:
     for row in rows[:15]:
         print(f"  id={row['id']:>3} status={row['status']:<10} pitch_type={row.get('pitch_type'):<10} subject={row.get('subject')!r:.80}")
 
+    haro_rows = [row for row in rows if row.get("pitch_type") == "haro_reply" and not row.get("is_example")]
+    print(f"\n--- most recent 15 non-example haro_reply rows (any topic) out of {len(haro_rows)} total ---")
+    for row in haro_rows[:15]:
+        print(f"  id={row['id']:>3} status={row['status']:<10} subject={row.get('subject')!r:.90}")
+
 
 if __name__ == "__main__":
     main()
