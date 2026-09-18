@@ -699,7 +699,12 @@ MAX_TOKENS_BY_TYPE = {
     "ingredient_hub": 5000,
     "howto_technique": 3500,
     "definition": 2200,
-    "comparison": 3000,
+    # Bumped 3000 -> 4200 after a real truncation (stop_reason: max_tokens,
+    # invalid cut-off JSON at 3000/3000) generating "Butter vs. Shortening
+    # vs. Oil for Greasing Pans" via generate_haro_article.py -- same
+    # lesson as every other budget in this table: fix proactively on the
+    # first real truncation rather than waiting for a second one.
+    "comparison": 4200,
     # Bumped again 2800 -> 3800 after preflight_check.py's real
     # pre-batch generation (ahead of the 150-title test run) hit 86%
     # of the 2800 budget on a single real "sesame oil substitute"
