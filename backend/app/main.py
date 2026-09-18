@@ -3888,17 +3888,28 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     outreach_queue_ingest_email to persist on the row, since the eventual
     reply text for one of these isn't drafted until _resolve_pending_
     articles, once the generated page goes live (see that function for
-    the matching check). Invariants enforced in code,
-    not just asked for in the prompt -- an item failing any that apply to
-    its type is dropped (not returned), never silently sent through with a
-    gap: reporter_email is non-empty AND appears verbatim somewhere in
-    digest_text for every item (a real per-query reply address, e.g.
-    HARO's own reply+<uuid>@helpareporter.com format, is always printed in
-    the source -- requiring it here rules out the model inventing one,
-    though not, in a multi-query digest, independently proving it's paired
-    with the *correct* query -- that's still the model's own reading
+    the matching check). Invariants enforced in code, not just asked for
+    in the prompt. For a "content_opportunity", reporter_email must be
+    non-empty AND appear verbatim somewhere in digest_text, or the item
+    is dropped outright -- there's no value in proposing a new page
+    without a real way to later tell the reporter it exists. A "reply" is
+    more lenient: many outlets (Featured.com's platform-routed
+    opportunities, a reporter who says "email me first for questions"
+    instead of printing an address, etc.) have no real per-query reply
+    address in the text at all -- that's not a reason to drop a
+    genuinely on-topic reply, just a reason it can't be auto-sent. When a
+    "reply"'s reporter_email is missing, or claimed but not actually
+    verbatim in digest_text (rules out the model inventing one, the same
+    way allowed_urls rules out inventing a page -- though not, in a
+    multi-query digest, independently proving a real one is paired with
+    the *correct* query, which is still the model's own reading
     comprehension, not a regex re-parse of the digest, per this project's
-    own history with that approach); a "reply"'s body contains a URL from
+    own history with that approach), the item is KEPT with reporter_email
+    set to null and its subject prefixed "[Manual submission -- ...]" --
+    outreach_queue_decide's send-on-approve already no-ops safely with no
+    contact_email, so a human reviewer copies the drafted body in
+    manually through that outlet's own platform instead. Every other
+    invariant still applies the same way: a "reply"'s body contains a URL from
     the closed set actually available this call (the three fixed tools
     plus every URL _search_tulo_content actually returned) -- the model is
     instructed never to invent one, but this is the structural guarantee,
@@ -3955,17 +3966,23 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "\"reply\" additionally needs subject, body (a short, specific, non-generic 3-5 sentence "
         "reply referencing the piece's actual topic, including exactly one real URL - from the fixed "
         "tools list or a search_tulo_content result, never invented; use a single hyphen with spaces "
-        f"around it for a dash, never a double hyphen or em dash). A \"content_opportunity\" instead "
-        "needs proposed_title (a real, specific page title, not the query verbatim), "
+        "around it for a dash, never a double hyphen or em dash). Draft a \"reply\" for every "
+        "genuinely on-topic fit even when the query only gives a platform inbox/submission link with "
+        "no real email address printed in the text -- set reporter_email to null in that case rather "
+        "than skip it (a human will submit it manually through that outlet's own platform instead of "
+        "it being emailed automatically); never invent or guess an address just to fill that field. A "
+        "\"content_opportunity\" instead needs proposed_title (a real, specific page title, not the "
+        "query verbatim), "
         f"proposed_template_type (exactly one of: {template_types_block}), and rationale (one "
-        "sentence, for a human reviewer, why this is worth a new page). Hard requirements, checked "
-        "and enforced after your response: reporter_email must be a real, non-empty address that "
-        "appears verbatim in the digest text -- most services print one per query, but if this "
-        "particular query only gives a platform inbox/reply link with no real email address in the "
-        "text, it's not answerable this way, leave it out rather than invent or guess one; a reply's "
-        "body must contain one of the real URLs verbatim; a content_opportunity's "
-        "proposed_template_type must be exactly one of the seven listed. If there are zero fits and "
-        "zero opportunities, respond with exactly: []"
+        "sentence, for a human reviewer, why this is worth a new page) -- unlike a reply, only "
+        "propose a content_opportunity when a real reporter_email is actually printed in the digest "
+        "text, since there'd otherwise be no way to ever let them know the page exists. Hard "
+        "requirements, checked and enforced after your response: a claimed reporter_email must "
+        "actually appear verbatim in the digest text -- never invented, though it may be left null on "
+        "a reply when the outlet only offers a platform-only submission; a reply's body must contain "
+        "one of the real URLs verbatim; a content_opportunity's proposed_template_type must be "
+        "exactly one of the seven listed. If there are zero fits and zero opportunities, respond with "
+        "exactly: []"
     )
 
     # Closed set of URLs this call is actually allowed to recommend -- the
@@ -4018,10 +4035,23 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
 
         reporter_email = (item.get("reporter_email") or "").strip()
         label = item.get("subject") or item.get("proposed_title")
+        needs_manual_submission = False
         if not reporter_email:
-            print(f"  _draft_haro_replies: dropping item with no reporter_email: {label!r}")
-            continue
-        if reporter_email not in digest_text:
+            if item_type == "content_opportunity":
+                print(f"  _draft_haro_replies: dropping content_opportunity with no reporter_email: {label!r}")
+                continue
+            # A "reply" with no printed reply address isn't a dead end --
+            # some outlets (Featured.com's platform-routed opportunities, a
+            # reporter who says "email me first for questions" instead of
+            # printing an address, etc.) only accept a manual submission
+            # through their own site/form. Keep the item with no
+            # contact_email -- outreach_queue_decide's send-on-approve
+            # already no-ops safely with no address -- so a human reviewer
+            # copies the drafted body in manually instead. See the
+            # subject prefix below for how this is surfaced in the portal.
+            needs_manual_submission = True
+            item["reporter_email"] = None
+        elif reporter_email not in digest_text:
             # A real per-query reply address is always printed verbatim in the
             # digest (e.g. HARO's own reply+<uuid>@helpareporter.com format) --
             # requiring it to appear here rules out the model inventing one,
@@ -4032,13 +4062,19 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
             # project's own history with that approach -- see
             # outreach_queue_ingest_email's docstring), but it does guarantee
             # the address is real, not fabricated.
-            print(f"  _draft_haro_replies: dropping item whose reporter_email isn't in the source digest: {reporter_email!r}")
-            continue
+            if item_type == "content_opportunity":
+                print(f"  _draft_haro_replies: dropping content_opportunity whose reporter_email isn't in the source digest: {reporter_email!r}")
+                continue
+            print(f"  _draft_haro_replies: reply's claimed reporter_email not in source digest, dropping email only: {reporter_email!r}")
+            needs_manual_submission = True
+            item["reporter_email"] = None
 
         if item_type == "reply":
             if not any(url in item["body"] for url in allowed_urls):
                 print(f"  _draft_haro_replies: dropping item with no real Tulo URL in body: {label!r}")
                 continue
+            if needs_manual_submission:
+                item["subject"] = f"[Manual submission -- no email, submit via outlet's platform] {item['subject']}"
         else:
             if item.get("proposed_template_type") not in _REAL_TEMPLATE_TYPES:
                 print(f"  _draft_haro_replies: dropping content_opportunity with invalid proposed_template_type: {item.get('proposed_template_type')!r}")
