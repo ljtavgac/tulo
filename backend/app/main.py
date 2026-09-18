@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from email.mime.text import MIMEText
 from html import escape as escape_html
 from typing import NamedTuple
+from urllib.parse import quote
 
 import requests
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
@@ -1608,11 +1609,43 @@ def _build_review_rows(batch_pages: list[dict], db: Session) -> list[dict]:
 _PIPELINE_START_BATCH = 6
 
 
-def _eligible_batch_numbers() -> list[int]:
+def _haro_target_batch_numbers(db: Session) -> set[int]:
+    """batch_number values that came from the outreach/HARO pipeline
+    (content/scripts/generate_haro_article.py), not the daily content
+    batch -- identified by matching every OutreachProspect.target_slug
+    against SEED_PAGES rather than a stored flag, since target_slug is
+    already the single source of truth for "this page exists because of
+    an outreach opportunity." Used to keep these out of the general
+    review-queue's batch list and combined "all batches" view (see
+    review_queue() and _resolve_batch_pages()) -- a real, confirmed source
+    of confusion: a one-page outreach-driven batch mixed into a list
+    alongside ~100-page daily batches is easy to scroll past and miss.
+    They're still reviewable directly by batch_number if you know it (this
+    only affects the browsing/listing views, not access) -- reviewed
+    inline instead, right on the prospect's own card in
+    /admin/outreach-queue (see outreach_queue()'s own
+    _render_inline_article_review), where they can't be missed since
+    they're part of the row you're already looking at."""
+    target_slugs = {
+        r.target_slug for r in db.query(OutreachProspect.target_slug).filter(OutreachProspect.target_slug.isnot(None)).all()
+    }
+    if not target_slugs:
+        return set()
+    return {p["batch_number"] for p in SEED_PAGES if p["slug"] in target_slugs and p["batch_number"] is not None}
+
+
+def _eligible_batch_numbers(exclude: set[int] | None = None) -> list[int]:
     """Every batch_number in SEED_PAGES that's actually part of the
-    review-queue pipeline (see _PIPELINE_START_BATCH), newest first."""
+    review-queue pipeline (see _PIPELINE_START_BATCH), newest first.
+    `exclude` is normally _haro_target_batch_numbers(db) -- see its own
+    docstring for why those are left out of this listing."""
+    exclude = exclude or set()
     return sorted(
-        {p["batch_number"] for p in SEED_PAGES if p["batch_number"] is not None and p["batch_number"] >= _PIPELINE_START_BATCH},
+        {
+            p["batch_number"] for p in SEED_PAGES
+            if p["batch_number"] is not None and p["batch_number"] >= _PIPELINE_START_BATCH
+            and p["batch_number"] not in exclude
+        },
         reverse=True,
     )
 
@@ -1648,7 +1681,7 @@ _HIDDEN_PAGE_SLUGS: set[str] = {
 }
 
 
-def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
+def _resolve_batch_pages(batch: str | None, exclude: set[int] | None = None) -> tuple[str | int, list[dict]]:
     """Shared by /admin/review-queue and its approve-remaining action:
     resolves the `batch` query param (a batch_number, the literal "all",
     or unset) to a display label and the matching published pages.
@@ -1659,8 +1692,17 @@ def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
     reviewing across batches at once needed to change except this
     filter. Rejects any batch_number below _PIPELINE_START_BATCH outright
     rather than silently showing legacy content that was never meant to
-    be "reviewed" through this tool."""
-    all_batches = _eligible_batch_numbers()
+    be "reviewed" through this tool.
+
+    `exclude` (normally _haro_target_batch_numbers(db)) is left out of
+    both the "all" combined view and the default-newest-batch pick --
+    without it, an outreach-driven batch landing after the day's daily
+    batch would silently become the default single-batch view on a bare
+    /admin/review-queue hit. A specific batch_number in `batch` is never
+    excluded, even if it's one of these -- this only affects what gets
+    picked/listed automatically, not direct access."""
+    exclude = exclude or set()
+    all_batches = _eligible_batch_numbers(exclude=exclude)
     if not all_batches:
         raise HTTPException(status_code=400, detail="No eligible batch_number values found in SEED_PAGES")
 
@@ -1671,7 +1713,8 @@ def _resolve_batch_pages(batch: str | None) -> tuple[str | int, list[dict]]:
         target: str | int = "all"
         pages = [
             p for p in SEED_PAGES
-            if p["batch_number"] is not None and p["batch_number"] >= _PIPELINE_START_BATCH and not p["content"].get("unpublished")
+            if p["batch_number"] is not None and p["batch_number"] >= _PIPELINE_START_BATCH
+            and p["batch_number"] not in exclude and not p["content"].get("unpublished")
         ]
     else:
         target = int(batch) if batch is not None else all_batches[0]
@@ -1723,9 +1766,10 @@ def review_queue(
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
-    target_batch, batch_pages = _resolve_batch_pages(batch)
+    haro_batches = _haro_target_batch_numbers(db)
+    target_batch, batch_pages = _resolve_batch_pages(batch, exclude=haro_batches)
     slugs = [p["slug"] for p in batch_pages]
-    all_batches = _eligible_batch_numbers()
+    all_batches = _eligible_batch_numbers(exclude=haro_batches)
 
     all_rows = _build_review_rows(batch_pages, db)
     frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
@@ -1804,6 +1848,15 @@ def review_queue(
         </div>
         """
 
+    haro_banner_html = ""
+    if isinstance(target_batch, int) and target_batch in haro_batches:
+        haro_banner_html = (
+            '<div class="summary" style="color:#a55;">This batch was generated by the outreach pipeline, not '
+            "the daily content batch -- it's reviewed inline on its own card in "
+            '<a href="/admin/outreach-queue?show=article_pending_review">the outreach portal</a> instead. '
+            "You can still use this page directly, but it won't show up in the batch list above.</div>"
+        )
+
     batch_label = "all batches" if target_batch == "all" else ("hidden pages" if target_batch == "hidden" else f"batch {target_batch}")
     batch_links = " &middot; ".join(
         [f'<a href="/admin/review-queue?token={token}&batch=all&show={show}">{"<b>all batches</b>" if target_batch == "all" else "all batches"}</a>']
@@ -1861,6 +1914,7 @@ def review_queue(
     <body>
       <h1>Review queue — {batch_label}</h1>
       <div class="subnav">{batch_links}</div>
+      {haro_banner_html}
       <div class="summary">{len(slugs)} pages in batch &middot; {counts.get('pending', 0)} pending &middot; {counts.get('flagged', 0)} flagged &middot; {counts.get('approved', 0)} approved</div>
       <div class="action-bar">
         <a class="btn-approve-all{' disabled' if counts.get('pending', 0) == 0 else ''}" href="/admin/review-queue/approve-remaining?token={token}&batch={target_batch}&show={show}">Approve all remaining ({counts.get('pending', 0)})</a>
@@ -1903,7 +1957,7 @@ def review_queue_data(
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
-    target_batch, batch_pages = _resolve_batch_pages(batch)
+    target_batch, batch_pages = _resolve_batch_pages(batch, exclude=_haro_target_batch_numbers(db))
     all_rows = _build_review_rows(batch_pages, db)
     rows = all_rows if show == "all" else [r for r in all_rows if r["status"] == "flagged" or (show == r["status"])]
 
@@ -1933,6 +1987,7 @@ def review_queue_mark(
     batch: str,
     show: str = "pending",
     note: str = "",
+    return_to: str | None = Query(default=None, description="Path to redirect to instead of /admin/review-queue -- must start with /admin/. Used by outreach_queue()'s embedded review card."),
     db: Session = Depends(get_db),
 ):
     """Upserts one PageReview row -- the write side of /admin/review-queue
@@ -1981,7 +2036,9 @@ def review_queue_mark(
         except Exception as e:
             print(f"  review-queue auto-refetch for {slug} failed: {e}")
 
-    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show={show}", status_code=303)
+    default_redirect = f"/admin/review-queue?token={token}&batch={batch}&show={show}"
+    redirect_url = return_to if (return_to and return_to.startswith("/admin/")) else default_redirect
+    return RedirectResponse(url=redirect_url, status_code=303)
 
 
 @app.get("/admin/review-queue/override-image")
@@ -2149,6 +2206,7 @@ def _trigger_batch_merge(batch_number: int) -> None:
 def review_queue_approve_for_prod(
     token: str,
     batch: str,
+    return_to: str | None = Query(default=None, description="Path to redirect to instead of /admin/review-queue -- must start with /admin/. Used by outreach_queue()'s embedded review card."),
     db: Session = Depends(get_db),
 ):
     """The explicit CTA the user asked for: once every page in a batch is
@@ -2194,7 +2252,9 @@ def review_queue_approve_for_prod(
     if not already_merged:
         _trigger_batch_merge(batch_number)
 
-    return RedirectResponse(url=f"/admin/review-queue?token={token}&batch={batch}&show=all", status_code=303)
+    default_redirect = f"/admin/review-queue?token={token}&batch={batch}&show=all"
+    redirect_url = return_to if (return_to and return_to.startswith("/admin/")) else default_redirect
+    return RedirectResponse(url=redirect_url, status_code=303)
 
 
 @app.get("/admin/review-queue/mark-merged")
@@ -2870,6 +2930,90 @@ def _resolve_pending_articles(db: Session) -> int:
     return resolved
 
 
+def _render_inline_article_review(prospect: OutreachProspect, show: str, db: Session) -> str:
+    """The content-review UI for a content-opportunity's generated page,
+    embedded directly on its own outreach-queue card instead of sending
+    the reviewer to a separate /admin/review-queue batch -- see
+    _haro_target_batch_numbers' docstring for why that separate-batch
+    view was a real, confirmed source of missed reviews. Reuses the exact
+    same review primitives the daily-batch queue itself uses
+    (_build_review_rows for the photo/signals, PageReview via
+    /admin/review-queue/mark for approve/flag, BatchApproval via
+    /admin/review-queue/approve-for-prod for the actual merge-to-prod
+    trigger) -- this just renders them inline for one page instead of a
+    batch grid, with return_to wired back to this portal's own
+    article_pending_review view so a reviewer never has to leave it.
+
+    Only ever called while prospect.status == "article_pending_review" --
+    _resolve_pending_articles flips that to "queued" the instant
+    target_slug is confirmed live on prod, at which point there's nothing
+    left to review here."""
+    slug = prospect.target_slug
+    page = next((p for p in SEED_PAGES if p["slug"] == slug), None)
+    if not page:
+        return (
+            f'<div class="not-ready">Article generated (slug: <code>{escape_html(slug or "")}</code>) but not '
+            f"found in SEED_PAGES yet -- it may not have finished syncing. Refresh in a moment.</div>"
+        )
+    if not ADMIN_TASK_TOKEN:
+        return (
+            f'<div class="not-ready">Article generated (slug: <code>{escape_html(slug)}</code>) -- pending '
+            f"review, but ADMIN_TASK_TOKEN isn't configured on this deployment, so the review actions below "
+            f"can't be shown here.</div>"
+        )
+
+    row = _build_review_rows([page], db)[0]
+    batch_number = page["batch_number"]
+    return_to_raw = f"/admin/outreach-queue?show={show}"
+    return_to = quote(return_to_raw, safe="")
+    frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3000")
+    live_url = f"{frontend_origin}{_frontend_page_path(page['template_type'], slug)}"
+
+    img_html = f'<img src="{row["image_url"]}" alt="">' if row["image_url"] else '<div class="ar-no-image">no image_url</div>'
+    signals_html = "".join(f'<li class="{"crit" if crit else ""}">{s}</li>' for s, crit in row["signals"])
+
+    approval = db.query(BatchApproval).filter(BatchApproval.batch_number == batch_number).first() if batch_number is not None else None
+    if approval is not None and approval.merged_at is not None:
+        promo_html = f'<span class="ar-pill ar-pill-approved">merged to prod {approval.merged_at:%Y-%m-%d}</span>'
+    elif approval is not None:
+        promo_html = (
+            f'<span class="ar-pill ar-pill-pending">requested {approval.requested_at:%Y-%m-%d %H:%M}, waiting for merge</span> '
+            f'<a class="ar-btn-promo" href="/admin/review-queue/approve-for-prod?token={ADMIN_TASK_TOKEN}&batch={batch_number}&return_to={return_to}">Retry merge dispatch</a>'
+        )
+    elif row["status"] == "approved":
+        promo_html = (
+            f'<a class="ar-btn-promo" href="/admin/review-queue/approve-for-prod?token={ADMIN_TASK_TOKEN}&batch={batch_number}&return_to={return_to}">Approve for prod</a>'
+        )
+    else:
+        promo_html = '<span class="ar-hint">approve the page below first, then this unlocks.</span>'
+
+    return f"""
+    <div class="article-review">
+      <div class="article-review-title">Content review &mdash; <code>{escape_html(slug)}</code>
+        <span class="ar-pill ar-pill-{row['status']}">{row['status']}</span>
+      </div>
+      <div class="article-review-body">
+        <div class="ar-thumb">{img_html}</div>
+        <div class="ar-info">
+          {f'<ul class="ar-signals">{signals_html}</ul>' if signals_html else ''}
+          <div class="ar-links"><a href="{live_url}" target="_blank">preview on staging</a></div>
+          <form method="get" action="/admin/review-queue/mark" class="ar-mark-form">
+            <input type="hidden" name="token" value="{ADMIN_TASK_TOKEN}">
+            <input type="hidden" name="slug" value="{slug}">
+            <input type="hidden" name="batch" value="{batch_number}">
+            <input type="hidden" name="show" value="{show}">
+            <input type="hidden" name="return_to" value="{escape_html(return_to_raw)}">
+            <input type="text" name="note" placeholder="describe the photo you want -- used as the re-search (optional)" value="{row['note'] or ''}">
+            <button type="submit" name="status" value="flagged" class="ar-btn-flag">Flag</button>
+            <button type="submit" name="status" value="approved" class="ar-btn-approve-one">approve this page</button>
+          </form>
+          <div class="ar-promo">{promo_html}</div>
+        </div>
+      </div>
+    </div>
+    """
+
+
 @app.get("/admin/outreach-queue", response_class=HTMLResponse)
 def outreach_queue(
     show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | all"),
@@ -2966,9 +3110,9 @@ def outreach_queue(
             )
         elif r.status == "article_pending_review":
             actions_html = (
-                f'<div class="not-ready">Article generated (slug: <code>{escape_html(r.target_slug or "")}</code>) '
-                f'-- pending the normal human content review on staging. Once it\'s live on prod, this card '
-                f"auto-fills with a real, sendable reply on the next portal load.</div>"
+                '<div class="not-ready">Article generated -- review it below. Once it\'s approved here and '
+                "live on prod, this card auto-fills with a real, sendable reply on the next portal load.</div>"
+                + _render_inline_article_review(r, show, db)
             )
         else:
             decided_label = f"{r.decided_at:%Y-%m-%d %H:%M}" if r.decided_at else ""
@@ -3103,6 +3247,27 @@ def outreach_queue(
         .not-ready {{ font-size: 11px; color: #7a5b00; background: #fff6dd; border: 1px solid #f0dfa0; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
         .send-ok {{ font-size: 11px; color: #276b3c; margin-top: 8px; }}
         .send-error {{ font-size: 11px; color: #a00; margin-top: 8px; }}
+        .article-review {{ margin-top: 10px; border: 1px solid #e0d9ec; border-radius: 6px; padding: 10px 12px; background: #faf8fd; }}
+        .article-review-title {{ font-size: 12px; font-weight: 600; color: #444; margin-bottom: 8px; }}
+        .article-review-body {{ display: flex; gap: 12px; }}
+        .ar-thumb {{ width: 100px; min-width: 100px; height: 100px; background: #eee; border-radius: 4px; overflow: hidden; display: flex; align-items: center; justify-content: center; }}
+        .ar-thumb img {{ width: 100%; height: 100%; object-fit: cover; }}
+        .ar-no-image {{ font-size: 10px; color: #b00; text-align: center; padding: 6px; }}
+        .ar-info {{ flex: 1; min-width: 0; font-size: 12px; }}
+        .ar-signals {{ margin: 0 0 6px; padding-left: 16px; font-size: 11px; color: #a55; }}
+        .ar-signals .crit {{ color: #c00; font-weight: 600; }}
+        .ar-links {{ font-size: 11px; margin-bottom: 6px; }}
+        .ar-links a {{ color: #06c; }}
+        .ar-mark-form {{ display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }}
+        .ar-mark-form input[type=text] {{ flex: 1; min-width: 0; font-size: 11px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }}
+        .ar-btn-flag {{ background: #b23; color: #fff; border: none; border-radius: 4px; padding: 4px 9px; font-size: 11px; cursor: pointer; white-space: nowrap; }}
+        .ar-btn-approve-one {{ background: none; border: none; color: #888; font-size: 11px; cursor: pointer; text-decoration: underline; padding: 0; }}
+        .ar-pill {{ font-size: 10px; padding: 1px 7px; border-radius: 20px; margin-left: 4px; font-weight: 400; background: #eee; color: #666; }}
+        .ar-pill-approved {{ background: #dcefe0; color: #276b3c; }}
+        .ar-pill-flagged {{ background: #fbdada; color: #a00; }}
+        .ar-pill-pending {{ background: #fff6dd; color: #7a5b00; }}
+        .ar-btn-promo {{ background: #1c4d99; color: #fff; border: none; border-radius: 4px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }}
+        .ar-hint {{ font-size: 11px; color: #888; }}
       </style>
     </head>
     <body>
