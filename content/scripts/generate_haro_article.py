@@ -138,17 +138,38 @@ def main() -> None:
     params = build_request_params(row, collections, techniques)
     entry = {"custom_id": f"haro-prospect-{args.prospect_id}", "params": params}
 
-    result = call_one(entry, os.environ["PIPELINE_ANTHROPIC_API_KEY"])
-    if result["result"]["type"] != "succeeded":
-        raise RuntimeError(f"Generation failed: {result['result']}")
+    # Unlike daily_batch.py's own validate_results (which tolerates a bad
+    # result by just skipping that one item out of a whole batch), this
+    # script generates exactly one page -- so a single malformed/truncated
+    # attempt (call_one itself only retries on request-level errors, not
+    # on a 200 response with bad JSON content) would kill the entire run
+    # for nothing. Retries the full generation call a few times before
+    # giving up for real.
+    MAX_GENERATION_ATTEMPTS = 3
+    content = None
+    issues: list[str] = []
+    for attempt in range(1, MAX_GENERATION_ATTEMPTS + 1):
+        result = call_one(entry, os.environ["PIPELINE_ANTHROPIC_API_KEY"])
+        if result["result"]["type"] != "succeeded":
+            print(f"  attempt {attempt}/{MAX_GENERATION_ATTEMPTS}: generation failed: {result['result']}")
+            continue
+        try:
+            candidate = extract_content(result["result"]["message"])
+        except ValueError as e:
+            print(f"  attempt {attempt}/{MAX_GENERATION_ATTEMPTS}: couldn't extract content: {e}")
+            continue
+        issues = validate_content(
+            entry["custom_id"], template_type, candidate,
+            {c["slug"] for c in collections}, {t["slug"] for t in techniques}, {h["slug"] for h in hubs},
+        )
+        if issues:
+            print(f"  attempt {attempt}/{MAX_GENERATION_ATTEMPTS}: validation issues:\n" + "\n".join(issues))
+            continue
+        content = candidate
+        break
 
-    content = extract_content(result["result"]["message"])
-    issues = validate_content(
-        entry["custom_id"], template_type, content,
-        {c["slug"] for c in collections}, {t["slug"] for t in techniques}, {h["slug"] for h in hubs},
-    )
-    if issues:
-        raise RuntimeError("Generated content failed validation:\n" + "\n".join(issues))
+    if content is None:
+        raise RuntimeError(f"Generation failed after {MAX_GENERATION_ATTEMPTS} attempts. Last issues:\n" + "\n".join(issues))
 
     content = normalize_for_storage(template_type, content)
     generated_title = content.pop("title")
