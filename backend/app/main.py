@@ -3265,6 +3265,19 @@ def outreach_queue(
               <button type="submit" class="btn-save-content">Save subject &amp; body</button>
             </form>
             """
+        elif r.status in ("article_pending", "article_requested", "article_pending_review"):
+            # Nothing sendable exists yet at any of these stages (see the
+            # status docstring on OutreachProspect) -- the actions box
+            # below already explains where things stand, and the
+            # reviewer note above (if any) gives the "why build this"
+            # context. Showing body_preview here too was a real,
+            # reported confusion: it used to hold a "[Placeholder for
+            # URL]"-style line that read like it belonged in the
+            # reporter-facing copy, when the actual URL placeholder that
+            # matters lives inline in the *reply's* body once one gets
+            # drafted (see the many-sub-question prompt guidance) -- an
+            # article_pending card has no reply to put one in yet.
+            content_html = ""
         else:
             content_html = f'<div class="body-preview">{escape_html(r.body_preview)}</div>'
 
@@ -3348,17 +3361,17 @@ def outreach_queue(
         if r.source_group_id:
             in_view_by_group.setdefault(r.source_group_id, []).append(r)
 
-    def group_anchor(members: list[OutreachProspect]) -> OutreachProspect:
+    def group_reply(members: list[OutreachProspect]) -> OutreachProspect | None:
         # A real, sendable reply anchors the group (proposed_template_type
         # is only ever set on a content_opportunity -- see its own
-        # docstring on OutreachProspect); otherwise the earliest-created
-        # member does, so the group has a stable, deterministic anchor
-        # even when every member is a content_opportunity (e.g. Southern
-        # Living, which split into three with no reply at all).
+        # docstring on OutreachProspect). Returns None when every member
+        # is a content_opportunity (e.g. Southern Living, which split
+        # into three with no reply at all) -- there is no real "parent"
+        # in that case, so nothing should be picked to fake one.
         for m in members:
             if not m.proposed_template_type:
                 return m
-        return min(members, key=lambda m: m.id)
+        return None
 
     rendered_ids: set[int] = set()
     pieces: list[str] = []
@@ -3367,11 +3380,31 @@ def outreach_queue(
             continue
         members = in_view_by_group.get(r.source_group_id, []) if r.source_group_id else []
         if len(members) > 1:
-            anchor = group_anchor(members)
-            children = [m for m in members if m.id != anchor.id]
             rendered_ids.update(m.id for m in members)
-            children_html = "".join(card(c) for c in children)
-            pieces.append(f'<div class="prospect-group">{card(anchor)}<div class="group-children">{children_html}</div></div>')
+            reply = group_reply(members)
+            if reply is not None:
+                children = [m for m in members if m.id != reply.id]
+                children_html = "".join(card(c) for c in children)
+                pieces.append(f'<div class="prospect-group">{card(reply)}<div class="group-children">{children_html}</div></div>')
+            else:
+                # No real reply in this group -- every member is a peer
+                # content_opportunity idea from the same source query.
+                # Picking one as a fake "parent" with the others nested
+                # under it implied a false hierarchy (a real, reported
+                # confusion: Southern Living's three ideas are equally
+                # important siblings, not one primary idea plus
+                # afterthoughts). A neutral shared header instead, with
+                # every member at the same level beneath it.
+                members_sorted = sorted(members, key=lambda m: m.id)
+                first = members_sorted[0]
+                source_label = first.source_platform or "the same"
+                domain_bit = f" ({escape_html(first.target_domain)})" if first.target_domain else ""
+                header = (
+                    f'<div class="group-header">{len(members_sorted)} article ideas from the same '
+                    f'{escape_html(source_label)} query{domain_bit}:</div>'
+                )
+                members_html = "".join(card(m) for m in members_sorted)
+                pieces.append(f'<div class="prospect-group">{header}<div class="group-children">{members_html}</div></div>')
         else:
             rendered_ids.add(r.id)
             pieces.append(card(r))
@@ -3391,6 +3424,7 @@ def outreach_queue(
         .card {{ background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }}
         .prospect-group {{ margin-bottom: 12px; }}
         .prospect-group .card {{ margin-bottom: 0; }}
+        .group-header {{ font-size: 12px; font-weight: 600; color: #1a4d7a; background: #e8f2fc; border: 1px solid #bcd9f2; border-radius: 6px; padding: 8px 12px; }}
         .group-children {{ margin: 8px 0 12px 28px; padding-left: 14px; border-left: 3px solid #bcd9f2; }}
         .group-children .card {{ margin-top: 10px; }}
         .card.status-approved {{ border-color: #bde0c4; }}
@@ -4287,18 +4321,26 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "opening paragraph synthesizing the overall angle (1-3 sentences), then one line per numbered "
         "sub-question in order, each starting with the sub-question restated in bold (e.g. **What's the "
         "biggest mistake?**) followed by the specific answer inline on the same line -- never a single "
-        "paragraph that mentions a page once and moves on. A sub-question answered by a real Tulo page "
-        "cites that page's URL inline on its own line; a sub-question with no Tulo match still gets its "
-        "own bolded line, but instead of a URL, apply the SAME bar as the no-existing-match paragraph "
-        "above (real, narrow, evergreen, worth a permanent page on its own) -- if it clears that bar, "
-        "say so briefly on that line (e.g. 'we don't have a page on this yet, but it's a good one for "
-        "us to add') AND also emit a separate \"content_opportunity\" item for it (its own "
-        "proposed_title/proposed_template_type/rationale, query_excerpt set to just that one "
-        "sub-question, not the whole bundled query) exactly like the bundling case above; if it's too "
-        "niche or narrow a one-off to ever be its own page, just note the gap briefly on that line and "
-        "don't propose a content_opportunity for it. The 3-5 sentence length below is for an ordinary "
-        "single-question query; a many-part query like this earns this longer, structured shape "
-        "instead.\n\n"
+        "paragraph that mentions a page once and moves on. This reply is a template the reviewer "
+        "touches up by hand before sending, not finished prose -- so every sub-question's line ends in "
+        "exactly one of three things, and NEVER an explanation of which one or why:\n"
+        "  1. A sub-question answered by a real Tulo page ends with that page's URL, cited verbatim.\n"
+        "  2. A sub-question with no existing match that clears the SAME bar as the no-existing-match "
+        "paragraph above (real, narrow, evergreen, worth a permanent page on its own) ends with the "
+        "literal bracketed tag [URL placeholder -- pending: \"<proposed_title>\"], with <proposed_title> "
+        "filled in exactly as written in that sub-question's own separate \"content_opportunity\" item "
+        "(its own proposed_title/proposed_template_type/rationale, query_excerpt set to just that one "
+        "sub-question, not the whole bundled query, exactly like the bundling case above) -- the two "
+        "must match verbatim so a reviewer can pair them up and drop in the real link once that page "
+        "goes live.\n"
+        "  3. A sub-question too niche or narrow a one-off to ever be its own page ends with the "
+        "literal tag [can't produce a URL for this], and gets no content_opportunity item.\n"
+        "Never write reasoning like 'we don't have a page on this yet' or 'this is more of a judgment "
+        "call' anywhere in the body -- that kind of explanation is internal deliberation a reporter "
+        "should never see. The bracketed tag itself is the only signal a sub-question needs; the "
+        "reviewer decides by hand whether to fill it in, rewrite that line, or cut it before sending. "
+        "The 3-5 sentence length below is for an ordinary single-question query; a many-part query "
+        "like this earns this longer, structured shape instead.\n\n"
         "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
         "no markdown fences, no further tool calls). Every object needs a \"type\" key, either "
         "\"reply\" or \"content_opportunity\", plus reporter_email, reporter_name, outlet, "
@@ -4670,19 +4712,20 @@ async def outreach_queue_ingest_email(
                     contact_email=draft.get("reporter_email") or None,
                     source_query=draft.get("query_excerpt") or "(no excerpt returned)",
                     subject=f"[Article opportunity] {draft['proposed_title']}",
-                    # Not a sendable body -- see the status docstring on
-                    # OutreachProspect. A placeholder for where the real
-                    # published URL will go once the article exists and
-                    # goes live, not internal reasoning about whether to
-                    # build it -- that reasoning belongs in `rationale`
-                    # (reviewer-only, shown in the not-ready box) instead,
-                    # since a "Why: ..." explainer here read like
-                    # deliberation a reporter should never see even
-                    # though it was never actually sendable.
-                    body_preview=(
-                        f"[Placeholder -- once \"{draft['proposed_title']}\" is created, reviewed, "
-                        f"and live, this will link to it here.]"
-                    ),
+                    # Not a sendable body, and not shown in the portal at
+                    # this stage either (see card()'s content_html for
+                    # article_pending/article_requested/
+                    # article_pending_review) -- there's no reply for
+                    # this content_opportunity yet, so there is nothing
+                    # to preview. Never a "[Placeholder for URL]"-style
+                    # message here: that reporter-facing placeholder
+                    # belongs inline in the *reply's* body once one gets
+                    # drafted (see the many-sub-question prompt guidance),
+                    # not in this card, which a reporter never sees at
+                    # all. `rationale` (reviewer-only, shown in the
+                    # not-ready box) holds the "why build this" context
+                    # instead of baking it in here.
+                    body_preview="(no draft yet -- nothing to preview until this article is created)",
                     rationale=draft.get("rationale"),
                     proposed_title=draft["proposed_title"],
                     proposed_template_type=draft["proposed_template_type"],
