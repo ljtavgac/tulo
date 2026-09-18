@@ -3034,7 +3034,24 @@ def outreach_queue(
     _resolve_pending_articles(db)
 
     query = db.query(OutreachProspect)
-    if show != "all":
+    if show == "queued":
+        # The default, "what needs my attention today" tab -- broader than
+        # a literal status="queued" match. A content-opportunity mid-flight
+        # through the article pipeline (article_pending needs a Create
+        # Article click, article_requested is just waiting on generation,
+        # article_pending_review needs the inline content review below)
+        # needs a reviewer's eyes exactly as much as an ordinary drafted
+        # reply does -- exact-matching only "queued" here hid all three
+        # behind a separate filter tab a reviewer had to already know to
+        # click, which is exactly the "feels like a hidden page" problem
+        # reported. Each status still renders its own appropriate action
+        # via card() below (Create Article button / wait note / full
+        # inline review), so nothing about how a given row is handled
+        # changes -- only whether it shows up here by default.
+        query = query.filter(OutreachProspect.status.in_(
+            ["queued", "article_pending", "article_requested", "article_pending_review"]
+        ))
+    elif show != "all":
         query = query.filter(OutreachProspect.status == show)
     rows = query.order_by(OutreachProspect.created_at.desc()).all()
 
