@@ -4299,7 +4299,28 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
 
     client = Anthropic(api_key=ANTHROPIC_API_KEY)
     tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in _TULO_TOOLS_FOR_PITCHING)
-    template_types_block = ", ".join(sorted(_REAL_TEMPLATE_TYPES))
+    # Full definitions, not just the bare type names -- confirmed live:
+    # the model force-fit a $20-tools buying guide into "category_roundup"
+    # because that was the closest-sounding name among the seven, when
+    # category_roundup actually means something much narrower (see its
+    # own line below). A bare comma list of names invites exactly this
+    # kind of near-miss; the real definition is what actually prevents it.
+    template_type_definitions = {
+        "recipe_or_dish": "a single dish's recipe",
+        "ingredient_hub": "a reference page for one ingredient (substitutes, storage, uses)",
+        "howto_technique": "a cooking technique or method not tied to one dish (e.g. how to season a wok)",
+        "definition": "a short, direct 'what is X' answer for an ingredient, dish, or term",
+        "comparison": "a side-by-side comparison of two related items/techniques (X vs Y)",
+        "substitute": "dedicated substitution options for one specific ingredient",
+        "category_roundup": (
+            "a curated collection of links to Tulo's OWN existing Recipe pages within one "
+            "category/cuisine/occasion -- an internal-linking hub, NOT a general buying guide, "
+            "gear/tools list, or roundup of external products or tips"
+        ),
+    }
+    template_types_block = "\n".join(
+        f"  - {t}: {template_type_definitions[t]}" for t in sorted(_REAL_TEMPLATE_TYPES)
+    )
     system_prompt = (
         "You triage journalist/expert-source-request digests for Tulo, a free food/recipe website -- "
         "these arrive from HARO, Connectively, Qwoted, Featured.com/Terkel, SourceBottle, or similar "
@@ -4401,7 +4422,12 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "real content rather than a template that would read the same for any pitch. A "
         "\"content_opportunity\" instead needs proposed_title (a real, specific page title, not the "
         "query verbatim), "
-        f"proposed_template_type (exactly one of: {template_types_block}), and rationale (one "
+        f"proposed_template_type (exactly one of these seven, matching its actual definition below, "
+        f"not just whichever name sounds closest -- a page idea that doesn't genuinely fit any of "
+        f"them, like a shopping/gear list that isn't category_roundup's specific meaning, doesn't get "
+        f"a content_opportunity at all rather than being forced into the nearest label):\n"
+        f"{template_types_block}\n"
+        "...and rationale (one "
         "sentence, for a human reviewer, why this is worth a new page). A content_opportunity is just "
         "as valid on a platform-only query with no printed reply address as a reply is -- set "
         "reporter_email to null there too rather than skip a genuinely worthwhile page idea; once the "
