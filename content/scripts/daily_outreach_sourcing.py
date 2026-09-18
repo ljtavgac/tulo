@@ -29,7 +29,7 @@ same endpoint every other outreach-sourcing script in this project uses
 -- lands as status=queued, pending human review in the portal exactly
 like every other prospect. Never sends anything itself.
 
-Four code-enforced invariants, mirroring _draft_haro_replies
+Five code-enforced invariants, mirroring _draft_haro_replies
 (backend/app/main.py) exactly, applied here to cold-outreach candidates
 instead of HARO digest queries: (1) a claimed contact email is dropped
 (not the whole prospect) unless it's independently verified -- either it
@@ -40,7 +40,12 @@ drafted body must contain one of the allowed URLs (the three fixed
 tools, or a real search_tulo_content result) verbatim, checked the same
 way; (3) a site the model doesn't judge genuinely credible is dropped
 outright, never queued as a "maybe"; (4) a credible site with no
-verifiable contact email is skipped, never queued without one.
+verifiable contact email is skipped, never queued without one; (5) a
+credible site whose verified contact email already belongs to another
+prospect already in the queue (any status, any pitch_type) is skipped
+too -- the same person often runs more than one blog, and domain-only
+dedup doesn't stop that person from being emailed again on a later day
+just because the domain looks new.
 
 Usage:
     BACKEND_BASE_URL=https://your-staging-backend \
@@ -248,10 +253,20 @@ def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
     return "\n\n".join(found)
 
 
-def _existing_domains(base: str, auth: tuple[str, str]) -> set[str]:
+def _existing_domains_and_emails(base: str, auth: tuple[str, str]) -> tuple[set[str], set[str]]:
+    """One fetch of every prospect ever queued (any status, any pitch_type
+    -- haro_reply included), returning both the set of already-targeted
+    domains and the set of already-targeted contact emails. The email set
+    matters separately from the domain set: the same person often runs (or
+    is the contact for) more than one blog, so two different, never-before-
+    seen domains can still resolve to a contact who'd otherwise get emailed
+    twice across different days -- domain-only dedup doesn't catch that."""
     r = requests.get(f"{base}/admin/outreach-queue/list.json", params={"status": "all"}, auth=auth, timeout=30)
     r.raise_for_status()
-    return {row["target_domain"].lower() for row in r.json()}
+    rows = r.json()
+    domains = {row["target_domain"].lower() for row in rows}
+    emails = {row["contact_email"].strip().lower() for row in rows if (row.get("contact_email") or "").strip()}
+    return domains, emails
 
 
 def _http_search_tulo_content(base: str, query: str, limit: int = 6) -> list[dict]:
@@ -436,9 +451,12 @@ def main() -> None:
 
     client = Anthropic(api_key=os.environ["PIPELINE_ANTHROPIC_API_KEY"])
 
-    print("Fetching already-contacted domains...")
-    seen = _existing_domains(base, auth)
-    print(f"  {len(seen)} domain(s) already in the queue (any status) -- will skip these.")
+    print("Fetching already-contacted domains and contact emails...")
+    seen, seen_emails = _existing_domains_and_emails(base, auth)
+    print(
+        f"  {len(seen)} domain(s) and {len(seen_emails)} contact email(s) already in the queue "
+        "(any status) -- will skip these."
+    )
 
     print("\nCrawling hub pages for candidate domains...")
     candidates: list[str] = []
@@ -457,6 +475,7 @@ def main() -> None:
     queued: list[dict] = []
     evaluated = 0
     skipped_no_email = 0
+    skipped_duplicate_email = 0
     for domain in candidates:
         if len(queued) >= args.count or evaluated >= MAX_CANDIDATES_PER_RUN:
             break
@@ -484,13 +503,25 @@ def main() -> None:
             skipped_no_email += 1
             print(f"  {domain}: credible but no verifiable contact email found, skipping")
             continue
+        email_key = result["contact_email"].strip().lower()
+        if email_key in seen_emails:
+            # A different, never-before-seen domain that happens to share a
+            # contact with someone already in the queue (a multi-blog
+            # network, or the same person's other site) -- skip it so this
+            # person is never emailed twice across different days just
+            # because the domain looked new.
+            skipped_duplicate_email += 1
+            print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
+            continue
+        seen_emails.add(email_key)
         result["source_query"] = "daily_outreach_sourcing"
         queued.append(result)
         print(f"  {domain}: ACCEPTED (contact: {result['contact_email']})")
 
     print(
-        f"\n{len(queued)} candidate(s) queued (all with a verified contact email) out of "
-        f"{evaluated} evaluated ({skipped_no_email} credible-but-unreachable skipped)."
+        f"\n{len(queued)} candidate(s) queued (all with a verified, not-already-targeted contact "
+        f"email) out of {evaluated} evaluated ({skipped_no_email} credible-but-unreachable, "
+        f"{skipped_duplicate_email} duplicate-contact skipped)."
     )
 
     if args.dry_run:
