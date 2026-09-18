@@ -156,6 +156,16 @@ class OutreachProspect(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     pitch_type: Mapped[str] = mapped_column(String)  # "tool_pitch" | "haro_reply"
     target_domain: Mapped[str] = mapped_column(String)
+    # The forwarding service a haro_reply came in through (Featured.com,
+    # Connectively, HARO, Qwoted, SourceBottle, Terkel) -- see
+    # _source_platform_label in main.py. Null for a tool_pitch/
+    # content_pitch (no inbound digest) and for any haro_reply ingested
+    # before this field existed. Distinct from target_domain, which holds
+    # the individual reporter's own outlet name (e.g. "Food Republic"),
+    # not the platform that routed the digest -- a reviewer doing a
+    # manual-submission copy/paste needs to know which platform's site to
+    # go paste into, which target_domain alone doesn't tell them.
+    source_platform: Mapped[str | None] = mapped_column(String, nullable=True)
     contact_name: Mapped[str | None] = mapped_column(String, nullable=True)
     contact_email: Mapped[str | None] = mapped_column(String, nullable=True)
     # For a haro_reply: the source query being responded to. Null for a

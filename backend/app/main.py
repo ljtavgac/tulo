@@ -3072,6 +3072,14 @@ def outreach_queue(
         pitch_label, pitch_pill_class = _PITCH_TYPE_LABELS.get(
             r.pitch_type, (r.pitch_type, "tool")
         )
+        # A haro_reply's generic "HARO/query reply" pill isn't enough to
+        # tell a reviewer which platform a manual-submission item needs
+        # to be pasted into -- swap in the specific source (Featured.com,
+        # Connectively, HARO, ...) when known. Unset for anything ingested
+        # before source_platform existed, or from an unrecognized sender
+        # domain -- falls back to the generic label rather than guessing.
+        if r.pitch_type == "haro_reply" and r.source_platform:
+            pitch_label = r.source_platform
         query_html = (
             f'<div class="source-query">Query: {escape_html(r.source_query)}</div>' if r.source_query else ""
         )
@@ -3622,6 +3630,7 @@ def outreach_queue_list_json(
             "id": r.id,
             "pitch_type": r.pitch_type,
             "target_domain": r.target_domain,
+            "source_platform": r.source_platform,
             "contact_name": r.contact_name,
             "contact_email": r.contact_email,
             "source_query": r.source_query,
@@ -4131,6 +4140,33 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     return kept
 
 
+# Sender domain -> friendly platform name for OutreachProspect.source_platform,
+# shown as the portal's pitch-type pill for a haro_reply instead of the
+# generic "HARO/query reply" -- so a reviewer doing a manual-submission
+# copy/paste knows at a glance which site to go paste into. Keyed on the
+# domain _parse_inbound_email_payload's sender_email resolves to; add a
+# new entry here for any new forwarding service rather than guessing from
+# its digest's prose. An unrecognized domain (e.g. a real
+# reply+<uuid>@helpareporter.com is already covered by "helpareporter.com"
+# below) falls back to the generic label -- see card() in outreach_queue.
+_SOURCE_PLATFORM_LABELS: dict[str, str] = {
+    "helpareporter.com": "HARO",
+    "featured.com": "Featured.com",
+    "connectively.us": "Connectively",
+    "qwoted.com": "Qwoted",
+    "sourcebottle.com": "SourceBottle",
+    "terkel.io": "Terkel",
+}
+
+
+def _source_platform_label(sender_domain: str) -> str | None:
+    """Best-effort platform name from an inbound digest's sender domain --
+    see _SOURCE_PLATFORM_LABELS. Returns None (not a guess) for a domain
+    not in that table, so the portal falls back to the generic
+    "HARO/query reply" pill rather than showing a made-up platform name."""
+    return _SOURCE_PLATFORM_LABELS.get(sender_domain)
+
+
 def _strip_html_tags(html_text: str) -> str:
     """Crude HTML->text fallback for the rare inbound email that has no
     plain-text body at all (most providers synthesize one, but an
@@ -4219,6 +4255,7 @@ async def outreach_queue_ingest_email(
     payload = await request.json()
     sender_email, subject, body = _parse_inbound_email_payload(payload)
     sender_domain = sender_email.split("@")[-1].strip().lower() if "@" in sender_email else "unknown-sender"
+    source_platform = _source_platform_label(sender_domain)
 
     truncated = len(body) > _MAX_INGESTED_QUERY_CHARS
     if truncated:
@@ -4259,6 +4296,7 @@ async def outreach_queue_ingest_email(
                     is_example=False,
                     status="article_pending",
                     ai_pitches_disallowed=draft.get("ai_pitches_disallowed", False),
+                    source_platform=source_platform,
                 )
             else:
                 prospect = OutreachProspect(
@@ -4272,6 +4310,7 @@ async def outreach_queue_ingest_email(
                     is_example=False,
                     status="queued",
                     ai_pitches_disallowed=draft.get("ai_pitches_disallowed", False),
+                    source_platform=source_platform,
                 )
             db.add(prospect)
             db.flush()
@@ -4290,6 +4329,7 @@ async def outreach_queue_ingest_email(
         body_preview=_UNDRAFTED_HARO_PLACEHOLDER,
         is_example=False,
         status="queued",
+        source_platform=source_platform,
     )
     db.add(prospect)
     db.commit()
