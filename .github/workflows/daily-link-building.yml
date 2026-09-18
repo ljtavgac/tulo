@@ -1,0 +1,127 @@
+name: Daily link building
+
+# Runs all six automated outbound link-building sources once a day, in
+# priority order, against one SHARED daily queue quota (currently 30 --
+# see DAILY_QUEUE_CAP in each script) rather than each one queuing its own
+# count independently. Higher-quality/higher-intent sources run first and
+# get first claim on the quota; the original hub-page crawl (the lowest-
+# priority, highest-volume-but-least-qualified source) runs last and only
+# fills whatever's left. Every script re-checks the live remaining quota
+# itself before running, so it naturally no-ops in seconds once an earlier
+# step has already filled the day's quota -- no static per-script split to
+# keep in sync.
+#
+# Order:
+#   1. backlink_gap_outreach.py    -- Semrush competitor backlink-gap (needs SEMRUSH_API_KEY)
+#   2. roundup_inclusion_outreach.py -- recipe/tool roundup-post inclusion pitches
+#   3. broken_link_outreach.py     -- dead-link-on-a-resource-page replacement pitches
+#   4. unlinked_mention_outreach.py -- "you mentioned Tulo, here's the link" pitches
+#   5. resource_page_outreach.py   -- educational/dietitian resource-page inclusion pitches
+#   6. daily_outreach_sourcing.py  -- fixed food-blog directory crawl (fallback)
+#
+# continue-on-error is set on every step so a bug in one of the newer,
+# less-proven sources can never block a later one -- especially step 6,
+# the original, already-reliable mechanism.
+on:
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'true = print what would be queued without creating anything, for every source'
+        required: false
+        default: 'false'
+
+jobs:
+  link-building:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 anthropic
+
+      - name: 1. Backlink-gap (Semrush)
+        continue-on-error: true
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+          SEMRUSH_API_KEY: ${{ secrets.SEMRUSH_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          python3 content/scripts/backlink_gap_outreach.py $ARGS
+
+      - name: 2. Roundup-inclusion targeting
+        continue-on-error: true
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          python3 content/scripts/roundup_inclusion_outreach.py $ARGS
+
+      - name: 3. Broken-link building
+        continue-on-error: true
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          python3 content/scripts/broken_link_outreach.py $ARGS
+
+      - name: 4. Unlinked-mention reclamation
+        continue-on-error: true
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          python3 content/scripts/unlinked_mention_outreach.py $ARGS
+
+      - name: 5. Resource-page link building
+        continue-on-error: true
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          python3 content/scripts/resource_page_outreach.py $ARGS
+
+      - name: 6. Hub-page crawl (fallback)
+        continue-on-error: true
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          python3 content/scripts/daily_outreach_sourcing.py $ARGS

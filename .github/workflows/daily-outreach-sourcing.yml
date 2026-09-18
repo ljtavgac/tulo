@@ -1,20 +1,26 @@
-name: Daily outreach sourcing
+name: Daily outreach sourcing (hub-page crawl)
 
-# Runs content/scripts/daily_outreach_sourcing.py once a day: crawls a
-# fixed set of real food-blog directory pages (no search API, no Semrush --
-# plain HTTP scraping), vets each new candidate with Claude against free
-# credibility heuristics, and queues up to 20 passing ones for human
-# review in the outreach portal. Never sends anything itself -- every
-# queued prospect still needs an explicit Approve.
+# Runs content/scripts/daily_outreach_sourcing.py: crawls a fixed set of
+# real food-blog directory pages (no search API, no Semrush -- plain HTTP
+# scraping), vets each new candidate with Claude against free credibility
+# heuristics, and queues passing ones for human review in the outreach
+# portal. Never sends anything itself -- every queued prospect still needs
+# an explicit Approve.
+#
+# No longer scheduled on its own -- it's now the last, lowest-priority
+# step of daily-link-building.yml (see that workflow), since it shares one
+# daily queue quota with backlink_gap_outreach.py, roundup_inclusion_
+# outreach.py, broken_link_outreach.py, unlinked_mention_outreach.py, and
+# resource_page_outreach.py rather than queuing its own count on top of
+# theirs. Kept here as workflow_dispatch only, for a standalone manual run
+# (e.g. testing this source in isolation).
 on:
-  schedule:
-    - cron: '0 10 * * *'
   workflow_dispatch:
     inputs:
       count:
-        description: 'Max prospects to queue this run'
+        description: 'Max prospects to queue this run (default: fill the full remaining shared daily quota)'
         required: false
-        default: '20'
+        default: ''
       dry_run:
         description: 'true = print what would be queued without creating anything'
         required: false
@@ -43,7 +49,10 @@ jobs:
           PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
         run: |
           set -uo pipefail
-          ARGS="--count ${{ github.event.inputs.count || '20' }}"
+          ARGS=""
+          if [ -n "${{ github.event.inputs.count }}" ]; then
+            ARGS="--count ${{ github.event.inputs.count }}"
+          fi
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
