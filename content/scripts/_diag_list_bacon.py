@@ -34,11 +34,15 @@ def main() -> None:
     ]
     print(f"\n{len(hits)} matching row(s):")
     for row in hits:
-        print(f"\nid={row['id']} status={row['status']} created_at={row.get('created_at')}")
+        print(f"\nid={row['id']} status={row['status']}")
         print(f"  pitch_type={row.get('pitch_type')} contact_name={row.get('contact_name')!r} contact_email={row.get('contact_email')!r}")
         print(f"  subject={row.get('subject')!r}")
         print(f"  body_preview={row.get('body_preview')!r}")
         print(f"  source_query={row.get('source_query')!r}")
+
+    print("\n--- last 15 rows by id (most recent activity, list.json is sorted by created_at desc) ---")
+    for row in rows[:15]:
+        print(f"  id={row['id']:>3} status={row['status']:<10} pitch_type={row.get('pitch_type'):<10} subject={row.get('subject')!r:.80}")
 
 
 if __name__ == "__main__":
