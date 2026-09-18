@@ -22,12 +22,23 @@ or a real result from Tulo's own public page search -- never invented),
 and (d) draft a short, specific, non-generic pitch. A credible candidate
 for which no contact email can be found or verified is skipped outright,
 not queued -- the run keeps evaluating further candidates (up to
-MAX_CANDIDATES_PER_RUN) until it reaches --count (default 20) queued
-prospects, so every prospect that lands in the queue has a real,
-verified contact email. Queues via POST /admin/outreach-queue/create,
-same endpoint every other outreach-sourcing script in this project uses
--- lands as status=queued, pending human review in the portal exactly
-like every other prospect. Never sends anything itself.
+MAX_CANDIDATES_PER_RUN) until it fills its share of the daily quota, so
+every prospect that lands in the queue has a real, verified contact
+email. Queues via POST /admin/outreach-queue/create, same endpoint every
+other outreach-sourcing script in this project uses -- lands as
+status=queued, pending human review in the portal exactly like every
+other prospect. Never sends anything itself.
+
+This is now the lowest-priority, fallback source in a multi-source daily
+run (see .github/workflows/daily-link-building.yml) -- it shares one
+DAILY_QUEUE_CAP-sized daily budget with backlink_gap_outreach.py,
+roundup_inclusion_outreach.py, broken_link_outreach.py, unlinked_mention_
+outreach.py, and resource_page_outreach.py (see _remaining_daily_quota),
+rather than queuing its own count on top of whatever they already
+queued today. It runs last in that workflow because it's the least
+qualified candidate pool of the six (a blind directory crawl vs. the
+others' more targeted discovery), so the higher-quality sources get
+first claim on the day's quota and this one only fills what's left.
 
 Five code-enforced invariants, mirroring _draft_haro_replies
 (backend/app/main.py) exactly, applied here to cold-outreach candidates
@@ -51,7 +62,7 @@ Usage:
     BACKEND_BASE_URL=https://your-staging-backend \
     OUTREACH_ADMIN_USER=... OUTREACH_ADMIN_PASSWORD=... \
     PIPELINE_ANTHROPIC_API_KEY=... \
-    python3 content/scripts/daily_outreach_sourcing.py [--count 20] [--dry-run]
+    python3 content/scripts/daily_outreach_sourcing.py [--count N] [--dry-run]
 
 --dry-run prints what would be queued without ever calling
 /admin/outreach-queue/create.
@@ -63,6 +74,7 @@ import argparse
 import json
 import os
 import re
+from datetime import datetime, timezone
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -140,6 +152,8 @@ MAX_TOOL_TURNS = 12  # confirmed live: 6 was too tight -- a genuinely good candi
 MAX_CANDIDATES_PER_RUN = 120  # hard cap on LLM calls regardless of --count, to bound cost/time --
 # raised from 60 now that a credible candidate with no verifiable email is skipped rather than
 # queued, so filling --count with emailed prospects needs more evaluations per run on average
+DAILY_QUEUE_CAP = 30  # shared across every automated outbound sourcing script, not per-script --
+# see _remaining_daily_quota
 
 SEARCH_TULO_CONTENT_TOOL = {
     "name": "search_tulo_content",
@@ -267,6 +281,34 @@ def _existing_domains_and_emails(base: str, auth: tuple[str, str]) -> tuple[set[
     domains = {row["target_domain"].lower() for row in rows}
     emails = {row["contact_email"].strip().lower() for row in rows if (row.get("contact_email") or "").strip()}
     return domains, emails
+
+
+def _remaining_daily_quota(base: str, auth: tuple[str, str], cap: int = DAILY_QUEUE_CAP) -> int:
+    """This script is now the lowest-priority, fallback source in a
+    multi-source daily run (see .github/workflows/daily-link-building.yml)
+    -- it draws from the SAME shared daily budget of `cap` newly-queued
+    prospects as backlink_gap_outreach.py, roundup_inclusion_outreach.py,
+    broken_link_outreach.py, unlinked_mention_outreach.py, and
+    resource_page_outreach.py, not `cap` on top of what they already
+    queued today. Counts today's (UTC) already-created tool_pitch/
+    content_pitch rows -- haro_reply is a separate, inbound-triggered
+    pipeline, not part of this outbound daily budget."""
+    r = requests.get(f"{base}/admin/outreach-queue/list.json", params={"status": "all"}, auth=auth, timeout=30)
+    r.raise_for_status()
+    today = datetime.now(timezone.utc).date()
+    created_today = 0
+    for row in r.json():
+        if row.get("pitch_type") not in ("tool_pitch", "content_pitch"):
+            continue
+        created_at = row.get("created_at")
+        if not created_at:
+            continue
+        try:
+            if datetime.fromisoformat(created_at).date() == today:
+                created_today += 1
+        except ValueError:
+            continue
+    return max(0, cap - created_today)
 
 
 def _http_search_tulo_content(base: str, query: str, limit: int = 6) -> list[dict]:
@@ -440,12 +482,23 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--count", type=int, default=20)
+    parser.add_argument(
+        "--count", type=int, default=None,
+        help="Cap how many to queue this run (default: use the full shared daily quota remaining)",
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     base = os.environ["BACKEND_BASE_URL"].rstrip("/")
     auth = (os.environ["OUTREACH_ADMIN_USER"], os.environ["OUTREACH_ADMIN_PASSWORD"])
+
+    remaining = _remaining_daily_quota(base, auth)
+    if args.count is not None:
+        remaining = min(remaining, args.count)
+    print(f"Shared daily quota: {remaining} slot(s) remaining today.")
+    if remaining <= 0:
+        print("Daily quota already reached by an earlier sourcing step today -- nothing to do.")
+        return
 
     from anthropic import Anthropic
 
@@ -477,7 +530,7 @@ def main() -> None:
     skipped_no_email = 0
     skipped_duplicate_email = 0
     for domain in candidates:
-        if len(queued) >= args.count or evaluated >= MAX_CANDIDATES_PER_RUN:
+        if len(queued) >= remaining or evaluated >= MAX_CANDIDATES_PER_RUN:
             break
         evaluated += 1
         html = _fetch(f"https://{domain}/")

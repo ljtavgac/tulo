@@ -3843,10 +3843,15 @@ _REAL_TEMPLATE_TYPES = {
 
 
 def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
-    """Uses Claude to triage one forwarded HARO/Connectively-style digest:
-    finds every individual query (a digest usually bundles several, each
-    with its own reporter/outlet/reply address) that's a genuine fit for
-    something real on Tulo, and drafts a specific reply for each. "Real"
+    """Uses Claude to triage one forwarded journalist/expert-source-request
+    digest -- HARO, Connectively, Qwoted, Featured.com/Terkel, SourceBottle,
+    or similar; the name is legacy (this started as HARO-only) but the
+    triage prompt and the code below are provider-agnostic, since the real
+    format-sensitive layer is _parse_inbound_email_payload (Postmark/
+    CloudMailin), not this function. Finds every individual query (a
+    digest usually bundles several, each with its own reporter/outlet/
+    reply address) that's a genuine fit for something real on Tulo, and
+    drafts a specific reply for each. "Real"
     means either one of Tulo's three fixed tools (_TULO_TOOLS_FOR_PITCHING)
     or a page the model actually found via the search_tulo_content tool
     (backed by _search_tulo_content, a real DB query) -- the model is given
@@ -3916,8 +3921,10 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in _TULO_TOOLS_FOR_PITCHING)
     template_types_block = ", ".join(sorted(_REAL_TEMPLATE_TYPES))
     system_prompt = (
-        "You triage HARO/Connectively-style journalist source-request digests for Tulo, a free "
-        "food/recipe website. Tulo has three fixed, always-real tools:\n"
+        "You triage journalist/expert-source-request digests for Tulo, a free food/recipe website -- "
+        "these arrive from HARO, Connectively, Qwoted, Featured.com/Terkel, SourceBottle, or similar "
+        "services; treat the format below on its own terms rather than assuming it's any one "
+        "specific service's layout. Tulo has three fixed, always-real tools:\n"
         f"{tools_block}\n\n"
         "Tulo also has thousands of individual content pages -- recipes, ingredient guides, cooking "
         "how-tos, definitions, comparisons, substitute guides. Use the search_tulo_content tool to "
@@ -3948,9 +3955,11 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "needs proposed_title (a real, specific page title, not the query verbatim), "
         f"proposed_template_type (exactly one of: {template_types_block}), and rationale (one "
         "sentence, for a human reviewer, why this is worth a new page). Hard requirements, checked "
-        "and enforced after your response: reporter_email must be a real, non-empty address (every "
-        "HARO/Connectively query has one - if a query genuinely doesn't, it's not answerable, leave "
-        "it out); a reply's body must contain one of the real URLs verbatim; a content_opportunity's "
+        "and enforced after your response: reporter_email must be a real, non-empty address that "
+        "appears verbatim in the digest text -- most services print one per query, but if this "
+        "particular query only gives a platform inbox/reply link with no real email address in the "
+        "text, it's not answerable this way, leave it out rather than invent or guess one; a reply's "
+        "body must contain one of the real URLs verbatim; a content_opportunity's "
         "proposed_template_type must be exactly one of the seven listed. If there are zero fits and "
         "zero opportunities, respond with exactly: []"
     )
@@ -4090,10 +4099,20 @@ async def outreach_queue_ingest_email(
     db: Session = Depends(get_db),
     _auth: None = Depends(_require_outreach_auth),
 ):
-    """Receives one forwarded email (a HARO/Connectively-style query
-    digest, or anything else routed to the inbound address) from an
-    inbound-email-to-webhook provider. Parses either Postmark Inbound's or
-    CloudMailin's JSON schema (see _parse_inbound_email_payload) --
+    """Receives one forwarded email (a journalist/expert-source-request
+    query digest -- HARO, Connectively, Qwoted, Featured.com/Terkel,
+    SourceBottle, or similar -- or anything else routed to the inbound
+    address) from an inbound-email-to-webhook provider. This endpoint and
+    _draft_haro_replies are already provider-agnostic: to add a new
+    source, just set that service's own email digest to forward (or set
+    up an email rule that forwards) to the same inbound address already
+    registered with CloudMailin -- no new webhook or code change needed,
+    as long as that service prints a real reply email address in its
+    digest text for at least some queries (see the reporter_email
+    invariant in _draft_haro_replies -- a query whose reply only routes
+    through a platform inbox/link, with no real address in the text, is
+    correctly left undrafted rather than guessed). Parses either Postmark
+    Inbound's or CloudMailin's JSON schema (see _parse_inbound_email_payload) --
     CloudMailin over Postmark Inbound specifically because Postmark
     Inbound has no free tier, while CloudMailin's free tier (10,000
     messages/month, not a time-limited trial) comfortably covers this
