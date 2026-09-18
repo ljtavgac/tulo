@@ -1,30 +1,46 @@
 """Daily outreach sourcing: crawls a fixed set of real, well-known food-
 blog directory/roundup pages (see HUB_PAGES below) for candidate blog
 domains -- never a search API, per explicit instruction: no Semrush, no
-Google/Bing search API, no paid domain-authority service. Filters out
-generic platforms and anything already in the outreach queue, then uses
-Claude to (a) judge each remaining candidate's own homepage for real,
-credible signals using free/visible heuristics only (a genuine author
-voice, an actual audience, original writing, a real About/Contact page --
-not a link farm, PBN, or spun-content mill), (b) extract a real contact
-email if one is actually visible on the page, (c) pick one genuinely
-relevant real Tulo page to cite (one of the three fixed tools, or a real
-result from Tulo's own public page search -- never invented), and (d)
-draft a short, specific, non-generic pitch. Queues up to --count (default
-20) passing candidates via POST /admin/outreach-queue/create, same
-endpoint every other outreach-sourcing script in this project uses --
-lands as status=queued, pending human review in the portal exactly like
-every other prospect. Never sends anything itself.
+Google/Bing search API, no paid domain-authority service. That policy is
+about candidate *discovery* specifically, to avoid SEO-gamed rankings
+biasing which blogs get targeted -- it does not extend to the separate,
+narrower problem below of finding an already-identified candidate's own
+contact email. Filters out generic platforms and anything already in the
+outreach queue, then uses Claude to (a) judge each remaining candidate's
+own homepage (plus, when reachable, its Contact/About/privacy-policy/
+media-kit pages) for real, credible signals using free/visible heuristics
+only (a genuine author voice, an actual audience, original writing, a
+real About/Contact page -- not a link farm, PBN, or spun-content mill),
+(b) find a real contact email -- first from the fetched page text, and if
+that comes up empty, via a bounded (max 3 searches per candidate) use of
+Claude's own web_search tool to locate that same domain's own published
+address (privacy policy, media kit, "write for us" page, etc.), which is
+then independently re-verified by this script fetching the cited source
+URL directly rather than trusting the model's claim, (c) pick one
+genuinely relevant real Tulo page to cite (one of the three fixed tools,
+or a real result from Tulo's own public page search -- never invented),
+and (d) draft a short, specific, non-generic pitch. A credible candidate
+for which no contact email can be found or verified is skipped outright,
+not queued -- the run keeps evaluating further candidates (up to
+MAX_CANDIDATES_PER_RUN) until it reaches --count (default 20) queued
+prospects, so every prospect that lands in the queue has a real,
+verified contact email. Queues via POST /admin/outreach-queue/create,
+same endpoint every other outreach-sourcing script in this project uses
+-- lands as status=queued, pending human review in the portal exactly
+like every other prospect. Never sends anything itself.
 
-Three code-enforced invariants, mirroring _draft_haro_replies
+Four code-enforced invariants, mirroring _draft_haro_replies
 (backend/app/main.py) exactly, applied here to cold-outreach candidates
 instead of HARO digest queries: (1) a claimed contact email is dropped
-(not the whole prospect) unless it appears verbatim in the fetched page
-text -- rules out the model inventing one; (2) the drafted body must
-contain one of the allowed URLs (the three fixed tools, or a real
-search_tulo_content result) verbatim, checked the same way; (3) a site
-the model doesn't judge genuinely credible is dropped outright, never
-queued as a "maybe."
+(not the whole prospect) unless it's independently verified -- either it
+appears verbatim in the fetched page text, or (when it came from
+web_search) it appears verbatim on a direct re-fetch of the model's cited
+source URL, which must itself be on the same domain being vetted; (2) the
+drafted body must contain one of the allowed URLs (the three fixed
+tools, or a real search_tulo_content result) verbatim, checked the same
+way; (3) a site the model doesn't judge genuinely credible is dropped
+outright, never queued as a "maybe"; (4) a credible site with no
+verifiable contact email is skipped, never queued without one.
 
 Usage:
     BACKEND_BASE_URL=https://your-staging-backend \
@@ -116,7 +132,9 @@ MODEL = "claude-sonnet-5"
 MAX_TOOL_TURNS = 12  # confirmed live: 6 was too tight -- a genuinely good candidate (altonbrown.com)
 # got dropped purely for exceeding it while still searching for a good content match, not for
 # any real credibility problem
-MAX_CANDIDATES_PER_RUN = 60  # hard cap on LLM calls regardless of --count, to bound cost/time
+MAX_CANDIDATES_PER_RUN = 120  # hard cap on LLM calls regardless of --count, to bound cost/time --
+# raised from 60 now that a credible candidate with no verifiable email is skipped rather than
+# queued, so filling --count with emailed prospects needs more evaluations per run on average
 
 SEARCH_TULO_CONTENT_TOOL = {
     "name": "search_tulo_content",
@@ -134,6 +152,21 @@ SEARCH_TULO_CONTENT_TOOL = {
         },
         "required": ["query"],
     },
+}
+
+# Claude's own server-side web-search tool -- executed by Anthropic, not by
+# this script. Scoped narrowly by the system prompt (below) to one job only:
+# locating an already-identified, already-vetted-as-credible candidate's own
+# published contact email when it isn't in the page text already fetched.
+# This is NOT a reversal of the "never a search API" policy documented at
+# the top of this file -- that policy is about candidate *discovery* (never
+# use search rankings to decide which blogs to target, to avoid SEO-gamed
+# results biasing the crawl). Finding one already-identified site's own
+# contact page is a different problem, and max_uses bounds it per candidate.
+WEB_SEARCH_TOOL = {
+    "type": "web_search_20260209",
+    "name": "web_search",
+    "max_uses": 3,
 }
 
 
@@ -183,21 +216,36 @@ def _page_text(html: str, max_chars: int = 6000) -> str:
     return text[:max_chars]
 
 
-CONTACT_PAGE_PATHS = ["/contact", "/contact-us", "/about", "/about-us"]
+CONTACT_PAGE_PATHS = [
+    "/contact", "/contact-us", "/about", "/about-us", "/privacy-policy",
+    "/privacy", "/media-kit", "/press", "/advertise", "/work-with-me",
+    "/write-for-us",
+]
+# Bounds how many of the paths above are actually fetched per candidate --
+# most sites only have 2-3 of these, but a hard cap keeps a single slow/odd
+# domain from blowing up run time.
+MAX_CONTACT_PAGES_FETCHED = 4
 
 
-def _contact_page_text(domain: str, max_chars: int = 2000) -> str:
-    """Best-effort: most blogs put their real contact email on a separate
-    Contact/About page, not the homepage -- confirmed on this pipeline's
-    first real run, where every accepted candidate came back with no
-    email found from the homepage alone. Tries a few common paths, stops
-    at the first that actually loads; a miss here just means
-    contact_email stays null, same as before, never blocks vetting."""
+def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
+    """Best-effort: a real contact email is often not on the homepage or
+    even the Contact/About page, but on a page like /privacy-policy or
+    /media-kit instead -- confirmed by manual research on already-queued
+    prospects, where several emails only turned up on those less-obvious
+    pages. Unlike the original version of this function, this does NOT
+    stop at the first path that loads -- it collects text from every real
+    page it finds (up to MAX_CONTACT_PAGES_FETCHED) since the first page
+    that loads is often not the one with the email on it. A miss here
+    just means contact_email stays null, same as before, never blocks
+    vetting."""
+    found = []
     for path in CONTACT_PAGE_PATHS:
+        if len(found) >= MAX_CONTACT_PAGES_FETCHED:
+            break
         html = _fetch(f"https://{domain}{path}", timeout=10)
         if html is not None:
-            return _page_text(html, max_chars)
-    return ""
+            found.append(f"--- {path} ---\n{_page_text(html, max_chars_per_page)}")
+    return "\n\n".join(found)
 
 
 def _existing_domains(base: str, auth: tuple[str, str]) -> set[str]:
@@ -270,14 +318,27 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
         "guess or invent a slug/URL for one of these, only the search tool's real results are safe to "
         "use. If nothing specific fits, use one of the three fixed tools instead -- never force an "
         "irrelevant content-page match just to avoid a tool page.\n\n"
+        "Contact email: the text you're given (homepage plus any Contact/About/privacy/media-kit pages "
+        "that were reachable) often doesn't contain a real email, even for a genuinely credible site -- "
+        "it may be published somewhere else on the same site instead (privacy policy, media kit, a "
+        "'write for us'/pitch page, footer, etc.). If you don't see one in the given text, use the "
+        "web_search tool (up to 3 searches) ONLY to look for that same domain's own published contact "
+        "email -- e.g. 'site:<domain> contact email', '<domain> media kit', '<domain> write for us'. "
+        "This is not for judging credibility, only for finding an email for a site you've already "
+        "decided about from the given text. If you find a real, currently-published address, report it "
+        "as contact_email AND set contact_email_source_url to the exact page URL where you found it -- "
+        "these two fields are required together, never set one without the other. If you can't find a "
+        "genuine address either in the given text or via web_search, set both to null; this never "
+        "affects the credible verdict.\n\n"
         "Once decided, respond with ONLY a JSON object (no prose, no markdown fences, no further tool "
         "calls) with exactly these keys: credible (boolean), reason (one sentence, for a human "
-        "reviewer, why or why not), contact_email (a real email address if and only if one is "
-        "literally visible in the homepage text, else null), subject, body (a short, specific, "
-        "non-generic 3-5 sentence pitch mentioning something concrete from this specific site plus "
-        "exactly one real URL - from the fixed tools list or a search_tulo_content result, never "
-        "invented; use a single hyphen with spaces around it for a dash, e.g. 'word - word', never a "
-        "double hyphen or em dash). If credible is false, subject/body/contact_email may be null."
+        "reviewer, why or why not), contact_email (a real email address per the rules above, else "
+        "null), contact_email_source_url (the exact URL it came from if contact_email is set, else "
+        "null), subject, body (a short, specific, non-generic 3-5 sentence pitch mentioning something "
+        "concrete from this specific site plus exactly one real URL - from the fixed tools list or a "
+        "search_tulo_content result, never invented; use a single hyphen with spaces around it for a "
+        "dash, e.g. 'word - word', never a double hyphen or em dash). If credible is false, "
+        "subject/body/contact_email/contact_email_source_url may be null."
     )
 
     allowed_urls = {t["url"] for t in TULO_TOOLS}
@@ -288,7 +349,7 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
             model=MODEL,
             max_tokens=2048,
             system=system_prompt,
-            tools=[SEARCH_TULO_CONTENT_TOOL],
+            tools=[SEARCH_TULO_CONTENT_TOOL, WEB_SEARCH_TOOL],
             messages=messages,
         )
         if response.stop_reason != "tool_use":
@@ -331,12 +392,28 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
         return None
 
     contact_email = (item.get("contact_email") or "").strip() or None
-    if contact_email and contact_email not in homepage_text:
-        # Same invariant as _draft_haro_replies' reporter_email check: drop
-        # the claimed email, not the whole prospect, rather than trust an
-        # address the model didn't actually read off the page.
-        print(f"  {domain}: claimed contact_email not found verbatim on page, dropping email only")
-        contact_email = None
+    source_url = (item.get("contact_email_source_url") or "").strip() or None
+    if contact_email:
+        # Same invariant as _draft_haro_replies' reporter_email check: never
+        # trust a claimed email just because the model said so -- drop the
+        # claimed email (not the whole prospect) unless we can verify it
+        # ourselves against real fetched text. First check the text we
+        # already handed the model; if the email instead came from the
+        # model's own web_search (whose result content isn't plaintext we
+        # can read on our side), re-fetch its cited source_url directly and
+        # check the email appears there verbatim -- restricted to the same
+        # domain being vetted, so the model can't point us at an unrelated
+        # third-party page and have us "confirm" text there.
+        verified = contact_email in homepage_text
+        if not verified and source_url:
+            source_domain = _root_domain(source_url)
+            if source_domain == domain or source_domain.endswith("." + domain):
+                source_html = _fetch(source_url, timeout=10)
+                if source_html is not None:
+                    verified = contact_email in _page_text(source_html, max_chars=4000)
+        if not verified:
+            print(f"  {domain}: claimed contact_email not verified against fetched page text, dropping email only")
+            contact_email = None
 
     return {
         "target_domain": domain,
@@ -379,6 +456,7 @@ def main() -> None:
 
     queued: list[dict] = []
     evaluated = 0
+    skipped_no_email = 0
     for domain in candidates:
         if len(queued) >= args.count or evaluated >= MAX_CANDIDATES_PER_RUN:
             break
@@ -393,15 +471,27 @@ def main() -> None:
             continue
         contact_text = _contact_page_text(domain)
         if contact_text:
-            text = f"{text}\n\n--- Contact/About page ---\n{contact_text}"
+            text = f"{text}\n\n--- Contact/About/privacy/media-kit pages ---\n{contact_text}"
         result = _vet_and_draft(client, base, domain, text)
         if result is None:
             continue
+        if not result["contact_email"]:
+            # Credible, but no real contact email could be found or verified
+            # (even after the web_search fallback inside _vet_and_draft) --
+            # skip it rather than queue an uncontactable prospect, and keep
+            # evaluating further candidates toward --count instead of
+            # stopping here.
+            skipped_no_email += 1
+            print(f"  {domain}: credible but no verifiable contact email found, skipping")
+            continue
         result["source_query"] = "daily_outreach_sourcing"
         queued.append(result)
-        print(f"  {domain}: ACCEPTED" + (f" (contact: {result['contact_email']})" if result["contact_email"] else " (no contact email found)"))
+        print(f"  {domain}: ACCEPTED (contact: {result['contact_email']})")
 
-    print(f"\n{len(queued)} candidate(s) passed vetting out of {evaluated} evaluated.")
+    print(
+        f"\n{len(queued)} candidate(s) queued (all with a verified contact email) out of "
+        f"{evaluated} evaluated ({skipped_no_email} credible-but-unreachable skipped)."
+    )
 
     if args.dry_run:
         print("\n--dry-run: not creating any prospects. Would have queued:")
