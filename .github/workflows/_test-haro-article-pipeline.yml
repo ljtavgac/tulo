@@ -21,6 +21,24 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Wait for staging to actually be serving this commit
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: |
+          set -uo pipefail
+          deadline=$((SECONDS + 600))
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            live_commit="$(curl -sS --connect-timeout 10 --max-time 20 "$BACKEND_BASE_URL/health" 2>/dev/null \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin).get("git_commit") or "")' 2>/dev/null || true)"
+            if [ "$live_commit" = "${{ github.sha }}" ]; then
+              echo "Staging is now serving ${{ github.sha }}."
+              exit 0
+            fi
+            echo "Staging is on commit '${live_commit:-<unreachable>}', waiting for ${{ github.sha }} ($((SECONDS))s elapsed)..."
+            sleep 15
+          done
+          echo "::warning::Staging never reported serving ${{ github.sha }} within 10 minutes -- proceeding anyway."
+
       - name: Run test
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
