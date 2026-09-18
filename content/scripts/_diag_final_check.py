@@ -21,9 +21,11 @@ def main() -> None:
     r2 = requests.get(f"{base}/admin/outreach-queue/list.json", auth=auth, params={"status": "all"}, timeout=30)
     row = next((x for x in r2.json() if x["id"] == 38), None)
     print(f"PROSPECT_STATUS={row['status'] if row else 'NOT FOUND'}")
-    if row and row["status"] == "queued":
+    if row:
+        print(f"SENT_AT={row.get('sent_at')}")
+        print(f"SEND_ERROR={row.get('send_error')}")
+        print(f"CONTACT_EMAIL={row.get('contact_email')}")
         print(f"SUBJECT={row['subject']!r}")
-        print(f"BODY={row['body_preview']!r}")
 
 
 if __name__ == "__main__":
