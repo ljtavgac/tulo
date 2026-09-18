@@ -3918,9 +3918,13 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     one of the seven real template types -- the model is never free to
     invent an eighth kind of page this site doesn't actually support.
 
-    Raises on any API/tool-loop/parsing problem -- callers fall back to
-    the old raw-placeholder-row behavior rather than silently dropping a
-    possibly real query because of a transient API hiccup. Never called
+    Retries the whole tool-loop from scratch once on a JSON parse failure
+    (confirmed live: the model occasionally ends a turn with prose or a
+    truncated tool call instead of the required bare JSON array, and an
+    identical retry came back clean) before giving up. Raises on any
+    API/tool-loop/parsing problem that survives the retry -- callers fall
+    back to the old raw-placeholder-row behavior rather than silently
+    dropping a possibly real query because of a transient API hiccup. Never called
     anywhere that skips human approval afterward -- see
     outreach_queue_decide, unchanged: a drafted row still needs an
     explicit Approve before _send_outreach_email ever fires, and a
@@ -3991,46 +3995,62 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     # least one of these verbatim; see the filter after the loop.
     allowed_urls = {t["url"] for t in _TULO_TOOLS_FOR_PITCHING}
 
-    messages: list[dict] = [{"role": "user", "content": digest_text}]
+    # Confirmed live (Food Republic/Featured.com re-test): the model
+    # occasionally ends its turn with prose instead of the required bare
+    # JSON array, or truncates mid tool-call with zero text blocks at all
+    # -- a transient formatting slip, not a real content decision (an
+    # identical retry on the same digest_text came back with clean valid
+    # JSON). Losing an ENTIRE multi-query digest to one bad turn is a real
+    # cost, so retry the whole tool-loop fresh before giving up.
+    _JSON_PARSE_MAX_ATTEMPTS = 2
+    parsed = None
     response = None
-    for _ in range(_HARO_DRAFTING_MAX_TOOL_TURNS):
-        response = client.messages.create(
-            model=_HARO_DRAFTING_MODEL,
-            max_tokens=4096,
-            system=system_prompt,
-            tools=[_SEARCH_TULO_CONTENT_TOOL],
-            messages=messages,
-        )
-        if response.stop_reason != "tool_use":
-            break
-        messages.append({"role": "assistant", "content": response.content})
-        tool_results = []
-        for block in response.content:
-            if block.type != "tool_use":
-                continue
-            results = _search_tulo_content(db, block.input.get("query", "")) if block.name == "search_tulo_content" else []
-            allowed_urls.update(r["url"] for r in results)
-            tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
-        messages.append({"role": "user", "content": tool_results})
-    else:
-        raise ValueError(f"Exceeded {_HARO_DRAFTING_MAX_TOOL_TURNS} tool-use turns without a final answer")
+    raw = ""
+    for attempt in range(1, _JSON_PARSE_MAX_ATTEMPTS + 1):
+        messages: list[dict] = [{"role": "user", "content": digest_text}]
+        for _ in range(_HARO_DRAFTING_MAX_TOOL_TURNS):
+            response = client.messages.create(
+                model=_HARO_DRAFTING_MODEL,
+                max_tokens=4096,
+                system=system_prompt,
+                tools=[_SEARCH_TULO_CONTENT_TOOL],
+                messages=messages,
+            )
+            if response.stop_reason != "tool_use":
+                break
+            messages.append({"role": "assistant", "content": response.content})
+            tool_results = []
+            for block in response.content:
+                if block.type != "tool_use":
+                    continue
+                results = _search_tulo_content(db, block.input.get("query", "")) if block.name == "search_tulo_content" else []
+                allowed_urls.update(r["url"] for r in results)
+                tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
+            messages.append({"role": "user", "content": tool_results})
+        else:
+            raise ValueError(f"Exceeded {_HARO_DRAFTING_MAX_TOOL_TURNS} tool-use turns without a final answer")
 
-    raw = "".join(block.text for block in response.content if block.type == "text").strip()
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError as e:
-        # Bare JSONDecodeError gives no way to tell "model wrote prose
-        # instead of JSON" apart from "response got truncated" (e.g.
-        # stop_reason="max_tokens" mid tool-call, leaving zero text
-        # blocks at all) -- both surface identically as "Expecting value:
-        # line 1 column 1 (char 0)" with no context. Re-raising with the
-        # actual stop_reason and a slice of what the model returned makes
-        # this diagnosable from auto_drafting_skipped_reason alone instead
-        # of requiring a live repro with ad hoc logging.
-        raise ValueError(
-            f"Model did not return valid JSON (stop_reason={response.stop_reason!r}, "
-            f"raw={raw[:500]!r}): {e}"
-        ) from e
+        raw = "".join(block.text for block in response.content if block.type == "text").strip()
+        try:
+            parsed = json.loads(raw)
+            break
+        except json.JSONDecodeError as e:
+            if attempt == _JSON_PARSE_MAX_ATTEMPTS:
+                # Bare JSONDecodeError gives no way to tell "model wrote
+                # prose instead of JSON" apart from "response got
+                # truncated" (e.g. stop_reason="max_tokens" mid tool-call,
+                # leaving zero text blocks at all) -- both surface
+                # identically as "Expecting value: line 1 column 1 (char
+                # 0)" with no context. Re-raising with the actual
+                # stop_reason and a slice of what the model returned makes
+                # this diagnosable from auto_drafting_skipped_reason alone
+                # instead of requiring a live repro with ad hoc logging.
+                raise ValueError(
+                    f"Model did not return valid JSON after {_JSON_PARSE_MAX_ATTEMPTS} attempts "
+                    f"(stop_reason={response.stop_reason!r}, raw={raw[:500]!r}): {e}"
+                ) from e
+            print(f"  _draft_haro_replies: attempt {attempt} returned invalid JSON, retrying fresh: {e}")
+
     if not isinstance(parsed, list):
         raise ValueError(f"Expected a JSON list from the model, got {type(parsed).__name__}")
 
