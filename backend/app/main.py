@@ -3405,6 +3405,30 @@ def outreach_queue_update_contact(
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
 
 
+@app.get("/admin/outreach-queue/update-source-platform")
+def outreach_queue_update_source_platform(
+    prospect_id: int,
+    source_platform: str,
+    show: str = "queued",
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Sets source_platform on a haro_reply that predates that field
+    existing, or one whose sender domain _source_platform_label didn't
+    recognize -- lets the portal's platform-specific pill (see card())
+    show correctly on a row the automatic ingest-time assignment
+    couldn't cover. Same GET-link-plus-redirect convention as
+    update-contact just above."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+
+    prospect.source_platform = source_platform.strip() or None
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
 @app.post("/admin/outreach-queue/update-content")
 def outreach_queue_update_content(
     prospect_id: int = Form(...),
