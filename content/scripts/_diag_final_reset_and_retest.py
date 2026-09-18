@@ -64,7 +64,7 @@ def main() -> None:
     base = os.environ["BACKEND_BASE_URL"].rstrip("/")
     auth = (os.environ["OUTREACH_ADMIN_USER"], os.environ["OUTREACH_ADMIN_PASSWORD"])
 
-    for old_id in (83, 84, 87, 88, 89, 90, 91, 92, 93, 78, 79, 80):
+    for old_id in (94, 95, 96, 97, 98, 99, 100, 101, 102, 103):
         reject(base, auth, old_id)
 
     latte_ids = ingest(base, auth, "noreply@helpareporter.com", "HARO latte-mistakes query", LATTE_QUERY)
@@ -85,7 +85,7 @@ def main() -> None:
                 print(f"id={pid}: not found")
                 continue
             print(f"\n--- id={pid} type={'reply' if not row.get('proposed_template_type') else 'content_opportunity'} group={row.get('source_group_id')} ---")
-            print(f"title/subject: {row.get('proposed_title') or row.get('subject')!r}")
+            print(f"title/subject: {row.get('proposed_title') or row.get('subject')!r} template_type={row.get('proposed_template_type')!r}")
             if not row.get("proposed_template_type"):
                 print(f"BODY:\n{row.get('body_preview')}")
 
