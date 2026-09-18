@@ -20,6 +20,7 @@ import { sectionForTemplate } from "@/lib/taxonomy";
 import { getLinkTerms } from "@/lib/linkTerms";
 import { formatUsQuantity } from "@/lib/format";
 import { detectFoodCategory } from "@/lib/timeTemps";
+import { cuisineForCategorySlug, deriveStepName } from "@/lib/recipeJsonLd";
 
 export async function generateMetadata({
   params,
@@ -92,11 +93,19 @@ export default async function RecipePage({
           cookTime: minutesToIso8601(content.cook_time_minutes),
           totalTime: minutesToIso8601(content.total_time_minutes),
           recipeYield: `${content.servings} servings`,
+          // Non-critical GSC suggestion (2026-09-18): omitted entirely
+          // when the recipe's category_link isn't one of the known
+          // cuisine collections -- see cuisineForCategorySlug's own
+          // comment for why this is never guessed.
+          ...(cuisineForCategorySlug(content.category_link?.slug)
+            ? { recipeCuisine: cuisineForCategorySlug(content.category_link?.slug) }
+            : {}),
           recipeIngredient: content.ingredients.map(
             (ing) => `${formatUsQuantity(ing.base_qty)} ${ing.unit_us} ${ing.name}`
           ),
           recipeInstructions: content.instructions.map((step) => ({
             "@type": "HowToStep",
+            name: deriveStepName(step),
             text: step,
           })),
           ...(baseNutrition.hasData
