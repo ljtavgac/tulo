@@ -1,0 +1,30 @@
+name: TEST - HARO article pipeline (throwaway)
+
+# Throwaway verification workflow for the new HARO content-opportunity ->
+# Create Article feature -- see content/scripts/_test_haro_article_pipeline.py.
+# Delete both files after use.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test-haro-article-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run test
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/_test_haro_article_pipeline.py
