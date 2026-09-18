@@ -53,6 +53,21 @@ def main() -> None:
     print("status:", r.status_code)
     print(r.text)
 
+    print("\n--- searching all prospects for bacon/Edwards matches ---")
+    r2 = requests.get(f"{base}/admin/outreach-queue/list.json", auth=auth, params={"status": "all"}, timeout=30)
+    r2.raise_for_status()
+    rows = r2.json()
+    hits = [
+        row for row in rows
+        if "bacon" in (row.get("source_query") or "").lower()
+        or "bacon" in (row.get("subject") or "").lower()
+        or "edwards" in (row.get("contact_name") or "").lower()
+    ]
+    print(f"{len(hits)} matching row(s):")
+    for row in hits:
+        print(f"  id={row['id']} status={row['status']} created_at={row.get('created_at')} "
+              f"contact_name={row.get('contact_name')!r} subject={row.get('subject')!r}")
+
 
 if __name__ == "__main__":
     main()

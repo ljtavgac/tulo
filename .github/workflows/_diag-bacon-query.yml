@@ -18,9 +18,9 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Replay query
+      - name: List matching prospects
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
           OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
           OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
-        run: python3 content/scripts/_diag_bacon_query.py
+        run: python3 content/scripts/_diag_list_bacon.py
