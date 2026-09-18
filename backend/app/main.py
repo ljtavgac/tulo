@@ -2892,7 +2892,12 @@ def _resolve_pending_articles(db: Session) -> int:
     _draft_haro_replies here would need the original digest_text again
     (not stored -- only query_excerpt, a trimmed copy, is), and a portal
     page load is the wrong place for a network-bound LLM round trip
-    anyway. The human still reviews and can freely edit this before
+    anyway. contact_email being null here means _draft_haro_replies
+    proposed this content_opportunity against a platform-only query with
+    no printed reply address (same case as a manual-submission reply) --
+    the templated follow-up gets the same "[Manual submission -- ...]"
+    subject prefix instead of the normal "Hi <name>" email, since there's
+    still no address to auto-notify now that the page exists. The human still reviews and can freely edit this before
     approving, same as every other queued card."""
     pending = db.query(OutreachProspect).filter(OutreachProspect.status == "article_pending_review").all()
     resolved = 0
@@ -2915,13 +2920,24 @@ def _resolve_pending_articles(db: Session) -> int:
             # reporter, referencing the now-live url above.
             r.subject = f"[No AI pitches -- write manually] Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"[No AI pitches -- write manually] Following up: {r.proposed_title}"
             r.body_preview = _NO_AI_PITCHES_PLACEHOLDER
-        else:
+        elif r.contact_email:
             r.subject = f"Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"Following up: {r.proposed_title}"
             r.body_preview = (
                 f"Hi{' ' + r.contact_name if r.contact_name else ''},\n\n"
                 f"Following up on this - we just published a page that directly answers it: {url}\n\n"
                 "Happy to answer any follow-up questions if it's useful for the piece.\n\n"
                 "Thanks for your time,\n\nTulo Team"
+            )
+        else:
+            # Same manual-submission case as a "reply" with no printed
+            # address (see _draft_haro_replies) -- this content_opportunity
+            # was proposed against a platform-only query, so there's no
+            # address to auto-notify now that the page is live. A human
+            # posts the link back through that outlet's own platform.
+            r.subject = f"[Manual submission -- no email, submit via outlet's platform] Re: {r.source_query.splitlines()[0][:80]}" if r.source_query else f"[Manual submission -- no email, submit via outlet's platform] Following up: {r.proposed_title}"
+            r.body_preview = (
+                f"We just published a page that directly answers this: {url}\n\n"
+                "Feel free to share it if it's useful for the piece."
             )
         r.status = "queued"
         resolved += 1
@@ -3934,26 +3950,29 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     reply text for one of these isn't drafted until _resolve_pending_
     articles, once the generated page goes live (see that function for
     the matching check). Invariants enforced in code, not just asked for
-    in the prompt. For a "content_opportunity", reporter_email must be
-    non-empty AND appear verbatim somewhere in digest_text, or the item
-    is dropped outright -- there's no value in proposing a new page
-    without a real way to later tell the reporter it exists. A "reply" is
-    more lenient: many outlets (Featured.com's platform-routed
+    in the prompt. Neither type is dropped just for missing a printed
+    reply address -- many outlets (Featured.com's platform-routed
     opportunities, a reporter who says "email me first for questions"
     instead of printing an address, etc.) have no real per-query reply
-    address in the text at all -- that's not a reason to drop a
-    genuinely on-topic reply, just a reason it can't be auto-sent. When a
-    "reply"'s reporter_email is missing, or claimed but not actually
-    verbatim in digest_text (rules out the model inventing one, the same
-    way allowed_urls rules out inventing a page -- though not, in a
+    address in the text at all, and that's not a reason to drop a
+    genuinely on-topic reply OR a genuinely worthwhile content_opportunity,
+    just a reason the eventual notification can't be auto-sent. When
+    reporter_email is missing, or claimed but not actually verbatim in
+    digest_text (rules out the model inventing one, the same way
+    allowed_urls rules out inventing a page -- though not, in a
     multi-query digest, independently proving a real one is paired with
     the *correct* query, which is still the model's own reading
     comprehension, not a regex re-parse of the digest, per this project's
     own history with that approach), the item is KEPT with reporter_email
-    set to null and its subject prefixed "[Manual submission -- ...]" --
-    outreach_queue_decide's send-on-approve already no-ops safely with no
-    contact_email, so a human reviewer copies the drafted body in
-    manually through that outlet's own platform instead. Every other
+    set to null: a "reply" gets its subject prefixed "[Manual submission
+    -- ...]" immediately; a "content_opportunity" carries contact_email=
+    None onto its article_pending row, and _resolve_pending_articles
+    gives its eventual follow-up the same manual-submission prefix once
+    the page goes live, instead of the normal "Hi <name>" templated
+    email it uses when a real address exists. outreach_queue_decide's
+    send-on-approve already no-ops safely with no contact_email either
+    way, so a human reviewer copies the text in manually through that
+    outlet's own platform instead. Every other
     invariant still applies the same way: a "reply"'s body contains a URL from
     the closed set actually available this call (the three fixed tools
     plus every URL _search_tulo_content actually returned) -- the model is
@@ -4020,15 +4039,26 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "genuinely separate asks a reporter would accept separate answers to.\n\n"
         "A single coherent query built around many numbered sub-questions on ONE topic (e.g. a dozen "
         "numbered questions all about fixing common homemade-latte mistakes) is different from the "
-        "bundling case above -- it's one topic, so it stays one item, not several. But don't answer it "
-        "with a single generic gesture at 'a useful reference' that only engages one sub-question and "
-        "waves at the rest: search_tulo_content separately for sub-questions that plausibly have "
-        "different real matches (milk steaming, grind size, bean selection, and cheap tools might each "
-        "turn up a different page), and write a reply that works through each sub-question you found "
-        "real Tulo content for, citing the specific page for each rather than mentioning one page once. "
-        "It's fine, and expected, for some sub-questions to have no Tulo match -- say so briefly for "
-        "those rather than silently skipping them. The 3-5 sentence length below is for an ordinary "
-        "single-question query; a many-part query like this earns a longer, structured reply instead.\n\n"
+        "bundling case above -- it's one topic, so its reply stays one item, not several. But don't "
+        "answer it with a single generic gesture at 'a useful reference' that only engages one "
+        "sub-question and waves at the rest: search_tulo_content separately for sub-questions that "
+        "plausibly have different real matches (milk steaming, grind size, bean selection, and cheap "
+        "tools might each turn up a different page). Write the reply body in this exact shape: a short "
+        "opening paragraph synthesizing the overall angle (1-3 sentences), then one line per numbered "
+        "sub-question in order, each starting with the sub-question restated in bold (e.g. **What's the "
+        "biggest mistake?**) followed by the specific answer inline on the same line -- never a single "
+        "paragraph that mentions a page once and moves on. A sub-question answered by a real Tulo page "
+        "cites that page's URL inline on its own line; a sub-question with no Tulo match still gets its "
+        "own bolded line, but instead of a URL, apply the SAME bar as the no-existing-match paragraph "
+        "above (real, narrow, evergreen, worth a permanent page on its own) -- if it clears that bar, "
+        "say so briefly on that line (e.g. 'we don't have a page on this yet, but it's a good one for "
+        "us to add') AND also emit a separate \"content_opportunity\" item for it (its own "
+        "proposed_title/proposed_template_type/rationale, query_excerpt set to just that one "
+        "sub-question, not the whole bundled query) exactly like the bundling case above; if it's too "
+        "niche or narrow a one-off to ever be its own page, just note the gap briefly on that line and "
+        "don't propose a content_opportunity for it. The 3-5 sentence length below is for an ordinary "
+        "single-question query; a many-part query like this earns this longer, structured shape "
+        "instead.\n\n"
         "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
         "no markdown fences, no further tool calls). Every object needs a \"type\" key, either "
         "\"reply\" or \"content_opportunity\", plus reporter_email, reporter_name, outlet, "
@@ -4044,16 +4074,26 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "genuinely on-topic fit even when the query only gives a platform inbox/submission link with "
         "no real email address printed in the text -- set reporter_email to null in that case rather "
         "than skip it (a human will submit it manually through that outlet's own platform instead of "
-        "it being emailed automatically); never invent or guess an address just to fill that field. A "
+        "it being emailed automatically); never invent or guess an address just to fill that field. "
+        "Write every reply the way a real person would, not with the stock openers and closers that "
+        "make AI-drafted pitches recognizable at a glance -- never start with 'Happy to...' or 'Loved "
+        "your...', never end with 'Let me know if...' or a similar generic sign-off; don't reuse the "
+        "same scaffolding phrase (e.g. 'I'd point you to...', 'happy to point you toward...') across "
+        "different replies. Start from the actual specific fact or resource being offered, vary "
+        "sentence structure and phrasing from reply to reply, and keep it grounded in this one query's "
+        "real content rather than a template that would read the same for any pitch. A "
         "\"content_opportunity\" instead needs proposed_title (a real, specific page title, not the "
         "query verbatim), "
         f"proposed_template_type (exactly one of: {template_types_block}), and rationale (one "
-        "sentence, for a human reviewer, why this is worth a new page) -- unlike a reply, only "
-        "propose a content_opportunity when a real reporter_email is actually printed in the digest "
-        "text, since there'd otherwise be no way to ever let them know the page exists. Hard "
+        "sentence, for a human reviewer, why this is worth a new page). A content_opportunity is just "
+        "as valid on a platform-only query with no printed reply address as a reply is -- set "
+        "reporter_email to null there too rather than skip a genuinely worthwhile page idea; once the "
+        "page is live, a human posts it back through that outlet's own platform the same way a "
+        "manual-submission reply gets sent, so a missing address is a delivery detail, not a reason to "
+        "drop the idea. Hard "
         "requirements, checked and enforced after your response: a claimed reporter_email must "
         "actually appear verbatim in the digest text -- never invented, though it may be left null on "
-        "a reply when the outlet only offers a platform-only submission; a reply's body must contain "
+        "either type when the outlet only offers a platform-only submission; a reply's body must contain "
         "one of the real URLs verbatim; a content_opportunity's proposed_template_type must be "
         "exactly one of the seven listed. If there are zero fits and zero opportunities, respond with "
         "exactly: []"
@@ -4141,18 +4181,20 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         label = item.get("subject") or item.get("proposed_title")
         needs_manual_submission = False
         if not reporter_email:
-            if item_type == "content_opportunity":
-                print(f"  _draft_haro_replies: dropping content_opportunity with no reporter_email: {label!r}")
-                continue
-            # A "reply" with no printed reply address isn't a dead end --
+            # Neither type is a dead end without a printed reply address --
             # some outlets (Featured.com's platform-routed opportunities, a
             # reporter who says "email me first for questions" instead of
             # printing an address, etc.) only accept a manual submission
-            # through their own site/form. Keep the item with no
-            # contact_email -- outreach_queue_decide's send-on-approve
-            # already no-ops safely with no address -- so a human reviewer
-            # copies the drafted body in manually instead. See the
-            # subject prefix below for how this is surfaced in the portal.
+            # through their own site/form, and a content_opportunity is no
+            # different: once its page goes live, a human posts the link
+            # back through that same platform instead of an automated
+            # email (see _resolve_pending_articles). Keep the item with no
+            # contact_email rather than drop it -- outreach_queue_decide's
+            # send-on-approve already no-ops safely with no address, so a
+            # human reviewer copies the text in manually. See the subject
+            # prefix below for how a "reply" surfaces this in the portal;
+            # a "content_opportunity" surfaces it via contact_email=None
+            # on its row, checked in _resolve_pending_articles once live.
             needs_manual_submission = True
             item["reporter_email"] = None
         elif reporter_email not in digest_text:
@@ -4166,10 +4208,7 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
             # project's own history with that approach -- see
             # outreach_queue_ingest_email's docstring), but it does guarantee
             # the address is real, not fabricated.
-            if item_type == "content_opportunity":
-                print(f"  _draft_haro_replies: dropping content_opportunity whose reporter_email isn't in the source digest: {reporter_email!r}")
-                continue
-            print(f"  _draft_haro_replies: reply's claimed reporter_email not in source digest, dropping email only: {reporter_email!r}")
+            print(f"  _draft_haro_replies: {item_type}'s claimed reporter_email not in source digest, dropping email only: {reporter_email!r}")
             needs_manual_submission = True
             item["reporter_email"] = None
 
@@ -4264,6 +4303,33 @@ def _parse_inbound_email_payload(payload: dict) -> tuple[str, str, str]:
     return sender_email, subject.strip(), body.strip()
 
 
+def _is_platform_service_email(body: str) -> bool:
+    """True for a service/account-management email from a forwarding
+    platform itself (e.g. HARO's own "Welcome to HARO -- Please Verify
+    Your Email" onboarding message) rather than an actual journalist
+    query digest -- confirmed live: exactly that message reached the
+    portal as a placeholder "[Draft needed]" row after _draft_haro_replies
+    hit a hiccup processing it (it has no real query in it at all, so
+    there was nothing for the model to legitimately triage either way).
+    These carry zero query content, so there's no reason to spend an API
+    call on them and no useful fallback placeholder either -- skip them
+    outright before ever calling _draft_haro_replies.
+
+    Deliberately a short, high-confidence list of exact account-
+    management phrasing, not a topic/relevance heuristic -- see this
+    project's own history with keyword-matching relevance (the #2
+    near-miss ingredient matcher, a much riskier kind of guess this
+    function isn't making). A real journalist query never contains this
+    specific onboarding/subscription language, so a false positive here
+    is effectively impossible."""
+    lowered = body.lower()
+    return (
+        "please verify your email" in lowered
+        or "you've been automatically subscribed" in lowered
+        or "you have been automatically subscribed" in lowered
+    )
+
+
 @app.post("/admin/outreach-queue/ingest-email")
 async def outreach_queue_ingest_email(
     request: Request,
@@ -4294,6 +4360,10 @@ async def outreach_queue_ingest_email(
     which is form-encoded) would need a real code change here, not just a
     new schema branch.
 
+    A platform's own service/account email (e.g. HARO's "please verify
+    your email" onboarding message -- see _is_platform_service_email) is
+    filtered out before any of this, since it carries no query at all.
+
     Splits a digest into one real, drafted-reply prospect per genuinely
     relevant query (see _draft_haro_replies) -- queues nothing at all when
     the digest has no real fit, rather than a row a human has to triage by
@@ -4317,6 +4387,13 @@ async def outreach_queue_ingest_email(
     sender_email, subject, body = _parse_inbound_email_payload(payload)
     sender_domain = sender_email.split("@")[-1].strip().lower() if "@" in sender_email else "unknown-sender"
     source_platform = _source_platform_label(sender_domain)
+
+    if body and _is_platform_service_email(body):
+        return {
+            "created_prospect_ids": [],
+            "relevant_queries_found": 0,
+            "skipped_reason": "platform service/account email, not a query digest",
+        }
 
     truncated = len(body) > _MAX_INGESTED_QUERY_CHARS
     if truncated:
