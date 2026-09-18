@@ -120,8 +120,8 @@ class OutreachProspect(Base):
     was what actually went out.
 
     status: "queued" (needs a decision) | "approved" | "rejected" | "article_pending"
-    | "article_requested" | "article_pending_review". The last three exist
-    only for a haro_reply whose query has no existing Tulo page/tool to
+    | "article_requested" | "article_pending_review" | "article_failed". The
+    last four exist only for a haro_reply whose query has no existing Tulo page/tool to
     cite but is genuinely answerable by one new article (see
     _draft_haro_replies' content-opportunity items, a separate outcome
     from a normal drafted reply): "article_pending" is the freshly-flagged
@@ -145,6 +145,15 @@ class OutreachProspect(Base):
     it's re-drafted with the real URL, subject/body_preview filled in,
     and status flips to "queued" -- a normal, sendable row from that point
     on, no different from any other haro_reply.
+
+    "article_failed" -- generate_haro_article.py exhausted its own
+    generation retries and could not produce a valid page at all. Set by
+    POST /admin/outreach-queue/mark-article-failed, which that script
+    calls before re-raising (so the CI job still shows red for
+    debugging, but the row doesn't just sit at "article_requested"
+    forever looking like it's still in progress). body_preview holds a
+    reviewer-facing "can't produce this" note; the only action available
+    is Reject, or a human can re-run Create Article to try again.
 
     sent_at/send_error record what happened when an approval tried to
     actually send -- both stay null for an approval that predates
@@ -193,6 +202,16 @@ class OutreachProspect(Base):
     proposed_title: Mapped[str | None] = mapped_column(String, nullable=True)
     proposed_template_type: Mapped[str | None] = mapped_column(String, nullable=True)
     target_slug: Mapped[str | None] = mapped_column(String, nullable=True)
+    # Why _draft_haro_replies thinks this content_opportunity is worth
+    # building -- reviewer-only context for the Create Article/Reject
+    # decision, shown in the article_pending "not-ready" box, never in
+    # body_preview. A real, reported confusion: body_preview used to
+    # hold this same "Why: ..." text, which reads like internal
+    # deliberation a reporter should never see, even though it was
+    # never actually sent (see the status docstring above -- a
+    # content_opportunity has no sendable body until its article goes
+    # live). Null for a non-content_opportunity row.
+    rationale: Mapped[str | None] = mapped_column(String, nullable=True)
     # True when the source query itself said something like "No AI Pitches
     # Considered" (see _query_disallows_ai_pitches in main.py) -- a real,
     # not hypothetical, note found on an actual HARO query this project

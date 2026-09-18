@@ -3056,7 +3056,7 @@ _PITCH_TYPE_LABELS: dict[str, tuple[str, str]] = {
 
 @app.get("/admin/outreach-queue", response_class=HTMLResponse)
 def outreach_queue(
-    show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | all"),
+    show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | article_failed | all"),
     db: Session = Depends(get_db),
     _auth: None = Depends(_require_outreach_auth),
 ):
@@ -3087,13 +3087,16 @@ def outreach_queue(
         # reported. Each status still renders its own appropriate action
         # via card() below (Create Article button / wait note / full
         # inline review), so nothing about how a given row is handled
-        # changes -- only whether it shows up here by default.
+        # changes -- only whether it shows up here by default. Same
+        # reasoning covers "article_failed" -- a can't-produce card
+        # needs a reviewer's Retry/Reject decision just as much.
         query = query.filter(OutreachProspect.status.in_(
-            ["queued", "article_pending", "article_requested", "article_pending_review"]
+            ["queued", "article_pending", "article_requested", "article_pending_review", "article_failed"]
         ))
     elif show != "all":
         query = query.filter(OutreachProspect.status == show)
     rows = query.order_by(OutreachProspect.created_at.desc()).all()
+    rows_ids = {r.id for r in rows}
 
     counts = Counter(r.status for r in db.query(OutreachProspect).all())
 
@@ -3103,7 +3106,9 @@ def outreach_queue(
     # *different* status tab (a content_opportunity spun off from the same
     # query as a reply lands in "article_pending", not "queued" -- see
     # source_group_id's own docstring for the reported confusion this
-    # fixes).
+    # fixes). A sibling that's actually present in `rows` (this view)
+    # gets nested visually instead (see prospect-group below), so the
+    # note only lists ones a jump link is the only way to reach.
     group_siblings: dict[str, list[OutreachProspect]] = {}
     for gr in db.query(OutreachProspect).filter(OutreachProspect.source_group_id.isnot(None)).all():
         group_siblings.setdefault(gr.source_group_id, []).append(gr)
@@ -3165,11 +3170,19 @@ def outreach_queue(
             # request (see outreach_queue_create_article); the real
             # generation happens externally (see
             # content/scripts/generate_haro_article.py), never inline in
-            # this request.
+            # this request. The rationale here is reviewer-only context
+            # for this Create/Reject decision -- never shown as if it
+            # were sendable copy (see body_preview's own placeholder,
+            # and rationale's docstring on OutreachProspect).
+            rationale_html = (
+                f'<div class="reviewer-note">Reviewer note (never sent) -- why this is worth building: '
+                f'{escape_html(r.rationale)}</div>' if r.rationale else ""
+            )
             actions_html = f"""
             <div class="not-ready">No existing Tulo page answers this query yet. Create Article requests a
             new page for it -- generation runs separately and still needs the normal human content review
             before this becomes a sendable reply.</div>
+            {rationale_html}
             <form method="post" action="/admin/outreach-queue/create-article" class="content-form">
               <input type="hidden" name="prospect_id" value="{r.id}">
               <input type="hidden" name="show" value="{show}">
@@ -3191,6 +3204,26 @@ def outreach_queue(
                 "live on prod, this card auto-fills with a real, sendable reply on the next portal load.</div>"
                 + _render_inline_article_review(r, show, db)
             )
+        elif r.status == "article_failed":
+            # generate_haro_article.py exhausted its own generation
+            # retries -- see article_failed's own docstring on
+            # OutreachProspect. body_preview already holds a
+            # reviewer-facing "can't produce this" note (set by
+            # mark-article-failed), shown via content_html below like
+            # any other non-queued row; this box just explains the
+            # available actions.
+            actions_html = f"""
+            <div class="cant-produce">Generation failed after retries -- see the note below. Retry tries
+            generation again from scratch; Reject drops this idea.</div>
+            <form method="post" action="/admin/outreach-queue/create-article" class="content-form">
+              <input type="hidden" name="prospect_id" value="{r.id}">
+              <input type="hidden" name="show" value="{show}">
+              <button type="submit" class="btn-approve">Retry</button>
+            </form>
+            <div class="actions">
+              <a class="btn-reject" href="/admin/outreach-queue/decide?prospect_id={r.id}&status=rejected&show={show}">Reject</a>
+            </div>
+            """
         else:
             decided_label = f"{r.decided_at:%Y-%m-%d %H:%M}" if r.decided_at else ""
             actions_html = (
@@ -3262,7 +3295,10 @@ def outreach_queue(
             content_reject_html = ""
 
         siblings = (
-            sorted((s for s in group_siblings.get(r.source_group_id, []) if s.id != r.id), key=lambda s: s.id)
+            sorted(
+                (s for s in group_siblings.get(r.source_group_id, []) if s.id != r.id and s.id not in rows_ids),
+                key=lambda s: s.id,
+            )
             if r.source_group_id else []
         )
         if siblings:
@@ -3298,7 +3334,48 @@ def outreach_queue(
         </div>
         """
 
-    rows_html = "".join(card(r) for r in rows) if rows else '<p style="color:#888;font-size:13px;">Nothing here.</p>'
+    # Visual grouping: when more than one member of the same
+    # source_group_id is present in this view (e.g. show=all, or a
+    # digest that split into several replies), nest them together --
+    # one anchor card plus its siblings indented underneath -- instead
+    # of relying purely on the "linked items" text note above, which
+    # only fires for a sibling sitting in a status tab not shown here.
+    # A real, reported confusion: Southern Living's three
+    # content_opportunity siblings rendered as unrelated top-level
+    # cards even on show=all, with no visual tie to each other.
+    in_view_by_group: dict[str, list[OutreachProspect]] = {}
+    for r in rows:
+        if r.source_group_id:
+            in_view_by_group.setdefault(r.source_group_id, []).append(r)
+
+    def group_anchor(members: list[OutreachProspect]) -> OutreachProspect:
+        # A real, sendable reply anchors the group (proposed_template_type
+        # is only ever set on a content_opportunity -- see its own
+        # docstring on OutreachProspect); otherwise the earliest-created
+        # member does, so the group has a stable, deterministic anchor
+        # even when every member is a content_opportunity (e.g. Southern
+        # Living, which split into three with no reply at all).
+        for m in members:
+            if not m.proposed_template_type:
+                return m
+        return min(members, key=lambda m: m.id)
+
+    rendered_ids: set[int] = set()
+    pieces: list[str] = []
+    for r in rows:
+        if r.id in rendered_ids:
+            continue
+        members = in_view_by_group.get(r.source_group_id, []) if r.source_group_id else []
+        if len(members) > 1:
+            anchor = group_anchor(members)
+            children = [m for m in members if m.id != anchor.id]
+            rendered_ids.update(m.id for m in members)
+            children_html = "".join(card(c) for c in children)
+            pieces.append(f'<div class="prospect-group">{card(anchor)}<div class="group-children">{children_html}</div></div>')
+        else:
+            rendered_ids.add(r.id)
+            pieces.append(card(r))
+    rows_html = "".join(pieces) if pieces else '<p style="color:#888;font-size:13px;">Nothing here.</p>'
 
     html = f"""
     <html>
@@ -3312,6 +3389,10 @@ def outreach_queue(
         .filters {{ margin-bottom: 16px; }}
         .filters a {{ margin-right: 10px; font-size: 13px; }}
         .card {{ background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }}
+        .prospect-group {{ margin-bottom: 12px; }}
+        .prospect-group .card {{ margin-bottom: 0; }}
+        .group-children {{ margin: 8px 0 12px 28px; padding-left: 14px; border-left: 3px solid #bcd9f2; }}
+        .group-children .card {{ margin-top: 10px; }}
         .card.status-approved {{ border-color: #bde0c4; }}
         .card.status-rejected {{ opacity: 0.6; }}
         .title {{ font-weight: 600; font-size: 14px; }}
@@ -3324,6 +3405,7 @@ def outreach_queue(
         .pill-status-approved {{ background: #dcefe0; color: #276b3c; }}
         .pill-status-rejected {{ background: #fbdada; color: #a00; }}
         .pill-status-article_pending, .pill-status-article_requested, .pill-status-article_pending_review {{ background: #fff6dd; color: #7a5b00; }}
+        .pill-status-article_failed {{ background: #fbdada; color: #a00; }}
         .pill-no-ai {{ background: #fde8e8; color: #a3242a; }}
         .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
         .source-query {{ font-size: 12px; color: #5b2d90; background: #f7f2fc; border-radius: 4px; padding: 6px 8px; margin: 6px 0; }}
@@ -3342,6 +3424,8 @@ def outreach_queue(
         .decided {{ font-size: 11px; color: #888; margin-top: 8px; }}
         .decided a {{ color: #06c; }}
         .not-ready {{ font-size: 11px; color: #7a5b00; background: #fff6dd; border: 1px solid #f0dfa0; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
+        .reviewer-note {{ font-size: 11px; color: #555; background: #f2f2f2; border: 1px solid #ddd; border-radius: 4px; padding: 6px 8px; margin-top: 8px; font-style: italic; }}
+        .cant-produce {{ font-size: 11px; color: #a00; background: #fdecec; border: 1px solid #f0b8b8; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
         .linked-items {{ font-size: 11px; color: #1a4d7a; background: #e8f2fc; border: 1px solid #bcd9f2; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
         .linked-items ul {{ margin: 4px 0 0; padding-left: 18px; }}
         .linked-items a {{ color: #06c; }}
@@ -3382,12 +3466,13 @@ def outreach_queue(
         GMAIL_SMTP_APP_PASSWORD are configured -- check the send status under each approved row. Edit the
         subject/body on any queued card before approving; that's what goes out, not a separate template.
       </div>
-      <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected &middot; {counts.get('article_pending', 0)} article opportunities &middot; {counts.get('article_requested', 0) + counts.get('article_pending_review', 0)} articles in progress</div>
+      <div class="summary">{counts.get('queued', 0)} queued &middot; {counts.get('approved', 0)} approved &middot; {counts.get('rejected', 0)} rejected &middot; {counts.get('article_pending', 0)} article opportunities &middot; {counts.get('article_requested', 0) + counts.get('article_pending_review', 0)} articles in progress &middot; {counts.get('article_failed', 0)} can't produce</div>
       <div class="filters">
         <a href="/admin/outreach-queue?show=queued">queued</a>
         <a href="/admin/outreach-queue?show=approved">approved</a>
         <a href="/admin/outreach-queue?show=rejected">rejected</a>
         <a href="/admin/outreach-queue?show=article_pending">article opportunities</a>
+        <a href="/admin/outreach-queue?show=article_failed">can't produce</a>
         <a href="/admin/outreach-queue?show=all">all</a>
         &middot;
         <a href="/admin/outreach-queue/export.csv?status=approved">export approved as CSV</a>
@@ -3521,6 +3606,30 @@ def outreach_queue_update_source_group(
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
 
 
+@app.get("/admin/outreach-queue/update-rationale")
+def outreach_queue_update_rationale(
+    prospect_id: int,
+    rationale: str,
+    show: str = "queued",
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Sets rationale on a content_opportunity prospect that predates
+    that field existing -- backfills the reviewer-only "why build this"
+    note for a row created back when it was baked into body_preview
+    instead (see rationale's own docstring on OutreachProspect). Doesn't
+    touch body_preview itself; pair with update-content to also replace
+    the old "Why: ..." text there with the clean placeholder."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+
+    prospect.rationale = rationale.strip() or None
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
 @app.post("/admin/outreach-queue/update-content")
 def outreach_queue_update_content(
     prospect_id: int = Form(...),
@@ -3622,12 +3731,15 @@ def outreach_queue_create_article(
     credentials nor a request-lifetime long enough to wait on that safely
     -- see content/scripts/generate_haro_article.py, which does the
     actual work externally and calls link-article below once it's pushed
-    the new page."""
+    the new page. Also accepts "article_failed" as a starting status --
+    the Retry click on a can't-produce card (see mark-article-failed) is
+    the same action as the original Create Article, just re-attempting
+    generation from scratch."""
     prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
     if prospect is None:
         raise HTTPException(status_code=404, detail="prospect not found")
-    if prospect.status != "article_pending":
-        raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_pending")
+    if prospect.status not in ("article_pending", "article_failed"):
+        raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_pending or article_failed")
     prospect.status = "article_requested"
     db.commit()
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
@@ -3664,6 +3776,36 @@ async def outreach_queue_link_article(
     prospect.status = "article_pending_review"
     db.commit()
     return {"linked_prospect_id": prospect.id, "target_slug": slug}
+
+
+@app.post("/admin/outreach-queue/mark-article-failed")
+async def outreach_queue_mark_article_failed(
+    request: Request,
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Called by content/scripts/generate_haro_article.py when it
+    exhausts MAX_GENERATION_ATTEMPTS without producing a valid page --
+    see article_failed's own docstring on OutreachProspect for why this
+    exists (otherwise the row just sits at "article_requested" forever,
+    indistinguishable from one still waiting on the next pipeline run).
+    JSON body: {prospect_id, reason}."""
+    payload = await request.json()
+    prospect_id = payload.get("prospect_id")
+    reason = (payload.get("reason") or "").strip() or "unknown error"
+    if not prospect_id:
+        raise HTTPException(status_code=400, detail="prospect_id is required")
+
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404, detail="prospect not found")
+    if prospect.status != "article_requested":
+        raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_requested")
+
+    prospect.status = "article_failed"
+    prospect.body_preview = f"[Can't produce this article -- {reason}. Needs manual review.]"
+    db.commit()
+    return {"marked_failed_prospect_id": prospect.id}
 
 
 @app.post("/admin/outreach-queue/reject-article-content")
@@ -3748,6 +3890,7 @@ def outreach_queue_list_json(
             "target_domain": r.target_domain,
             "source_platform": r.source_platform,
             "source_group_id": r.source_group_id,
+            "rationale": r.rationale,
             "contact_name": r.contact_name,
             "contact_email": r.contact_email,
             "source_query": r.source_query,
@@ -4528,14 +4671,19 @@ async def outreach_queue_ingest_email(
                     source_query=draft.get("query_excerpt") or "(no excerpt returned)",
                     subject=f"[Article opportunity] {draft['proposed_title']}",
                     # Not a sendable body -- see the status docstring on
-                    # OutreachProspect. Shown as-is in the portal until a
-                    # Create Article click (and the article going live)
-                    # replaces it with a real, sendable draft.
+                    # OutreachProspect. A placeholder for where the real
+                    # published URL will go once the article exists and
+                    # goes live, not internal reasoning about whether to
+                    # build it -- that reasoning belongs in `rationale`
+                    # (reviewer-only, shown in the not-ready box) instead,
+                    # since a "Why: ..." explainer here read like
+                    # deliberation a reporter should never see even
+                    # though it was never actually sendable.
                     body_preview=(
-                        f"No existing Tulo page answers this query. Proposed new page: "
-                        f"\"{draft['proposed_title']}\" ({draft['proposed_template_type']}).\n\n"
-                        f"Why: {draft['rationale']}"
+                        f"[Placeholder -- once \"{draft['proposed_title']}\" is created, reviewed, "
+                        f"and live, this will link to it here.]"
                     ),
+                    rationale=draft.get("rationale"),
                     proposed_title=draft["proposed_title"],
                     proposed_template_type=draft["proposed_template_type"],
                     is_example=False,

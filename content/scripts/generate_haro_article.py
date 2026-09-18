@@ -87,6 +87,27 @@ def _link_article(prospect_id: int, slug: str) -> None:
     print(f"Linked prospect {prospect_id} -> slug {slug!r}: {r.json()}")
 
 
+def _mark_failed(prospect_id: int, reason: str) -> None:
+    """Reports a generation failure back to the portal so the row shows
+    a reviewable "can't produce this" card instead of sitting at
+    "article_requested" forever, indistinguishable from one still
+    waiting on the next pipeline run -- see article_failed's own
+    docstring on OutreachProspect. Best-effort: if even this call fails
+    (network blip, backend down), the caller still re-raises the
+    original error so the CI job shows red either way."""
+    base = os.environ["BACKEND_BASE_URL"].rstrip("/")
+    try:
+        r = requests.post(
+            f"{base}/admin/outreach-queue/mark-article-failed",
+            json={"prospect_id": prospect_id, "reason": reason},
+            auth=_outreach_auth(), timeout=30,
+        )
+        r.raise_for_status()
+        print(f"Marked prospect {prospect_id} as article_failed: {reason}")
+    except Exception as e:  # noqa: BLE001 -- never let this mask the real failure below
+        print(f"  (also failed to report article_failed status for prospect {prospect_id}: {e})")
+
+
 def git_commit_and_push(slug: str, prospect_id: int, batch_number: int) -> None:
     """Staging only, same convention as daily_batch.py's own
     git_commit_and_push -- never main; promotion to prod is still the
@@ -131,6 +152,14 @@ def main() -> None:
     proposed_title = prospect["proposed_title"]
     print(f"Generating a {template_type!r} page for prospect #{args.prospect_id}: {proposed_title!r}")
 
+    try:
+        _generate_and_publish(args.prospect_id, template_type, proposed_title, prospect)
+    except Exception as e:
+        _mark_failed(args.prospect_id, f"{type(e).__name__}: {e}")
+        raise
+
+
+def _generate_and_publish(prospect_id: int, template_type: str, proposed_title: str, prospect: dict) -> None:
     existing_slugs, collections, techniques, hubs = extract_existing_pages()
 
     # A synthetic CONTENT_QUEUE.csv-shaped row -- build_request_params only
@@ -143,7 +172,7 @@ def main() -> None:
         "page_purpose": prospect.get("source_query") or "",
     }
     params = build_request_params(row, collections, techniques)
-    entry = {"custom_id": f"haro-prospect-{args.prospect_id}", "params": params}
+    entry = {"custom_id": f"haro-prospect-{prospect_id}", "params": params}
 
     # Unlike daily_batch.py's own validate_results (which tolerates a bad
     # result by just skipping that one item out of a whole batch), this
@@ -198,7 +227,7 @@ def main() -> None:
         raise ValueError("Expected SEED_PAGES closing-bracket anchor not found -- file structure changed")
     closing_bracket = text.index(anchor) + 1
     header = (
-        f"\n    # --- HARO content opportunity (outreach prospect #{args.prospect_id}), generated via\n"
+        f"\n    # --- HARO content opportunity (outreach prospect #{prospect_id}), generated via\n"
         "    # content/scripts/generate_haro_article.py.\n"
     )
     new_text = text[:closing_bracket] + header + entry_text + text[closing_bracket:]
@@ -207,14 +236,14 @@ def main() -> None:
 
     local_verify()
 
-    git_commit_and_push(slug, args.prospect_id, batch_number)
+    git_commit_and_push(slug, prospect_id, batch_number)
 
     wait_for_deploy(slug)
     fetch_images_for_batch([slug])
 
-    _link_article(args.prospect_id, slug)
+    _link_article(prospect_id, slug)
 
-    print(f"\nDone: prospect #{args.prospect_id} -> {slug} (pushed to staging), pending human content review.")
+    print(f"\nDone: prospect #{prospect_id} -> {slug} (pushed to staging), pending human content review.")
 
 
 if __name__ == "__main__":
