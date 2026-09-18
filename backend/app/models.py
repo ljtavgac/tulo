@@ -166,6 +166,15 @@ class OutreachProspect(Base):
     # manual-submission copy/paste needs to know which platform's site to
     # go paste into, which target_domain alone doesn't tell them.
     source_platform: Mapped[str | None] = mapped_column(String, nullable=True)
+    # Shared across every prospect split out of the same single inbound
+    # digest email (see outreach_queue_ingest_email) -- null for a
+    # digest that produced only one prospect (nothing to link to) and
+    # for anything ingested before this field existed. Lets the portal
+    # warn a reviewer that a reply they're about to approve has sibling
+    # content_opportunity items sitting in a different status tab (a
+    # real, reported confusion: Southern Living's reply and its
+    # spun-off article proposals looked like unrelated rows).
+    source_group_id: Mapped[str | None] = mapped_column(String, nullable=True, index=True)
     contact_name: Mapped[str | None] = mapped_column(String, nullable=True)
     contact_email: Mapped[str | None] = mapped_column(String, nullable=True)
     # For a haro_reply: the source query being responded to. Null for a
