@@ -2222,8 +2222,27 @@ def _resolve_merge_plan(db: Session, target_batch_number: int) -> tuple[list[int
       surfaces exactly which batch(es) need a human's review first,
       rather than the previous behavior of just silently attempting a
       cherry-pick that would fail an unrelated-looking git conflict
-      minutes later with no explanation."""
-    earlier = [n for n in _eligible_batch_numbers() if n < target_batch_number]
+      minutes later with no explanation.
+
+    Real, reported incident (2026-09-19, batch 9999): a target_batch_number
+    that isn't a real, currently-eligible batch at all -- an ancient,
+    deliberately-abandoned dry-run test batch whose page was long ago
+    removed from SEED_PAGES, but whose BatchApproval row was never marked
+    merged -- has NO earlier batch numbers smaller than it by definition
+    (every real batch number is smaller than 9999), so every check above
+    trivially passed and it got dispatched as a clean, blocker-free merge.
+    review_queue_mark_merged's own cascade is what surfaced this: it looks
+    for any still-unmerged approved batch_number greater than the one that
+    just merged, with no notion of which numbers are real, current
+    batches -- an orphaned row with a huge, unreal batch_number matches
+    that trivially. Treating any target outside _eligible_batch_numbers()
+    as a no-op closes this off at the one place every call site shares,
+    rather than patching each caller separately."""
+    eligible = set(_eligible_batch_numbers())
+    if target_batch_number not in eligible:
+        print(f"  _resolve_merge_plan: batch {target_batch_number} isn't a real, currently-eligible batch (its content isn't in SEED_PAGES) -- treating as a no-op instead of attempting a merge")
+        return [], []
+    earlier = [n for n in eligible if n < target_batch_number]
     approvals = {
         a.batch_number: a
         for a in db.query(BatchApproval).filter(BatchApproval.batch_number.in_(earlier)).all()
@@ -2486,9 +2505,24 @@ def review_queue_mark_merged(
         approval.merged_at = datetime.now(timezone.utc)
         db.commit()
 
+        # Scoped to _eligible_batch_numbers() (real batches whose content is
+        # actually in SEED_PAGES right now), not just "any row with a bigger
+        # number" -- real, reported incident (2026-09-19, batch 9999): an
+        # ancient, abandoned dry-run test batch's orphaned BatchApproval row
+        # (merged_at never set, content long since removed) matched a bare
+        # "batch_number > batch" filter on every single future merge, since
+        # its fake batch_number is larger than any real one ever will be.
+        # _resolve_merge_plan's own eligibility guard would have no-opped it
+        # anyway, but filtering it out of the candidate list here means it's
+        # not even considered, instead of silently re-checked and dismissed
+        # forever on every merge.
         candidates = (
             db.query(BatchApproval)
-            .filter(BatchApproval.merged_at.is_(None), BatchApproval.batch_number > batch)
+            .filter(
+                BatchApproval.merged_at.is_(None),
+                BatchApproval.batch_number > batch,
+                BatchApproval.batch_number.in_(_eligible_batch_numbers()),
+            )
             .order_by(BatchApproval.batch_number)
             .all()
         )
