@@ -2182,10 +2182,17 @@ def review_queue_approve_remaining(
 # web service.
 _GITHUB_REPO = "ljtavgac/tulo"
 _GITHUB_ACTIONS_TRIGGER_TOKEN = os.environ.get("GITHUB_ACTIONS_TRIGGER_TOKEN")
-# How long a BatchApproval can sit unmerged before _retry_stale_batch_approvals
-# re-fires its dispatch -- long enough that a normal, still-in-flight merge run
-# (or a GitHub Actions queue delay) isn't mistaken for a failed one.
+# The window _retry_stale_batch_approvals re-fires a dispatch in: old enough
+# that a normal, still-in-flight merge run (or a GitHub Actions queue delay)
+# isn't mistaken for a failed one, but capped so a batch that can never
+# cleanly merge (a genuine, persistent conflict, or -- a real, reported
+# incident -- an abandoned dry-run test batch whose source content was
+# deliberately deleted days earlier) doesn't get silently re-dispatched and
+# re-failed forever on every single portal page load. Past the upper bound,
+# it's squarely a human's call via the portal's own "Retry merge dispatch"
+# link, not something to keep auto-retrying.
 _STALE_APPROVAL_RETRY_MINUTES = 3
+_STALE_APPROVAL_RETRY_MAX_MINUTES = 60
 
 
 def _trigger_batch_merge(batch_number: int) -> None:
@@ -2240,11 +2247,20 @@ def _retry_stale_batch_approvals(db: Session) -> int:
     request is still legitimately in flight (the workflow itself typically
     finishes in well under a minute, but a live GitHub Actions queue delay
     is a normal, non-error reason for it to still be running past that).
-    Returns how many were retried this call, for the summary banner."""
-    threshold = datetime.now(timezone.utc) - timedelta(minutes=_STALE_APPROVAL_RETRY_MINUTES)
+    Never touches a row older than _STALE_APPROVAL_RETRY_MAX_MINUTES -- see
+    that constant's own comment for why an unbounded retry-forever is
+    actively harmful, not just wasteful. Returns how many were retried this
+    call, for the summary banner."""
+    now = datetime.now(timezone.utc)
+    min_threshold = now - timedelta(minutes=_STALE_APPROVAL_RETRY_MINUTES)
+    max_threshold = now - timedelta(minutes=_STALE_APPROVAL_RETRY_MAX_MINUTES)
     stale = (
         db.query(BatchApproval)
-        .filter(BatchApproval.merged_at.is_(None), BatchApproval.requested_at < threshold)
+        .filter(
+            BatchApproval.merged_at.is_(None),
+            BatchApproval.requested_at < min_threshold,
+            BatchApproval.requested_at > max_threshold,
+        )
         .all()
     )
     for approval in stale:
