@@ -10,13 +10,19 @@ name: Daily content batch
 # reviewing the result in the admin portal and clicking "Approve batch N
 # for prod" -- see merge-approved-batch.yml for what that triggers.
 on:
-  schedule:
-    # 9am UTC = 5am US Eastern during EDT (UTC-4, in effect roughly
-    # mid-March to early November). Switch to '0 10 * * *' during EST
-    # (UTC-5, roughly early November to mid-March) -- GitHub Actions cron
-    # is always plain UTC with no per-workflow timezone or DST awareness,
-    # so this needs a manual flip twice a year.
-    - cron: '0 9 * * *'
+  # PAUSED 2026-09-19 at the user's explicit request, pending investigation
+  # of an AdSense "low value content" rejection plus Search Console showing
+  # only 2 pages indexed (of ~2,100+ that exist) -- stop generating more
+  # content until the root cause (indexing/crawl issue, content depth, or
+  # both) is understood and fixed. Restart only when the user says so: undo
+  # this comment-out, restoring the cron trigger below.
+  # schedule:
+  #   # 9am UTC = 5am US Eastern during EDT (UTC-4, in effect roughly
+  #   # mid-March to early November). Switch to '0 10 * * *' during EST
+  #   # (UTC-5, roughly early November to mid-March) -- GitHub Actions cron
+  #   # is always plain UTC with no per-workflow timezone or DST awareness,
+  #   # so this needs a manual flip twice a year.
+  #   - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
       count:
