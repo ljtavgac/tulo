@@ -4507,6 +4507,53 @@ def _strip_json_code_fence(raw: str) -> str:
     return text.strip()
 
 
+_RECENT_HARO_CONTEXT_DAYS = 21  # long enough to catch a platform re-broadcasting/resending the
+# same unfulfilled request a few days later (the actual case that surfaced this: a "Daily Meal"
+# latte-mistakes query was approved and sent once, then arrived again in a later digest and was
+# queued as a brand new reply plus three new content_opportunity ideas, with nothing in the
+# pipeline aware the identical request had already been handled a day earlier) -- short enough
+# that this doesn't grow into an ever-larger prompt block or start flagging a genuinely new,
+# unrelated query from the same outlet weeks later.
+_RECENT_HARO_CONTEXT_LIMIT = 200  # defensive cap on how many rows ever go into one prompt
+
+
+def _recent_haro_query_context(db: Session) -> str:
+    """Builds the "already seen recently" block _draft_haro_replies feeds
+    the model so it can recognize a resent/re-broadcast duplicate of a
+    query Tulo's outreach pipeline already processed -- see
+    _RECENT_HARO_CONTEXT_DAYS above for the real, confirmed gap this
+    closes. Every haro_reply row from the last _RECENT_HARO_CONTEXT_DAYS
+    days is included regardless of its own status (rejected counts too --
+    Tulo already made a call on that exact request once, whatever the
+    call was, so it shouldn't be re-litigated from scratch on a resend),
+    excluding example rows. Deliberately not filtered by outlet/domain up
+    front: the sender's forwarding platform (HARO/Connectively/etc.) is
+    known before the digest is parsed, but the actual outlet name inside
+    it isn't, and a resend can arrive through a different forwarding
+    platform than the original -- the model's own reading comprehension
+    does the real outlet/topic matching, the same way it already does for
+    everything else in this prompt."""
+    cutoff = datetime.now(timezone.utc) - timedelta(days=_RECENT_HARO_CONTEXT_DAYS)
+    rows = (
+        db.query(OutreachProspect)
+        .filter(OutreachProspect.pitch_type == "haro_reply")
+        .filter(OutreachProspect.is_example.is_(False))
+        .filter(OutreachProspect.created_at >= cutoff)
+        .filter(OutreachProspect.source_query.isnot(None))
+        .order_by(OutreachProspect.created_at.desc())
+        .limit(_RECENT_HARO_CONTEXT_LIMIT)
+        .all()
+    )
+    if not rows:
+        return "(none in the last 3 weeks)"
+    lines = []
+    for r in rows:
+        query_snippet = (r.source_query or "").replace("\n", " ").strip()[:220]
+        outlet = r.target_domain or "unknown outlet"
+        lines.append(f"- [{r.created_at.date().isoformat()}] {outlet}: {query_snippet}")
+    return "\n".join(lines)
+
+
 def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     """Uses Claude to triage one forwarded journalist/expert-source-request
     digest -- HARO, Connectively, Qwoted, Featured.com/Terkel, SourceBottle,
@@ -4548,7 +4595,10 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     board and coconut-flake sub-topics, each a real content_opportunity
     candidate, were never independently evaluated at all).
 
-    Returns one dict per item, each tagged type: "reply" or
+    Returns one dict per item, each tagged type: "reply",
+    "content_opportunity", or "duplicate" -- the last one filtered out
+    before this function returns (see _recent_haro_query_context and the
+    filtering pass below), so a caller only ever sees "reply"/
     "content_opportunity". Every item always carries reporter_email,
     reporter_name, outlet, query_excerpt, ai_pitches_disallowed; a "reply"
     additionally carries subject/body, a "content_opportunity" carries
@@ -4636,6 +4686,7 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     template_types_block = "\n".join(
         f"  - {t}: {template_type_definitions[t]}" for t in sorted(_REAL_TEMPLATE_TYPES)
     )
+    recent_context = _recent_haro_query_context(db)
     system_prompt = (
         "You triage journalist/expert-source-request digests for Tulo, a free food/recipe website -- "
         "these arrive from HARO, Connectively, Qwoted, Featured.com/Terkel, SourceBottle, or similar "
@@ -4646,6 +4697,20 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "how-tos, definitions, comparisons, substitute guides. Use the search_tulo_content tool to "
         "check for one of these before recommending it; never guess or invent a slug/URL for one of "
         "these, only the search tool's real results are safe to use.\n\n"
+        "Queries Tulo's outreach pipeline has already processed in roughly the last three weeks "
+        "(already drafted a reply for, already queued a content idea for, or already reviewed and "
+        "made a decision on -- regardless of what that decision was):\n"
+        f"{recent_context}\n\n"
+        "A platform sometimes re-broadcasts or resends the same unfulfilled request in a later "
+        "digest, occasionally through a different forwarding service than the first time. Before "
+        "drafting anything for a query below, check whether it's the SAME underlying request as one "
+        "already listed above -- same outlet, same core ask, even if the wording, ordering, bundling, "
+        "or exact phrasing differs. If so, it's a duplicate: don't draft a \"reply\" and don't propose "
+        "a \"content_opportunity\" for it, even if it would otherwise be a genuine fit -- instead emit "
+        "a \"duplicate\" item for it (see the JSON contract below) so it's visible in the logs but "
+        "never queued as new work. Only match against genuinely the SAME request, not just a similar "
+        "topic -- a different outlet's own question on a related subject, or the same outlet asking "
+        "something new later, is NOT a duplicate and should be handled normally.\n\n"
         "The digest below may contain zero, one, or many separate journalist queries, each usually "
         "with its own reply email, reporter name, outlet, and deadline. For each query that's "
         "plausibly food/cooking/kitchen-related, search for a real Tulo page (or check the three "
@@ -4733,8 +4798,9 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "this longer, full-email shape instead, even in the extreme case where EVERY sub-question ends "
         "up tagged (2) or (3) with no real URL anywhere in the body at all.\n\n"
         "Once you've searched everything worth searching, respond with ONLY a JSON array (no prose, "
-        "no markdown fences, no further tool calls). Every object needs a \"type\" key, either "
-        "\"reply\" or \"content_opportunity\", plus reporter_email, reporter_name, outlet, "
+        "no markdown fences, no further tool calls). Every object needs a \"type\" key, one of "
+        "\"reply\", \"content_opportunity\", or \"duplicate\", plus reporter_email, reporter_name, "
+        "outlet, "
         "query_excerpt (the original query text for this one item, verbatim or lightly trimmed -- "
         "always keep any note like 'No AI Pitches Considered' or similar if the source includes one "
         "for this query, never trim it out). A "
@@ -4779,13 +4845,16 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
         "reporter_email to null there too rather than skip a genuinely worthwhile page idea; once the "
         "page is live, a human posts it back through that outlet's own platform the same way a "
         "manual-submission reply gets sent, so a missing address is a delivery detail, not a reason to "
-        "drop the idea. Hard "
+        "drop the idea. A "
+        "\"duplicate\" instead needs duplicate_of (a short quote or description of which line in the "
+        "\"already processed\" list above this matches) -- no subject/body/proposed_title needed, "
+        "since nothing gets drafted for it. Hard "
         "requirements, checked and enforced after your response: a claimed reporter_email must "
         "actually appear verbatim in the digest text -- never invented, though it may be left null on "
         "either type when the outlet only offers a platform-only submission; a reply's body must contain "
         "one of the real URLs verbatim; a content_opportunity's proposed_template_type must be "
-        "exactly one of the seven listed. If there are zero fits and zero opportunities, respond with "
-        "exactly: []"
+        "exactly one of the seven listed. If there are zero fits, zero opportunities, and zero "
+        "duplicates, respond with exactly: []"
     )
 
     # Closed set of URLs this call is actually allowed to recommend -- the
@@ -4863,15 +4932,29 @@ def _draft_haro_replies(db: Session, digest_text: str) -> list[dict]:
     common_keys = {"type", "reporter_email", "reporter_name", "outlet", "query_excerpt"}
     reply_keys = {"subject", "body"}
     opportunity_keys = {"proposed_title", "proposed_template_type", "rationale"}
+    duplicate_keys = {"duplicate_of"}
     kept = []
     for item in parsed:
         item_type = item.get("type")
-        if item_type not in ("reply", "content_opportunity"):
+        if item_type not in ("reply", "content_opportunity", "duplicate"):
             raise ValueError(f"Drafted item has unrecognized type: {item_type!r}")
-        required_keys = common_keys | (reply_keys if item_type == "reply" else opportunity_keys)
+        type_keys = {"reply": reply_keys, "content_opportunity": opportunity_keys, "duplicate": duplicate_keys}[item_type]
+        required_keys = common_keys | type_keys
         missing = required_keys - item.keys()
         if missing:
             raise ValueError(f"Drafted {item_type} missing keys: {missing}")
+
+        if item_type == "duplicate":
+            # Never queued -- the whole point is that Tulo already handled
+            # this exact request, so a new row here would be the same
+            # duplicate the "already processed" context block above exists
+            # to prevent. Logged, not silently dropped, so a resend that
+            # gets misjudged is at least visible in the backend logs.
+            print(
+                f"  _draft_haro_replies: skipping duplicate of already-processed query "
+                f"({item.get('outlet')!r}): {item.get('query_excerpt')!r} -- matches {item.get('duplicate_of')!r}"
+            )
+            continue
 
         reporter_email = (item.get("reporter_email") or "").strip()
         label = item.get("subject") or item.get("proposed_title")
