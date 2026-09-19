@@ -140,35 +140,63 @@ export default function StockPhotoSlot({
           onError={() => setFailed(true)}
         />
       </div>
-      {attribution && showAttribution && attribution.photographer && attribution.photographer_url ? (
-        <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
-          {attribution.source === "unsplash" ? (
-            // Unsplash's API Terms require crediting both Unsplash itself
-            // and the specific photographer, with the photographer's name
-            // linking to their real Unsplash profile -- a slightly
-            // stricter requirement than Pexels' own (see the plain "Photo
-            // via Pexels" branch below), so this gets its own format
-            // rather than reusing that one.
-            <>
-              Photo by{" "}
-              <a href={attribution.photographer_url} className="underline hover:text-accent">
-                {attribution.photographer}
-              </a>{" "}
-              on{" "}
+      {(() => {
+        if (!attribution || !showAttribution) return null;
+        // Branches on the image's actual CDN host, not attribution.source --
+        // a handful of Unsplash-hosted photos have source: "manual_override"
+        // (pasted in directly rather than fetched via search, see
+        // review_queue_override_image's own docstring for why that path
+        // never captured a real photographer) and would otherwise fall into
+        // the Pexels branch below, crediting the wrong platform outright.
+        const isUnsplash = imageUrl?.includes("images.unsplash.com");
+        if (isUnsplash) {
+          if (attribution.photographer && attribution.photographer_url) {
+            return (
+              <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
+                {/* Unsplash's API Terms require crediting both Unsplash
+                    itself and the specific photographer, with the
+                    photographer's name linking to their real Unsplash
+                    profile -- a slightly stricter requirement than Pexels'
+                    own (see the plain "Photo via Pexels" branch below), so
+                    this gets its own format rather than reusing that one. */}
+                Photo by{" "}
+                <a href={attribution.photographer_url} className="underline hover:text-accent">
+                  {attribution.photographer}
+                </a>{" "}
+                on{" "}
+                <a href="https://unsplash.com/" className="underline hover:text-accent">
+                  Unsplash
+                </a>
+              </figcaption>
+            );
+          }
+          // No specific photographer on file for this one (see comment
+          // above) -- credits the platform only rather than showing
+          // nothing. Unsplash's own photo license doesn't require
+          // attribution at all for a photo used outside their API's
+          // fetch/download flow, so this is a courtesy credit, not a named
+          // claim we can't actually back.
+          return (
+            <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
+              Photo via{" "}
               <a href="https://unsplash.com/" className="underline hover:text-accent">
                 Unsplash
               </a>
-            </>
-          ) : (
-            <>
+            </figcaption>
+          );
+        }
+        if (attribution.photographer && attribution.photographer_url) {
+          return (
+            <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
               Photo via Pexels ·{" "}
               <a href={attribution.photographer_url} className="underline hover:text-accent">
                 {attribution.photographer}
               </a>
-            </>
-          )}
-        </figcaption>
-      ) : null}
+            </figcaption>
+          );
+        }
+        return null;
+      })()}
     </figure>
   );
 }
