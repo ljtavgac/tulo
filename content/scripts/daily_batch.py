@@ -186,16 +186,36 @@ def run_generation(subset_csv: Path) -> Path:
     return OUTPUT_DIR / f"{subset_csv.stem}_results.jsonl"
 
 
-# Mirrors seed_templates.py's own _TITLE_DEDUP_STOPWORDS/_normalize_title_
-# for_dedup exactly -- see _existing_normalized_titles' docstring for why
-# this needs its own copy here rather than importing seed_templates.py.
-_TITLE_DEDUP_STOPWORDS = {"a", "an", "the", "of", "to", "for", "how", "what", "s", "vs"}
+# Mirrors seed_templates.py's own _TITLE_DEDUP_STOPWORDS/_stem_for_dedup/
+# _normalize_title_for_dedup exactly (see that module's docstrings for the
+# 2026-09-19 audit that found 108 confirmed duplicate-topic clusters, most
+# missed by the original narrow version of this list, plus the two false
+# positives -- crispy-burger/burgers, fresh-cherry-pie/cherry-pie -- that
+# ruled "crispy"/"fresh" out as safe stopwords) -- see
+# _existing_normalized_titles' docstring for why this needs its own copy
+# here rather than importing seed_templates.py.
+_TITLE_DEDUP_STOPWORDS = {
+    "a", "an", "the", "of", "to", "for", "how", "what", "s", "vs", "versus",
+    "and", "or", "in", "on", "at", "with", "difference",
+    "classic", "homemade", "traditional", "authentic", "basic", "easy",
+    "simple", "quick", "best", "whole", "style",
+    "make", "making", "made", "cook", "cooking", "cooked",
+    "still", "good", "delicious", "perfect", "ultimate",
+}
 _EXISTING_TITLE_RE = re.compile(r'"template_type":\s*"([^"]+)",\s*\n\s*"title":\s*"([^"]*)"')
+
+
+def _stem_for_dedup(word: str) -> str:
+    if len(word) > 4 and word.endswith("es") and not word.endswith(("ss", "us")):
+        return word[:-2]
+    if len(word) > 3 and word.endswith("s") and not word.endswith("ss"):
+        return word[:-1]
+    return word
 
 
 def _normalize_title_for_dedup(title: str) -> str:
     words = re.findall(r"[a-z0-9]+", title.lower())
-    words = [w for w in words if w not in _TITLE_DEDUP_STOPWORDS]
+    words = [_stem_for_dedup(w) for w in words if w not in _TITLE_DEDUP_STOPWORDS]
     return " ".join(sorted(words))
 
 
