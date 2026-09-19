@@ -201,6 +201,14 @@ _TITLE_DEDUP_STOPWORDS = {
     "simple", "quick", "best", "whole", "style",
     "make", "making", "made", "cook", "cooking", "cooked",
     "still", "good", "delicious", "perfect", "ultimate",
+    # Found by an actual live test run against the current corpus
+    # (2026-09-19): "recipe"/"recipes" is a near-universal suffix on
+    # recipe_or_dish titles ("X Recipe") but carries no culinary meaning
+    # of its own, so a candidate titled "Homemade X" without the word
+    # "Recipe" wasn't recognized as a duplicate of a published "X
+    # Recipe" -- purely a stopword-list gap, not a case like
+    # "crispy"/"fresh" where the word is sometimes load-bearing.
+    "recipe", "recipes",
 }
 _EXISTING_TITLE_RE = re.compile(r'"template_type":\s*"([^"]+)",\s*\n\s*"title":\s*"([^"]*)"')
 
@@ -217,6 +225,61 @@ def _normalize_title_for_dedup(title: str) -> str:
     words = re.findall(r"[a-z0-9]+", title.lower())
     words = [_stem_for_dedup(w) for w in words if w not in _TITLE_DEDUP_STOPWORDS]
     return " ".join(sorted(words))
+
+
+# Permanent regression lock for the 2026-09-19 duplicate-content audit --
+# run from local_verify() below, so it executes on every single batch and
+# every single HARO article generation automatically, not just if someone
+# remembers to run a standalone test file. If a future change to
+# _TITLE_DEDUP_STOPWORDS or _stem_for_dedup breaks any of these, the whole
+# pipeline run fails loudly right here instead of silently regressing.
+def _run_dedup_regression_tests() -> None:
+    def norm(title: str) -> str:
+        return _normalize_title_for_dedup(title)
+
+    # Real true-duplicate patterns the tightened guard exists to catch --
+    # a cosmetic qualifier word added to an otherwise-identical title, and
+    # a pluralization-only difference. Synthetic titles (not tied to any
+    # specific live page, which could itself get redirected later) so
+    # this stays stable regardless of future content changes.
+    must_collide = [
+        (("recipe_or_dish", "Roast Chicken"), ("recipe_or_dish", "Classic Roast Chicken")),
+        (("recipe_or_dish", "Roast Chicken"), ("recipe_or_dish", "Homemade Roast Chicken")),
+        (("ingredient_hub", "Croissant"), ("ingredient_hub", "Croissants")),
+        (("comparison", "Latte vs. Cappuccino"), ("comparison", "Cappuccino vs. Latte")),
+    ]
+    for (type_a, title_a), (type_b, title_b) in must_collide:
+        assert type_a == type_b, "test bug: comparing across different template_types"
+        assert norm(title_a) == norm(title_b), (
+            f"dedup regression: {title_a!r} and {title_b!r} ({type_a}) should "
+            f"normalize identically (a cosmetic-qualifier/pluralization "
+            f"duplicate) but produced {norm(title_a)!r} vs {norm(title_b)!r} -- "
+            f"a stopword or stemming change broke true-duplicate detection."
+        )
+
+    # Real, confirmed false positives (2026-09-19): both "crispy" and
+    # "fresh" look like other cosmetic-qualifier stopwords on the surface,
+    # but are genuine, substantive distinctions in these specific real
+    # page pairs -- crispy-burger is the smash-burger technique, not a
+    # cosmetic "burgers" variant; fresh-cherry-pie uses different cherries
+    # and treatment than cherry-pie. Locked in with the exact real titles
+    # that were live on the site when this was caught, since the whole
+    # point is to catch a future stopword-list change reintroducing this
+    # specific regression, not just the general pattern.
+    must_not_collide = [
+        (("ingredient_hub", "Crispy Burger"), ("ingredient_hub", "Burgers")),
+        (("recipe_or_dish", "Fresh Cherry Pie"), ("recipe_or_dish", "Cherry Pie")),
+    ]
+    for (type_a, title_a), (type_b, title_b) in must_not_collide:
+        assert type_a == type_b, "test bug: comparing across different template_types"
+        assert norm(title_a) != norm(title_b), (
+            f"dedup regression: {title_a!r} and {title_b!r} ({type_a}) should "
+            f"NOT normalize identically -- both are genuinely distinct real "
+            f"pages (confirmed 2026-09-19), but the current stopword/stemming "
+            f"logic now collapses them to the same signature "
+            f"({norm(title_a)!r}), which would incorrectly block generating "
+            f"or block-flag one as a duplicate of the other."
+        )
 
 
 def _existing_normalized_titles() -> dict[tuple[str, str], str]:
@@ -350,8 +413,16 @@ def local_verify() -> None:
     exist -- a real gotcha hit earlier this session). Raises on any
     failure, which aborts the run before anything gets pushed -- a broken
     insertion needs to fail here, not surface as a crash on the next real
-    deploy."""
+    deploy.
+
+    Also the single choke point _run_dedup_regression_tests runs from --
+    both daily_batch.py's own main() and generate_haro_article.py call
+    this before ever pushing, so wiring the regression lock in here
+    (rather than duplicating the call in both entry points) guarantees it
+    executes on every single pipeline run, present and future, with no
+    way to add a new caller that forgets it."""
     ast.parse(SEED_TEMPLATES_PATH.read_text())
+    _run_dedup_regression_tests()
 
     with tempfile.TemporaryDirectory() as tmp:
         db_path = Path(tmp) / "verify.db"

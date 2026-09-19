@@ -39,7 +39,14 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
 from build_batch_requests import extract_existing_pages  # noqa: E402
-from daily_batch import _next_batch_number, fetch_images_for_batch, local_verify, wait_for_deploy  # noqa: E402
+from daily_batch import (  # noqa: E402
+    _existing_normalized_titles,
+    _next_batch_number,
+    _normalize_title_for_dedup,
+    fetch_images_for_batch,
+    local_verify,
+    wait_for_deploy,
+)
 from integrate_batch_results import format_page_entry, slugify_for_page  # noqa: E402
 from prompt_templates import build_request_params  # noqa: E402
 from submit_realtime_fallback import call_one  # noqa: E402
@@ -162,6 +169,27 @@ def main() -> None:
 def _generate_and_publish(prospect_id: int, template_type: str, proposed_title: str, prospect: dict) -> None:
     existing_slugs, collections, techniques, hubs = extract_existing_pages()
 
+    # Real, reported gap (2026-09-19 duplicate-content audit): unlike
+    # daily_batch.py's validate_results, this script had NO title-dedup
+    # check at all before daily_batch.py's own import-time
+    # _check_no_duplicate_titles guard (triggered later, inside
+    # local_verify()) -- meaning a duplicate proposal here paid for a full
+    # real generation API call before ever being caught, only to fail the
+    # whole run at local_verify() with nothing to show for it. Checking
+    # the *proposed* title against every currently-published title (same
+    # normalization the guard itself uses, so this can never be stricter
+    # or looser than what would actually get caught downstream) up front
+    # catches the common case for free, before spending anything on
+    # generation.
+    existing_titles = _existing_normalized_titles()
+    proposed_key = (template_type, _normalize_title_for_dedup(proposed_title))
+    if proposed_key in existing_titles:
+        raise ValueError(
+            f"Proposed title {proposed_title!r} duplicates existing page "
+            f"{existing_titles[proposed_key]!r} (same template_type, same "
+            f"normalized words) -- not generating."
+        )
+
     # A synthetic CONTENT_QUEUE.csv-shaped row -- build_request_params only
     # ever reads title/template_type/category/page_purpose off it (see its
     # own docstring), all of which this prospect already carries.
@@ -198,6 +226,19 @@ def _generate_and_publish(prospect_id: int, template_type: str, proposed_title: 
             entry["custom_id"], template_type, candidate,
             {c["slug"] for c in collections}, {t["slug"] for t in techniques}, {h["slug"] for h in hubs},
         )
+        # The model's own generated title can differ from proposed_title
+        # (already checked above) -- re-checking the actual title the
+        # model returned is the authoritative check, since that's what
+        # would actually get published. Treated as one more validation
+        # issue so a colliding attempt retries like any other bad
+        # generation, rather than as a separate failure path.
+        candidate_title = candidate.get("title") or ""
+        candidate_key = (template_type, _normalize_title_for_dedup(candidate_title))
+        if candidate_key in existing_titles:
+            issues = list(issues) + [
+                f"[{entry['custom_id']}] generated title {candidate_title!r} duplicates existing page "
+                f"{existing_titles[candidate_key]!r} (same template_type, same normalized words)"
+            ]
         if issues:
             print(f"  attempt {attempt}/{MAX_GENERATION_ATTEMPTS}: validation issues:\n" + "\n".join(issues))
             continue
