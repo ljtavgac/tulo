@@ -1,0 +1,33 @@
+name: Check live page image (one-off diagnostic)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        required: false
+        default: "prod"
+        type: choice
+        options:
+          - prod
+          - staging
+      slugs:
+        description: "space-separated slugs to check"
+        required: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check
+        env:
+          FRONTEND_BASE_URL: ${{ inputs.target == 'prod' && 'https://tulo.io' || 'https://tulo-git-staging-tulo1.vercel.app' }}
+        run: python3 content/scripts/check_live_page_image.py ${{ inputs.slugs }}
