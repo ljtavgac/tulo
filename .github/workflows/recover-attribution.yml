@@ -1,0 +1,118 @@
+name: Recover real attribution (Pexels/Unsplash ID lookup)
+
+# Report or apply real photographer attribution recovered from the
+# provider's own API using the ID embedded in an existing image's CDN
+# URL -- never touches image_url. See content/scripts/recover_attribution.py
+# and main.py's /admin/lookup-recovered-attribution /
+# /admin/apply-recovered-attribution.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        required: true
+        type: choice
+        options:
+          - report
+          - apply-dry-run
+          - apply-write
+      target:
+        required: false
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - prod
+      slugs:
+        description: "Comma-separated slugs. Leave blank to use the full 173-slug manual_override audit list."
+        required: false
+        default: ""
+      wait_for_commit:
+        description: "Optional: git SHA to wait for target's /health to report before running"
+        required: false
+        default: ""
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Resolve target base URL
+        id: target
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: |
+          if [ "${{ inputs.target }}" = "prod" ]; then
+            echo "base_url=$PROD_BACKEND_BASE_URL" >> "$GITHUB_OUTPUT"
+          else
+            echo "base_url=$BACKEND_BASE_URL" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Wait for target to serve the commit (optional)
+        if: inputs.wait_for_commit != ''
+        env:
+          TARGET_BASE_URL: ${{ steps.target.outputs.base_url }}
+        run: |
+          set -uo pipefail
+          deadline=$((SECONDS + 720))
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            live_commit="$(curl -sS --connect-timeout 10 --max-time 20 "$TARGET_BASE_URL/health" 2>/dev/null \
+              | python3 -c 'import json,sys; print(json.load(sys.stdin).get("git_commit") or "")' 2>/dev/null || true)"
+            if [ "$live_commit" = "${{ inputs.wait_for_commit }}" ]; then
+              echo "${{ inputs.target }} is now serving ${{ inputs.wait_for_commit }} -- landed after $((SECONDS))s."
+              exit 0
+            fi
+            echo "${{ inputs.target }} is on '${live_commit:-<unreachable>}', waiting for ${{ inputs.wait_for_commit }} ($((SECONDS))s elapsed)..."
+            sleep 15
+          done
+          echo "::warning::${{ inputs.target }} never reported ${{ inputs.wait_for_commit }} within 12 minutes -- running anyway."
+
+      - name: Resolve slugs (default: full manual_override audit list)
+        id: slugs
+        run: |
+          if [ -n "${{ inputs.slugs }}" ]; then
+            echo "slugs=${{ inputs.slugs }}" >> "$GITHUB_OUTPUT"
+          else
+            SLUGS="$(python3 -c "
+import sys
+sys.path.insert(0, 'backend')
+from app.seed_templates import SEED_PAGES
+out = []
+for p in SEED_PAGES:
+    c = p.get('content', {})
+    if c.get('unpublished'):
+        continue
+    url = c.get('image_url')
+    if not url or ('images.pexels.com' not in url and 'images.unsplash.com' not in url):
+        continue
+    if (c.get('image_attribution') or {}).get('photographer'):
+        continue
+    out.append(p['slug'])
+print(','.join(out))
+")"
+            echo "slugs=$SLUGS" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run
+        env:
+          BACKEND_BASE_URL: ${{ steps.target.outputs.base_url }}
+          ADMIN_TASK_TOKEN: ${{ inputs.target == 'prod' && secrets.PROD_ADMIN_TASK_TOKEN || secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -euo pipefail
+          SLUGS="$(echo '${{ steps.slugs.outputs.slugs }}' | tr -d '[:space:]')"
+          MODE="${{ inputs.mode }}"
+          if [ "$MODE" = "report" ]; then
+            python3 content/scripts/recover_attribution.py report $(echo "$SLUGS" | tr ',' ' ')
+          elif [ "$MODE" = "apply-dry-run" ]; then
+            python3 content/scripts/recover_attribution.py apply --dry-run $(echo "$SLUGS" | tr ',' ' ')
+          else
+            python3 content/scripts/recover_attribution.py apply --write $(echo "$SLUGS" | tr ',' ' ')
+          fi
