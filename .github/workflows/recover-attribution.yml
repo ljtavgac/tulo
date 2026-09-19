@@ -75,29 +75,13 @@ jobs:
           done
           echo "::warning::${{ inputs.target }} never reported ${{ inputs.wait_for_commit }} within 12 minutes -- running anyway."
 
-      - name: Resolve slugs (default: full manual_override audit list)
+      - name: "Resolve slugs (default: full manual_override audit list)"
         id: slugs
         run: |
           if [ -n "${{ inputs.slugs }}" ]; then
             echo "slugs=${{ inputs.slugs }}" >> "$GITHUB_OUTPUT"
           else
-            SLUGS="$(python3 -c "
-import sys
-sys.path.insert(0, 'backend')
-from app.seed_templates import SEED_PAGES
-out = []
-for p in SEED_PAGES:
-    c = p.get('content', {})
-    if c.get('unpublished'):
-        continue
-    url = c.get('image_url')
-    if not url or ('images.pexels.com' not in url and 'images.unsplash.com' not in url):
-        continue
-    if (c.get('image_attribution') or {}).get('photographer'):
-        continue
-    out.append(p['slug'])
-print(','.join(out))
-")"
+            SLUGS="$(python3 content/scripts/audit_manual_override_attribution.py --csv)"
             echo "slugs=$SLUGS" >> "$GITHUB_OUTPUT"
           fi
 

@@ -10,6 +10,8 @@ parsing, same pattern used throughout this project's other audits."""
 import sys
 from pathlib import Path
 
+import argparse
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "backend"))
 from app.seed_templates import SEED_PAGES  # noqa: E402
 
@@ -25,6 +27,14 @@ def host_of(image_url: str | None) -> str:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--csv",
+        action="store_true",
+        help="Print only a single comma-joined line of every pexels/unsplash slug missing attribution (for scripting/CI), no other output.",
+    )
+    args = parser.parse_args()
+
     by_host_missing: dict[str, list[str]] = {"pexels": [], "unsplash": [], "other": [], "none": []}
     total_with_image = 0
 
@@ -41,6 +51,10 @@ def main() -> None:
         if photographer:
             continue
         by_host_missing[host_of(image_url)].append(page["slug"])
+
+    if args.csv:
+        print(",".join(by_host_missing["pexels"] + by_host_missing["unsplash"]))
+        return
 
     print(f"Published pages with an image_url: {total_with_image}")
     print()
