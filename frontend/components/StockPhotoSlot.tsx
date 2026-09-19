@@ -142,14 +142,31 @@ export default function StockPhotoSlot({
       </div>
       {attribution && showAttribution && attribution.photographer && attribution.photographer_url ? (
         <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
-          {/* Leads with "Stock photo" rather than "Photo by" -- required
-              Pexels/Unsplash API attribution stays, just reworded so it's
-              unambiguous that only the image, not the recipe content
-              itself, is sourced from a stock library. */}
-          Stock photo via {attribution.source === "unsplash" ? "Unsplash" : "Pexels"} ·{" "}
-          <a href={attribution.photographer_url} className="underline hover:text-accent">
-            {attribution.photographer}
-          </a>
+          {attribution.source === "unsplash" ? (
+            // Unsplash's API Terms require crediting both Unsplash itself
+            // and the specific photographer, with the photographer's name
+            // linking to their real Unsplash profile -- a slightly
+            // stricter requirement than Pexels' own (see the plain "Photo
+            // via Pexels" branch below), so this gets its own format
+            // rather than reusing that one.
+            <>
+              Photo by{" "}
+              <a href={attribution.photographer_url} className="underline hover:text-accent">
+                {attribution.photographer}
+              </a>{" "}
+              on{" "}
+              <a href="https://unsplash.com/" className="underline hover:text-accent">
+                Unsplash
+              </a>
+            </>
+          ) : (
+            <>
+              Photo via Pexels ·{" "}
+              <a href={attribution.photographer_url} className="underline hover:text-accent">
+                {attribution.photographer}
+              </a>
+            </>
+          )}
         </figcaption>
       ) : null}
     </figure>
