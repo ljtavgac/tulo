@@ -1,0 +1,26 @@
+name: Check AI-pipeline artifacts (one-off diagnostic)
+
+# Covers the 3 of 4 original AI-artifact-check items that
+# content_audit.py's scan_ai_tells() does NOT cover (that one only checks
+# leftover prompt/completion boilerplate phrases): generator meta tags,
+# debug attributes/IDs in production HTML, and custom response headers
+# identifying the generation pipeline. See
+# content/scripts/check_ai_pipeline_artifacts.py.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Check AI-pipeline artifacts
+        run: python3 content/scripts/check_ai_pipeline_artifacts.py
