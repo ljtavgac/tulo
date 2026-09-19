@@ -3,7 +3,13 @@ services:
     name: tulo-backend
     runtime: python
     rootDir: backend
-    plan: free
+    # Actually running on Pro (2GB RAM) in Render's dashboard as of
+    # 2026-09-19 -- this file had drifted to still say "free" (this repo's
+    # Render services aren't Blueprint-synced, so a dashboard plan change
+    # never updates this file automatically). Corrected here so this
+    # doesn't mislead anyone reading the repo into thinking the backend
+    # spins down between requests, which it does not on Pro.
+    plan: pro
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
