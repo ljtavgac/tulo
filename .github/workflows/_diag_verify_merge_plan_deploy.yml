@@ -49,7 +49,7 @@ jobs:
       - name: Wait for and check prod
         env:
           BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
-          TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+          TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
         run: |
           set -uo pipefail
           deadline=$((SECONDS + 480))
