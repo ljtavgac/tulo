@@ -1,0 +1,15 @@
+name: _diag staging health
+
+# One-off: confirms staging's Render deploy has rolled forward to the
+# batch-9999 eligibility-guard fix. Deleted right after use.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check staging health
+        env:
+          BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: curl -sS --connect-timeout 10 --max-time 20 "$BASE_URL/health"
