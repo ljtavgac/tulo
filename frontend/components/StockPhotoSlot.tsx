@@ -142,11 +142,14 @@ export default function StockPhotoSlot({
       </div>
       {attribution && showAttribution && attribution.photographer && attribution.photographer_url ? (
         <figcaption className="mt-1 pr-2 text-right text-xs text-ink/40">
-          Photo by{" "}
+          {/* Leads with "Stock photo" rather than "Photo by" -- required
+              Pexels/Unsplash API attribution stays, just reworded so it's
+              unambiguous that only the image, not the recipe content
+              itself, is sourced from a stock library. */}
+          Stock photo via {attribution.source === "unsplash" ? "Unsplash" : "Pexels"} ·{" "}
           <a href={attribution.photographer_url} className="underline hover:text-accent">
             {attribution.photographer}
-          </a>{" "}
-          on {attribution.source === "unsplash" ? "Unsplash" : "Pexels"}
+          </a>
         </figcaption>
       ) : null}
     </figure>
