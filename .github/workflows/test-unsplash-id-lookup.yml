@@ -1,0 +1,28 @@
+name: Test Unsplash CDN asset ID lookup (one-off diagnostic)
+
+# Read-only diagnostic: checks whether the "photo-<timestamp>-<hash>" asset
+# ID embedded in an images.unsplash.com CDN URL can be used directly
+# against GET /photos/:id to recover real attribution for a photo that
+# was never captured with one -- see content/scripts/test_unsplash_id_lookup.py.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Test Unsplash CDN asset ID lookup
+        env:
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: python3 content/scripts/test_unsplash_id_lookup.py
