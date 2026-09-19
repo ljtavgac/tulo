@@ -1,7 +1,7 @@
 name: Daily link building
 
 # Runs five automated outbound link-building sources once a day, in
-# priority order, against one SHARED daily queue quota (currently 30 --
+# priority order, against one SHARED daily queue quota (currently 50 --
 # see DAILY_QUEUE_CAP in each script) rather than each one queuing its own
 # count independently. Higher-quality/higher-intent sources run first and
 # get first claim on the quota; the original hub-page crawl (the lowest-

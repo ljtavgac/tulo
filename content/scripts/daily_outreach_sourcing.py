@@ -152,7 +152,7 @@ MAX_TOOL_TURNS = 12  # confirmed live: 6 was too tight -- a genuinely good candi
 MAX_CANDIDATES_PER_RUN = 120  # hard cap on LLM calls regardless of --count, to bound cost/time --
 # raised from 60 now that a credible candidate with no verifiable email is skipped rather than
 # queued, so filling --count with emailed prospects needs more evaluations per run on average
-DAILY_QUEUE_CAP = 30  # shared across every automated outbound sourcing script, not per-script --
+DAILY_QUEUE_CAP = 50  # shared across every automated outbound sourcing script, not per-script --
 # see _remaining_daily_quota
 
 SEARCH_TULO_CONTENT_TOOL = {
