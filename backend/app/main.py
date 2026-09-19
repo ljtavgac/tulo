@@ -2630,6 +2630,181 @@ def export_images(
     return result
 
 
+_PEXELS_ID_RE = re.compile(r"images\.pexels\.com/photos/(\d+)/")
+_UNSPLASH_ID_RE = re.compile(r"images\.unsplash\.com/photo-([\w-]+)")
+
+
+def _lookup_recovered_attribution(image_url: str) -> dict:
+    """Given an existing image_url with no (or null) stored attribution,
+    tries to recover the real photographer credit from the provider's own
+    API using the ID embedded in the CDN URL itself -- a pure read, no
+    image_url is ever touched or re-fetched here.
+
+    Pexels CDN URLs embed their own real, public numeric photo ID
+    (.../photos/<id>/pexels-photo-<id>.jpeg), directly usable against
+    GET /v1/photos/:id. Confirmed live (2026-09-19): this works -- e.g.
+    id 5059700 (smoked-haddock-chowder) returns a real photographer/
+    photographer_url.
+
+    Unsplash CDN URLs embed a DIFFERENT, opaque internal CDN asset ID
+    (photo-<timestamp>-<hash>), confirmed live (2026-09-19, 3 real URLs)
+    to be unrelated to and unusable as Unsplash's own public API photo ID
+    -- GET /photos/:id returns 401 "invalid access token" for this string
+    every time. There is no way to recover real Unsplash attribution for
+    an existing photo from its CDN URL alone; this is included anyway so
+    the report shows that failure explicitly per-page rather than
+    silently skipping Unsplash URLs."""
+    m = _PEXELS_ID_RE.search(image_url)
+    if m:
+        if not PEXELS_ACCESS_KEY:
+            return {"host": "pexels", "recoverable": False, "reason": "PEXELS_ACCESS_KEY not configured"}
+        try:
+            r = requests.get(
+                f"https://api.pexels.com/v1/photos/{m.group(1)}",
+                headers={"Authorization": PEXELS_ACCESS_KEY},
+                timeout=10,
+            )
+        except requests.RequestException as e:
+            return {"host": "pexels", "recoverable": False, "reason": f"request failed: {e}"}
+        if r.status_code != 200:
+            return {"host": "pexels", "recoverable": False, "reason": f"GET /v1/photos/{m.group(1)} -> {r.status_code}: {r.text[:200]}"}
+        data = r.json()
+        return {
+            "host": "pexels",
+            "recoverable": True,
+            "photographer": data.get("photographer"),
+            "photographer_url": data.get("photographer_url"),
+        }
+
+    m = _UNSPLASH_ID_RE.search(image_url)
+    if m:
+        if not UNSPLASH_ACCESS_KEY:
+            return {"host": "unsplash", "recoverable": False, "reason": "UNSPLASH_ACCESS_KEY not configured"}
+        try:
+            r = requests.get(
+                f"https://api.unsplash.com/photos/{m.group(1)}",
+                headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
+                timeout=10,
+            )
+        except requests.RequestException as e:
+            return {"host": "unsplash", "recoverable": False, "reason": f"request failed: {e}"}
+        if r.status_code != 200:
+            return {"host": "unsplash", "recoverable": False, "reason": f"GET /photos/{m.group(1)} -> {r.status_code}: {r.text[:200]}"}
+        data = r.json()
+        return {
+            "host": "unsplash",
+            "recoverable": True,
+            "photographer": data.get("user", {}).get("name"),
+            "photographer_url": data.get("user", {}).get("links", {}).get("html"),
+        }
+
+    return {"host": "unknown", "recoverable": False, "reason": "image_url doesn't match a known Pexels/Unsplash CDN pattern"}
+
+
+@app.get("/admin/lookup-recovered-attribution")
+def lookup_recovered_attribution(
+    token: str,
+    slugs: str = Query(..., description="Comma-separated slugs to check."),
+    db: Session = Depends(get_db),
+):
+    """Read-only report: for each slug, tries to recover real photographer
+    attribution for its EXISTING image_url via _lookup_recovered_attribution()
+    above. Never writes anything -- see /admin/apply-recovered-attribution
+    for the mutating counterpart. Gated behind the same ADMIN_TASK_TOKEN as
+    every other /admin/* route."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    requested = [s.strip() for s in slugs.split(",") if s.strip()]
+    pages_by_slug = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(requested)).all()}
+
+    result = {}
+    for slug in requested:
+        page = pages_by_slug.get(slug)
+        if page is None:
+            result[slug] = {"error": "not found"}
+            continue
+        image_url = page.content.get("image_url")
+        if not image_url:
+            result[slug] = {"error": "page has no image_url"}
+            continue
+        result[slug] = {
+            "current_image_url": image_url,
+            "current_attribution": page.content.get("image_attribution"),
+            **_lookup_recovered_attribution(image_url),
+        }
+    return result
+
+
+@app.get("/admin/apply-recovered-attribution")
+def apply_recovered_attribution(
+    token: str,
+    slugs: str = Query(..., description="Comma-separated slugs to fix."),
+    dry_run: bool = Query(default=True, description="If true (default), reports what would change without writing anything."),
+    db: Session = Depends(get_db),
+):
+    """Writes ONLY content['image_attribution'] for pages where
+    _lookup_recovered_attribution() found a real photographer credit --
+    NEVER touches content['image_url']. This is the missing mechanism
+    /admin/apply-baked-images's own docstring implies: that endpoint is
+    gated on image_url differing, so it can never update attribution
+    alone when the URL is unchanged -- exactly this case, where the photo
+    stays exactly as originally selected and only its credit line is
+    being added or corrected. Asserts image_url is byte-identical before
+    and after as a hard safety check, not just a comment -- raises rather
+    than commit if that ever fails.
+
+    Defaults to dry_run=true; pass dry_run=false to actually write. Skips
+    (does not touch) any slug where recovery failed -- never nulls out or
+    otherwise changes an existing attribution on a lookup failure."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    requested = [s.strip() for s in slugs.split(",") if s.strip()]
+    pages_by_slug = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(requested)).all()}
+
+    result = {}
+    changed_any = False
+    for slug in requested:
+        page = pages_by_slug.get(slug)
+        if page is None:
+            result[slug] = {"error": "not found"}
+            continue
+        original_image_url = page.content.get("image_url")
+        if not original_image_url:
+            result[slug] = {"error": "page has no image_url"}
+            continue
+        lookup = _lookup_recovered_attribution(original_image_url)
+        if not lookup.get("recoverable"):
+            result[slug] = {"skipped": True, **lookup}
+            continue
+
+        result[slug] = {
+            "written" if not dry_run else "would_write": True,
+            "photographer": lookup["photographer"],
+            "photographer_url": lookup["photographer_url"],
+        }
+        if dry_run:
+            continue
+
+        content = copy.deepcopy(page.content)
+        content["image_attribution"] = {
+            "photographer": lookup["photographer"],
+            "photographer_url": lookup["photographer_url"],
+            "source": "recovered_via_id_lookup",
+        }
+        if content.get("image_url") != original_image_url:
+            raise HTTPException(status_code=500, detail=f"Refusing to commit {slug}: image_url would have changed unexpectedly.")
+        page.content = content
+        changed_any = True
+
+    if changed_any:
+        db.commit()
+        _revalidate_frontend()
+
+    return result
+
+
 @app.get("/admin/apply-baked-images")
 def apply_baked_images(token: str, db: Session = Depends(get_db)):
     """One-time (safely re-runnable) fix for a real gap: resync_content()
