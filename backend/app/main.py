@@ -2944,6 +2944,46 @@ def _resolve_pending_articles(db: Session) -> int:
             live = False
         if not live:
             continue
+        # A real, reported bug: when this content_opportunity was spun off
+        # a bundled/numbered reply (see _draft_haro_replies' many-
+        # sub-question path), that reply's own body still carries a
+        # literal [URL placeholder -- pending: "<title>"] tag for this
+        # exact title. The old code below unconditionally spun up a
+        # SEPARATE standalone follow-up email for every resolved
+        # content_opportunity -- fine for one proposed on its own, but for
+        # one that already has a home inside a sibling reply's numbered
+        # list, that produced a confusing duplicate: the real answer
+        # belongs folded into the original reply's placeholder, not as a
+        # second email the reporter never asked for. So: patch the
+        # sibling's placeholder in place (without touching anything else
+        # the reviewer may have edited in that reply) and, when that
+        # succeeds, resolve THIS row as folded-in rather than also giving
+        # it its own queued follow-up.
+        folded_into_reply = False
+        if r.source_group_id:
+            sibling_replies = (
+                db.query(OutreachProspect)
+                .filter(
+                    OutreachProspect.source_group_id == r.source_group_id,
+                    OutreachProspect.proposed_template_type.is_(None),
+                    OutreachProspect.status == "queued",
+                )
+                .all()
+            )
+            placeholder_tag = f'[URL placeholder -- pending: "{r.proposed_title}"]'
+            for sibling in sibling_replies:
+                if placeholder_tag in sibling.body_preview:
+                    sibling.body_preview = sibling.body_preview.replace(placeholder_tag, url)
+                    folded_into_reply = True
+        if folded_into_reply:
+            r.subject = f"[Folded into reply] {r.proposed_title}"
+            r.body_preview = (
+                f"Live at {url} -- folded into the reply to this query instead of a separate "
+                "follow-up email (see the linked reply)."
+            )
+            r.status = "folded_into_reply"
+            resolved += 1
+            continue
         if r.ai_pitches_disallowed:
             # Same reasoning as _draft_haro_replies' own reply-drafting
             # path: this query said no AI pitches, so this templated
@@ -3085,7 +3125,7 @@ _PITCH_TYPE_LABELS: dict[str, tuple[str, str]] = {
 
 @app.get("/admin/outreach-queue", response_class=HTMLResponse)
 def outreach_queue(
-    show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | article_failed | all"),
+    show: str = Query(default="queued", description="queued | approved | rejected | article_pending | article_requested | article_pending_review | article_failed | folded_into_reply | all"),
     db: Session = Depends(get_db),
     _auth: None = Depends(_require_outreach_auth),
 ):
@@ -3244,6 +3284,19 @@ def outreach_queue(
                 '<div class="not-ready">Article generated -- review it below. Once it\'s approved here and '
                 "live on prod, this card auto-fills with a real, sendable reply on the next portal load.</div>"
                 + _render_inline_article_review(r, show, db)
+            )
+        elif r.status == "folded_into_reply":
+            # Resolved by _resolve_pending_articles once this
+            # content_opportunity's article went live: rather than
+            # spinning up a duplicate standalone follow-up, its URL was
+            # patched directly into the sibling reply's placeholder tag
+            # (see that function's docstring on the reported "why did I
+            # get two emails" bug this fixes). Nothing left to review on
+            # this row itself -- see the linked reply above for the
+            # actual sendable content.
+            actions_html = (
+                '<div class="not-ready">Live -- folded into the reply to this query instead of a separate '
+                "follow-up email. See the linked reply's sibling note above.</div>"
             )
         elif r.status == "article_failed":
             # generate_haro_article.py exhausted its own generation
@@ -3481,6 +3534,7 @@ def outreach_queue(
         .pill-status-rejected {{ background: #fbdada; color: #a00; }}
         .pill-status-article_pending, .pill-status-article_requested, .pill-status-article_pending_review {{ background: #fff6dd; color: #7a5b00; }}
         .pill-status-article_failed {{ background: #fbdada; color: #a00; }}
+        .pill-status-folded_into_reply {{ background: #dcefe0; color: #276b3c; }}
         .pill-no-ai {{ background: #fde8e8; color: #a3242a; }}
         .pill-template-type {{ background: #ece4fa; color: #5b2d90; }}
         .meta {{ color: #888; font-size: 11px; margin: 4px 0 8px; }}
