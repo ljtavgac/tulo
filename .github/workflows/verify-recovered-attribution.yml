@@ -1,0 +1,38 @@
+name: Verify recovered attribution (one-off diagnostic)
+
+# Pure DB read (/admin/export-images, no provider API calls) confirming
+# image_url is unchanged and image_attribution now has a real photographer
+# for a sample of pages just fixed by apply-recovered-attribution. See
+# content/scripts/verify_recovered_attribution.py.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        required: false
+        default: "prod"
+        type: choice
+        options:
+          - prod
+          - staging
+      pairs:
+        description: "space-separated slug=expected_image_url pairs"
+        required: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Verify
+        env:
+          BACKEND_BASE_URL: ${{ inputs.target == 'prod' && vars.PROD_BACKEND_BASE_URL || vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ inputs.target == 'prod' && secrets.PROD_ADMIN_TASK_TOKEN || secrets.ADMIN_TASK_TOKEN }}
+        run: python3 content/scripts/verify_recovered_attribution.py ${{ inputs.pairs }}
