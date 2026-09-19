@@ -22,8 +22,27 @@ ROUTES = [
     "food/collections",
 ]
 
-IMG_SRC_RE = re.compile(r'<img[^>]*\bsrc="([^"]+)"', re.DOTALL)
+# StockPhotoSlot always wraps the hero image + its caption in one
+# <figure>...<img .../>...<figcaption>...</figcaption></figure> block --
+# scoping to that specific figure avoids matching an unrelated <img> that
+# happens to appear earlier in the page (the site logo in the header, for
+# instance -- a bug in an earlier version of this script).
+FIGURE_RE = re.compile(r"<figure[^>]*>.*?</figure>", re.DOTALL)
+IMG_SRC_RE = re.compile(r'<img[^>]*\bsrc="([^"]+)"')
 FIGCAPTION_RE = re.compile(r"<figcaption[^>]*>(.*?)</figcaption>", re.DOTALL)
+IMG_URL_PARAM_RE = re.compile(r"[?&]url=([^&]+)")
+
+
+def _real_src(raw_src: str) -> str:
+    """Unwraps Next/Image's /_next/image?url=<encoded>&... proxy path to
+    the actual source URL it's serving, when present."""
+    m = IMG_URL_PARAM_RE.search(raw_src)
+    if not m:
+        return raw_src
+    from urllib.parse import unquote
+
+    return unquote(m.group(1))
+
 
 for slug in SLUGS:
     found = False
@@ -37,10 +56,11 @@ for slug in SLUGS:
         if r.status_code != 200:
             continue
         found = True
-        img_m = IMG_SRC_RE.search(r.text)
-        cap_m = FIGCAPTION_RE.search(r.text)
+        fig_m = FIGURE_RE.search(r.text)
+        img_m = IMG_SRC_RE.search(fig_m.group(0)) if fig_m else None
+        cap_m = FIGCAPTION_RE.search(fig_m.group(0)) if fig_m else None
         print(f"{slug} ({url}):")
-        print(f"  img src: {img_m.group(1) if img_m else 'NONE FOUND'}")
+        print(f"  hero img src: {_real_src(img_m.group(1)) if img_m else 'NONE FOUND (no <figure> block matched)'}")
         print(f"  figcaption: {cap_m.group(1).strip() if cap_m else 'NONE FOUND'}")
         break
     if not found:
