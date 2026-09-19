@@ -92,7 +92,7 @@ TULO_TOOLS = [
 
 MODEL = "claude-sonnet-5"
 MAX_TOOL_TURNS = 12
-DAILY_QUEUE_CAP = 30  # shared across every automated outbound sourcing script
+DAILY_QUEUE_CAP = 50  # shared across every automated outbound sourcing script
 
 SEARCH_TULO_CONTENT_TOOL = {
     "name": "search_tulo_content",
