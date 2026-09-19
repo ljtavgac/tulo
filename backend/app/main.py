@@ -2206,6 +2206,35 @@ def _trigger_batch_merge(batch_number: int) -> None:
         pass
 
 
+def _trigger_haro_article_generation(prospect_id: int) -> None:
+    """Best-effort: ask GitHub Actions to generate this content-
+    opportunity's article right now (see
+    .github/workflows/generate-haro-article.yml), the same
+    fire-and-forget dispatch pattern as _trigger_batch_merge above. A
+    real, reported gap: Create Article used to just flip the status and
+    leave a human to remember to go trigger that workflow by hand from
+    the GitHub UI -- the card's own "will be generated on the next
+    pipeline run" copy was aspirational, not actually true, since there
+    was no scheduled pipeline picking up article_requested rows at all.
+    If this dispatch fails (token not configured, GitHub hiccup), the
+    row still sits at status="article_requested" for a human to trigger
+    manually as before -- nothing is lost, just not automatic."""
+    if not _GITHUB_ACTIONS_TRIGGER_TOKEN:
+        return
+    try:
+        requests.post(
+            f"https://api.github.com/repos/{_GITHUB_REPO}/actions/workflows/generate-haro-article.yml/dispatches",
+            headers={
+                "Authorization": f"Bearer {_GITHUB_ACTIONS_TRIGGER_TOKEN}",
+                "Accept": "application/vnd.github+json",
+            },
+            json={"ref": "main", "inputs": {"prospect_id": str(prospect_id)}},
+            timeout=10,
+        )
+    except requests.RequestException:
+        pass
+
+
 @app.get("/admin/review-queue/approve-for-prod")
 def review_queue_approve_for_prod(
     token: str,
@@ -3190,9 +3219,9 @@ def outreach_queue(
                 f'{escape_html(r.rationale)}</div>' if r.rationale else ""
             )
             actions_html = f"""
-            <div class="not-ready">No existing Tulo page answers this query yet. Create Article requests a
-            new page for it -- generation runs separately and still needs the normal human content review
-            before this becomes a sendable reply.</div>
+            <div class="not-ready">No existing Tulo page answers this query yet. Create Article kicks off
+            generation immediately (usually a couple of minutes) and still needs the normal human content
+            review before this becomes a sendable reply.</div>
             {rationale_html}
             <form method="post" action="/admin/outreach-queue/create-article" class="content-form">
               <input type="hidden" name="prospect_id" value="{r.id}">
@@ -3205,9 +3234,10 @@ def outreach_queue(
             """
         elif r.status == "article_requested":
             actions_html = (
-                '<div class="not-ready">Article requested -- will be generated on the next pipeline run, '
-                "then still needs the normal human content review before it's live and this becomes "
-                "sendable.</div>"
+                '<div class="not-ready">Article requested -- generation was triggered immediately and '
+                "usually takes a couple of minutes; refresh this page once it's done (this card moves to "
+                "a content-review view automatically). Still needs the normal human content review before "
+                "it's live and this becomes sendable.</div>"
             )
         elif r.status == "article_pending_review":
             actions_html = (
@@ -3771,14 +3801,21 @@ def outreach_queue_create_article(
     _auth: None = Depends(_require_outreach_auth),
 ):
     """The Create Article click on a status="article_pending" card (see
-    card() in outreach_queue()). Deliberately just a status flip, nothing
-    more: real generation needs a real Anthropic call plus a git
-    commit+push to staging, and this backend process has neither push
-    credentials nor a request-lifetime long enough to wait on that safely
-    -- see content/scripts/generate_haro_article.py, which does the
-    actual work externally and calls link-article below once it's pushed
-    the new page. Also accepts "article_failed" as a starting status --
-    the Retry click on a can't-produce card (see mark-article-failed) is
+    card() in outreach_queue()). Flips the status, then dispatches
+    .github/workflows/generate-haro-article.yml right away (see
+    _trigger_haro_article_generation) so generation actually starts
+    immediately instead of sitting at "article_requested" until a human
+    remembers to trigger that workflow by hand from the GitHub UI -- a
+    real, reported gap: the card's own copy claimed this would run "on
+    the next pipeline run," but no scheduled pipeline actually picked
+    up article_requested rows at all. Real generation still needs a
+    real Anthropic call plus a git commit+push to staging, and this
+    backend process has neither push credentials nor a request-lifetime
+    long enough to wait on that safely -- see
+    content/scripts/generate_haro_article.py, which does the actual
+    work externally and calls link-article below once it's pushed the
+    new page. Also accepts "article_failed" as a starting status -- the
+    Retry click on a can't-produce card (see mark-article-failed) is
     the same action as the original Create Article, just re-attempting
     generation from scratch."""
     prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
@@ -3788,6 +3825,7 @@ def outreach_queue_create_article(
         raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_pending or article_failed")
     prospect.status = "article_requested"
     db.commit()
+    _trigger_haro_article_generation(prospect_id)
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
 
 
