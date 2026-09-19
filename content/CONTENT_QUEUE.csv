@@ -2142,7 +2142,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 9,published,fresh yeast,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Fresh Yeast Recipe,seo_target,
 9,published,chevre cheese,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Chevre Cheese Recipe,seo_target,
 9,published,boiled cabbage recipes,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,Boiled Cabbage Recipe,seo_target,
-13,not_started,liver and onions recipe,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Liver Onion Recipe,seo_target,
+20,not_started,liver and onions recipe,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Liver Onion Recipe,seo_target,
 9,published,protein noodles,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Protein Noodles Recipe,seo_target,
 9,published,nonfat greek yogurt,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Nonfat Greek Yogurt Recipe,seo_target,
 9,published,chia pudding ratio,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,Chia Pudding Ratio Recipe,seo_target,
@@ -2165,7 +2165,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 9,published,homemade peanut butter,recipe_or_dish,8100.0,20.0,Tier 1,8100.0,Peanut Butter Recipe,seo_target,
 9,published,sour cream donut,recipe_or_dish,8100.0,21.0,Tier 1,8100.0,Sour Cream Donut Recipe,seo_target,
 9,published,award winning chili,recipe_or_dish,8100.0,21.0,Tier 1,8100.0,Award Winning Chili Recipe,seo_target,
-13,not_started,granny smith apple pie,recipe_or_dish,8100.0,10.0,Tier 1,8100.0,Granny Smith Apple Pie Recipe,seo_target,
+20,not_started,granny smith apple pie,recipe_or_dish,8100.0,10.0,Tier 1,8100.0,Granny Smith Apple Pie Recipe,seo_target,
 10,published,strawberry pound cake,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Strawberry Pound Cake Recipe,seo_target,
 9,published,how to prepare latte,howto_technique,8100.0,24.0,Tier 1,8100.0,Latte Recipe,seo_target,
 9,published,blackened shrimp,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Blackened Shrimp Recipe,seo_target,
@@ -2174,7 +2174,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 9,published,smoothie chick,ingredient_hub,8100.0,26.0,Tier 1,8100.0,Smoothie Chick Recipe,seo_target,
 9,published,asian salad dressing,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Asian Salad Dressing Recipe,seo_target,
 9,published,protein smoothie recipes,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Protein Smoothie Recipe,seo_target,
-13,not_started,mornay,ingredient_hub,8100.0,14.0,Tier 1,8100.0,Mornay Recipe,seo_target,
+20,not_started,mornay,ingredient_hub,8100.0,14.0,Tier 1,8100.0,Mornay Recipe,seo_target,
 9,published,savory oatmeal,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Savory Oatmeal Recipe,seo_target,
 9,published,lambs milk cheese,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Lamb Milk Cheese Recipe,seo_target,
 9,published,what is yum yum sauce,definition,8100.0,29.0,Tier 1,8100.0,What Is Yum Yum Sauce? (And How to Use It),seo_target,
@@ -2232,7 +2232,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 10,published,frozen greek yogurt,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,Frozen Greek Yogurt Recipe,seo_target,
 10,published,gluten free bread crumbs,recipe_or_dish,8100.0,17.0,Tier 1,8100.0,Gluten Free Bread Crumb Recipe,seo_target,
 10,published,how long to boil green beans,howto_technique,8100.0,22.0,Tier 1,8100.0,Boil Green Beans Recipe,seo_target,
-13,not_started,deep fried chicken wings,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Deep Fried Chicken Wings Recipe,seo_target,
+20,not_started,deep fried chicken wings,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Deep Fried Chicken Wings Recipe,seo_target,
 10,published,ceviche de camaron,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Ceviche De Camaron Recipe,seo_target,
 10,published,what is amaretto,definition,8100.0,25.0,Tier 1,8100.0,What Is Amaretto? (And How to Use It),seo_target,
 10,published,pork tenderloin in crock pot,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,Pork Tenderloin Crock Pot Recipe,seo_target,
@@ -2285,7 +2285,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 10,published,fudge stripe cookies,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,Fudge Stripe Cookies Recipe,seo_target,
 10,published,blue lagoon cocktail,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Blue Lagoon Cocktail Recipe,seo_target,
 10,published,bleu cheese,ingredient_hub,8100.0,21.0,Tier 1,8100.0,Bleu Cheese Recipe,seo_target,
-13,not_started,how to say gyro,howto_technique,8100.0,28.0,Tier 1,8100.0,Say Gyro Recipe,seo_target,
+20,not_started,how to say gyro,howto_technique,8100.0,28.0,Tier 1,8100.0,Say Gyro Recipe,seo_target,
 10,published,seaweed chips,ingredient_hub,8100.0,20.0,Tier 1,8100.0,Seaweed Chips Recipe,seo_target,
 10,published,beef stew meat recipes,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,Beef Stew Meat Recipe,seo_target,
 10,published,armadillo eggs,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Armadillo Egg Recipe,seo_target,
@@ -2367,7 +2367,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 11,published,pan con pollo,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Pan Con Pollo Recipe,seo_target,
 5,published,radish recipes,category_roundup,8100.0,25.0,Tier 1,8100.0,Radish Recipe,seo_target,
 11,published,pita pocket,ingredient_hub,8100.0,12.0,Tier 1,8100.0,Pita Pocket Recipe,seo_target,
-13,not_started,applesauce bread,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Applesauce Bread Recipe,seo_target,
+20,not_started,applesauce bread,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Applesauce Bread Recipe,seo_target,
 11,published,deser mango,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Deser Mango Recipe,seo_target,
 11,published,potato rolls,ingredient_hub,8100.0,22.0,Tier 1,8100.0,Potato Roll Recipe,seo_target,
 11,published,hot cocoa bar,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Hot Cocoa Bar Recipe,seo_target,
@@ -2383,7 +2383,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 11,published,kurbis soup recipe,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Kurbis Soup Recipe,seo_target,
 11,published,Easy Greek Recipes at Home,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Greek at Home Recipe,seo_target,
 11,published,reina pepiada,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Reina Pepiada Recipe,seo_target,
-13,not_started,mango dessert,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Mango Dessert Recipe,seo_target,
+20,not_started,mango dessert,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Mango Dessert Recipe,seo_target,
 11,published,Papa Rellena,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Papa Rellena Recipe,seo_target,
 11,published,tortillas de harina,recipe_or_dish,8100.0,17.0,Tier 1,8100.0,Tortilla De Harina Recipe,seo_target,
 11,published,salmon sashimi,ingredient_hub,8100.0,25.0,Tier 1,8100.0,Salmon Sashimi Recipe,seo_target,
@@ -2397,7 +2397,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 11,published,mastrad oil,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Mastrad Oil Recipe,seo_target,
 11,published,campari tomatoes,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Campari Tomatoe Recipe,seo_target,
 13,published,black beans with tilapia,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,Black Beans Tilapia Recipe,seo_target,
-13,not_started,panama meals,ingredient_hub,8100.0,25.0,Tier 1,8100.0,Panama Meal Recipe,seo_target,
+20,not_started,panama meals,ingredient_hub,8100.0,25.0,Tier 1,8100.0,Panama Meal Recipe,seo_target,
 13,published,green tomato,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Green Tomato Recipe,seo_target,
 13,published,what are collard greens,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,What Are Collard Greens Recipe,seo_target,
 13,published,cracklins,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Cracklin Recipe,seo_target,
@@ -2413,7 +2413,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 13,published,how do you eat kaki fruit,recipe_or_dish,8100.0,17.0,Tier 1,8100.0,Eat Kaki Fruit Recipe,seo_target,
 13,published,gluten free meatballs,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,Gluten Free Meatballs Recipe,seo_target,
 13,published,file powder,ingredient_hub,8100.0,29.0,Tier 1,8100.0,"File Powder: Uses, Substitutes & Recipes",seo_target,cuisine_specialty
-13,not_started,what are gizzards,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,What Are Gizzard Recipe,seo_target,
+20,not_started,what are gizzards,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,What Are Gizzard Recipe,seo_target,
 13,published,how to cook bacon in the microwave,howto_technique,8100.0,27.0,Tier 1,8100.0,Bacon Microwave Recipe,seo_target,
 13,published,tuna crudo,ingredient_hub,8100.0,17.0,Tier 1,8100.0,Tuna Crudo Recipe,seo_target,
 13,published,picaditas,ingredient_hub,8100.0,17.0,Tier 1,8100.0,Picadita Recipe,seo_target,
@@ -2430,7 +2430,7 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 13,published,how to defrost mince meat,howto_technique,8100.0,28.0,Tier 1,8100.0,Defrost Mince Meat Recipe,seo_target,
 13,published,good morning breakfast,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Good Morning Breakfast Recipe,seo_target,
 13,published,egg custard,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Egg Custard Recipe,seo_target,
-13,not_started,ninja creami protein ice cream,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Ninja Creami Protein Ice Cream Recipe,seo_target,
+20,not_started,ninja creami protein ice cream,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Ninja Creami Protein Ice Cream Recipe,seo_target,
 13,published,roasted chestnuts,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Roasted Chestnut Recipe,seo_target,
 13,published,shishito,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Shishito Recipe,seo_target,
 13,published,do eggs go out of date,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Egg Go Out Date Recipe,seo_target,
@@ -2457,10 +2457,10 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 13,published,lettuce wraps pf chang's recipe,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,Lettuce Wrap Pf Chang Recipe,seo_target,
 13,published,potted cake,ingredient_hub,8100.0,26.0,Tier 1,8100.0,Potted Cake Recipe,seo_target,
 13,published,raspberry jam recipe,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,Raspberry Jam Recipe,seo_target,
-13,not_started,cast iron skillet steak,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Cast Iron Skillet Steak Recipe,seo_target,
+20,not_started,cast iron skillet steak,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Cast Iron Skillet Steak Recipe,seo_target,
 13,published,frozen blueberries,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Frozen Blueberry Recipe,seo_target,
 13,published,roasting,ingredient_hub,8100.0,26.0,Tier 1,8100.0,Roasting Recipe,seo_target,
-13,not_started,boullion,ingredient_hub,8100.0,26.0,Tier 1,8100.0,Boullion Recipe,seo_target,
+20,not_started,boullion,ingredient_hub,8100.0,26.0,Tier 1,8100.0,Boullion Recipe,seo_target,
 13,published,low gi diet for polycystic ovarian syndrome,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Low Gi Diet Polycystic Ovarian Syndrome Recipe,seo_target,
 13,published,toddler meal ideas,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Toddler Meal Idea Recipe,seo_target,
 13,published,how to make fresh pasta dough from scratch,howto_technique,8100.0,26.0,Tier 1,10700.0,Fresh Pasta Dough From Scratch Recipe,seo_target,
@@ -2483,95 +2483,95 @@ batch_number,status,title,template_type,volume,kdi,tier,cluster_capture_potentia
 13,published,tom cruise coconut cake,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,tom cruise coconut cake,seo_target,allrecipes_mobile_find
 13,published,cajun recipes,category_roundup,8100.0,29.0,Tier 1,8100.0,Cajun Recipes: Our Best Collection,seo_target,
 13,published,cacao powder vs cocoa powder,comparison,8100.0,24.0,Tier 1,8100.0,cacao powder vs cocoa powder,seo_target,allrecipes_mobile_find
-5,not_started,dinner keto recipes,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,dinner keto recipes,seo_target,allrecipes_mobile_find
-5,not_started,hamburgers in the air fryer,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,hamburgers in the air fryer,seo_target,allrecipes_mobile_find
-5,not_started,is cheese gluten free,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Is Cheese Gluten Free? Complete Guide,seo_target,
-5,not_started,air fry chicken tenders,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Air Fry Chicken Tender Recipe,seo_target,
-5,not_started,cottage cheese chocolate mousse,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Cottage Cheese Chocolate Mousse Recipe,seo_target,
-5,not_started,mini tacos,ingredient_hub,8100.0,28.0,Tier 1,8100.0,mini tacos,seo_target,allrecipes_mobile_find
-5,not_started,gluten free banana loaf,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,gluten free banana loaf,seo_target,allrecipes_mobile_find
-5,not_started,fresas con crema recipe,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,Fresa Con Crema Recipe,seo_target,
-5,not_started,how to make rice in a rice maker,howto_technique,8100.0,26.0,Tier 1,8100.0,Rice Rice Maker Recipe,seo_target,
-5,not_started,russian dressing recipe,recipe_or_dish,8100.0,19.0,Tier 1,8100.0,Russian Dressing Recipe,seo_target,
-5,not_started,best brunch,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Brunch Recipe,seo_target,
-5,not_started,breakfast brunch,ingredient_hub,8100.0,18.0,Tier 1,8100.0,Breakfast Brunch Recipe,seo_target,
-5,not_started,kinds of tea,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Kind Tea Recipe,seo_target,
-5,not_started,beef back ribs,recipe_or_dish,8100.0,19.0,Tier 1,8100.0,Beef Back Ribs Recipe,seo_target,
-5,not_started,california roll ingredients,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,California Roll Ingredient Recipe,seo_target,
-5,not_started,gruyere cheese for french onion soup,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Gruyere Cheese French Onion Soup Recipe,seo_target,
-5,not_started,peperonata,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Peperonata Recipe,seo_target,
-5,not_started,cajeta in english,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Cajeta English Recipe,seo_target,
-5,not_started,little caesars crazy puffs,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,little caesars crazy puffs,seo_target,allrecipes_mobile_find
-5,not_started,chili colorado recipe,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,chili colorado recipe,seo_target,allrecipes_mobile_find
-6,not_started,appetizers for thanksgiving,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,appetizers for thanksgiving,seo_target,allrecipes_mobile_find
-6,not_started,does sugar expire,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Sugar Expire Recipe,seo_target,
-6,not_started,tamarind candy,ingredient_hub,8100.0,23.0,Tier 1,8100.0,tamarind candy,seo_target,allrecipes_mobile_find
-6,not_started,tripleta,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Tripleta Recipe,seo_target,
-6,not_started,Chipotle Adobo Sauce,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Chipotle Adobo Sauce Recipe,seo_target,
-6,not_started,german desserts,ingredient_hub,8100.0,27.0,Tier 1,8100.0,German Dessert Recipe,seo_target,
-6,not_started,puffed quinoa,ingredient_hub,8100.0,11.0,Tier 1,8100.0,Puffed Quinoa Recipe,seo_target,
-6,not_started,urad dal,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Urad Dal Recipe,seo_target,
-6,not_started,washabinaros chili,ingredient_hub,8100.0,10.0,Tier 1,8100.0,Washabinaro Chili Recipe,seo_target,
-6,not_started,spanish onion,ingredient_hub,8100.0,16.0,Tier 1,8100.0,Spanish Onion Recipe,seo_target,
-6,not_started,deli ham,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Deli Ham Recipe,seo_target,
-6,not_started,mocha latte,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Mocha Latte Recipe,seo_target,
-6,not_started,cacao nibs vs cocoa powder differences,comparison,8100.0,17.0,Tier 1,8100.0,cacao nibs vs cocoa powder differences,seo_target,allrecipes_mobile_find
-6,not_started,ice cream italia,recipe_or_dish,8100.0,19.0,Tier 1,8100.0,ice cream italia,seo_target,allrecipes_mobile_find
-6,not_started,wendys chili,ingredient_hub,8100.0,23.0,Tier 1,8100.0,wendys chili,seo_target,allrecipes_mobile_find
-6,not_started,gyoza sauce,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Gyoza Sauce Recipe,seo_target,
-6,not_started,how to cook lobster,howto_technique,8100.0,24.0,Tier 1,8100.0,Lobster Recipe,seo_target,
-6,not_started,mild cheddar cheese,recipe_or_dish,8100.0,12.0,Tier 1,8100.0,Mild Cheddar Cheese Recipe,seo_target,
-6,not_started,stuffed french toast,recipe_or_dish,8100.0,21.0,Tier 1,8100.0,Stuffed French Toast Recipe,seo_target,
-6,not_started,gluten free brownies,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Gluten Free Browny Recipe,seo_target,
-6,not_started,banana capsicum,ingredient_hub,8100.0,27.0,Tier 1,8100.0,banana capsicum,seo_target,allrecipes_mobile_find
-6,not_started,aldi crispy potato circles,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,aldi crispy potato circles,seo_target,allrecipes_mobile_find
-6,not_started,brown egg,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Brown Egg Recipe,seo_target,
-6,not_started,chili beans recipe,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,chili beans recipe,seo_target,allrecipes_mobile_find
-6,not_started,candied walnuts recipe,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,candied walnuts recipe,seo_target,allrecipes_mobile_find
-6,not_started,frozen strawberries,ingredient_hub,8100.0,16.0,Tier 1,8100.0,Frozen Strawberry Recipe,seo_target,
-6,not_started,chorizo tacos,ingredient_hub,8100.0,25.0,Tier 1,8100.0,Chorizo Tacos Recipe,seo_target,
-6,not_started,moon drop grapes,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Moon Drop Grape Recipe,seo_target,
-6,not_started,blue bell ice cream allergen recall,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,blue bell ice cream allergen recall,seo_target,brand_news_reactive
-6,not_started,applesauce bread recipe,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,applesauce bread recipe,seo_target,allrecipes_mobile_find
-6,not_started,how long to cook lasagna,howto_technique,8100.0,29.0,Tier 1,8100.0,Lasagna Recipe,seo_target,
-6,not_started,hanky panky recipe,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,Hanky Panky Recipe,seo_target,
-6,not_started,croissant sandwich,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Croissant Sandwich Recipe,seo_target,
-6,not_started,twice baked potato casserole,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Twice Baked Potato Casserole Recipe,seo_target,
-6,not_started,reheat fries in air fryer,recipe_or_dish,8100.0,12.0,Tier 1,8100.0,Reheat Fries Air Fryer Recipe,seo_target,
-6,not_started,scallop shell,ingredient_hub,8100.0,18.0,Tier 1,8100.0,Scallop Shell Recipe,seo_target,
-6,not_started,can you eat meat on ash wednesday,recipe_or_dish,8100.0,11.0,Tier 1,8100.0,Eat Meat Ash Wednesday Recipe,seo_target,
-6,not_started,haddock recipes,category_roundup,8100.0,29.0,Tier 1,8100.0,Haddock Recipe,seo_target,
-6,not_started,peanut butter covered chocolate,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Peanut Butter Covered Chocolate Recipe,seo_target,
-6,not_started,pan seared pork chops,recipe_or_dish,8100.0,20.0,Tier 1,8100.0,Pan Seared Pork Chop Recipe,seo_target,
-6,not_started,what is white chocolate made of,definition,8100.0,23.0,Tier 1,8100.0,what is white chocolate made of,seo_target,allrecipes_mobile_find
+20,published,dinner keto recipes,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,dinner keto recipes,seo_target,allrecipes_mobile_find
+20,published,hamburgers in the air fryer,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,hamburgers in the air fryer,seo_target,allrecipes_mobile_find
+20,published,is cheese gluten free,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Is Cheese Gluten Free? Complete Guide,seo_target,
+20,published,air fry chicken tenders,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Air Fry Chicken Tender Recipe,seo_target,
+20,published,cottage cheese chocolate mousse,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Cottage Cheese Chocolate Mousse Recipe,seo_target,
+20,published,mini tacos,ingredient_hub,8100.0,28.0,Tier 1,8100.0,mini tacos,seo_target,allrecipes_mobile_find
+20,not_started,gluten free banana loaf,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,gluten free banana loaf,seo_target,allrecipes_mobile_find
+20,published,fresas con crema recipe,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,Fresa Con Crema Recipe,seo_target,
+20,published,how to make rice in a rice maker,howto_technique,8100.0,26.0,Tier 1,8100.0,Rice Rice Maker Recipe,seo_target,
+20,published,russian dressing recipe,recipe_or_dish,8100.0,19.0,Tier 1,8100.0,Russian Dressing Recipe,seo_target,
+20,published,best brunch,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Brunch Recipe,seo_target,
+20,published,breakfast brunch,ingredient_hub,8100.0,18.0,Tier 1,8100.0,Breakfast Brunch Recipe,seo_target,
+20,published,kinds of tea,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Kind Tea Recipe,seo_target,
+20,published,beef back ribs,recipe_or_dish,8100.0,19.0,Tier 1,8100.0,Beef Back Ribs Recipe,seo_target,
+20,published,california roll ingredients,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,California Roll Ingredient Recipe,seo_target,
+20,published,gruyere cheese for french onion soup,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,Gruyere Cheese French Onion Soup Recipe,seo_target,
+20,published,peperonata,ingredient_hub,8100.0,29.0,Tier 1,8100.0,Peperonata Recipe,seo_target,
+20,published,cajeta in english,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,Cajeta English Recipe,seo_target,
+20,published,little caesars crazy puffs,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,little caesars crazy puffs,seo_target,allrecipes_mobile_find
+20,published,chili colorado recipe,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,chili colorado recipe,seo_target,allrecipes_mobile_find
+20,published,appetizers for thanksgiving,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,appetizers for thanksgiving,seo_target,allrecipes_mobile_find
+20,not_started,does sugar expire,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,Sugar Expire Recipe,seo_target,
+20,published,tamarind candy,ingredient_hub,8100.0,23.0,Tier 1,8100.0,tamarind candy,seo_target,allrecipes_mobile_find
+20,published,tripleta,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Tripleta Recipe,seo_target,
+20,published,Chipotle Adobo Sauce,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Chipotle Adobo Sauce Recipe,seo_target,
+20,not_started,german desserts,ingredient_hub,8100.0,27.0,Tier 1,8100.0,German Dessert Recipe,seo_target,
+20,published,puffed quinoa,ingredient_hub,8100.0,11.0,Tier 1,8100.0,Puffed Quinoa Recipe,seo_target,
+20,published,urad dal,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Urad Dal Recipe,seo_target,
+20,published,washabinaros chili,ingredient_hub,8100.0,10.0,Tier 1,8100.0,Washabinaro Chili Recipe,seo_target,
+20,published,spanish onion,ingredient_hub,8100.0,16.0,Tier 1,8100.0,Spanish Onion Recipe,seo_target,
+20,published,deli ham,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Deli Ham Recipe,seo_target,
+20,published,mocha latte,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Mocha Latte Recipe,seo_target,
+20,published,cacao nibs vs cocoa powder differences,comparison,8100.0,17.0,Tier 1,8100.0,cacao nibs vs cocoa powder differences,seo_target,allrecipes_mobile_find
+20,published,ice cream italia,recipe_or_dish,8100.0,19.0,Tier 1,8100.0,ice cream italia,seo_target,allrecipes_mobile_find
+20,published,wendys chili,ingredient_hub,8100.0,23.0,Tier 1,8100.0,wendys chili,seo_target,allrecipes_mobile_find
+20,published,gyoza sauce,ingredient_hub,8100.0,28.0,Tier 1,8100.0,Gyoza Sauce Recipe,seo_target,
+20,published,how to cook lobster,howto_technique,8100.0,24.0,Tier 1,8100.0,Lobster Recipe,seo_target,
+20,published,mild cheddar cheese,recipe_or_dish,8100.0,12.0,Tier 1,8100.0,Mild Cheddar Cheese Recipe,seo_target,
+20,published,stuffed french toast,recipe_or_dish,8100.0,21.0,Tier 1,8100.0,Stuffed French Toast Recipe,seo_target,
+20,published,gluten free brownies,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Gluten Free Browny Recipe,seo_target,
+20,published,banana capsicum,ingredient_hub,8100.0,27.0,Tier 1,8100.0,banana capsicum,seo_target,allrecipes_mobile_find
+20,published,aldi crispy potato circles,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,aldi crispy potato circles,seo_target,allrecipes_mobile_find
+20,published,brown egg,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Brown Egg Recipe,seo_target,
+20,published,chili beans recipe,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,chili beans recipe,seo_target,allrecipes_mobile_find
+20,published,candied walnuts recipe,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,candied walnuts recipe,seo_target,allrecipes_mobile_find
+20,published,frozen strawberries,ingredient_hub,8100.0,16.0,Tier 1,8100.0,Frozen Strawberry Recipe,seo_target,
+20,published,chorizo tacos,ingredient_hub,8100.0,25.0,Tier 1,8100.0,Chorizo Tacos Recipe,seo_target,
+20,published,moon drop grapes,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Moon Drop Grape Recipe,seo_target,
+20,published,blue bell ice cream allergen recall,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,blue bell ice cream allergen recall,seo_target,brand_news_reactive
+20,published,applesauce bread recipe,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,applesauce bread recipe,seo_target,allrecipes_mobile_find
+20,published,how long to cook lasagna,howto_technique,8100.0,29.0,Tier 1,8100.0,Lasagna Recipe,seo_target,
+20,published,hanky panky recipe,recipe_or_dish,8100.0,18.0,Tier 1,8100.0,Hanky Panky Recipe,seo_target,
+20,not_started,croissant sandwich,ingredient_hub,8100.0,23.0,Tier 1,8100.0,Croissant Sandwich Recipe,seo_target,
+20,published,twice baked potato casserole,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,Twice Baked Potato Casserole Recipe,seo_target,
+20,published,reheat fries in air fryer,recipe_or_dish,8100.0,12.0,Tier 1,8100.0,Reheat Fries Air Fryer Recipe,seo_target,
+20,published,scallop shell,ingredient_hub,8100.0,18.0,Tier 1,8100.0,Scallop Shell Recipe,seo_target,
+20,published,can you eat meat on ash wednesday,recipe_or_dish,8100.0,11.0,Tier 1,8100.0,Eat Meat Ash Wednesday Recipe,seo_target,
+20,published,haddock recipes,category_roundup,8100.0,29.0,Tier 1,8100.0,Haddock Recipe,seo_target,
+20,published,peanut butter covered chocolate,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,Peanut Butter Covered Chocolate Recipe,seo_target,
+20,published,pan seared pork chops,recipe_or_dish,8100.0,20.0,Tier 1,8100.0,Pan Seared Pork Chop Recipe,seo_target,
+20,published,what is white chocolate made of,definition,8100.0,23.0,Tier 1,8100.0,what is white chocolate made of,seo_target,allrecipes_mobile_find
 6,published,duck confit recipe,recipe_or_dish,8100.0,22.0,Tier 1,8100.0,duck confit recipe,seo_target,allrecipes_mobile_find
-6,not_started,totino's pizza,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,totino's pizza,seo_target,brand_news_reactive
-6,not_started,pop tart ice cream sandwich,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,pop tart ice cream sandwich,seo_target,brand_news_reactive
-6,not_started,ice cream.in the snow,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,ice cream.in the snow,seo_target,allrecipes_mobile_find
-6,not_started,olive garden kids menu,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,olive garden kids menu,seo_target,brand_news_reactive
-6,not_started,beef and noodles,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,beef and noodles,seo_target,allrecipes_mobile_find
-6,not_started,slow cooker recipes with mince meat,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,slow cooker recipes with mince meat,seo_target,allrecipes_mobile_find
-6,not_started,how to make snow cream,howto_technique,8100.0,27.0,Tier 1,8100.0,how to make snow cream,seo_target,allrecipes_mobile_find
-6,not_started,Bun Thit Nuong,recipe_or_dish,8100.0,20.0,Tier 1,8100.0,Bun Thit Nuong Recipe,seo_target,
-6,not_started,blueberry jam recipe,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,Blueberry Jam Recipe,seo_target,
-6,not_started,what is a mocktail,definition,8100.0,22.0,Tier 1,8100.0,what is a mocktail,seo_target,allrecipes_mobile_find
-6,not_started,hash browns in air fryer,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,Hash Brown Air Fryer Recipe,seo_target,
-6,not_started,puding vanilla,ingredient_hub,8100.0,29.0,Tier 1,8100.0,puding vanilla,seo_target,allrecipes_mobile_find
-6,not_started,how to make a shirley temple,howto_technique,8100.0,28.0,Tier 1,8100.0,how to make a shirley temple,seo_target,allrecipes_mobile_find
-6,not_started,cherry season,ingredient_hub,8100.0,16.0,Tier 1,8100.0,cherry season,seo_target,allrecipes_mobile_find
-6,not_started,outback steakhouse closing restaurants,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,outback steakhouse closing restaurants,seo_target,brand_news_reactive
-6,not_started,what is horseradish,definition,8100.0,24.0,Tier 1,8100.0,What Is Horseradish? (And How to Use It),seo_target,
-6,not_started,steak pasta,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Steak Pasta Recipe,seo_target,
-6,not_started,sweet n sour pineapple chicken,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,sweet n sour pineapple chicken,seo_target,allrecipes_mobile_find
-6,not_started,swamp potatoes recipe,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,swamp potatoes recipe,seo_target,allrecipes_mobile_find
-6,not_started,edamame snacks,ingredient_hub,8100.0,28.0,Tier 1,8100.0,edamame snacks,seo_target,allrecipes_mobile_find
-6,not_started,shake and bake chicken,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,shake and bake chicken,seo_target,allrecipes_mobile_find
-6,not_started,raspberry syrup,ingredient_hub,8100.0,21.0,Tier 1,8100.0,Raspberry Syrup Recipe,seo_target,
-6,not_started,how long to roast a chicken,howto_technique,8100.0,25.0,Tier 1,8100.0,how long to roast a chicken,seo_target,allrecipes_mobile_find
-6,not_started,bbq rub,ingredient_hub,8100.0,25.0,Tier 1,8100.0,bbq rub,seo_target,allrecipes_mobile_find
-6,not_started,mcdonalds 50 cent double cheeseburgers,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,mcdonalds 50 cent double cheeseburgers,seo_target,brand_news_reactive
-6,not_started,smoking brisket,ingredient_hub,8100.0,21.0,Tier 1,8100.0,Smoking Brisket Recipe,seo_target,
-6,not_started,dried porcini mushrooms,recipe_or_dish,8100.0,16.0,Tier 1,8100.0,Dried Porcini Mushroom Recipe,seo_target,
+20,published,totino's pizza,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,totino's pizza,seo_target,brand_news_reactive
+20,published,pop tart ice cream sandwich,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,pop tart ice cream sandwich,seo_target,brand_news_reactive
+20,published,ice cream.in the snow,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,ice cream.in the snow,seo_target,allrecipes_mobile_find
+20,published,olive garden kids menu,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,olive garden kids menu,seo_target,brand_news_reactive
+20,published,beef and noodles,recipe_or_dish,8100.0,27.0,Tier 1,8100.0,beef and noodles,seo_target,allrecipes_mobile_find
+20,published,slow cooker recipes with mince meat,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,slow cooker recipes with mince meat,seo_target,allrecipes_mobile_find
+20,published,how to make snow cream,howto_technique,8100.0,27.0,Tier 1,8100.0,how to make snow cream,seo_target,allrecipes_mobile_find
+20,published,Bun Thit Nuong,recipe_or_dish,8100.0,20.0,Tier 1,8100.0,Bun Thit Nuong Recipe,seo_target,
+20,published,blueberry jam recipe,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,Blueberry Jam Recipe,seo_target,
+20,not_started,what is a mocktail,definition,8100.0,22.0,Tier 1,8100.0,what is a mocktail,seo_target,allrecipes_mobile_find
+20,published,hash browns in air fryer,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,Hash Brown Air Fryer Recipe,seo_target,
+20,published,puding vanilla,ingredient_hub,8100.0,29.0,Tier 1,8100.0,puding vanilla,seo_target,allrecipes_mobile_find
+20,published,how to make a shirley temple,howto_technique,8100.0,28.0,Tier 1,8100.0,how to make a shirley temple,seo_target,allrecipes_mobile_find
+20,published,cherry season,ingredient_hub,8100.0,16.0,Tier 1,8100.0,cherry season,seo_target,allrecipes_mobile_find
+20,published,outback steakhouse closing restaurants,recipe_or_dish,8100.0,23.0,Tier 1,8100.0,outback steakhouse closing restaurants,seo_target,brand_news_reactive
+20,published,what is horseradish,definition,8100.0,24.0,Tier 1,8100.0,What Is Horseradish? (And How to Use It),seo_target,
+20,published,steak pasta,ingredient_hub,8100.0,24.0,Tier 1,8100.0,Steak Pasta Recipe,seo_target,
+20,published,sweet n sour pineapple chicken,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,sweet n sour pineapple chicken,seo_target,allrecipes_mobile_find
+20,published,swamp potatoes recipe,recipe_or_dish,8100.0,29.0,Tier 1,8100.0,swamp potatoes recipe,seo_target,allrecipes_mobile_find
+20,published,edamame snacks,ingredient_hub,8100.0,28.0,Tier 1,8100.0,edamame snacks,seo_target,allrecipes_mobile_find
+20,not_started,shake and bake chicken,recipe_or_dish,8100.0,28.0,Tier 1,8100.0,shake and bake chicken,seo_target,allrecipes_mobile_find
+20,published,raspberry syrup,ingredient_hub,8100.0,21.0,Tier 1,8100.0,Raspberry Syrup Recipe,seo_target,
+20,published,how long to roast a chicken,howto_technique,8100.0,25.0,Tier 1,8100.0,how long to roast a chicken,seo_target,allrecipes_mobile_find
+20,published,bbq rub,ingredient_hub,8100.0,25.0,Tier 1,8100.0,bbq rub,seo_target,allrecipes_mobile_find
+20,published,mcdonalds 50 cent double cheeseburgers,recipe_or_dish,8100.0,26.0,Tier 1,8100.0,mcdonalds 50 cent double cheeseburgers,seo_target,brand_news_reactive
+20,published,smoking brisket,ingredient_hub,8100.0,21.0,Tier 1,8100.0,Smoking Brisket Recipe,seo_target,
+20,published,dried porcini mushrooms,recipe_or_dish,8100.0,16.0,Tier 1,8100.0,Dried Porcini Mushroom Recipe,seo_target,
 6,not_started,boneless chuck roast,recipe_or_dish,8100.0,24.0,Tier 1,8100.0,Boneless Chuck Roast Recipe,seo_target,
 6,not_started,soya chunks,ingredient_hub,8100.0,27.0,Tier 1,8100.0,Soya Chunk Recipe,seo_target,
 6,not_started,san marzano tomatoes for pizza,recipe_or_dish,8100.0,25.0,Tier 1,8100.0,san marzano tomatoes for pizza,seo_target,allrecipes_mobile_find
