@@ -8,11 +8,22 @@ name: Merge approved batch to main
 # just for this job); the always-on Render web service never holds one,
 # only a narrow Actions:write-only PAT that can start this workflow and
 # nothing else.
+#
+# Takes a comma-separated LIST of batch numbers, not just one -- see
+# backend/app/main.py's _resolve_merge_plan for why: the daily content
+# batch and any HARO-generated article batch share one seed_templates.py
+# insertion point and one batch_number counter, so an earlier batch that's
+# already been approved but hasn't merged yet MUST land before a later one
+# or the later one's cherry-pick conflicts (a real, reported incident,
+# 2026-09-19). The backend is what decides which batch numbers belong in
+# one run -- this workflow just processes whatever list it's given, oldest
+# first, entirely within one job/checkout so each subsequent batch's diff
+# context matches what the previous one(s) already applied locally.
 on:
   workflow_dispatch:
     inputs:
-      batch_number:
-        description: "batch_number to cherry-pick from staging onto main"
+      batch_numbers:
+        description: "Comma-separated batch_number(s) to cherry-pick from staging onto main, oldest first"
         required: true
 
 permissions:
@@ -31,88 +42,93 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Cherry-pick the approved batch's commit(s) onto main
+      - name: Cherry-pick every batch's commit(s) onto main, oldest first
         run: |
           set -euo pipefail
           git fetch origin staging
-          # daily_batch.py stamps every batch commit's message with a
-          # "Tulo-Batch-Number: <N>" trailer (see content/scripts/
-          # daily_batch.py) -- that's what makes this lookup possible
-          # without a git tag. Tags looked like the obvious choice here,
-          # but this repo's push credentials can create branches, not tag
-          # refs (a real permission boundary, confirmed by a live 403 on a
-          # tag push during setup) -- a commit trailer needs nothing more
-          # than the same push access already used for everything else.
-          # The trailing ([^0-9]|$) keeps batch 999 from matching batch
-          # 9999's trailer.
-          #
-          # A batch can carry MORE than one trailer-stamped commit -- real
-          # incident (2026-09-14): batch 8 got a second commit later the
-          # same day (companion recipes generated for a category_roundup
-          # page's cards, see run_companion_recipes in daily_batch.py) on
-          # top of its original one, plus follow-up content fixes stamped
-          # with the same trailer once a real duplicate was found among
-          # those companions. Picking only the single most recent match
-          # (the old `-n 1` behavior) would cherry-pick a commit whose diff
-          # assumes the earlier one's content already exists on main --
-          # exactly what this run is approving, so it can't yet. Finding
-          # every match and applying them all, oldest first, is what
-          # actually reproduces the batch's real content on main.
-          SHAS="$(git log origin/staging -E --grep="Tulo-Batch-Number: ${{ inputs.batch_number }}([^0-9]|\$)" --format=%H --reverse)"
-
-          # One-off, explicitly documented exception: batch 13's own
-          # generation commit predates the fix (in COMPARISON_SCHEMA) for
-          # a real crash-on-load bug (related_recipe_slugs entirely
-          # missing from comparison-page content -- confirmed live
-          # 2026-09-18 on the batch-12 HARO page, which hit this exact
-          # gap). The fix for batch 13's 4 affected pages already landed
-          # on staging as commit 3838a3e6, but that commit predates this
-          # exception being added and was never re-stamped with a
-          # Tulo-Batch-Number trailer -- retroactively rewriting it now
-          # would mean rebasing every staging commit pushed since, which
-          # is not worth the risk for one line of real content. Add a
-          # batch's number here (never remove one) only for a fix commit
-          # on staging that's known to be missing its own trailer, exactly
-          # this situation -- not a general escape hatch.
-          if [ "${{ inputs.batch_number }}" = "13" ]; then
-            SHAS="$SHAS"$'\n'"3838a3e6e4fb098cb5c380f1360b9f3e421769e8"
-          fi
-
-          if [ -z "$SHAS" ]; then
-            echo "No commit on staging carries Tulo-Batch-Number: ${{ inputs.batch_number }}" >&2
-            exit 1
-          fi
-          echo "Merging the following commit(s) onto main, oldest first:"
-          echo "$SHAS"
           git config user.name "tulo-content-bot"
           git config user.email "content-bot@users.noreply.github.com"
 
-          for SHA in $SHAS; do
-            echo "--- cherry-picking $SHA ---"
-            if ! git cherry-pick "$SHA"; then
-              conflicted="$(git diff --name-only --diff-filter=U)"
-              # content/CONTENT_QUEUE.csv is pure pipeline bookkeeping --
-              # daily_batch.py is the only thing that ever writes it, and it
-              # always writes to staging, so staging's copy is the one true
-              # current state; main's copy is just a mirror for repo history
-              # and nothing running in prod ever reads it. A conflict here
-              # (confirmed for real on batch 6's first live merge: main's
-              # copy had never picked up any of staging's claim/publish
-              # churn, so a plain 3-way merge on this one file couldn't
-              # apply cleanly) is safe to resolve by taking staging's
-              # version outright rather than diffing row by row.
-              if [ "$conflicted" = "content/CONTENT_QUEUE.csv" ]; then
-                echo "Resolving CONTENT_QUEUE.csv conflict by taking staging's copy wholesale"
-                git checkout --theirs content/CONTENT_QUEUE.csv
-                git add content/CONTENT_QUEUE.csv
-                git -c core.editor=true cherry-pick --continue
-              else
-                echo "Cherry-pick conflict in more than just CONTENT_QUEUE.csv -- needs human resolution:" >&2
-                echo "$conflicted" >&2
-                git cherry-pick --abort
-                exit 1
-              fi
+          IFS=',' read -ra BATCHES <<< "${{ inputs.batch_numbers }}"
+          for BATCH in "${BATCHES[@]}"; do
+            echo "=== batch $BATCH ==="
+            # daily_batch.py stamps every batch commit's message with a
+            # "Tulo-Batch-Number: <N>" trailer (see content/scripts/
+            # daily_batch.py) -- that's what makes this lookup possible
+            # without a git tag. Tags looked like the obvious choice here,
+            # but this repo's push credentials can create branches, not tag
+            # refs (a real permission boundary, confirmed by a live 403 on a
+            # tag push during setup) -- a commit trailer needs nothing more
+            # than the same push access already used for everything else.
+            # The trailing ([^0-9]|$) keeps batch 999 from matching batch
+            # 9999's trailer.
+            #
+            # A batch can carry MORE than one trailer-stamped commit -- real
+            # incident (2026-09-14): batch 8 got a second commit later the
+            # same day (companion recipes generated for a category_roundup
+            # page's cards, see run_companion_recipes in daily_batch.py) on
+            # top of its original one, plus follow-up content fixes stamped
+            # with the same trailer once a real duplicate was found among
+            # those companions. Picking only the single most recent match
+            # (the old `-n 1` behavior) would cherry-pick a commit whose diff
+            # assumes the earlier one's content already exists on main --
+            # exactly what this run is approving, so it can't yet. Finding
+            # every match and applying them all, oldest first, is what
+            # actually reproduces the batch's real content on main.
+            SHAS="$(git log origin/staging -E --grep="Tulo-Batch-Number: ${BATCH}([^0-9]|\$)" --format=%H --reverse)"
+
+            # One-off, explicitly documented exception: batch 13's own
+            # generation commit predates the fix (in COMPARISON_SCHEMA) for
+            # a real crash-on-load bug (related_recipe_slugs entirely
+            # missing from comparison-page content -- confirmed live
+            # 2026-09-18 on the batch-12 HARO page, which hit this exact
+            # gap). The fix for batch 13's 4 affected pages already landed
+            # on staging as commit 3838a3e6, but that commit predates this
+            # exception being added and was never re-stamped with a
+            # Tulo-Batch-Number trailer -- retroactively rewriting it now
+            # would mean rebasing every staging commit pushed since, which
+            # is not worth the risk for one line of real content. Add a
+            # batch's number here (never remove one) only for a fix commit
+            # on staging that's known to be missing its own trailer, exactly
+            # this situation -- not a general escape hatch.
+            if [ "$BATCH" = "13" ]; then
+              SHAS="$SHAS"$'\n'"3838a3e6e4fb098cb5c380f1360b9f3e421769e8"
             fi
+
+            if [ -z "$SHAS" ]; then
+              echo "No commit on staging carries Tulo-Batch-Number: $BATCH" >&2
+              exit 1
+            fi
+            echo "Merging the following commit(s) onto main, oldest first:"
+            echo "$SHAS"
+
+            for SHA in $SHAS; do
+              echo "--- cherry-picking $SHA (batch $BATCH) ---"
+              if ! git cherry-pick "$SHA"; then
+                conflicted="$(git diff --name-only --diff-filter=U)"
+                # content/CONTENT_QUEUE.csv is pure pipeline bookkeeping --
+                # daily_batch.py is the only thing that ever writes it, and it
+                # always writes to staging, so staging's copy is the one true
+                # current state; main's copy is just a mirror for repo history
+                # and nothing running in prod ever reads it. A conflict here
+                # (confirmed for real on batch 6's first live merge: main's
+                # copy had never picked up any of staging's claim/publish
+                # churn, so a plain 3-way merge on this one file couldn't
+                # apply cleanly) is safe to resolve by taking staging's
+                # version outright rather than diffing row by row.
+                if [ "$conflicted" = "content/CONTENT_QUEUE.csv" ]; then
+                  echo "Resolving CONTENT_QUEUE.csv conflict by taking staging's copy wholesale"
+                  git checkout --theirs content/CONTENT_QUEUE.csv
+                  git add content/CONTENT_QUEUE.csv
+                  git -c core.editor=true cherry-pick --continue
+                else
+                  echo "Cherry-pick conflict in more than just CONTENT_QUEUE.csv -- needs human resolution:" >&2
+                  echo "$conflicted" >&2
+                  git cherry-pick --abort
+                  exit 1
+                fi
+              fi
+            done
           done
 
       # Real, confirmed incident (2026-09-14, batch 8; recurred 2026-09-15,
@@ -128,45 +144,54 @@ jobs:
       # looked right on staging (reading straight from that database) but
       # was never captured anywhere this cherry-pick step could find it --
       # main, and therefore prod, still got the ORIGINAL wrong photo.
-      # Baking this batch's slugs' CURRENT staging image state (which
-      # reflects any review-time correction, on top of the original fetch)
-      # onto main right here, before the push below, closes that gap for
-      # every future batch: whatever the reviewer looked at and approved on
-      # staging is exactly what ships, not just whatever existed at
-      # generation time.
-      - name: Bake this batch's CURRENT staging image state onto main (captures review-time corrections)
+      # Baking every processed batch's slugs' CURRENT staging image state
+      # (which reflects any review-time correction, on top of the original
+      # fetch) onto main right here, before the push below, closes that gap
+      # for every future batch: whatever the reviewer looked at and
+      # approved on staging is exactly what ships, not just whatever
+      # existed at generation time.
+      - name: Bake every batch's CURRENT staging image state onto main (captures review-time corrections)
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
           ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
         run: |
           set -euo pipefail
-          python3 content/scripts/batch_slugs.py "${{ inputs.batch_number }}" > /tmp/batch_slugs.txt
-          slug_count="$(wc -l < /tmp/batch_slugs.txt | tr -d ' ')"
-          echo "Batch ${{ inputs.batch_number }}: $slug_count slug(s) to check against staging's current image state."
+          IFS=',' read -ra BATCHES <<< "${{ inputs.batch_numbers }}"
+          > /tmp/all_batch_slugs.txt
+          for BATCH in "${BATCHES[@]}"; do
+            python3 content/scripts/batch_slugs.py "$BATCH" >> /tmp/all_batch_slugs.txt
+          done
+          slug_count="$(wc -l < /tmp/all_batch_slugs.txt | tr -d ' ')"
+          echo "Batch(es) ${{ inputs.batch_numbers }}: $slug_count slug(s) total to check against staging's current image state."
           if [ "$slug_count" -eq 0 ]; then
-            echo "No slugs found for this batch_number (unexpected -- the cherry-pick above should have added some) -- skipping bake."
+            echo "No slugs found for these batch_number(s) (unexpected -- the cherry-pick above should have added some) -- skipping bake."
             exit 0
           fi
 
           python3 content/scripts/bake_images_from_staging.py \
             --base-url "$BACKEND_BASE_URL" --token "$ADMIN_TASK_TOKEN" \
-            --slugs-file /tmp/batch_slugs.txt
+            --slugs-file /tmp/all_batch_slugs.txt
 
           status="$(git status --porcelain backend/app/seed_templates.py)"
           if [ -z "$status" ]; then
             echo "No image changes since the original auto-bake -- nothing to do."
           else
+            LAST_BATCH="${BATCHES[-1]}"
             git add backend/app/seed_templates.py
             git commit \
-              -m "Bake batch ${{ inputs.batch_number }}'s current staging images onto main" \
+              -m "Bake batch(es) ${{ inputs.batch_numbers }}'s current staging images onto main" \
               -m "Captures any review-time image correction (a flag+re-fetch or a manual override-image URL paste in /admin/review-queue) made AFTER daily_batch.py's own original auto-bake, which necessarily ran before this batch was ever reviewed by a human. Without this, prod would ship whatever photo existed at generation time instead of whatever the reviewer actually approved on staging." \
-              -m "Tulo-Batch-Number: ${{ inputs.batch_number }}"
-            echo "Committed updated images for batch ${{ inputs.batch_number }}."
+              -m "Tulo-Batch-Number: ${LAST_BATCH}"
+            echo "Committed updated images for batch(es) ${{ inputs.batch_numbers }}."
           fi
 
       - name: Push main
         run: git push origin main
 
-      - name: Report merged_at back to the backend
+      - name: Report merged_at back to the backend for every processed batch
         run: |
-          curl -sf "${{ vars.BACKEND_BASE_URL }}/admin/review-queue/mark-merged?token=${{ secrets.ADMIN_TASK_TOKEN }}&batch=${{ inputs.batch_number }}"
+          set -euo pipefail
+          IFS=',' read -ra BATCHES <<< "${{ inputs.batch_numbers }}"
+          for BATCH in "${BATCHES[@]}"; do
+            curl -sf "${{ vars.BACKEND_BASE_URL }}/admin/review-queue/mark-merged?token=${{ secrets.ADMIN_TASK_TOKEN }}&batch=$BATCH"
+          done

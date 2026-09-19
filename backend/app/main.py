@@ -2195,11 +2195,53 @@ _STALE_APPROVAL_RETRY_MINUTES = 3
 _STALE_APPROVAL_RETRY_MAX_MINUTES = 60
 
 
-def _trigger_batch_merge(batch_number: int) -> None:
-    """Best-effort: ask GitHub Actions to merge this batch right now (see
-    .github/workflows/merge-approved-batch.yml). If this fails -- token not
-    configured yet, GitHub hiccup, whatever -- it's not immediately fatal:
-    the BatchApproval row written by the caller is the durable source of
+def _resolve_merge_plan(db: Session, target_batch_number: int) -> tuple[list[int], list[int]]:
+    """Real, reported problem this exists to solve: the daily content
+    batch and any HARO-generated article batch share one seed_templates.py
+    insertion point and one shared batch_number counter, so merging them
+    out of that same order is a genuine git conflict (confirmed live,
+    2026-09-19) -- not a cosmetic one a human can just work around. Asking
+    a reviewer clicking "Approve for prod" on whichever card they're
+    looking at in the outreach portal to somehow know or track batch
+    numbers across two separate review surfaces isn't realistic, so this
+    resolves it in code instead: for a batch a human just approved, finds
+    every EARLIER batch_number that isn't merged yet and figures out
+    whether it's safe to just fold it into the same merge run.
+
+    Returns (to_merge, blocking):
+    - to_merge: target_batch_number plus every earlier still-unmerged
+      batch that's ALREADY passed its own human review (has a
+      BatchApproval row) -- sorted ascending, meant to be dispatched to
+      merge-approved-batch.yml as one bundled, in-order run so the
+      reviewer never has to know or care which one they clicked first.
+    - blocking: every earlier batch_number that hasn't been approved at
+      all yet. These can never be safely auto-merged -- doing so would
+      skip a human's own content review of that batch, which is the one
+      thing this whole pipeline exists to never do. Non-empty blocking
+      means target_batch_number can't merge yet at all; the caller
+      surfaces exactly which batch(es) need a human's review first,
+      rather than the previous behavior of just silently attempting a
+      cherry-pick that would fail an unrelated-looking git conflict
+      minutes later with no explanation."""
+    earlier = [n for n in _eligible_batch_numbers() if n < target_batch_number]
+    approvals = {
+        a.batch_number: a
+        for a in db.query(BatchApproval).filter(BatchApproval.batch_number.in_(earlier)).all()
+    }
+    blocking = sorted(n for n in earlier if n not in approvals)
+    if blocking:
+        return [], blocking
+    catch_up = sorted(n for n, a in approvals.items() if a.merged_at is None)
+    return sorted(catch_up + [target_batch_number]), []
+
+
+def _trigger_batch_merge(batch_numbers: list[int]) -> None:
+    """Best-effort: ask GitHub Actions to merge these batch(es) right now
+    (see .github/workflows/merge-approved-batch.yml), oldest first in one
+    job run -- see _resolve_merge_plan for why more than one batch number
+    can show up here together. If this fails -- token not configured yet,
+    GitHub hiccup, whatever -- it's not immediately fatal: the
+    BatchApproval row(s) written by the caller are the durable source of
     truth, and _retry_stale_batch_approvals (checked on every
     review_queue()/outreach_queue() page load) re-fires this same
     dispatch for any row still sitting with merged_at=None past a short
@@ -2211,8 +2253,10 @@ def _trigger_batch_merge(batch_number: int) -> None:
     and no automatic recovery either. Logs (rather than silently
     discarding) every failure mode now, purely for diagnosability --
     _retry_stale_batch_approvals is what actually recovers from one."""
+    if not batch_numbers:
+        return
     if not _GITHUB_ACTIONS_TRIGGER_TOKEN:
-        print(f"  _trigger_batch_merge: _GITHUB_ACTIONS_TRIGGER_TOKEN not configured, batch {batch_number} not dispatched")
+        print(f"  _trigger_batch_merge: _GITHUB_ACTIONS_TRIGGER_TOKEN not configured, batch(es) {batch_numbers} not dispatched")
         return
     try:
         resp = requests.post(
@@ -2221,13 +2265,13 @@ def _trigger_batch_merge(batch_number: int) -> None:
                 "Authorization": f"Bearer {_GITHUB_ACTIONS_TRIGGER_TOKEN}",
                 "Accept": "application/vnd.github+json",
             },
-            json={"ref": "main", "inputs": {"batch_number": str(batch_number)}},
+            json={"ref": "main", "inputs": {"batch_numbers": ",".join(str(n) for n in batch_numbers)}},
             timeout=10,
         )
         if not resp.ok:
-            print(f"  _trigger_batch_merge: dispatch for batch {batch_number} returned {resp.status_code}: {resp.text[:500]}")
+            print(f"  _trigger_batch_merge: dispatch for batch(es) {batch_numbers} returned {resp.status_code}: {resp.text[:500]}")
     except requests.RequestException as e:
-        print(f"  _trigger_batch_merge: dispatch for batch {batch_number} raised {type(e).__name__}: {e}")
+        print(f"  _trigger_batch_merge: dispatch for batch(es) {batch_numbers} raised {type(e).__name__}: {e}")
 
 
 def _retry_stale_batch_approvals(db: Session) -> int:
@@ -2249,8 +2293,13 @@ def _retry_stale_batch_approvals(db: Session) -> int:
     is a normal, non-error reason for it to still be running past that).
     Never touches a row older than _STALE_APPROVAL_RETRY_MAX_MINUTES -- see
     that constant's own comment for why an unbounded retry-forever is
-    actively harmful, not just wasteful. Returns how many were retried this
-    call, for the summary banner."""
+    actively harmful, not just wasteful. Bundles every stale batch found
+    this call through _resolve_merge_plan into a single dispatch (rather
+    than one dispatch per row) for the same reason review_queue_approve_
+    for_prod does -- a separate dispatch per batch number is exactly the
+    kind of near-simultaneous multi-dispatch that produced today's real
+    git-conflict incident. Returns how many were retried this call, for
+    the summary banner."""
     now = datetime.now(timezone.utc)
     min_threshold = now - timedelta(minutes=_STALE_APPROVAL_RETRY_MINUTES)
     max_threshold = now - timedelta(minutes=_STALE_APPROVAL_RETRY_MAX_MINUTES)
@@ -2263,9 +2312,17 @@ def _retry_stale_batch_approvals(db: Session) -> int:
         )
         .all()
     )
+    to_merge: set[int] = set()
     for approval in stale:
-        print(f"  _retry_stale_batch_approvals: batch {approval.batch_number} still unmerged {_STALE_APPROVAL_RETRY_MINUTES}+ min after request, retrying dispatch")
-        _trigger_batch_merge(approval.batch_number)
+        bundle, blocking = _resolve_merge_plan(db, approval.batch_number)
+        if blocking:
+            print(f"  _retry_stale_batch_approvals: batch {approval.batch_number} still blocked on unapproved batch(es) {blocking}, skipping")
+            continue
+        to_merge.update(bundle)
+    if to_merge:
+        ordered = sorted(to_merge)
+        print(f"  _retry_stale_batch_approvals: batch(es) {ordered} still unmerged {_STALE_APPROVAL_RETRY_MINUTES}+ min after request, retrying dispatch")
+        _trigger_batch_merge(ordered)
     return len(stale)
 
 
@@ -2327,7 +2384,23 @@ def review_queue_approve_for_prod(
     repo's push credentials can create branches but not tag refs).
     Re-clicking after a batch is already merged is a harmless no-op
     (redirects back without writing anything, but still re-fires the
-    dispatch in case an earlier click's merge never landed)."""
+    dispatch in case an earlier click's merge never landed).
+
+    Real, reported problem this endpoint used to leave entirely on a human
+    to avoid: the daily content batch and any HARO-generated article batch
+    share one seed_templates.py insertion point and one batch_number
+    counter, so approving them out of that insertion order is a genuine
+    git conflict, not just a cosmetic one -- and a reviewer clicking
+    approve from the outreach portal has no reason to know or track which
+    numbered batch is "earlier." See _resolve_merge_plan: this batch's own
+    approval is always recorded the instant its own pages pass review,
+    regardless of ordering, and either merges right away (bundled with any
+    earlier already-approved-but-unmerged batches, oldest first, in one
+    job) or -- only when an earlier batch hasn't been reviewed AT ALL yet,
+    which can't be safely skipped -- waits, with a clear message saying
+    exactly which batch that is. review_queue_mark_merged's own cascade
+    check is what picks this back up automatically the moment that earlier
+    batch finally gets approved, so this never needs a second click."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
     if batch == "all":
@@ -2351,9 +2424,27 @@ def review_queue_approve_for_prod(
         db.add(BatchApproval(batch_number=batch_number))
         db.commit()
     # else: already requested (or already merged) -- nothing new to write.
+    # Either way, this batch's own review is now durably recorded, so the
+    # blocking check below never loses it -- see the cascade in
+    # review_queue_mark_merged for how a blocked batch picks back up.
 
     if not already_merged:
-        _trigger_batch_merge(batch_number)
+        to_merge, blocking = _resolve_merge_plan(db, batch_number)
+        if blocking:
+            blocking_str = ", ".join(str(n) for n in blocking)
+            plural = len(blocking) > 1
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    f"Batch {batch_number} is approved and recorded, but can't merge yet -- "
+                    f"batch{'es' if plural else ''} {blocking_str} share the same content file and "
+                    f"{'haven' if plural else 'hasn'}'t been reviewed yet. Review and approve "
+                    f"{'them' if plural else 'it'} first (whichever portal {'they' if plural else 'it'} "
+                    f"{'are' if plural else 'is'} in) -- batch {batch_number} will merge automatically "
+                    f"right after, no need to re-click."
+                ),
+            )
+        _trigger_batch_merge(to_merge)
 
     default_redirect = f"/admin/review-queue?token={token}&batch={batch}&show=all"
     redirect_url = return_to if (return_to and return_to.startswith("/admin/")) else default_redirect
@@ -2369,11 +2460,22 @@ def review_queue_mark_merged(
     """Callback the merge-approved-batch.yml GitHub Action hits after it
     successfully pushes a batch's commit to main -- sets BatchApproval's
     merged_at so the review queue shows "merged" instead of "waiting for
-    merge", and so daily_batch.py's fallback retry (see
-    _trigger_batch_merge's docstring) knows this batch is already done.
+    merge", and so _retry_stale_batch_approvals knows this batch is
+    already done and stops re-dispatching it.
     Gated behind the same ADMIN_TASK_TOKEN as every other /admin/* route;
     the Action holds this token as a GitHub Actions secret (a copy of the
-    same value Render has, not a new kind of credential)."""
+    same value Render has, not a new kind of credential).
+
+    Also the other half of review_queue_approve_for_prod's blocking
+    message: a batch that was approved but held back because an earlier
+    batch hadn't been reviewed yet (see _resolve_merge_plan) needs
+    something to notice the moment that earlier batch finally merges --
+    otherwise the reviewer would have to remember to go re-click it
+    themselves, exactly the batch-number-tracking burden this whole
+    mechanism exists to remove. Checks every other still-unmerged,
+    already-approved batch right here and dispatches any that are now
+    unblocked, so a click made while blocked resolves itself with no
+    second click ever needed."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
@@ -2383,6 +2485,22 @@ def review_queue_mark_merged(
     if approval.merged_at is None:
         approval.merged_at = datetime.now(timezone.utc)
         db.commit()
+
+        candidates = (
+            db.query(BatchApproval)
+            .filter(BatchApproval.merged_at.is_(None), BatchApproval.batch_number > batch)
+            .order_by(BatchApproval.batch_number)
+            .all()
+        )
+        to_merge: set[int] = set()
+        for candidate in candidates:
+            bundle, blocking = _resolve_merge_plan(db, candidate.batch_number)
+            if not blocking:
+                to_merge.update(bundle)
+        if to_merge:
+            ordered = sorted(to_merge)
+            print(f"  review_queue_mark_merged: batch {batch} merging unblocked previously-waiting batch(es) {ordered}, dispatching")
+            _trigger_batch_merge(ordered)
     return {"batch_number": batch, "merged_at": approval.merged_at}
 
 
