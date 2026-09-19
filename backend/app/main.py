@@ -2791,10 +2791,15 @@ def apply_recovered_attribution(
             continue
 
         content = copy.deepcopy(page.content)
+        # Filling in a real credit shouldn't strip an existing
+        # "manual_override" tag -- that tag is what protects this page from
+        # apply_baked_images() silently reverting it later (see that
+        # endpoint's guard above). Only a non-override source gets relabeled.
+        existing_source = (page.content.get("image_attribution") or {}).get("source")
         content["image_attribution"] = {
             "photographer": lookup["photographer"],
             "photographer_url": lookup["photographer_url"],
-            "source": "recovered_via_id_lookup",
+            "source": "manual_override" if existing_source == "manual_override" else "recovered_via_id_lookup",
         }
         if content.get("image_url") != original_image_url:
             raise HTTPException(status_code=500, detail=f"Refusing to commit {slug}: image_url would have changed unexpectedly.")
@@ -2860,6 +2865,17 @@ def apply_baked_images(token: str, db: Session = Depends(get_db)):
         for page in db.query(Page).filter(Page.slug.in_(chunk)).all():
             seed_image_url = seed_by_slug[page.slug]["image_url"]
             if page.content.get("image_url") == seed_image_url:
+                continue
+            # A live "manual_override" is a deliberate human choice that was
+            # never baked into SEED_PAGES on purpose (the whole point of
+            # _RUNTIME_IMAGE_KEYS) -- never overwrite it just because some
+            # unrelated push happens to touch seed_templates.py. Confirmed
+            # live (2026-09-18): a related_recipe_slugs backfill commit with
+            # nothing to do with images silently reverted two manually
+            # overridden pages (baking-soda-substitute,
+            # baking-powder-vs-baking-soda) back to stale seed data through
+            # exactly this path.
+            if (page.content.get("image_attribution") or {}).get("source") == "manual_override":
                 continue
             content = copy.deepcopy(page.content)
             content["image_url"] = seed_image_url
