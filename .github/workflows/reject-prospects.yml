@@ -1,0 +1,37 @@
+name: Reject specific outreach prospects (one-off)
+
+# Rejects an explicit, hand-picked list of outreach prospect IDs -- for
+# cases like a confirmed-duplicate digest resend that need one exact set
+# of IDs rejected, not a rule a script can apply automatically. See
+# content/scripts/reject_prospects.py. Never approves, sends, or deletes
+# anything -- reject only flips status, reversible via the portal's own
+# undo link.
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: 'Comma-separated prospect IDs to reject (e.g. 146,147,148,149)'
+        required: true
+
+jobs:
+  reject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Reject prospects
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/reject_prospects.py --ids "${{ github.event.inputs.ids }}"
