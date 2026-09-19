@@ -92,23 +92,30 @@ _NON_PROSE_KEYS = {
     "featured_recipe_slugs", "category_links", "tool_links",
 }
 
-# Calibrated empirically against the current corpus (2026-09-19): 0.5
-# (the original audit's own candidate-generation threshold, meant to feed
-# an LLM semantic-judgment pass over every candidate) produces 319 hits
-# here, the overwhelming majority genuinely distinct pages that just share
-# heavy domain vocabulary ("gluten-free-bread" / "gluten-free-pita-bread")
-# -- exactly the false-positive pattern this project already learned the
-# hard way mechanical title scoring can't reliably separate from a real
-# duplicate on its own (see the original audit's own notes on this). Too
-# noisy for something meant to be glanced at once a month. 0.7 cuts that
-# to 11, each with a reported content_sim near zero confirming they're
-# genuinely different pages -- still not proof of a real duplicate, this
-# is only ever candidate discovery, but a monthly count that stays small
-# and dismissible is the actual point of a *cheap* tripwire; a sudden
-# jump in count, or a pair with a real content_sim instead of near-zero,
-# is the signal worth escalating early, not a large, unreadable list
-# every single month.
-_JACCARD_THRESHOLD = 0.7
+# Originally set to 0.7 (11 candidates/month) purely by tuning against
+# false positives -- confirmed genuinely distinct pages sharing heavy
+# domain vocabulary ("gluten-free-bread" / "gluten-free-pita-bread")
+# scored low content_sim at that cut. That calibration was never checked
+# against real duplicates, and it should have been: content/scripts/
+# validate_tripwire_recall.py replays this exact _fuzzy_tokenize/_jaccard
+# logic against the 123 real, human-confirmed duplicate pairs still in
+# SEED_PAGES from the 2026-09-19 audit (each unpublished page's
+# content["redirect_to"] points at the page it duplicated -- genuine
+# ground truth, not a synthetic test). Result: 0.7 recalls only 41/123
+# (33%) of those real pairs -- e.g. "Pumpkin Pie Recipe" -> "Libby's
+# Pumpkin Pie Recipe" and "BBQ Baked Beans" -> "Baked Beans" both score
+# well under 0.7 despite being confirmed duplicates. A threshold sweep
+# (see that script) found no good middle ground: recall holds at 93%
+# (114/123) all the way from 0.40 to 0.50, then falls off a cliff to 57%
+# at 0.55 while candidate volume barely drops (319 -> 61) -- there's no
+# threshold that keeps both high recall and a small monthly list. Reset
+# to 0.5 (the original audit's own candidate-generation threshold)
+# because for a duplicate-content compliance signal, missing 2 out of 3
+# real duplicates to keep the monthly list short defeats the point of
+# having a tripwire at all -- a human skimming 319 slugs once a month
+# (mostly one-line dismissals) is a real cost, but a much smaller one
+# than a real duplicate going unnoticed until the next milestone audit.
+_JACCARD_THRESHOLD = 0.5
 
 
 def _fuzzy_tokenize(title: str) -> set[str]:
