@@ -14,8 +14,8 @@ on:
         options:
           - prod
           - staging
-      pairs:
-        description: "space-separated slug=expected_image_url pairs"
+      slugs:
+        description: "comma-separated slugs to check"
         required: true
 
 jobs:
@@ -35,4 +35,4 @@ jobs:
         env:
           BACKEND_BASE_URL: ${{ inputs.target == 'prod' && vars.PROD_BACKEND_BASE_URL || vars.BACKEND_BASE_URL }}
           ADMIN_TASK_TOKEN: ${{ inputs.target == 'prod' && secrets.PROD_ADMIN_TASK_TOKEN || secrets.ADMIN_TASK_TOKEN }}
-        run: python3 content/scripts/verify_recovered_attribution.py ${{ inputs.pairs }}
+        run: python3 content/scripts/verify_recovered_attribution.py $(echo "${{ inputs.slugs }}" | tr ',' ' ')
