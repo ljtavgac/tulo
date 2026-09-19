@@ -62,15 +62,22 @@ class PageReview(Base):
 class BatchApproval(Base):
     """One row per batch_number the user has explicitly approved for
     promotion to main via /admin/review-queue/approve-for-prod -- the
-    durable signal the daily pipeline's merge step (content/scripts/
-    daily_batch.py, run by the scheduled job) checks for, so a click in
-    the admin portal is the entire approval; nothing re-asks in chat.
+    durable signal that click writes, so a click in the admin portal is
+    the entire approval; nothing re-asks in chat. The actual merge is
+    kicked off immediately via _trigger_batch_merge's GitHub Actions
+    dispatch, and re-fired by _retry_stale_batch_approvals (checked on
+    every review_queue()/outreach_queue() page load) if this row is
+    still sitting with merged_at=None past a short grace period -- a
+    real, reported incident: an earlier version of this docstring
+    claimed a scheduled daily_batch.py run already did this retry, which
+    was never actually true, so a silently-failed dispatch had no
+    automatic recovery at all until that function existed.
 
     `merged_at` is null until the merge actually happens -- lets the
-    merge step find exactly the rows still needing action
-    (merged_at is null) without re-processing ones it already handled,
-    and lets the admin UI show "requested" vs. "merged" instead of just
-    a single ambiguous timestamp."""
+    merge step (and the retry above) find exactly the rows still
+    needing action without re-processing ones it already handled, and
+    lets the admin UI show "requested" vs. "merged" instead of just a
+    single ambiguous timestamp."""
 
     __tablename__ = "batch_approvals"
 
