@@ -2668,7 +2668,14 @@ def _lookup_recovered_attribution(image_url: str) -> dict:
         except requests.RequestException as e:
             return {"host": "pexels", "recoverable": False, "reason": f"request failed: {e}"}
         if r.status_code != 200:
-            return {"host": "pexels", "recoverable": False, "reason": f"GET /v1/photos/{m.group(1)} -> {r.status_code}: {r.text[:200]}"}
+            reset = r.headers.get("X-Ratelimit-Reset")
+            reset_note = f" (X-Ratelimit-Reset={reset}, i.e. {datetime.fromtimestamp(int(reset), tz=timezone.utc).isoformat()})" if reset and reset.isdigit() else ""
+            return {
+                "host": "pexels",
+                "recoverable": False,
+                "reason": f"GET /v1/photos/{m.group(1)} -> {r.status_code}: {r.text[:200]}{reset_note}",
+                "rate_limit_reset": int(reset) if reset and reset.isdigit() else None,
+            }
         data = r.json()
         return {
             "host": "pexels",
