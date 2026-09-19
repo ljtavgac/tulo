@@ -1,0 +1,28 @@
+name: Test Pexels CDN ID lookup (one-off diagnostic)
+
+# Read-only: checks whether the numeric photo ID embedded in a Pexels CDN
+# URL can be used against GET /v1/photos/:id to recover real attribution
+# for a photo that has none stored -- without ever touching the image
+# itself. See content/scripts/test_pexels_id_lookup.py.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Test Pexels CDN ID lookup
+        env:
+          PEXELS_ACCESS_KEY: ${{ secrets.PEXELS_ACCESS_KEY }}
+        run: python3 content/scripts/test_pexels_id_lookup.py
