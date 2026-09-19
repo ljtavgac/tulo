@@ -2650,10 +2650,11 @@ def _lookup_recovered_attribution(image_url: str) -> dict:
     (photo-<timestamp>-<hash>), confirmed live (2026-09-19, 3 real URLs)
     to be unrelated to and unusable as Unsplash's own public API photo ID
     -- GET /photos/:id returns 401 "invalid access token" for this string
-    every time. There is no way to recover real Unsplash attribution for
-    an existing photo from its CDN URL alone; this is included anyway so
-    the report shows that failure explicitly per-page rather than
-    silently skipping Unsplash URLs."""
+    every time. That's a property of the ID FORMAT itself, not any one
+    photo, so every images.unsplash.com URL is skipped without a network
+    call rather than re-proving the same structural failure per page --
+    also spares Unsplash's much smaller hourly rate limit for the Pexels
+    lookups that actually work."""
     m = _PEXELS_ID_RE.search(image_url)
     if m:
         if not PEXELS_ACCESS_KEY:
@@ -2678,24 +2679,15 @@ def _lookup_recovered_attribution(image_url: str) -> dict:
 
     m = _UNSPLASH_ID_RE.search(image_url)
     if m:
-        if not UNSPLASH_ACCESS_KEY:
-            return {"host": "unsplash", "recoverable": False, "reason": "UNSPLASH_ACCESS_KEY not configured"}
-        try:
-            r = requests.get(
-                f"https://api.unsplash.com/photos/{m.group(1)}",
-                headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
-                timeout=10,
-            )
-        except requests.RequestException as e:
-            return {"host": "unsplash", "recoverable": False, "reason": f"request failed: {e}"}
-        if r.status_code != 200:
-            return {"host": "unsplash", "recoverable": False, "reason": f"GET /photos/{m.group(1)} -> {r.status_code}: {r.text[:200]}"}
-        data = r.json()
         return {
             "host": "unsplash",
-            "recoverable": True,
-            "photographer": data.get("user", {}).get("name"),
-            "photographer_url": data.get("user", {}).get("links", {}).get("html"),
+            "recoverable": False,
+            "reason": (
+                f"skipped without a network call -- {m.group(1)!r} is Unsplash's opaque CDN asset ID, "
+                "confirmed (2026-09-19) structurally unusable as their public API photo ID (GET "
+                "/photos/:id returns 401 for this ID shape on every real URL tested); there is no "
+                "existing-photo attribution to recover here regardless of API quota"
+            ),
         }
 
     return {"host": "unknown", "recoverable": False, "reason": "image_url doesn't match a known Pexels/Unsplash CDN pattern"}
@@ -2719,7 +2711,7 @@ def lookup_recovered_attribution(
     pages_by_slug = {p.slug: p for p in db.query(Page).filter(Page.slug.in_(requested)).all()}
 
     result = {}
-    for slug in requested:
+    for i, slug in enumerate(requested):
         page = pages_by_slug.get(slug)
         if page is None:
             result[slug] = {"error": "not found"}
@@ -2728,6 +2720,8 @@ def lookup_recovered_attribution(
         if not image_url:
             result[slug] = {"error": "page has no image_url"}
             continue
+        if i > 0 and "images.pexels.com" in image_url:
+            time.sleep(1.1)  # Pexels' free tier throttles bursts (429) well under its hourly quota.
         result[slug] = {
             "current_image_url": image_url,
             "current_attribution": page.content.get("image_attribution"),
@@ -2765,7 +2759,7 @@ def apply_recovered_attribution(
 
     result = {}
     changed_any = False
-    for slug in requested:
+    for i, slug in enumerate(requested):
         page = pages_by_slug.get(slug)
         if page is None:
             result[slug] = {"error": "not found"}
@@ -2774,6 +2768,8 @@ def apply_recovered_attribution(
         if not original_image_url:
             result[slug] = {"error": "page has no image_url"}
             continue
+        if i > 0 and "images.pexels.com" in original_image_url:
+            time.sleep(1.1)  # Pexels' free tier throttles bursts (429) well under its hourly quota.
         lookup = _lookup_recovered_attribution(original_image_url)
         if not lookup.get("recoverable"):
             result[slug] = {"skipped": True, **lookup}
