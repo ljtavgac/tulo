@@ -1,0 +1,37 @@
+name: Monthly duplicate-content tripwire
+
+# Cheap, deterministic early-warning scan for duplicate-topic content --
+# see content/scripts/monthly_duplicate_tripwire.py for the full
+# reasoning. No LLM calls, no network access, no live DB: pure data
+# crunch over the current seed_templates.py, done in seconds. Reserves
+# the expensive full LLM-semantic re-audit for the milestone triggers
+# already agreed (every +500 pages, or before any future AdSense
+# resubmission) -- this just makes sure a real problem doesn't go
+# unnoticed in between.
+#
+# Never blocks a deploy or a content batch -- this is a standalone
+# monthly check, not a gate. It exits 1 (showing red in the Actions tab,
+# with the findings printed in the job's own log) when it finds anything
+# worth a look, 0 when clean, so a run needing attention is visible at a
+# glance without anyone having to remember to check.
+on:
+  schedule:
+    # 06:00 UTC on the 1st of every month.
+    - cron: '0 6 1 * *'
+  workflow_dispatch: {}
+
+jobs:
+  tripwire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run monthly duplicate-content tripwire
+        run: python3 content/scripts/monthly_duplicate_tripwire.py
