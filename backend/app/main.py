@@ -2063,13 +2063,37 @@ def review_queue_override_image(
     or images.unsplash.com/...), not a pexels.com/photo/... page link --
     same ALLOWED_IMAGE_HOSTS next/image itself requires, checked here
     with the same is_allowed_image_url/_is_reachable guarantees a normal
-    fetch gives, just skipping the search step entirely."""
+    fetch gives, just skipping the search step entirely.
+
+    Refuses an images.unsplash.com/... URL outright (Pexels is still
+    allowed): this path has no field for a real photographer credit, so
+    it always stamped {"photographer": None, "source": "manual_override"}
+    regardless of host -- fine for Pexels, whose license doesn't require
+    attribution, but a real, confirmed compliance gap for Unsplash, whose
+    API Terms mandate crediting Unsplash and the specific photographer
+    (with a link to their profile) and warn that not doing so "can get
+    your API access revoked." Found live on 30 published pages (2026-09-19
+    audit) before those were re-fetched with real attribution and this
+    guard was added so a future manual override can't reintroduce the
+    same gap. A reviewer who wants a specific Unsplash photo should use
+    the search-based re-fetch instead (see review_queue_mark's flag-note
+    query override), which always captures real attribution."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
     if not is_allowed_image_url(image_url):
         raise HTTPException(
             status_code=400,
             detail=f"Needs the direct image URL, starting with one of {ALLOWED_IMAGE_HOSTS} -- not a photo page link.",
+        )
+    if image_url.startswith("https://images.unsplash.com/"):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This manual-override path can't capture the real photographer credit Unsplash's "
+                "API Terms require, and always stamps a null one -- use the search-based re-fetch "
+                "(flag this page with a query note) to get an Unsplash photo with real attribution, "
+                "or pick a Pexels URL instead, which doesn't require attribution."
+            ),
         )
     if not _is_reachable(image_url):
         raise HTTPException(status_code=400, detail="That URL didn't load -- double check it's the direct image URL.")

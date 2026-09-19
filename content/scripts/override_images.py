@@ -9,8 +9,11 @@ with a page someone is actively curating elsewhere.
 Note: this endpoint always stamps image_attribution as
 {"source": "manual_override", photographer: None} -- it has no field for a
 real photographer credit, so restoring via this path trades that credit
-line away. Acceptable for a one-off repair; not a reason to build a new
-backend endpoint just for this.
+line away. Acceptable for a one-off repair on a Pexels URL (Pexels
+doesn't require attribution); the endpoint refuses an images.unsplash.com
+URL outright, since Unsplash's API Terms do require real attribution and
+this path can't supply it -- use a search-based re-fetch for those
+instead.
 
 Usage:
     BACKEND_BASE_URL=https://your-staging-backend \
