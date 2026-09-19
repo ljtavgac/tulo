@@ -11,7 +11,7 @@ import time
 import uuid
 from collections import Counter
 from contextlib import asynccontextmanager, redirect_stdout
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from html import escape as escape_html
 from typing import NamedTuple
@@ -1767,6 +1767,8 @@ def review_queue(
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
 
+    _retry_stale_batch_approvals(db)
+
     haro_batches = _haro_target_batch_numbers(db)
     target_batch, batch_pages = _resolve_batch_pages(batch, exclude=haro_batches)
     slugs = [p["slug"] for p in batch_pages]
@@ -2180,20 +2182,33 @@ def review_queue_approve_remaining(
 # web service.
 _GITHUB_REPO = "ljtavgac/tulo"
 _GITHUB_ACTIONS_TRIGGER_TOKEN = os.environ.get("GITHUB_ACTIONS_TRIGGER_TOKEN")
+# How long a BatchApproval can sit unmerged before _retry_stale_batch_approvals
+# re-fires its dispatch -- long enough that a normal, still-in-flight merge run
+# (or a GitHub Actions queue delay) isn't mistaken for a failed one.
+_STALE_APPROVAL_RETRY_MINUTES = 3
 
 
 def _trigger_batch_merge(batch_number: int) -> None:
     """Best-effort: ask GitHub Actions to merge this batch right now (see
     .github/workflows/merge-approved-batch.yml). If this fails -- token not
-    configured yet, GitHub hiccup, whatever -- it's not fatal: the
-    BatchApproval row written by the caller is the durable source of truth,
-    and daily_batch.py's own run retries any merged_at IS NULL row it finds
-    as a fallback, so a failed dispatch here costs at most a delay to the
-    next scheduled run rather than silently losing the approval."""
+    configured yet, GitHub hiccup, whatever -- it's not immediately fatal:
+    the BatchApproval row written by the caller is the durable source of
+    truth, and _retry_stale_batch_approvals (checked on every
+    review_queue()/outreach_queue() page load) re-fires this same
+    dispatch for any row still sitting with merged_at=None past a short
+    grace period. That retry is what actually closes the gap here --
+    real, reported incident: this function used to swallow both a
+    network exception AND a non-2xx GitHub response (a bad token, a
+    typo'd batch_number, anything) with zero trace, so an "I approved
+    this but nothing happened" had no log line anywhere to explain why
+    and no automatic recovery either. Logs (rather than silently
+    discarding) every failure mode now, purely for diagnosability --
+    _retry_stale_batch_approvals is what actually recovers from one."""
     if not _GITHUB_ACTIONS_TRIGGER_TOKEN:
+        print(f"  _trigger_batch_merge: _GITHUB_ACTIONS_TRIGGER_TOKEN not configured, batch {batch_number} not dispatched")
         return
     try:
-        requests.post(
+        resp = requests.post(
             f"https://api.github.com/repos/{_GITHUB_REPO}/actions/workflows/merge-approved-batch.yml/dispatches",
             headers={
                 "Authorization": f"Bearer {_GITHUB_ACTIONS_TRIGGER_TOKEN}",
@@ -2202,8 +2217,40 @@ def _trigger_batch_merge(batch_number: int) -> None:
             json={"ref": "main", "inputs": {"batch_number": str(batch_number)}},
             timeout=10,
         )
-    except requests.RequestException:
-        pass
+        if not resp.ok:
+            print(f"  _trigger_batch_merge: dispatch for batch {batch_number} returned {resp.status_code}: {resp.text[:500]}")
+    except requests.RequestException as e:
+        print(f"  _trigger_batch_merge: dispatch for batch {batch_number} raised {type(e).__name__}: {e}")
+
+
+def _retry_stale_batch_approvals(db: Session) -> int:
+    """Checked on every review_queue()/outreach_queue() page load: for any
+    BatchApproval sitting with merged_at=None more than
+    _STALE_APPROVAL_RETRY_MINUTES after requested_at, re-fires
+    _trigger_batch_merge. This is the actual fallback _trigger_batch_merge's
+    own docstring used to claim already existed ("daily_batch.py's own run
+    retries any merged_at IS NULL row") -- confirmed false, a real, reported
+    incident: nothing anywhere ever re-checked a BatchApproval row, so a
+    dispatch that silently failed (bad token, a GitHub hiccup, or -- the
+    actual live case -- several approve-for-prod clicks landing in the same
+    narrow window as separate manual dispatches) left that batch stuck
+    "requested, waiting for merge" forever with no automatic recovery, only
+    the portal's own "Retry merge dispatch" link for a human to notice and
+    click. The grace period avoids re-dispatching a batch whose original
+    request is still legitimately in flight (the workflow itself typically
+    finishes in well under a minute, but a live GitHub Actions queue delay
+    is a normal, non-error reason for it to still be running past that).
+    Returns how many were retried this call, for the summary banner."""
+    threshold = datetime.now(timezone.utc) - timedelta(minutes=_STALE_APPROVAL_RETRY_MINUTES)
+    stale = (
+        db.query(BatchApproval)
+        .filter(BatchApproval.merged_at.is_(None), BatchApproval.requested_at < threshold)
+        .all()
+    )
+    for approval in stale:
+        print(f"  _retry_stale_batch_approvals: batch {approval.batch_number} still unmerged {_STALE_APPROVAL_RETRY_MINUTES}+ min after request, retrying dispatch")
+        _trigger_batch_merge(approval.batch_number)
+    return len(stale)
 
 
 def _trigger_haro_article_generation(prospect_id: int) -> None:
@@ -2218,11 +2265,16 @@ def _trigger_haro_article_generation(prospect_id: int) -> None:
     was no scheduled pipeline picking up article_requested rows at all.
     If this dispatch fails (token not configured, GitHub hiccup), the
     row still sits at status="article_requested" for a human to trigger
-    manually as before -- nothing is lost, just not automatic."""
+    manually as before -- nothing is lost, just not automatic. Logs
+    (rather than silently discarding) a non-2xx GitHub response as well
+    as a network exception -- same diagnosability fix as
+    _trigger_batch_merge, for the same reason: a failure here used to
+    leave zero trace anywhere of why nothing happened."""
     if not _GITHUB_ACTIONS_TRIGGER_TOKEN:
+        print(f"  _trigger_haro_article_generation: _GITHUB_ACTIONS_TRIGGER_TOKEN not configured, prospect {prospect_id} not dispatched")
         return
     try:
-        requests.post(
+        resp = requests.post(
             f"https://api.github.com/repos/{_GITHUB_REPO}/actions/workflows/generate-haro-article.yml/dispatches",
             headers={
                 "Authorization": f"Bearer {_GITHUB_ACTIONS_TRIGGER_TOKEN}",
@@ -2231,8 +2283,10 @@ def _trigger_haro_article_generation(prospect_id: int) -> None:
             json={"ref": "main", "inputs": {"prospect_id": str(prospect_id)}},
             timeout=10,
         )
-    except requests.RequestException:
-        pass
+        if not resp.ok:
+            print(f"  _trigger_haro_article_generation: dispatch for prospect {prospect_id} returned {resp.status_code}: {resp.text[:500]}")
+    except requests.RequestException as e:
+        print(f"  _trigger_haro_article_generation: dispatch for prospect {prospect_id} raised {type(e).__name__}: {e}")
 
 
 @app.get("/admin/review-queue/approve-for-prod")
@@ -3141,6 +3195,7 @@ def outreach_queue(
     dependency's own docstring for why this portal specifically warrants
     the step up."""
     _resolve_pending_articles(db)
+    _retry_stale_batch_approvals(db)
 
     query = db.query(OutreachProspect)
     if show == "queued":
