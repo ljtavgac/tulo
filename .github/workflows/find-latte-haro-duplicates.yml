@@ -1,0 +1,31 @@
+name: Find latte HARO duplicates (one-off investigation)
+
+# Read-only: lists every haro_reply prospect mentioning "latte" or
+# "Daily Meal" so a human can confirm which rows are duplicates of an
+# already-sent submission before anything gets rejected. See
+# content/scripts/find_latte_haro_duplicates.py.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  find-duplicates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Find latte/Daily Meal haro_reply rows
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
+          OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
+        run: |
+          python3 content/scripts/find_latte_haro_duplicates.py
