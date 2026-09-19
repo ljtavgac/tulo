@@ -1,0 +1,90 @@
+name: Bake recovered attribution into seed_templates.py
+
+# Pulls the current (unchanged) image_url + newly-recovered image_attribution
+# for the manual_override pages back from a live backend via
+# /admin/export-images (pure DB read) and writes them into
+# seed_templates.py as literal data, so a future reseed doesn't lose the
+# attribution that was just written directly to that backend's DB by
+# apply-recovered-attribution. Same bake mechanism as every other image
+# bake in this project -- see bake_images_from_staging.py.
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Which backend to export the current values from"
+        required: false
+        default: "prod"
+        type: choice
+        options:
+          - prod
+          - staging
+      slugs:
+        description: "Comma-separated slugs. Leave blank to use the full 173-slug manual_override audit list."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Resolve source base URL
+        id: source
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: |
+          if [ "${{ inputs.source }}" = "prod" ]; then
+            echo "base_url=$PROD_BACKEND_BASE_URL" >> "$GITHUB_OUTPUT"
+          else
+            echo "base_url=$BACKEND_BASE_URL" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "Resolve slugs (default: full manual_override audit list)"
+        id: slugs
+        run: |
+          if [ -n "${{ inputs.slugs }}" ]; then
+            echo "slugs=${{ inputs.slugs }}" >> "$GITHUB_OUTPUT"
+          else
+            SLUGS="$(python3 content/scripts/audit_manual_override_attribution.py --csv)"
+            echo "slugs=$SLUGS" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bake into seed_templates.py
+        env:
+          SOURCE_BASE_URL: ${{ steps.source.outputs.base_url }}
+          TOKEN: ${{ inputs.source == 'prod' && secrets.PROD_ADMIN_TASK_TOKEN || secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -euo pipefail
+          SLUGS="$(echo '${{ steps.slugs.outputs.slugs }}' | tr -d '[:space:]')"
+          python3 content/scripts/bake_images_from_staging.py \
+            --base-url "$SOURCE_BASE_URL" --token "$TOKEN" \
+            $(echo "$SLUGS" | tr ',' ' ')
+
+      - name: Commit and push to main
+        run: |
+          set -euo pipefail
+          git config user.name "tulo-content-bot"
+          git config user.email "content-bot@users.noreply.github.com"
+          status="$(git status --porcelain backend/app/seed_templates.py)"
+          if [ -z "$status" ]; then
+            echo "No changes to seed_templates.py -- nothing to commit."
+            exit 0
+          fi
+          git add backend/app/seed_templates.py
+          git commit -m "Bake recovered manual_override attribution from ${{ inputs.source }} into seed_templates.py" \
+            -m "Pure re-bake of image_url (unchanged) + image_attribution (newly recovered via Pexels photo ID lookup) so a future reseed doesn't lose it."
+          git push origin main
