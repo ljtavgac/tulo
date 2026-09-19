@@ -50,6 +50,10 @@ export default async function AboutPage() {
           all tailored to your needs.
         </p>
         <p>
+          Tulo now covers thousands of recipes, ingredient guides, and cooking references
+          &mdash; and we&apos;re adding to it every day.
+        </p>
+        <p>
           We&apos;re actively growing Tulo&apos;s library of recipes and guides. If something
           looks wrong, missing, or could be better, we&apos;d genuinely like to hear about it
           &mdash; see the{" "}
