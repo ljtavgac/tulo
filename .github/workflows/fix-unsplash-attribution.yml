@@ -1,0 +1,70 @@
+name: Fix missing Unsplash attribution (one-off)
+
+# Compliance repair for the 30 published pages the 2026-09-19 audit found
+# with a completely uncredited Unsplash-hosted image (source":
+# "manual_override", photographer null) -- see
+# content/scripts/fix_unsplash_attribution.py for the full rationale.
+#
+# Fetches fresh, properly-attributed photos on STAGING (search results
+# always capture real attribution, unlike the manual-override path that
+# created this gap), bakes the result into seed_templates.py, and commits
+# straight to main -- pushing to main is what makes
+# apply-baked-images-to-prod.yml pick this up automatically and push the
+# same real attribution onto prod's existing rows once prod's deploy
+# lands, the same two-step handoff every other bake in this project uses.
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: 'Comma-separated slugs to fix (default: the 30 confirmed by the 2026-09-19 audit)'
+        required: false
+        default: >-
+          yuzu-kosho,cassoulet,sponge-candy,white-balsamic-vinaigrette,cheesy-potato-soup,
+          melongene,dried-chile-sauce,canned-ham,vegetarian-lasagna-soup,crack-dip,
+          enmoladas,pollaste,blue-lagoon-cocktail,seaweed-chips,pepper-jelly,
+          meatloaf-glaze,pizza-rustica,steak-fingers,egg-custard,sandwich-recipes,
+          ginger-dressing,ground-lamb,cajun-recipes,tom-cruise-coconut-cake,crawfish-touff-e,
+          russian-dressing,little-caesars-crazy-puffs,haddock-recipes,pop-tart-ice-cream-sandwich,
+          bbq-rub
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Re-fetch and bake real attribution (via staging)
+        env:
+          BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -euo pipefail
+          SLUGS="$(echo "${{ inputs.slugs }}" | tr -d '[:space:]')"
+          python3 content/scripts/fix_unsplash_attribution.py $(echo "$SLUGS" | tr ',' ' ')
+
+      - name: Commit and push to main
+        run: |
+          set -euo pipefail
+          git config user.name "tulo-content-bot"
+          git config user.email "content-bot@users.noreply.github.com"
+          status="$(git status --porcelain backend/app/seed_templates.py)"
+          if [ -z "$status" ]; then
+            echo "No changes to seed_templates.py -- nothing to commit."
+            exit 0
+          fi
+          git add backend/app/seed_templates.py
+          git commit -m "Fix missing Unsplash attribution on 30 pages (2026-09-19 audit)" \
+            -m "Re-fetched via staging's /admin/fetch-images (always captures real photographer/photographer_url now, unlike the manual-override path that created this gap) and baked the result here so apply-baked-images-to-prod.yml pushes the same real attribution onto prod's existing rows."
+          git push origin main
