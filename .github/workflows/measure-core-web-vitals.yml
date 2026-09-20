@@ -1,10 +1,49 @@
 name: Measure Core Web Vitals (one-off diagnostic)
 
+# Each URL gets its own fresh runner (matrix), never sharing a process
+# with any other Lighthouse run -- confirmed necessary live (2026-09-20):
+# a sequential loop of 13 Chrome launches in one job produced wildly
+# inconsistent results for the exact same URL across two separate runs
+# (1801ms vs 7447ms LCP, with the LCP element itself changing identity),
+# consistent with runner resource buildup contaminating later
+# measurements, not real site behavior.
+
 on:
   workflow_dispatch: {}
 
 jobs:
   measure:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - key: homepage
+            path: "/"
+            slug: ""
+          - key: recipe_or_dish
+            path: "/food/recipes/chicken-broccoli-rice-casserole"
+            slug: "chicken-broccoli-rice-casserole"
+          - key: ingredient_hub
+            path: "/food/ingredients/chives"
+            slug: "chives"
+          - key: howto_technique
+            path: "/food/how-to/how-to-cook-lobster"
+            slug: "how-to-cook-lobster"
+          - key: definition
+            path: "/food/what-is/what-is-pureeing"
+            slug: "what-is-pureeing"
+          - key: comparison
+            path: "/food/comparisons/baking-powder-vs-baking-soda"
+            slug: "baking-powder-vs-baking-soda"
+          - key: substitute
+            path: "/food/substitutes/baking-soda-substitute"
+            slug: "baking-soda-substitute"
+          - key: category_roundup
+            path: "/food/collections/eggplant-recipes"
+            slug: "eggplant-recipes"
+          - key: tool_page
+            path: "/food/tools/conversion-calculator"
+            slug: "conversion-calculator"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,4 +62,8 @@ jobs:
       - name: Measure
         env:
           PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          TARGET_KEY: ${{ matrix.target.key }}
+          TARGET_PATH: ${{ matrix.target.path }}
+          TARGET_SLUG: ${{ matrix.target.slug }}
+          TRIALS: "3"
         run: python3 content/scripts/measure_core_web_vitals.py

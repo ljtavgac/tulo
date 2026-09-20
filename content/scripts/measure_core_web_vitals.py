@@ -1,15 +1,16 @@
-"""One-off: measures real Core Web Vitals for a sample of live prod pages
-spanning every template type, via Lighthouse CLI run directly against a
-locally-launched headless Chrome (not Google's hosted PageSpeed Insights
-API -- its unauthenticated tier hits 429 almost immediately from shared
-CI IP ranges, confirmed live 2026-09-20). Also times the raw backend API
-round-trip for the same pages, to see how much of any slowness is the
-uncached (cache: "no-store") backend fetch vs. everything else (JS
-bundle, images, third-party ads).
+"""One-off: measures real Core Web Vitals for ONE target page (passed via
+env vars -- see the matrix strategy in measure-core-web-vitals.yml, which
+gives each URL its own fresh runner). Confirmed necessary live
+(2026-09-20): running many Lighthouse/Chrome launches sequentially in one
+process produced wildly inconsistent results for the identical URL
+across two runs (1801ms vs 7447ms LCP), consistent with runner resource
+buildup contaminating later measurements -- this isolates each URL
+completely and also runs multiple trials of the SAME url to distinguish
+real variance from measurement noise.
 
-Lighthouse's lab data has no real INP (that's a field-only metric,
-measured from actual user interactions) -- Total Blocking Time is the
-standard lab proxy, reported as such, never presented as if it were INP.
+Also times the raw backend API round-trip for the same page, to see how
+much of any slowness is the uncached (cache: "no-store") backend fetch
+vs. everything else.
 """
 
 import json
@@ -21,22 +22,10 @@ import requests
 
 SITE_URL = "https://tulo.io"
 PROD_BACKEND = os.environ["PROD_BACKEND_BASE_URL"].rstrip("/")
-
-SAMPLES = {
-    "homepage": ("/", None),
-    "recipe_or_dish_1": ("/food/recipes/chicken-broccoli-rice-casserole", "chicken-broccoli-rice-casserole"),
-    "recipe_or_dish_2": ("/food/recipes/smoked-haddock-chowder", "smoked-haddock-chowder"),
-    "ingredient_hub": ("/food/ingredients/chives", "chives"),
-    "howto_technique": ("/food/how-to/how-to-cook-lobster", "how-to-cook-lobster"),
-    "definition_1": ("/food/what-is/what-is-pureeing", "what-is-pureeing"),
-    "definition_2": ("/food/what-is/what-is-a-dry-shake", "what-is-a-dry-shake"),
-    "comparison_1": ("/food/comparisons/baking-powder-vs-baking-soda", "baking-powder-vs-baking-soda"),
-    "comparison_2": ("/food/comparisons/butter-vs-shortening-vs-oil-for-greasing-pans-which-works-best", "butter-vs-shortening-vs-oil-for-greasing-pans-which-works-best"),
-    "substitute_1": ("/food/substitutes/baking-soda-substitute", "baking-soda-substitute"),
-    "substitute_2": ("/food/substitutes/best-substitutes-for-white-wine-vinegar", "best-substitutes-for-white-wine-vinegar"),
-    "category_roundup": ("/food/collections/eggplant-recipes", "eggplant-recipes"),
-    "tool_page": ("/food/tools/conversion-calculator", "conversion-calculator"),
-}
+TARGET_KEY = os.environ["TARGET_KEY"]
+TARGET_PATH = os.environ["TARGET_PATH"]
+TARGET_SLUG = os.environ.get("TARGET_SLUG") or None
+TRIALS = int(os.environ.get("TRIALS", "3"))
 
 
 def measure_backend_latency(slug: str, attempts: int = 3) -> list[float]:
@@ -91,24 +80,29 @@ def run_lighthouse(url: str, out_path: str) -> dict:
     }
 
 
-results = {}
-for template_type, (path, slug) in SAMPLES.items():
-    url = f"{SITE_URL}{path}"
-    print(f"\n=== {template_type}: {url} ===")
+url = f"{SITE_URL}{TARGET_PATH}"
+print(f"=== {TARGET_KEY}: {url} ({TRIALS} isolated trials) ===")
 
-    backend_times = measure_backend_latency(slug) if slug else None
-    if backend_times:
-        print(f"  Raw backend /pages/{slug} latency (3 attempts, ms): {[round(t) for t in backend_times]}")
+if TARGET_SLUG:
+    backend_times = measure_backend_latency(TARGET_SLUG)
+    print(f"Raw backend /pages/{TARGET_SLUG} latency (3 attempts, ms): {[round(t) for t in backend_times]}")
 
-    out_path = f"/tmp/lh_{template_type}.json"
+trials = []
+for i in range(TRIALS):
+    out_path = f"/tmp/lh_{TARGET_KEY}_{i}.json"
+    subprocess.run(["pkill", "-f", "chrome"], check=False)  # clean slate before each trial
+    time.sleep(2)
     try:
         lab = run_lighthouse(url, out_path)
-        print(f"  Lighthouse (mobile, simulated throttling): {json.dumps(lab, indent=2)}")
+        print(f"\nTrial {i + 1}: {json.dumps(lab, indent=2)}")
+        trials.append(lab)
     except Exception as e:
-        print(f"  Lighthouse run failed: {e}")
-        lab = {"error": str(e)}
+        print(f"\nTrial {i + 1} FAILED: {e}")
 
-    results[template_type] = {"url": url, "backend_latency_ms": backend_times, "lighthouse": lab}
-
-print("\n\n=== FULL RESULTS (JSON) ===")
-print(json.dumps(results, indent=2))
+if trials:
+    lcps = sorted(t["LCP_ms"] for t in trials if t.get("LCP_ms") is not None)
+    print(f"\n=== {TARGET_KEY} summary across {len(trials)} trials ===")
+    print(f"LCP values (ms), sorted: {[round(v) for v in lcps]}")
+    if len(lcps) >= 2:
+        print(f"LCP spread (max-min): {round(lcps[-1] - lcps[0])}ms -- large spread means noisy/unstable, not a fixed number")
+    print(f"Median LCP: {round(lcps[len(lcps) // 2]) if lcps else 'N/A'}ms")
