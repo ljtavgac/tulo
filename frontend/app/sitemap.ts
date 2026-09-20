@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { listPages } from "@/lib/api";
 import { SITE_URL, pagePath } from "@/lib/seo";
+import { FOOD_SECTIONS } from "@/lib/taxonomy";
 
 const PRIORITY: Record<string, number> = {
   homepage: 1,
@@ -33,9 +34,23 @@ const CHANGE_FREQUENCY: Record<string, MetadataRoute.Sitemap[number]["changeFreq
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = (await listPages()).filter((page) => page.template_type !== "static_page");
 
-  return pages.map((page) => ({
+  // The 8 hub/section index pages (e.g. /food/recipes) are static routes
+  // that list pages of a template type -- they're never a Page row
+  // themselves, so the dynamic loop below can never produce a bare
+  // /food/{section} entry for them. Added explicitly here, same
+  // priority/changeFrequency as category_roundup: these are primary
+  // discovery pages, not individual content.
+  const hubEntries: MetadataRoute.Sitemap = FOOD_SECTIONS.filter((section) => section.hasIndex).map((section) => ({
+    url: `${SITE_URL}${section.path}`,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  const pageEntries = pages.map((page) => ({
     url: `${SITE_URL}${pagePath(page.template_type, page.slug)}`,
     changeFrequency: CHANGE_FREQUENCY[page.template_type] ?? "monthly",
     priority: PRIORITY[page.template_type] ?? 0.5,
   }));
+
+  return [...hubEntries, ...pageEntries];
 }
