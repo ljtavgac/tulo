@@ -39,6 +39,12 @@ jobs:
           else
             echo "ready=true" >> "$GITHUB_OUTPUT"
           fi
+          if [ -z "${{ vars.BACKEND_BASE_URL }}" ] || [ -z "${{ secrets.ADMIN_TASK_TOKEN }}" ]; then
+            echo "::warning::BACKEND_BASE_URL/ADMIN_TASK_TOKEN (staging) aren't configured -- skipping the staging leg."
+            echo "staging_ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "staging_ready=true" >> "$GITHUB_OUTPUT"
+          fi
 
       # Waits for the REAL signal (prod's own /health reporting it's
       # actually serving this exact commit, via Render's built-in
@@ -104,3 +110,37 @@ jobs:
           done
 
           echo "::warning::apply-baked-images didn't succeed after 2 attempts. If prod's deploy still hasn't landed, this can be re-triggered by hand: $PROD_BACKEND_BASE_URL/admin/apply-baked-images?token=<token>"
+
+      # No "wait for deploy" gate here, unlike prod's step above: this
+      # workflow only triggers on push to main, but staging deploys from
+      # its own `staging` branch and usually already carries this exact
+      # content (or more) from before it was promoted to main. This call
+      # just reconciles STAGING'S OWN currently-deployed SEED_PAGES against
+      # its live DB rows -- independent of which commit landed on main --
+      # so it's safe to fire immediately and it self-corrects on the next
+      # push if staging's own deploy hasn't caught up yet. Added
+      # 2026-09-20 to close the other half of a real gap: this workflow
+      # only ever reconciled prod, so any push that fixed an image only
+      # ever reached prod, leaving staging permanently behind on anything
+      # baked into git after a page's first review (confirmed live on
+      # how-to-cook-lobster, bbq-rub).
+      - name: Call /admin/apply-baked-images on staging
+        if: steps.check.outputs.staging_ready == 'true'
+        env:
+          STAGING_BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          STAGING_ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: |
+          set -uo pipefail
+          for attempt in 1 2; do
+            echo "--- attempt $attempt ---"
+            response="$(curl -sS -f --connect-timeout 15 --max-time 60 "$STAGING_BACKEND_BASE_URL/admin/apply-baked-images?token=$STAGING_ADMIN_TASK_TOKEN")" && {
+              echo "$response"
+              count="$(echo "$response" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("updated_count", "?"))' 2>/dev/null || echo '?')"
+              echo "Updated $count page(s) on staging (attempt $attempt)."
+              exit 0
+            } || echo "Request failed or timed out on attempt $attempt -- will retry." >&2
+            if [ "$attempt" -lt 2 ]; then
+              sleep 20
+            fi
+          done
+          echo "::warning::apply-baked-images on staging didn't succeed after 2 attempts -- will self-correct on the next push touching seed_templates.py."
