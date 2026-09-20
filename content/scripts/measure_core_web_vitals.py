@@ -24,12 +24,16 @@ PROD_BACKEND = os.environ["PROD_BACKEND_BASE_URL"].rstrip("/")
 
 SAMPLES = {
     "homepage": ("/", None),
-    "recipe_or_dish": ("/food/recipes/chicken-broccoli-rice-casserole", "chicken-broccoli-rice-casserole"),
+    "recipe_or_dish_1": ("/food/recipes/chicken-broccoli-rice-casserole", "chicken-broccoli-rice-casserole"),
+    "recipe_or_dish_2": ("/food/recipes/smoked-haddock-chowder", "smoked-haddock-chowder"),
     "ingredient_hub": ("/food/ingredients/chives", "chives"),
     "howto_technique": ("/food/how-to/how-to-cook-lobster", "how-to-cook-lobster"),
-    "definition": ("/food/what-is/what-is-pureeing", "what-is-pureeing"),
-    "comparison": ("/food/comparisons/baking-powder-vs-baking-soda", "baking-powder-vs-baking-soda"),
-    "substitute": ("/food/substitutes/baking-soda-substitute", "baking-soda-substitute"),
+    "definition_1": ("/food/what-is/what-is-pureeing", "what-is-pureeing"),
+    "definition_2": ("/food/what-is/what-is-a-dry-shake", "what-is-a-dry-shake"),
+    "comparison_1": ("/food/comparisons/baking-powder-vs-baking-soda", "baking-powder-vs-baking-soda"),
+    "comparison_2": ("/food/comparisons/butter-vs-shortening-vs-oil-for-greasing-pans-which-works-best", "butter-vs-shortening-vs-oil-for-greasing-pans-which-works-best"),
+    "substitute_1": ("/food/substitutes/baking-soda-substitute", "baking-soda-substitute"),
+    "substitute_2": ("/food/substitutes/best-substitutes-for-white-wine-vinegar", "best-substitutes-for-white-wine-vinegar"),
     "category_roundup": ("/food/collections/eggplant-recipes", "eggplant-recipes"),
     "tool_page": ("/food/tools/conversion-calculator", "conversion-calculator"),
 }
@@ -70,6 +74,10 @@ def run_lighthouse(url: str, out_path: str) -> dict:
         a = audits.get(key)
         return a.get(field) if a else None
 
+    lcp_element_audit = audits.get("largest-contentful-paint-element", {})
+    lcp_items = (lcp_element_audit.get("details", {}) or {}).get("items", [])
+    lcp_node = lcp_items[0].get("items", [{}])[0] if lcp_items and lcp_items[0].get("items") else {}
+
     return {
         "LCP_ms": val("largest-contentful-paint"),
         "CLS": val("cumulative-layout-shift"),
@@ -79,6 +87,7 @@ def run_lighthouse(url: str, out_path: str) -> dict:
         "TTI_ms": val("interactive"),
         "FCP_ms": val("first-contentful-paint"),
         "performance_score": (data.get("categories", {}).get("performance", {}) or {}).get("score"),
+        "LCP_element": lcp_node.get("node", {}).get("snippet") if lcp_node else None,
     }
 
 
