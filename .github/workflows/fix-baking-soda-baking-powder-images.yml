@@ -3,8 +3,15 @@ name: Fix baking-soda-substitute / baking-powder-vs-baking-soda images (one-off)
 on:
   workflow_dispatch:
     inputs:
+      target:
+        required: false
+        default: "prod"
+        type: choice
+        options:
+          - prod
+          - staging
       required_commit:
-        description: "Commit prod must be serving before writing (the guard-fix commit)"
+        description: "Commit this target must be serving before writing (the guard-fix commit)"
         required: true
 
 jobs:
@@ -22,7 +29,7 @@ jobs:
 
       - name: Apply fix
         env:
-          BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
-          ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+          BACKEND_BASE_URL: ${{ inputs.target == 'prod' && vars.PROD_BACKEND_BASE_URL || vars.BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ inputs.target == 'prod' && secrets.PROD_ADMIN_TASK_TOKEN || secrets.ADMIN_TASK_TOKEN }}
           REQUIRED_COMMIT: ${{ inputs.required_commit }}
         run: python3 content/scripts/fix_baking_soda_baking_powder_images.py
