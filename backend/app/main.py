@@ -18,7 +18,7 @@ from typing import NamedTuple
 from urllib.parse import quote
 
 import requests
-from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
+from fastapi import Body, Depends, FastAPI, Form, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -2628,6 +2628,49 @@ def export_images(
         }
 
     return result
+
+
+@app.post("/admin/set-image-fields")
+def set_image_fields(
+    token: str,
+    slug: str,
+    payload: dict = Body(...),
+    db: Session = Depends(get_db),
+):
+    """Writes content['image_url']/content['image_attribution'] onto an
+    existing page exactly as given, with no host restriction beyond
+    is_allowed_image_url and no attribution stamping -- the write-side
+    counterpart to /admin/export-images, meant for copying one backend's
+    already-live, already-vetted image fields onto another backend's row
+    byte-for-byte (see content/scripts/sync_staging_images_to_prod.py's
+    naming aside -- it syncs staging TO prod's values, only ever writing
+    to staging). /admin/review-queue/override-image is the wrong tool for
+    this: it always nulls attribution and refuses Unsplash outright, which
+    would destroy real attribution already recovered on the source side.
+
+    Gated behind the same ADMIN_TASK_TOKEN as every other /admin/* route.
+    Callers are responsible for only ever pointing this at a backend they
+    intend to overwrite -- there is nothing here that inspects which
+    environment it's running in."""
+    if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
+        raise HTTPException(status_code=404)
+
+    image_url = payload.get("image_url")
+    if not image_url or not is_allowed_image_url(image_url):
+        raise HTTPException(status_code=400, detail=f"image_url must be a direct URL on one of {ALLOWED_IMAGE_HOSTS}.")
+
+    page = db.query(Page).filter(Page.slug == slug).first()
+    if page is None:
+        raise HTTPException(status_code=404, detail=f"No page with slug {slug}")
+
+    content = copy.deepcopy(page.content)
+    content["image_url"] = image_url
+    content["image_attribution"] = payload.get("image_attribution")
+    page.content = content
+    db.commit()
+    _revalidate_frontend()
+
+    return {"status": "ok", "slug": slug, "image_url": image_url}
 
 
 _PEXELS_ID_RE = re.compile(r"images\.pexels\.com/photos/(\d+)/")
