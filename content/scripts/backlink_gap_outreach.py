@@ -9,12 +9,16 @@ comparable competitor, that it's the kind of site that links out to
 food/cooking resources -- not just any domain that happened to appear on a
 roundup page.
 
-CURRENTLY NOT WIRED INTO daily-link-building.yml: there's no Semrush API
-subscription/key available right now (confirmed live -- every competitor
-lookup came back "400 Bad Request" with an empty key param). The script,
-this module, and its standalone backlink-gap-outreach.yml dispatch
-workflow are left in place for whenever Semrush access exists -- add a
-SEMRUSH_API_KEY secret and re-add this as daily-link-building.yml's first
+CURRENTLY NOT WIRED INTO daily-link-building.yml: this script needs its
+own SEMRUSH_API_KEY as a GitHub Actions secret to make the classic
+Semrush Analytics REST calls below, and none is configured. Update as of
+2026-09-20: the account DOES now have working Semrush access (confirmed
+live via the account's Semrush MCP connector -- real backlink data
+returned for tulo.io and several competitors) -- the missing piece is
+specifically a raw API key usable from an unattended CI runner, which is
+a separate credential from that connector and can't be extracted from
+it. Add a SEMRUSH_API_KEY secret (from the same Semrush account/plan the
+MCP connector uses) and re-add this as daily-link-building.yml's first
 step (see that workflow's own comment) to turn it back on; it was
 designed to run first since it should be the best-qualified candidate
 pool of the six once real data is flowing.
@@ -78,6 +82,23 @@ COMPETITOR_DOMAINS = [
 ]
 
 TULO_DOMAIN = "tulo.io"
+
+# Confirmed live via the Semrush MCP connector (2026-09-20, ahead of this
+# script's first real automated run): sorting a competitor's referring
+# domains by authority score descending -- exactly what `candidates` below
+# does -- surfaces almost nothing but mega-publishers and aggregators
+# (cnn.com, nytimes.com, wikipedia.org, huffpost.com, bing.com, ...) all
+# the way down past the top few hundred rows for a site with a backlink
+# profile as large as allrecipes.com's. None of those are realistic cold-
+# outreach targets for a small tools link -- a real editor there would
+# never respond, and Tulo isn't going to appear in a publication of that
+# size's contact-page-listed inbox. Without this ceiling, evaluating in
+# score-descending order means every run spends its earliest, most-
+# competitor-corroborated evaluation slots on exactly the domains least
+# likely to convert, crowding out the genuine small/mid-tier blogs this
+# source exists to find. No floor is applied -- the existing credibility
+# check already screens out spam/PBN-tier sites regardless of score.
+MAX_AUTHORITY_SCORE = 65
 
 # Same generic-platform exclusion list as daily_outreach_sourcing.py --
 # duplicated on purpose (see that script's own note on why these scripts
@@ -155,6 +176,38 @@ def _root_domain(url: str) -> str:
     if netloc.startswith("www."):
         netloc = netloc[4:]
     return netloc.split(":")[0]
+
+
+def _extract_json_object(raw: str) -> dict | None:
+    """The system prompt says respond with ONLY a JSON object, but a raw-
+    output diagnostic (2026-09-20, against real live failures) found the
+    model sometimes prepends a closing thought first -- e.g. "Found the
+    email on the \'Work with Me\' page..." then the JSON, occasionally
+    still wrapped in a fence -- rather than ever truncating (every real
+    failure had stop_reason == "end_turn" well under the token budget).
+    The old fence-strip only handled a fence anchored at position 0, so
+    any leading prose defeated it outright. Tries, in order: the raw
+    string as-is, a fenced block found ANYWHERE in the string, then the
+    first-\'{\'-to-last-\'}\' slice -- the JSON object is always the last
+    thing emitted in every observed failure."""
+    raw = raw.strip()
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
+    fence_match = re.search(r"```(?:json)?\s*(\{.*\})\s*```", raw, re.DOTALL)
+    if fence_match:
+        try:
+            return json.loads(fence_match.group(1))
+        except json.JSONDecodeError:
+            pass
+    start, end = raw.find("{"), raw.rfind("}")
+    if start != -1 and end > start:
+        try:
+            return json.loads(raw[start : end + 1])
+        except json.JSONDecodeError:
+            pass
+    return None
 
 
 def _is_excluded(domain: str) -> bool:
@@ -382,12 +435,9 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str, competito
         return None
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
-    if raw.startswith("```"):
-        raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
-    try:
-        item = json.loads(raw)
-    except json.JSONDecodeError:
-        print(f"  {domain}: model response wasn't valid JSON, skipping")
+    item = _extract_json_object(raw)
+    if item is None:
+        print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
         return None
 
     if not item.get("credible"):
@@ -475,10 +525,14 @@ def main() -> None:
     seen_domains, seen_emails = _existing_domains_and_emails(base, auth)
 
     candidates = sorted(
-        (d for d in overlap if not _is_excluded(d) and d not in tulo_refdomains and d not in seen_domains),
+        (
+            d for d in overlap
+            if not _is_excluded(d) and d not in tulo_refdomains and d not in seen_domains
+            and scores.get(d, 0.0) <= MAX_AUTHORITY_SCORE
+        ),
         key=lambda d: (-len(overlap[d]), -scores.get(d, 0.0)),
     )
-    print(f"\n{len(candidates)} gap candidate(s) to evaluate (linking to a competitor, not to Tulo, not already queued).")
+    print(f"\n{len(candidates)} gap candidate(s) to evaluate (linking to a competitor, not to Tulo, not already queued, authority <= {MAX_AUTHORITY_SCORE}).")
 
     queued: list[dict] = []
     evaluated = 0
