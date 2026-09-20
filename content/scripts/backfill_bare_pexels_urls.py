@@ -29,6 +29,21 @@ BACKEND_BASE_URL = os.environ["BACKEND_BASE_URL"].rstrip("/")
 ADMIN_TASK_TOKEN = os.environ["ADMIN_TASK_TOKEN"]
 REQUIRED_COMMIT = os.environ["REQUIRED_COMMIT"]
 
+
+def get_with_retries(url, *, attempts=4, **kwargs):
+    """requests.get with exponential backoff on transient connection errors
+    (a bare ConnectionResetError killed the first run of this script partway
+    through -- prod's own responses/errors still raise/return normally)."""
+    for attempt in range(1, attempts + 1):
+        try:
+            return requests.get(url, **kwargs)
+        except requests.exceptions.RequestException as exc:
+            if attempt == attempts:
+                raise
+            wait = 2**attempt
+            print(f"  (transient error on attempt {attempt}/{attempts}: {exc!r} -- retrying in {wait}s)")
+            time.sleep(wait)
+
 # The re-submission step below relies on write-time normalization
 # (review_queue_override_image rejecting/fixing bare Pexels URLs) --
 # refuse to run against a backend that hasn't deployed that fix yet,
@@ -88,7 +103,7 @@ BARE_URL_SLUGS = [
 
 # Step 1: read current state, confirm still bare, log attribution for a
 # sanity check (never assumed blind).
-r = requests.get(
+r = get_with_retries(
     f"{BACKEND_BASE_URL}/admin/export-images",
     params={"token": ADMIN_TASK_TOKEN, "slugs": ",".join(BARE_URL_SLUGS)},
     timeout=60,
@@ -113,7 +128,7 @@ print(f"\n{len(still_bare)}/{len(BARE_URL_SLUGS)} confirmed still bare -- procee
 # triggering write-time normalization.
 failures = []
 for slug, url in still_bare:
-    resp = requests.get(
+    resp = get_with_retries(
         f"{BACKEND_BASE_URL}/admin/review-queue/override-image",
         params={"token": ADMIN_TASK_TOKEN, "slug": slug, "image_url": url, "batch": "backfill-bare-url-fix-2026-09-20"},
         allow_redirects=False,
@@ -130,7 +145,7 @@ if failures:
 
 # Step 3: verify no bare URLs remain.
 time.sleep(1.5)
-r = requests.get(
+r = get_with_retries(
     f"{BACKEND_BASE_URL}/admin/export-images",
     params={"token": ADMIN_TASK_TOKEN, "slugs": ",".join(BARE_URL_SLUGS)},
     timeout=60,
@@ -156,7 +171,7 @@ if remaining_bare:
 # (preserves manual_override tag per this session's earlier fix).
 recover_slugs = [s for s, _ in still_bare if s not in remaining_bare]
 if recover_slugs:
-    r = requests.get(
+    r = get_with_retries(
         f"{BACKEND_BASE_URL}/admin/apply-recovered-attribution",
         params={"token": ADMIN_TASK_TOKEN, "slugs": ",".join(recover_slugs), "dry_run": "false"},
         timeout=120,
