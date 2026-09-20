@@ -50,6 +50,11 @@ ROUNDUP_QUERY_TEMPLATES = [
     "best pasta recipes roundup blog post",
     "best kitchen conversion calculators and tools for bakers",
     "best cooking temperature and doneness charts for home cooks",
+    # Added 2026-09-20: 3 more recipe-roundup topics Tulo has real content
+    # for, to widen the candidate pool beyond the original 6 templates.
+    "best breakfast recipes roundup blog post",
+    "best baking recipes roundup blog post",
+    "best slow cooker recipes roundup blog post",
 ]
 
 EXCLUDED_DOMAIN_SUFFIXES = {

@@ -39,6 +39,13 @@ MENTION_QUERY_TEMPLATES = [
     '"Tulo.io" cooking',
     '"Tulo" kitchen conversion tool',
     '"Tulo" cooking time temperature guide',
+    # Added 2026-09-20: only 1 candidate evaluated on 2026-09-19 -- these
+    # add a few more phrasings people might use when mentioning the brand,
+    # though the real ceiling here is how many unlinked mentions of a
+    # young brand exist at all, not query diversity.
+    '"Tulo" ingredient substitution tool',
+    '"trytulo" recipe',
+    '"Tulo" recipe converter',
 ]
 
 EXCLUDED_DOMAIN_SUFFIXES = {

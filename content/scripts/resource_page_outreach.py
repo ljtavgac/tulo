@@ -40,6 +40,13 @@ RESOURCE_PAGE_QUERY_TEMPLATES = [
     "registered dietitian recommended cooking tools and resources page",
     "nutrition education helpful cooking resources list",
     "cooking class helpful links and resources for students page",
+    # Added 2026-09-20: widening the topic space to reach resource pages
+    # the 4 templates above don't surface -- food-blogger and classroom
+    # resource pages are a structurally different source than the
+    # dietitian/culinary-school angle already covered.
+    "food blogger recommended kitchen tools and resources page",
+    "cooking teacher classroom resources and links page",
+    "meal prep helpful resources and tools list blog",
 ]
 
 EXCLUDED_DOMAIN_SUFFIXES = {
