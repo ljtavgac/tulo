@@ -1,0 +1,25 @@
+name: Test sibling replication (one-off diagnostic)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Test
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          PROD_ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+          STAGING_BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          STAGING_ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+        run: python3 content/scripts/test_sibling_replication.py

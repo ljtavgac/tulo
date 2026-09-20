@@ -1,0 +1,23 @@
+name: Diff sitemap slugs between prod and staging (one-off diagnostic)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Diff
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          STAGING_BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+        run: python3 content/scripts/diff_sitemap_slugs.py
