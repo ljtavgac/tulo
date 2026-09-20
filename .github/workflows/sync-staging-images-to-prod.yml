@@ -1,0 +1,38 @@
+name: Sync staging images to match prod (one-off)
+
+# One direction only: reads prod, writes ONLY to staging, never to prod.
+# See content/scripts/sync_staging_images_to_prod.py.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "If true (default), reports the diff without writing anything to staging"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Sync
+        env:
+          PROD_BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          PROD_ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+          STAGING_BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          STAGING_ADMIN_TASK_TOKEN: ${{ secrets.ADMIN_TASK_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: python3 content/scripts/sync_staging_images_to_prod.py
