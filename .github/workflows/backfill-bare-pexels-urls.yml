@@ -1,0 +1,28 @@
+name: Backfill bare Pexels image URLs (one-off)
+
+on:
+  workflow_dispatch:
+    inputs:
+      required_commit:
+        description: "Commit prod must be serving before writing (the write-time normalization fix)"
+        required: true
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Backfill
+        env:
+          BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          ADMIN_TASK_TOKEN: ${{ secrets.PROD_ADMIN_TASK_TOKEN }}
+          REQUIRED_COMMIT: ${{ inputs.required_commit }}
+        run: python3 content/scripts/backfill_bare_pexels_urls.py
