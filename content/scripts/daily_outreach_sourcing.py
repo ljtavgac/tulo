@@ -92,6 +92,17 @@ HUB_PAGES = [
     "https://toptenblogs.com/categories/food",
     "https://chewtheworld.com/best-food-blog/",
     "https://www.menutiger.com/blog/best-food-blogs",
+    # Added 2026-09-20: the original 6 are increasingly saturated with
+    # already-contacted domains (68 of them pre-filtered out of a single
+    # run today, up from 47 the day before) -- these two add real,
+    # differently-sourced candidates rather than re-crawling the same
+    # well-known "best of" pages. Feedspot's own directory (100 blogs,
+    # independently curated) and tastingspoons.com's roundup post (an
+    # individual blogger's own links to 50 others) are structurally
+    # different from the big generic SEO-ranking directories above, more
+    # likely to surface smaller/less commonly-crawled sites.
+    "https://bloggers.feedspot.com/food_blogs/",
+    "https://tastingspoons.com/archives/2606",
 ]
 
 # Generic platforms, social networks, marketplaces, and the hub/directory
