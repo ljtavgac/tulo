@@ -1,7 +1,16 @@
 name: Count sitemap URLs (one-off diagnostic)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: "Site to check (defaults to prod)"
+        required: false
+        default: "https://tulo.io"
+      check_urls:
+        description: "Comma-separated exact <loc> URLs to spot-check for presence"
+        required: false
+        default: ""
 
 jobs:
   count:
@@ -17,4 +26,7 @@ jobs:
         run: pip install requests
 
       - name: Count
+        env:
+          SITE_URL: ${{ inputs.site_url }}
+          CHECK_URLS: ${{ inputs.check_urls }}
         run: python3 content/scripts/count_sitemap_urls.py
