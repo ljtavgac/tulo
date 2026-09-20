@@ -2114,7 +2114,16 @@ def review_queue_override_image(
     guard was added so a future manual override can't reintroduce the
     same gap. A reviewer who wants a specific Unsplash photo should use
     the search-based re-fetch instead (see review_queue_mark's flag-note
-    query override), which always captures real attribution."""
+    query override), which always captures real attribution.
+
+    A submitted Pexels URL missing its sizing query params (see
+    _is_bare_pexels_url) gets swapped for Pexels' own pre-sized "large"
+    variant before anything is stored -- a bare URL points at the full-
+    resolution original, 24x-54x larger, and confirmed live (2026-09-20)
+    to cause a multi-second LCP regression once served through
+    StockPhotoSlot's `unoptimized` <Image>. Fails closed
+    (_normalize_bare_pexels_url raises rather than falling back to the
+    bare URL) if that lookup can't be verified."""
     if not ADMIN_TASK_TOKEN or not secrets.compare_digest(token, ADMIN_TASK_TOKEN):
         raise HTTPException(status_code=404)
     if not is_allowed_image_url(image_url):
@@ -2132,6 +2141,8 @@ def review_queue_override_image(
                 "or pick a Pexels URL instead, which doesn't require attribution."
             ),
         )
+    if _is_bare_pexels_url(image_url):
+        image_url = _normalize_bare_pexels_url(image_url)
     if not _is_reachable(image_url):
         raise HTTPException(status_code=400, detail="That URL didn't load -- double check it's the direct image URL.")
 
@@ -2716,6 +2727,59 @@ def set_image_fields(
 
 _PEXELS_ID_RE = re.compile(r"images\.pexels\.com/photos/(\d+)/")
 _UNSPLASH_ID_RE = re.compile(r"images\.unsplash\.com/photo-([\w-]+)")
+
+
+def _is_bare_pexels_url(image_url: str) -> bool:
+    """True for a Pexels CDN URL missing the sizing query params
+    fetch_stock_images.py's own pipeline always gets straight from
+    Pexels' API (photo["src"]["large"]) -- the shape you get instead by
+    copying an image URL off Pexels' website UI, which points at the
+    full-resolution original. Confirmed live (2026-09-20): a bare URL is
+    24x-54x the size of its sized counterpart for the same photo (1055 KB
+    vs 43 KB, 1458 KB vs 27 KB) and, served through StockPhotoSlot's
+    `unoptimized` <Image>, directly caused a 5-8 second LCP regression on
+    the two pages that had one -- confirmed by an isolated, 3-trial
+    Lighthouse re-measurement matching every other page's ~2.5-3s LCP
+    once fixed. A site-wide audit the same day found 34 more pre-existing
+    instances across every content template, all from earlier manual
+    overrides through this same endpoint, never caught until now."""
+    return "images.pexels.com" in image_url and "w=" not in image_url
+
+
+def _normalize_bare_pexels_url(image_url: str) -> str:
+    """Given a bare Pexels URL (see _is_bare_pexels_url), looks up its
+    real photo ID and returns Pexels' own pre-sized "large" variant --
+    the exact value the automated pipeline would have used for this
+    photo. Fails closed: raises on any lookup failure (no extractable ID,
+    missing API key, rate limit, network error, missing src.large in the
+    response) rather than ever falling back to writing the bare URL --
+    a submission that can't be verified/normalized is rejected outright,
+    not silently stored oversized."""
+    m = _PEXELS_ID_RE.search(image_url)
+    if not m:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Couldn't extract a Pexels photo ID from {image_url!r} to verify its real size -- refusing to store an unsized URL.",
+        )
+    if not PEXELS_ACCESS_KEY:
+        raise HTTPException(status_code=400, detail="PEXELS_ACCESS_KEY not configured -- can't verify/normalize this URL's size.")
+    try:
+        r = requests.get(
+            f"https://api.pexels.com/v1/photos/{m.group(1)}",
+            headers={"Authorization": PEXELS_ACCESS_KEY},
+            timeout=10,
+        )
+    except requests.RequestException as e:
+        raise HTTPException(status_code=400, detail=f"Pexels lookup for photo {m.group(1)} failed: {e}")
+    if r.status_code != 200:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Pexels lookup for photo {m.group(1)} returned {r.status_code}: {r.text[:200]}",
+        )
+    large_url = (r.json().get("src") or {}).get("large")
+    if not large_url:
+        raise HTTPException(status_code=400, detail=f"Pexels photo {m.group(1)} response had no 'src.large' variant to use.")
+    return large_url
 
 
 def _lookup_recovered_attribution(image_url: str) -> dict:
