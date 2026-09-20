@@ -14,6 +14,7 @@ export default function PageTile({
   imageAlt,
   imageUrl,
   imageAttribution,
+  priority = false,
 }: {
   href: string;
   title: string;
@@ -21,6 +22,10 @@ export default function PageTile({
   imageAlt?: string | null;
   imageUrl?: string;
   imageAttribution?: ImageAttribution;
+  // See StockPhotoSlot's own `priority` doc -- only the tile(s) actually
+  // rendered above the fold (the first tile of the first homepage carousel,
+  // the first tile of a section-index grid) should set this.
+  priority?: boolean;
 }) {
   return (
     <Link
@@ -35,6 +40,7 @@ export default function PageTile({
         aspect="thumbnail"
         reserveSpace
         showAttribution={false}
+        priority={priority}
       />
       <div className="p-3">
         <h3 className="line-clamp-2 min-h-10 text-sm font-bold">{title}</h3>

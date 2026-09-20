@@ -98,7 +98,7 @@ export default async function HomePage() {
         return (
           <Fragment key={templateType}>
             <Carousel title={section.label} seeAllHref={section.hasIndex ? section.path : undefined}>
-              {pages.map((p) => (
+              {pages.map((p, j) => (
                 <div key={p.slug} className="w-40 shrink-0 snap-start sm:w-48">
                   <PageTile
                     href={pagePath(p.template_type, p.slug)}
@@ -107,6 +107,11 @@ export default async function HomePage() {
                     imageAlt={p.image_alt}
                     imageUrl={p.image_url}
                     imageAttribution={p.image_attribution}
+                    // Only the very first tile of the very first carousel
+                    // row sits above the fold -- see StockPhotoSlot's
+                    // `priority` doc for why lazy-loading that one specifically
+                    // hurts LCP.
+                    priority={i === 0 && j === 0}
                   />
                 </div>
               ))}

@@ -75,6 +75,12 @@ export default function PagedPageGrid({
                 imageAlt={page.image_alt}
                 imageUrl={page.image_url}
                 imageAttribution={page.image_attribution}
+                // Same above-the-fold reasoning as the homepage's first
+                // carousel tile -- the grid starts right under a short
+                // breadcrumb/heading/intro, well within initial viewport
+                // height, so its first tile is the section index page's
+                // LCP candidate too.
+                priority={i === 0}
               />
             </li>
             {(i + 1) % IN_FEED_INTERVAL === 0 && i !== pages.length - 1 ? (
