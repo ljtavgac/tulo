@@ -132,6 +132,38 @@ def _root_domain(url: str) -> str:
     return netloc.split(":")[0]
 
 
+def _extract_json_object(raw: str) -> dict | None:
+    """The system prompt says respond with ONLY a JSON object, but a raw-
+    output diagnostic (2026-09-20, against real live failures) found the
+    model sometimes prepends a closing thought first -- e.g. "Found the
+    email on the \'Work with Me\' page..." then the JSON, occasionally
+    still wrapped in a fence -- rather than ever truncating (every real
+    failure had stop_reason == "end_turn" well under the token budget).
+    The old fence-strip only handled a fence anchored at position 0, so
+    any leading prose defeated it outright. Tries, in order: the raw
+    string as-is, a fenced block found ANYWHERE in the string, then the
+    first-\'{\'-to-last-\'}\' slice -- the JSON object is always the last
+    thing emitted in every observed failure."""
+    raw = raw.strip()
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
+    fence_match = re.search(r"```(?:json)?\s*(\{.*\})\s*```", raw, re.DOTALL)
+    if fence_match:
+        try:
+            return json.loads(fence_match.group(1))
+        except json.JSONDecodeError:
+            pass
+    start, end = raw.find("{"), raw.rfind("}")
+    if start != -1 and end > start:
+        try:
+            return json.loads(raw[start : end + 1])
+        except json.JSONDecodeError:
+            pass
+    return None
+
+
 def _is_excluded(domain: str) -> bool:
     return any(domain == suf or domain.endswith("." + suf) for suf in EXCLUDED_DOMAIN_SUFFIXES)
 
@@ -321,12 +353,9 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str, roundup_u
         return None
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
-    if raw.startswith("```"):
-        raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
-    try:
-        item = json.loads(raw)
-    except json.JSONDecodeError:
-        print(f"  {domain}: model response wasn't valid JSON, skipping")
+    item = _extract_json_object(raw)
+    if item is None:
+        print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
         return None
 
     if not item.get("credible"):
