@@ -193,6 +193,15 @@ class OutreachProspect(Base):
     source_group_id: Mapped[str | None] = mapped_column(String, nullable=True, index=True)
     contact_name: Mapped[str | None] = mapped_column(String, nullable=True)
     contact_email: Mapped[str | None] = mapped_column(String, nullable=True)
+    # Set by a sourcing script when a credible candidate has no findable
+    # email but does have a live /contact or /contact-us page (see
+    # _contact_form_url in content/scripts/*.py) -- lets the portal tell a
+    # reviewer to paste the drafted subject/body into that page's form by
+    # hand instead of dropping the candidate outright. Null for every
+    # ordinary prospect (has a real contact_email already, or predates
+    # this field). Never used for sending -- there is no automated form
+    # submission, only a human copy/pasting.
+    contact_form_url: Mapped[str | None] = mapped_column(String, nullable=True)
     # For a haro_reply: the source query being responded to. Null for a
     # tool_pitch, which has no originating query.
     source_query: Mapped[str | None] = mapped_column(String, nullable=True)

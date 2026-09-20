@@ -3919,12 +3919,36 @@ def outreach_queue(
             send_status_html = f'<div class="send-error">send failed: {escape_html(r.send_error)}</div>'
         else:
             send_status_html = ""
+        # Once approved, the queued-only manual_form_note below stops
+        # rendering -- but a no-email/has-contact_form_url prospect still
+        # needs its form link surfaced (that's the only way this one ever
+        # gets sent), so repeat it here where it stays visible regardless
+        # of status.
+        if not r.contact_email and r.contact_form_url and r.status != "queued":
+            send_status_html += (
+                f'<div class="manual-form-note">No email -- paste the subject/body above into: '
+                f'<a href="{escape_html(r.contact_form_url)}" target="_blank" rel="noopener">{escape_html(r.contact_form_url)}</a></div>'
+            )
         if r.status == "queued" and not r.contact_email:
+            # No verified email exists for this domain (see
+            # _contact_form_url in content/scripts/*.py) -- when a
+            # sourcing script found a live /contact or /contact-us page,
+            # point the reviewer straight at it so they can paste the
+            # subject/body below in by hand; this is a manual action, not
+            # an automated send (see contact_form_url's docstring on
+            # OutreachProspect on why there's no bot-fills-forms path).
+            manual_form_note_html = (
+                f'<div class="manual-form-note">No email found -- copy the subject/body below and paste '
+                f'them into this site\'s contact form: '
+                f'<a href="{escape_html(r.contact_form_url)}" target="_blank" rel="noopener">{escape_html(r.contact_form_url)}</a></div>'
+                if r.contact_form_url else ""
+            )
             contact_form_html = f"""
+            {manual_form_note_html}
             <form method="get" action="/admin/outreach-queue/update-contact" class="contact-form">
               <input type="hidden" name="prospect_id" value="{r.id}">
               <input type="hidden" name="show" value="{show}">
-              <input type="email" name="contact_email" placeholder="contact email -- required before this can send" required>
+              <input type="email" name="contact_email" placeholder="contact email -- optional if using the contact form above" {"" if r.contact_form_url else "required"}>
               <input type="text" name="contact_name" placeholder="contact name (optional)">
               <button type="submit" class="btn-save-contact">Save</button>
             </form>
@@ -4151,6 +4175,8 @@ def outreach_queue(
         .linked-items .pill {{ vertical-align: middle; }}
         .send-ok {{ font-size: 11px; color: #276b3c; margin-top: 8px; }}
         .send-error {{ font-size: 11px; color: #a00; margin-top: 8px; }}
+        .manual-form-note {{ font-size: 11px; color: #1a4d7a; background: #e8f2fc; border: 1px solid #bcd9f2; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
+        .manual-form-note a {{ color: #06c; }}
         .article-review {{ margin-top: 10px; border: 1px solid #e0d9ec; border-radius: 6px; padding: 10px 12px; background: #faf8fd; }}
         .article-review-title {{ font-size: 12px; font-weight: 600; color: #444; margin-bottom: 8px; }}
         .article-review-body {{ display: flex; gap: 12px; }}
@@ -4392,7 +4418,7 @@ async def outreach_queue_create(
     candidates into the live queue without a human retyping each one by
     hand into a form that doesn't exist. JSON body:
     {pitch_type, target_domain, subject, body_preview} required;
-    contact_name/contact_email/source_query optional. Same
+    contact_name/contact_email/contact_form_url/source_query optional. Same
     _require_outreach_auth gate as every other outreach route -- a
     sourcing script authenticates with OUTREACH_ADMIN_USER/PASSWORD from
     a GitHub Actions secret, the same way override_images.py already
@@ -4423,6 +4449,7 @@ async def outreach_queue_create(
         target_domain=target_domain,
         contact_name=(payload.get("contact_name") or None),
         contact_email=(payload.get("contact_email") or None),
+        contact_form_url=(payload.get("contact_form_url") or None),
         source_query=(payload.get("source_query") or None),
         subject=subject,
         body_preview=body_preview,
@@ -4620,6 +4647,7 @@ def outreach_queue_list_json(
             "rationale": r.rationale,
             "contact_name": r.contact_name,
             "contact_email": r.contact_email,
+            "contact_form_url": r.contact_form_url,
             "source_query": r.source_query,
             "subject": r.subject,
             "body_preview": r.body_preview,
@@ -4670,11 +4698,11 @@ def outreach_queue_export_csv(
     buffer = io.StringIO()
     writer = csv.writer(buffer)
     writer.writerow(
-        ["prospect_id", "pitch_type", "target_domain", "contact_name", "contact_email", "subject", "body_preview", "source_query", "status", "is_example", "sent_at", "send_error"]
+        ["prospect_id", "pitch_type", "target_domain", "contact_name", "contact_email", "contact_form_url", "subject", "body_preview", "source_query", "status", "is_example", "sent_at", "send_error"]
     )
     for r in rows:
         writer.writerow(
-            [r.id, r.pitch_type, r.target_domain, r.contact_name or "", r.contact_email or "", r.subject, r.body_preview, r.source_query or "", r.status, r.is_example, r.sent_at or "", r.send_error or ""]
+            [r.id, r.pitch_type, r.target_domain, r.contact_name or "", r.contact_email or "", r.contact_form_url or "", r.subject, r.body_preview, r.source_query or "", r.status, r.is_example, r.sent_at or "", r.send_error or ""]
         )
 
     return Response(

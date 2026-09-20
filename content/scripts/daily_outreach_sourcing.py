@@ -310,6 +310,23 @@ def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
     return "\n\n".join(found)
 
 
+CONTACT_FORM_PATHS = ["/contact", "/contact-us"]
+
+
+def _contact_form_url(domain: str) -> str | None:
+    """Only checked when a credible candidate has no findable email (see
+    the no-email branch in main()) -- tries just the two paths that are
+    actually likely to be a submission form, unlike the broader
+    about/privacy/media-kit pages _contact_page_text also checks (those
+    are for finding an email in prose, not a form to fill out). Lets a
+    human paste the drafted pitch in by hand instead of dropping an
+    otherwise-credible candidate outright."""
+    for path in CONTACT_FORM_PATHS:
+        if _fetch(f"https://{domain}{path}", timeout=10) is not None:
+            return f"https://{domain}{path}"
+    return None
+
+
 def _existing_domains_and_emails(base: str, auth: tuple[str, str]) -> tuple[set[str], set[str]]:
     """One fetch of every prospect ever queued (any status, any pitch_type
     -- haro_reply included), returning both the set of already-targeted
@@ -563,6 +580,7 @@ def main() -> None:
     evaluated = 0
     skipped_no_email = 0
     skipped_duplicate_email = 0
+    queued_manual_form = 0
     for domain in candidates:
         if len(queued) >= remaining or evaluated >= MAX_CANDIDATES_PER_RUN:
             break
@@ -584,30 +602,39 @@ def main() -> None:
         if not result["contact_email"]:
             # Credible, but no real contact email could be found or verified
             # (even after the web_search fallback inside _vet_and_draft) --
-            # skip it rather than queue an uncontactable prospect, and keep
+            # fall back to a bare contact-form URL (see _contact_form_url)
+            # so a human can paste the drafted pitch in by hand rather than
+            # dropping an otherwise-credible candidate outright. Keep
             # evaluating further candidates toward --count instead of
-            # stopping here.
-            skipped_no_email += 1
-            print(f"  {domain}: credible but no verifiable contact email found, skipping")
-            continue
-        email_key = result["contact_email"].strip().lower()
-        if email_key in seen_emails:
-            # A different, never-before-seen domain that happens to share a
-            # contact with someone already in the queue (a multi-blog
-            # network, or the same person's other site) -- skip it so this
-            # person is never emailed twice across different days just
-            # because the domain looked new.
-            skipped_duplicate_email += 1
-            print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
-            continue
-        seen_emails.add(email_key)
+            # stopping here either way.
+            result["contact_form_url"] = _contact_form_url(domain)
+            if not result["contact_form_url"]:
+                skipped_no_email += 1
+                print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
+                continue
+            queued_manual_form += 1
+            print(f"  {domain}: credible but no email -- queuing for manual outreach via {result['contact_form_url']}")
+        else:
+            email_key = result["contact_email"].strip().lower()
+            if email_key in seen_emails:
+                # A different, never-before-seen domain that happens to share a
+                # contact with someone already in the queue (a multi-blog
+                # network, or the same person's other site) -- skip it so this
+                # person is never emailed twice across different days just
+                # because the domain looked new.
+                skipped_duplicate_email += 1
+                print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
+                continue
+            seen_emails.add(email_key)
+            result["contact_form_url"] = None
         result["source_query"] = "daily_outreach_sourcing"
         queued.append(result)
-        print(f"  {domain}: ACCEPTED (contact: {result['contact_email']})")
+        contact_display = result["contact_email"] or f"form only: {result['contact_form_url']}"
+        print(f"  {domain}: ACCEPTED (contact: {contact_display})")
 
     print(
-        f"\n{len(queued)} candidate(s) queued (all with a verified, not-already-targeted contact "
-        f"email) out of {evaluated} evaluated ({skipped_no_email} credible-but-unreachable, "
+        f"\n{len(queued)} candidate(s) queued ({queued_manual_form} needing manual form outreach) "
+        f"out of {evaluated} evaluated ({skipped_no_email} credible-but-unreachable, "
         f"{skipped_duplicate_email} duplicate-contact skipped)."
     )
 
@@ -628,6 +655,7 @@ def main() -> None:
                 "subject": p["subject"],
                 "body_preview": p["body_preview"],
                 "source_query": p["source_query"],
+                "contact_form_url": p.get("contact_form_url"),
             },
             timeout=30,
         )

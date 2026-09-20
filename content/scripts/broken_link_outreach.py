@@ -197,6 +197,23 @@ def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
     return "\n\n".join(found)
 
 
+CONTACT_FORM_PATHS = ["/contact", "/contact-us"]
+
+
+def _contact_form_url(domain: str) -> str | None:
+    """Only checked when a credible candidate has no findable email (see
+    the no-email branch in main()) -- tries just the two paths that are
+    actually likely to be a submission form, unlike the broader
+    about/privacy/media-kit pages _contact_page_text also checks (those
+    are for finding an email in prose, not a form to fill out). Lets a
+    human paste the drafted pitch in by hand instead of dropping an
+    otherwise-credible candidate outright."""
+    for path in CONTACT_FORM_PATHS:
+        if _fetch(f"https://{domain}{path}", timeout=10) is not None:
+            return f"https://{domain}{path}"
+    return None
+
+
 def _find_resource_page_urls(client, query: str, max_results: int = 5) -> list[str]:
     response = client.messages.create(
         model=MODEL,
@@ -474,6 +491,7 @@ def main() -> None:
     evaluated = 0
     skipped_no_email = 0
     skipped_duplicate_email = 0
+    queued_manual_form = 0
     for domain, (page_url, dead_url, anchor_text) in candidates.items():
         if len(queued) >= remaining:
             break
@@ -493,22 +511,30 @@ def main() -> None:
         if result is None:
             continue
         if not result["contact_email"]:
-            skipped_no_email += 1
-            print(f"  {domain}: credible but no verifiable contact email found, skipping")
-            continue
-        email_key = result["contact_email"].strip().lower()
-        if email_key in seen_emails:
-            skipped_duplicate_email += 1
-            print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
-            continue
-        seen_emails.add(email_key)
+            result["contact_form_url"] = _contact_form_url(domain)
+            if not result["contact_form_url"]:
+                skipped_no_email += 1
+                print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
+                continue
+            queued_manual_form += 1
+            print(f"  {domain}: credible but no email -- queuing for manual outreach via {result['contact_form_url']}")
+        else:
+            email_key = result["contact_email"].strip().lower()
+            if email_key in seen_emails:
+                skipped_duplicate_email += 1
+                print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
+                continue
+            seen_emails.add(email_key)
+            result["contact_form_url"] = None
         result["source_query"] = f"broken_link:{page_url}"
         queued.append(result)
-        print(f"  {domain}: ACCEPTED (dead link on {page_url}; contact: {result['contact_email']})")
+        contact_display = result["contact_email"] or f"form only: {result['contact_form_url']}"
+        print(f"  {domain}: ACCEPTED (dead link on {page_url}; contact: {contact_display})")
 
     print(
         f"\n{len(queued)} candidate(s) queued out of {evaluated} evaluated "
-        f"({skipped_no_email} credible-but-unreachable, {skipped_duplicate_email} duplicate-contact skipped)."
+        f"({queued_manual_form} needing manual form outreach, {skipped_no_email} credible-but-unreachable, "
+        f"{skipped_duplicate_email} duplicate-contact skipped)."
     )
 
     if args.dry_run:
@@ -528,6 +554,7 @@ def main() -> None:
                 "subject": p["subject"],
                 "body_preview": p["body_preview"],
                 "source_query": p["source_query"],
+                "contact_form_url": p.get("contact_form_url"),
             },
             timeout=30,
         )
