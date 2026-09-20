@@ -37,6 +37,13 @@ RESOURCE_QUERY_TEMPLATES = [
     "helpful cooking and kitchen resources roundup blog post",
     "recipe resources and conversion guides for home cooks blog post",
     "best baking and cooking reference links roundup",
+    # Added 2026-09-20: the original 3 templates were only surfacing a
+    # handful of resource pages per run (5 evaluated on 2026-09-19, well
+    # below the other sourcing scripts) -- these widen the topic space to
+    # adjacent resource-page niches without duplicating the queries above.
+    "kitchen tips and recipe resources page for home cooks",
+    "cooking substitutions and measurement conversion resources blog",
+    "meal planning and recipe resource links roundup blog post",
 ]
 
 # Only these are treated as a genuinely dead link -- see module docstring
