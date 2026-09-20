@@ -1,0 +1,19 @@
+name: Diagnose outreach JSON parse failures (one-off diagnostic)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 anthropic
+      - name: Diagnose
+        env:
+          BACKEND_BASE_URL: ${{ vars.PROD_BACKEND_BASE_URL }}
+          PIPELINE_ANTHROPIC_API_KEY: ${{ secrets.PIPELINE_ANTHROPIC_API_KEY }}
+        run: python3 content/scripts/diagnose_json_parse_failures.py
