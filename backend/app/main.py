@@ -1137,6 +1137,43 @@ def match_recipes(ingredients: str = Query(...), db: Session = Depends(get_db)):
 # ADMIN_TASK_TOKEN in Render if you ever suspect it's leaked.
 ADMIN_TASK_TOKEN = os.environ.get("ADMIN_TASK_TOKEN")
 
+# Prod's sibling is staging and vice versa -- set on each Render service to
+# point at the OTHER one, so a single-page image write on either backend can
+# best-effort mirror itself onto the other. Optional: unset on either side
+# just means replication silently no-ops there, same as before this existed.
+SIBLING_BACKEND_BASE_URL = os.environ.get("SIBLING_BACKEND_BASE_URL")
+SIBLING_ADMIN_TASK_TOKEN = os.environ.get("SIBLING_ADMIN_TASK_TOKEN")
+
+
+def _replicate_image_fields_to_sibling(slug: str, image_url: str, image_attribution: dict | None) -> None:
+    """Mirrors a single-page image write onto the sibling environment's
+    backend, so a manual override applied through the admin UI -- a single
+    request to whichever one backend the portal happens to be pointed at --
+    doesn't silently leave the other environment behind. Real, confirmed
+    incident this closes (2026-09-20): staging never received several
+    image fixes applied only to prod, including a manual override that
+    was live on prod's DB alone.
+
+    Always targets the sibling's /admin/set-image-fields specifically
+    (never override-image, which has its own null-attribution/no-Unsplash
+    rules that don't apply to a faithful mirror) with no_replicate=true,
+    so the sibling's own write doesn't loop back and re-replicate here.
+    Best-effort and silent: a redeploying or unreachable sibling should
+    never fail or roll back the primary write the caller already
+    committed."""
+    if not SIBLING_BACKEND_BASE_URL or not SIBLING_ADMIN_TASK_TOKEN:
+        return
+    try:
+        requests.post(
+            f"{SIBLING_BACKEND_BASE_URL.rstrip('/')}/admin/set-image-fields",
+            params={"token": SIBLING_ADMIN_TASK_TOKEN, "slug": slug, "no_replicate": "true"},
+            json={"image_url": image_url, "image_attribution": image_attribution},
+            timeout=10,
+        )
+    except requests.RequestException as e:
+        print(f"  sibling replication for {slug} failed (non-fatal): {e}")
+
+
 # Outreach-specific admin auth -- deliberately a SEPARATE credential from
 # ADMIN_TASK_TOKEN above, not a reuse of it. Every other /admin/* route
 # guards an occasional maintenance action (re-fetch a photo, flag a page)
@@ -2113,6 +2150,7 @@ def review_queue_override_image(
     # (the /admin/fetch-images endpoint) already does this after a real
     # write; this manual-override path just never had the same call added.
     _revalidate_frontend()
+    _replicate_image_fields_to_sibling(slug, image_url, content["image_attribution"])
 
     default_redirect = f"/admin/review-queue?token={token}&batch={batch}&show={show}"
     redirect_url = return_to if (return_to and return_to.startswith("/admin/")) else default_redirect
@@ -2634,6 +2672,7 @@ def export_images(
 def set_image_fields(
     token: str,
     slug: str,
+    no_replicate: bool = Query(default=False, description="Internal: set by a sibling's own replication call so this write doesn't loop back and re-replicate."),
     payload: dict = Body(...),
     db: Session = Depends(get_db),
 ):
@@ -2669,6 +2708,8 @@ def set_image_fields(
     page.content = content
     db.commit()
     _revalidate_frontend()
+    if not no_replicate:
+        _replicate_image_fields_to_sibling(slug, image_url, content["image_attribution"])
 
     return {"status": "ok", "slug": slug, "image_url": image_url}
 

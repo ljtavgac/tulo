@@ -104,7 +104,13 @@ for slug in mismatches:
     }
     r = requests.post(
         f"{STAGING_BASE}/admin/set-image-fields",
-        params={"token": STAGING_TOKEN, "slug": slug},
+        # no_replicate=true is load-bearing, not an optimization: once
+        # SIBLING_BACKEND_BASE_URL is configured, staging's own write would
+        # otherwise try to mirror this value straight back onto prod --
+        # harmless value-wise (it's already prod's own value) but a real
+        # violation of "never touch prod images" as a hard property of this
+        # one-directional sync tool.
+        params={"token": STAGING_TOKEN, "slug": slug, "no_replicate": "true"},
         json=payload,
         timeout=30,
     )
