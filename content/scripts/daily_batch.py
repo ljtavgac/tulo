@@ -73,6 +73,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
 from bake_images_from_staging import bake  # noqa: E402
+import check_queue_duplicates  # noqa: E402
 from build_batch_requests import extract_existing_pages, load_id_to_row_from_manifest  # noqa: E402
 from generate_companion_recipes import find_unlinked_cards  # noqa: E402
 from validation import extract_content, validate_content  # noqa: E402
@@ -150,6 +151,74 @@ def _next_batch_number() -> int:
     parse-don't-import approach for this file."""
     numbers = [int(m) for m in re.findall(r'"batch_number":\s*(\d+)', SEED_TEMPLATES_PATH.read_text())]
     return (max(numbers) + 1) if numbers else 1
+
+
+def exclude_queue_duplicates() -> int:
+    """Pre-generation dedup pass: runs check_queue_duplicates.py's exact-
+    collision detector against the FULL CONTENT_QUEUE.csv, before
+    select_next_batch() ever claims a row -- the "run this before
+    submitting any real batch, full stop" step
+    content/BATCH_CONTENT_PIPELINE_PLAN.md documented as a manual
+    preflight_check.py step but was never actually wired into the
+    unattended pipeline (confirmed 2026-09-21, by tracing main()'s real
+    call order: run_generation() -- the real API spend -- happened
+    before validate_results()'s dedup check ever ran, so a duplicate
+    topic still cost a full generation call before being caught).
+
+    Deliberately uses check_queue_duplicates.normalize_topic() here, not
+    this module's own stronger _normalize_title_for_dedup (which also
+    handles stemming and word-reordering, e.g. "Latte vs. Cappuccino" /
+    "Cappuccino vs. Latte") -- normalize_topic is a cheaper, purely
+    mechanical check (case/punctuation-insensitive exact match only),
+    meant as a fast, zero-API-call floor that catches obvious collisions
+    before spend, not a replacement for the stronger post-generation
+    check. That check still runs in validate_results() as the real
+    safety net for anything this misses (reordered comparisons,
+    differently-worded titles for the same topic).
+
+    Re-scans the WHOLE not_started backlog on every run, not just
+    whatever this run's --count would claim -- cheap (pure string ops,
+    no network calls) and necessary: the already-published side of the
+    comparison grows with every batch, so a not_started row that was
+    clean yesterday can become a genuine duplicate of something a
+    DIFFERENT row published under today. Excluded rows get a new
+    terminal status, 'excluded_duplicate' -- NOT reset to 'not_started',
+    which would just have them reclaimed and re-excluded identically on
+    every future run forever. Returns the number of rows excluded."""
+    with QUEUE_PATH.open(newline="") as f:
+        rows = list(csv.DictReader(f))
+
+    existing_by_key: dict[str, tuple[str, str, str]] = {}
+    for slug, template_type, title in check_queue_duplicates.load_existing_page_titles():
+        existing_by_key.setdefault(check_queue_duplicates.normalize_topic(title), (slug, template_type, title))
+
+    seen_in_queue: dict[str, dict] = {}
+    excluded = 0
+    for row in rows:
+        if row["status"] != "not_started" or not row.get("title"):
+            continue
+        key = check_queue_duplicates.normalize_topic(row["title"])
+        published_match = existing_by_key.get(key)
+        if published_match:
+            slug, template_type, existing_title = published_match
+            row["status"] = "excluded_duplicate"
+            excluded += 1
+            print(f"  excluded pre-generation: {row['title']!r} collides with already-published "
+                  f"{template_type} {slug!r} ({existing_title!r})")
+            continue
+        first = seen_in_queue.get(key)
+        if first is not None:
+            row["status"] = "excluded_duplicate"
+            excluded += 1
+            print(f"  excluded pre-generation: {row['title']!r} collides with another queue row "
+                  f"already kept, {first['title']!r}")
+            continue
+        seen_in_queue[key] = row
+
+    if excluded:
+        _write_queue_csv(QUEUE_PATH, rows)
+    print(f"Pre-generation duplicate check: {excluded} row(s) excluded before any generation was attempted.")
+    return excluded
 
 
 def select_next_batch(count: int) -> tuple[Path, int, list[dict]]:
@@ -915,6 +984,8 @@ def main() -> None:
     # not an absent env var, when it isn't configured yet).
     if not os.environ.get("PIPELINE_ANTHROPIC_API_KEY"):
         raise RuntimeError("PIPELINE_ANTHROPIC_API_KEY is not set -- nothing claimed, nothing generated.")
+
+    exclude_queue_duplicates()
 
     subset_csv, batch_number, selected = select_next_batch(args.count)
 
