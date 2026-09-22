@@ -35,7 +35,23 @@ def main() -> None:
 
     matches = [row for row in rows if "kingarthurbaking" in (row.get("target_domain") or "").lower()]
     print(f"Total rows in queue: {len(rows)}")
-    print(f"Rows targeting kingarthurbaking.com: {len(matches)}\n")
+    print(f"Rows targeting kingarthurbaking.com (by target_domain): {len(matches)}\n")
+
+    # Broader pass, in case a second row exists under a different
+    # target_domain string (e.g. a manually-added row recorded "King Arthur
+    # Baking" or similar rather than the bare domain) -- checks subject/
+    # body_preview/target_domain together so a same-company duplicate
+    # wouldn't be missed just because of how target_domain was spelled.
+    broader = [
+        row for row in rows
+        if row not in matches
+        and "king arthur" in (
+            (row.get("target_domain") or "") + " " +
+            (row.get("subject") or "") + " " +
+            (row.get("body_preview") or "")
+        ).lower()
+    ]
+    print(f"Additional rows mentioning \"king arthur\" under a different target_domain: {len(broader)}\n")
 
     for row in sorted(matches, key=lambda r: r.get("created_at") or ""):
         print(f"id={row['id']}")
