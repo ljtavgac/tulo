@@ -3937,12 +3937,41 @@ def outreach_queue(
             # subject/body below in by hand; this is a manual action, not
             # an automated send (see contact_form_url's docstring on
             # OutreachProspect on why there's no bot-fills-forms path).
-            manual_form_note_html = (
-                f'<div class="manual-form-note">No email found -- copy the subject/body below and paste '
-                f'them into this site\'s contact form: '
-                f'<a href="{escape_html(r.contact_form_url)}" target="_blank" rel="noopener">{escape_html(r.contact_form_url)}</a></div>'
-                if r.contact_form_url else ""
+            #
+            # A real, reported incident: a manual-form row sits in
+            # 'queued' -- and keeps rendering this same "go submit it"
+            # note -- on every portal load until someone clicks
+            # Approve/Reject, which for a manual-form row is easy to
+            # forget to do right after actually submitting it by hand.
+            # That produced two real submissions to the same site's
+            # contact form on two different days from the same row. Once
+            # this row has been sitting un-decided past the day it was
+            # first queued (created_at's own date -- the day this was
+            # first recommended), flip to a loud, distinctly-styled
+            # warning instead of the plain note, so a reviewer seeing it
+            # again can't mistake it for a fresh recommendation.
+            is_repeat_recommendation = (
+                bool(r.contact_form_url)
+                and r.created_at is not None
+                and r.created_at.date() != datetime.now(timezone.utc).date()
             )
+            if is_repeat_recommendation:
+                manual_form_note_html = (
+                    f'<div class="manual-form-note manual-form-note-repeat">'
+                    f'⚠ Already recommended once, on {r.created_at:%Y-%m-%d} -- if you already pasted '
+                    f'this into their contact form, click Approve now instead of submitting it again. '
+                    f'Still haven\'t done it? The form is here: '
+                    f'<a href="{escape_html(r.contact_form_url)}" target="_blank" rel="noopener">{escape_html(r.contact_form_url)}</a>'
+                    f'</div>'
+                )
+            elif r.contact_form_url:
+                manual_form_note_html = (
+                    f'<div class="manual-form-note">No email found -- copy the subject/body below and paste '
+                    f'them into this site\'s contact form: '
+                    f'<a href="{escape_html(r.contact_form_url)}" target="_blank" rel="noopener">{escape_html(r.contact_form_url)}</a></div>'
+                )
+            else:
+                manual_form_note_html = ""
             contact_form_html = f"""
             {manual_form_note_html}
             <form method="get" action="/admin/outreach-queue/update-contact" class="contact-form">
@@ -4177,6 +4206,8 @@ def outreach_queue(
         .send-error {{ font-size: 11px; color: #a00; margin-top: 8px; }}
         .manual-form-note {{ font-size: 11px; color: #1a4d7a; background: #e8f2fc; border: 1px solid #bcd9f2; border-radius: 4px; padding: 6px 8px; margin-top: 8px; }}
         .manual-form-note a {{ color: #06c; }}
+        .manual-form-note-repeat {{ color: #7a3b00; background: #fff1e0; border: 1px solid #f2c98a; font-weight: 600; }}
+        .manual-form-note-repeat a {{ color: #a05a00; }}
         .article-review {{ margin-top: 10px; border: 1px solid #e0d9ec; border-radius: 6px; padding: 10px 12px; background: #faf8fd; }}
         .article-review-title {{ font-size: 12px; font-weight: 600; color: #444; margin-bottom: 8px; }}
         .article-review-body {{ display: flex; gap: 12px; }}
