@@ -20,6 +20,14 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      // ~1,100 Ingredient Hub pages each link to the Recipe Generator with
+      // their own ingredient pre-filled (?ingredients=<name>), all
+      // self-canonicalizing back to the clean tool URL -- correct, but not
+      // worth Googlebot's crawl budget on this many near-duplicate URLs.
+      // No trailing wildcard needed: robots.txt path values are prefix
+      // matches by default, so this blocks every ?ingredients=... variant
+      // without touching the clean /food/tools/recipe-generator URL itself.
+      disallow: "/food/tools/recipe-generator?ingredients=",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
