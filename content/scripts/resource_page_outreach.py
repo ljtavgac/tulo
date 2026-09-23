@@ -120,6 +120,26 @@ def _root_domain(url: str) -> str:
     return netloc.split(":")[0]
 
 
+# Known company rebrand/legacy-domain aliases -- domain-string dedup can't
+# tell these are the same real organization as their current domain, so a
+# candidate found under an old domain slips past seen_domains untouched.
+# Real incident (2026-09-23): kingarthurflour.com's blog got queued as a
+# "new" candidate three days after kingarthurbaking.com -- the company's
+# current domain -- was already contacted (a 2020 rebrand, both domains
+# still live). Only added reactively, when a real collision like this is
+# found -- not meant to be a general solution to every possible rebrand.
+KNOWN_DOMAIN_ALIASES = {
+    "kingarthurflour.com": "kingarthurbaking.com",
+}
+
+
+def _canonical_domain(domain: str) -> str:
+    for alias, canonical in KNOWN_DOMAIN_ALIASES.items():
+        if domain == alias or domain.endswith("." + alias):
+            return canonical
+    return domain
+
+
 def _extract_json_object(raw: str) -> dict | None:
     """The system prompt says respond with ONLY a JSON object, but a raw-
     output diagnostic (2026-09-20, against real live failures) found the
@@ -236,7 +256,7 @@ def _existing_domains_and_emails(base: str, auth: tuple[str, str]) -> tuple[set[
     r = requests.get(f"{base}/admin/outreach-queue/list.json", params={"status": "all"}, auth=auth, timeout=30)
     r.raise_for_status()
     rows = r.json()
-    domains = {row["target_domain"].lower() for row in rows}
+    domains = {_canonical_domain(row["target_domain"].lower()) for row in rows}
     emails = {row["contact_email"].strip().lower() for row in rows if (row.get("contact_email") or "").strip()}
     return domains, emails
 
@@ -423,9 +443,11 @@ def main() -> None:
         print(f"  '{query}': {len(urls)} result(s)")
         for url in urls:
             domain = _root_domain(url)
-            if not domain or _is_excluded(domain) or domain in seen_domains or domain in candidates:
+            canon = _canonical_domain(domain)
+            if not domain or _is_excluded(domain) or canon in seen_domains or domain in candidates:
                 continue
             candidates[domain] = url
+            seen_domains.add(canon)
 
     print(f"\n{len(candidates)} new candidate domain(s) to evaluate.")
 
