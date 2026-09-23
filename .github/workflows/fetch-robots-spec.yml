@@ -1,0 +1,16 @@
+name: Fetch Google robots.txt spec (one-off diagnostic)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Fetch
+        run: python3 content/scripts/fetch_robots_spec.py
