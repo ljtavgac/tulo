@@ -3548,26 +3548,58 @@ def _resolve_pending_articles(db: Session) -> int:
         # succeeds, resolve THIS row as folded-in rather than also giving
         # it its own queued follow-up.
         folded_into_reply = False
+        has_sibling_reply = False
         if r.source_group_id:
             sibling_replies = (
                 db.query(OutreachProspect)
                 .filter(
                     OutreachProspect.source_group_id == r.source_group_id,
                     OutreachProspect.proposed_template_type.is_(None),
-                    OutreachProspect.status == "queued",
                 )
                 .all()
             )
+            has_sibling_reply = bool(sibling_replies)
             placeholder_tag = f'[URL placeholder -- pending: "{r.proposed_title}"]'
             for sibling in sibling_replies:
-                if placeholder_tag in sibling.body_preview:
+                if sibling.status == "queued" and placeholder_tag in sibling.body_preview:
                     sibling.body_preview = sibling.body_preview.replace(placeholder_tag, url)
                     folded_into_reply = True
+                    break
         if folded_into_reply:
             r.subject = f"[Folded into reply] {r.proposed_title}"
             r.body_preview = (
                 f"Live at {url} -- folded into the reply to this query instead of a separate "
                 "follow-up email (see the linked reply)."
+            )
+            r.status = "folded_into_reply"
+            resolved += 1
+            continue
+        if has_sibling_reply:
+            # Real, reported bug (2026-09-24, the ultra-processed-foods
+            # Healthline query): the exact-tag fold above can fail even
+            # though a sibling reply for the same query genuinely still
+            # exists -- most often because a human already hand-edited
+            # that sibling's body via /admin/outreach-queue/update-content
+            # (a full overwrite, not a patch), which silently removes the
+            # literal placeholder tag the match above depends on. This row
+            # was spun off from that sibling's own numbered list -- it was
+            # never conceived as an independent submission -- so even when
+            # the automatic fold can't find where to inject the URL, it
+            # must never fall through to the branches below and draft
+            # itself as a second, competing pitch for the same query (what
+            # actually happened before this fix: Healthline would have
+            # been offered the same source twice, as two separate
+            # "submissions"). Surface the URL and ask a human to check/
+            # paste it in manually instead -- same "folded_into_reply"
+            # status and portal treatment as a clean auto-fold, so this
+            # never shows up as its own actionable queued card.
+            r.subject = f"[Check sibling reply] {r.proposed_title}"
+            r.body_preview = (
+                f"Live at {url}. This page was meant to fold into the reply for the same "
+                "query, but the automatic placeholder match didn't find a spot to insert the "
+                "URL (often because that reply's body was already hand-edited). Check the "
+                "sibling reply for this query and add this URL manually if it isn't already "
+                "covered -- do not send this as a separate pitch."
             )
             r.status = "folded_into_reply"
             resolved += 1
