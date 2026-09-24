@@ -33,6 +33,8 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from outreach_fetch import fetch as _shared_fetch
+
 MENTION_QUERY_TEMPLATES = [
     '"Tulo" conversion calculator recipe',
     '"Tulo" recipe generator ingredients',
@@ -176,13 +178,11 @@ def _is_excluded(domain: str) -> bool:
 
 
 def _fetch(url: str, timeout: int = 20) -> str | None:
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=timeout)
-        if r.status_code != 200:
-            return None
-        return r.text
-    except requests.RequestException:
-        return None
+    """Delegates to outreach_fetch.fetch(): plain request first, falls back
+    to a headless-browser fetch only when the response looks like a bot-
+    management challenge rather than a genuine failure -- see that
+    module's docstring for the real examples this was built from."""
+    return _shared_fetch(url, timeout=timeout)
 
 
 def _page_text(html: str, max_chars: int = 20000) -> str:
