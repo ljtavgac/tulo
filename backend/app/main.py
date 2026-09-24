@@ -3673,7 +3673,7 @@ def _render_inline_article_review(prospect: OutreachProspect, show: str, db: Ses
         <div class="ar-thumb">{img_html}</div>
         <div class="ar-info">
           {f'<ul class="ar-signals">{signals_html}</ul>' if signals_html else ''}
-          <div class="ar-links"><a href="{live_url}" target="_blank">preview on staging</a></div>
+          <div class="ar-links"><a href="{live_url}" target="_blank">preview on staging</a> &middot; <a href="/admin/debug-page-image?token={ADMIN_TASK_TOKEN}&slug={slug}" target="_blank">debug search</a></div>
           <form method="get" action="/admin/review-queue/mark" class="ar-mark-form">
             <input type="hidden" name="token" value="{ADMIN_TASK_TOKEN}">
             <input type="hidden" name="slug" value="{slug}">
