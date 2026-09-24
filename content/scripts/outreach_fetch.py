@@ -34,6 +34,21 @@ is actually needed) and reused across every fetch() call in the process,
 since a fresh browser launch per domain would be needlessly slow. Each
 script's own process exit runs close() via the atexit hook registered
 here, so no caller needs to remember to clean up.
+
+fetch_working_page(url) is a stricter sibling for one specific case: each
+script's _contact_form_url() guesses a candidate's /contact or
+/contact-us path and, until now, accepted ANY 200 response as proof a
+real contact page exists there -- which is wrong two common ways,
+confirmed by the user reporting queued prospects whose contact-form link
+actually 404s or shows a "page doesn't exist" message: (1) a silent
+redirect to the homepage (or anywhere else) when the guessed path
+doesn't exist -- requests follows redirects by default, so the response
+is a real 200, just not of the page that was asked for; (2) a "soft
+404" -- 200 status with a body that says "Page Not Found" (extremely
+common on page-builder/SPA sites with no real server-side 404 handling,
+or a themed 404 template served without the matching status code).
+fetch_working_page() returns None for either case, so a human is never
+handed a dead link to paste a pitch into.
 """
 
 from __future__ import annotations
@@ -69,6 +84,35 @@ BOT_BLOCK_MARKERS = [
     "security checkpoint",
 ]
 
+# Common soft-404 phrasing -- a real page-not-found message rendered with
+# an HTTP 200 rather than a real 404 status. Deliberately phrase-level
+# (not just "404", which shows up in plenty of real page furniture like
+# CSS class names or a phone number) and deliberately not exhaustive --
+# this only needs to catch the common cases, since fetch_working_page()'s
+# other check (a guessed path that silently redirects elsewhere) covers
+# the single biggest share of dead contact-form links on its own.
+NOT_FOUND_MARKERS = [
+    "page not found",
+    "404 error",
+    "404 not found",
+    "this page doesn't exist",
+    "this page does not exist",
+    "we can't find that page",
+    "we can't seem to find",
+    "can't find the page",
+    "couldn't find that page",
+    "could not find that page",
+    "the page you are looking for",
+    "the page you're looking for",
+    "content not found",
+    "nothing found",
+    "page cannot be found",
+    "page can't be found",
+    "oops! that page",
+    "sorry, but the page",
+    "sorry, that page",
+]
+
 _browser = None
 _playwright_ctx = None
 
@@ -93,7 +137,10 @@ def _get_browser():
     return _browser
 
 
-def _fetch_with_browser(url: str, timeout: int) -> str | None:
+def _fetch_with_browser(url: str, timeout: int) -> tuple[str, str] | None:
+    """Returns (html, final_url) -- final_url matters to callers that care
+    whether the page silently redirected elsewhere (see
+    fetch_working_page())."""
     try:
         browser = _get_browser()
     except Exception:
@@ -110,7 +157,7 @@ def _fetch_with_browser(url: str, timeout: int) -> str | None:
         # rather than waiting on a fixed challenge-page selector that could
         # change at any time.
         page.wait_for_timeout(4000)
-        return page.content()
+        return page.content(), page.url
     except Exception:
         return None
     finally:
@@ -129,15 +176,60 @@ def fetch(url: str, timeout: int = 20) -> str | None:
         # A redirect loop is itself one of the bot-block signatures seen in
         # practice (thewoksoflife.com) -- worth the browser retry rather
         # than a hard failure.
-        return _fetch_with_browser(url, timeout=timeout)
+        result = _fetch_with_browser(url, timeout=timeout)
+        return result[0] if result else None
     except requests.RequestException:
         return None
 
     if r.status_code == 200:
         return r.text
     if _looks_like_bot_block(r.status_code, r.text):
-        return _fetch_with_browser(url, timeout=timeout)
+        result = _fetch_with_browser(url, timeout=timeout)
+        return result[0] if result else None
     return None
+
+
+def _is_dead_page(html: str, requested_url: str, final_url: str) -> bool:
+    # A silent redirect to the homepage (or anywhere else) means the
+    # guessed path doesn't actually exist on this site. Compare paths only
+    # (not query/fragment) and tolerate a trailing slash either way.
+    req_path = requested_url.split("://", 1)[-1].split("?", 1)[0].rstrip("/")
+    final_path = final_url.split("://", 1)[-1].split("?", 1)[0].rstrip("/")
+    if req_path != final_path:
+        return True
+    low = html.lower()
+    return any(marker in low for marker in NOT_FOUND_MARKERS)
+
+
+def fetch_working_page(url: str, timeout: int = 10) -> bool:
+    """True only if url resolves to a real, reachable page at that exact
+    path -- not a silent redirect elsewhere and not a soft-404 body. Bot-
+    block detection and the headless-browser fallback still apply
+    underneath (a genuinely bot-blocked contact page gets the same retry
+    as any other fetch()), but a challenge page that never actually
+    cleared is itself treated as not-working via the same NOT_FOUND/
+    BOT_BLOCK marker check, since a human would see the same "just a
+    moment" screen forever."""
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=timeout)
+    except requests.TooManyRedirects:
+        result = _fetch_with_browser(url, timeout=timeout)
+        if result is None:
+            return False
+        html, final_url = result
+        return not _is_dead_page(html, url, final_url) and not _looks_like_bot_block(None, html)
+    except requests.RequestException:
+        return False
+
+    if r.status_code == 200:
+        return not _is_dead_page(r.text, url, r.url)
+    if _looks_like_bot_block(r.status_code, r.text):
+        result = _fetch_with_browser(url, timeout=timeout)
+        if result is None:
+            return False
+        html, final_url = result
+        return not _is_dead_page(html, url, final_url) and not _looks_like_bot_block(None, html)
+    return False
 
 
 def close() -> None:

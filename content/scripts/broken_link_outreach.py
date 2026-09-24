@@ -34,6 +34,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from outreach_fetch import fetch as _shared_fetch
+from outreach_fetch import fetch_working_page as _shared_fetch_working_page
 
 RESOURCE_QUERY_TEMPLATES = [
     "helpful cooking and kitchen resources roundup blog post",
@@ -227,10 +228,15 @@ def _contact_form_url(domain: str) -> str | None:
     about/privacy/media-kit pages _contact_page_text also checks (those
     are for finding an email in prose, not a form to fill out). Lets a
     human paste the drafted pitch in by hand instead of dropping an
-    otherwise-credible candidate outright."""
+    otherwise-credible candidate outright. Verified via
+    outreach_fetch.fetch_working_page() -- not just any 200 response --
+    since a guessed path silently redirecting to the homepage, or a soft
+    404 (200 status, "page not found" body), used to slip through as if
+    it were a real contact page."""
     for path in CONTACT_FORM_PATHS:
-        if _fetch(f"https://{domain}{path}", timeout=10) is not None:
-            return f"https://{domain}{path}"
+        url = f"https://{domain}{path}"
+        if _shared_fetch_working_page(url, timeout=10):
+            return url
     return None
 
 
