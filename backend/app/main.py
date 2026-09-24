@@ -4406,6 +4406,37 @@ def outreach_queue_update_rationale(
     return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
 
 
+@app.get("/admin/outreach-queue/update-source-query")
+def outreach_queue_update_source_query(
+    prospect_id: int,
+    source_query: str,
+    show: str = "article_pending",
+    db: Session = Depends(get_db),
+    _auth: None = Depends(_require_outreach_auth),
+):
+    """Edits source_query on a content_opportunity prospect BEFORE Create
+    Article is clicked -- the one field generate_haro_article.py actually
+    reads as page_purpose (see that script's _generate_and_publish), so
+    this is how a human broadens or corrects what the generated article
+    is scoped to cover without touching proposed_title/
+    proposed_template_type. Real use case this was built for: a single
+    HARO query asks several sub-questions and the triage step split them
+    into separate proposed articles, but one sub-question (e.g. "how
+    much is too much") is better folded into a sibling article's content/
+    FAQ than given its own page -- appending that question here means
+    the next Create Article click actually asks the model to cover it."""
+    prospect = db.query(OutreachProspect).filter(OutreachProspect.id == prospect_id).first()
+    if prospect is None:
+        raise HTTPException(status_code=404)
+    if prospect.status not in ("article_pending", "article_failed"):
+        raise HTTPException(status_code=400, detail=f"prospect is status={prospect.status!r}, expected article_pending or article_failed (edit before Create Article, not after)")
+
+    prospect.source_query = source_query.strip() or None
+    db.commit()
+
+    return RedirectResponse(url=f"/admin/outreach-queue?show={show}", status_code=303)
+
+
 @app.post("/admin/outreach-queue/update-content")
 def outreach_queue_update_content(
     prospect_id: int = Form(...),
