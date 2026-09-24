@@ -14,13 +14,49 @@ Usage:
 from __future__ import annotations
 
 import os
+from urllib.parse import urlsplit
 
 import requests
 
-from outreach_fetch import close, fetch_working_page
+import outreach_fetch
+from outreach_fetch import HEADERS, NOT_FOUND_MARKERS, close
 
 BACKEND_BASE_URL = os.environ["BACKEND_BASE_URL"].rstrip("/")
 AUTH = (os.environ["OUTREACH_ADMIN_USER"], os.environ["OUTREACH_ADMIN_PASSWORD"])
+
+
+def _diagnose(url: str, timeout: int = 15) -> str:
+    """Like fetch_working_page(), but explains WHY a rejection happened --
+    host/path mismatch (real redirect elsewhere) vs. a matched not-found
+    marker vs. unreachable -- so a "BROKEN" verdict can be checked against
+    the real cause instead of trusted blind."""
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=timeout)
+    except requests.RequestException as e:
+        return f"unreachable ({type(e).__name__})"
+
+    if r.status_code == 200:
+        html, final_url = r.text, r.url
+    elif outreach_fetch._looks_like_bot_block(r.status_code, r.text):
+        result = outreach_fetch._fetch_with_browser(url, timeout=timeout)
+        if result is None:
+            return f"bot-blocked (status {r.status_code}), browser fallback also failed"
+        html, final_url = result
+    else:
+        return f"HTTP {r.status_code}"
+
+    req = urlsplit(url)
+    fin = urlsplit(final_url)
+    req_host, fin_host = outreach_fetch._normalize_host(req.netloc), outreach_fetch._normalize_host(fin.netloc)
+    if req_host != fin_host:
+        return f"redirected to different host: {final_url!r}"
+    if req.path.rstrip("/") != fin.path.rstrip("/"):
+        return f"redirected to different path: {final_url!r}"
+    low = html.lower()
+    hit = next((m for m in NOT_FOUND_MARKERS if m in low), None)
+    if hit:
+        return f"matched not-found marker {hit!r} (same URL, final={final_url!r})"
+    return "WORKING"
 
 
 def main() -> None:
@@ -41,9 +77,9 @@ def main() -> None:
     broken = 0
     for row in with_form:
         url = row["contact_form_url"]
-        ok = fetch_working_page(url, timeout=15)
-        status = "WORKING" if ok else "*** BROKEN ***"
-        print(f"id={row['id']} {row.get('target_domain')!r}: {url} -> {status}")
+        reason = _diagnose(url)
+        ok = reason == "WORKING"
+        print(f"id={row['id']} {row.get('target_domain')!r}: {url} -> {reason}")
         if ok:
             working += 1
         else:

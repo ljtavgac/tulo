@@ -54,6 +54,7 @@ handed a dead link to paste a pitch into.
 from __future__ import annotations
 
 import atexit
+from urllib.parse import urlsplit
 
 import requests
 
@@ -189,13 +190,24 @@ def fetch(url: str, timeout: int = 20) -> str | None:
     return None
 
 
+def _normalize_host(host: str) -> str:
+    # A bare-domain <-> www. redirect is near-universal (HTTPS
+    # canonicalization, not a sign the guessed path doesn't exist) and must
+    # not itself count as "redirected elsewhere".
+    return host.lower().removeprefix("www.")
+
+
 def _is_dead_page(html: str, requested_url: str, final_url: str) -> bool:
     # A silent redirect to the homepage (or anywhere else) means the
-    # guessed path doesn't actually exist on this site. Compare paths only
-    # (not query/fragment) and tolerate a trailing slash either way.
-    req_path = requested_url.split("://", 1)[-1].split("?", 1)[0].rstrip("/")
-    final_path = final_url.split("://", 1)[-1].split("?", 1)[0].rstrip("/")
-    if req_path != final_path:
+    # guessed path doesn't actually exist on this site -- but a plain
+    # scheme/www canonicalization redirect to the SAME path is normal and
+    # must not be flagged. Compares host (www-normalized) and path
+    # (trailing-slash-tolerant) separately; query/fragment never matter.
+    req = urlsplit(requested_url)
+    fin = urlsplit(final_url)
+    if _normalize_host(req.netloc) != _normalize_host(fin.netloc):
+        return True
+    if req.path.rstrip("/") != fin.path.rstrip("/"):
         return True
     low = html.lower()
     return any(marker in low for marker in NOT_FOUND_MARKERS)
