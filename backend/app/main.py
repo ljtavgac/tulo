@@ -4817,7 +4817,20 @@ def outreach_queue_export_csv(
 # actually gets set up (Postmark Inbound was this session's research
 # recommendation; Mailgun Routes is a close second) needs to be
 # configured to hit this URL with those credentials embedded.
-_MAX_INGESTED_QUERY_CHARS = 8000
+#
+# A real multi-category HARO "morning edition" digest routinely bundles
+# 20-40+ numbered queries, each with its own Summary/Name/Category/Email/
+# Outlet/Deadline block plus the reporter's actual requirements paragraph
+# -- easily several hundred to a couple thousand characters per item. The
+# previous 8000-char budget was cut off partway through item #14 of one
+# real digest (confirmed live: the ultra-processed-foods query drafted
+# fine because its summary/topic text made it in, but its
+# "Email: reply+<uuid>@helpareporter.com" line landed past the cutoff, so
+# _draft_haro_replies correctly -- per its own instructions -- treated the
+# query as having no printed reply address and left reporter_email null on
+# every item drafted from it). Sized generously enough to hold a full
+# large digest well within Claude's context window.
+_MAX_INGESTED_QUERY_CHARS = 60000
 
 # Stamped as body_preview on every freshly-ingested haro_reply -- a to-do
 # note for a human, never meant to be sent as-is (see
