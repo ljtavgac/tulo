@@ -32,7 +32,9 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 anthropic
+        run: |
+          pip install requests beautifulsoup4 anthropic playwright
+          playwright install --with-deps chromium
 
       - name: Source and queue outreach prospects
         env:
