@@ -1,0 +1,21 @@
+name: Diagnose 2026-09-25 homepage fetch failures (one-off)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install requests playwright
+          playwright install --with-deps chromium
+      - name: Diagnose
+        run: python3 content/scripts/diagnose_homepage_fetch_failures_20260925.py
