@@ -33,6 +33,7 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from outreach_fetch import extract_mailto_emails as _extract_mailto_emails
 from outreach_fetch import fetch as _shared_fetch
 from outreach_fetch import fetch_working_page as _shared_fetch_working_page
 
@@ -207,15 +208,23 @@ CONTACT_PAGE_PATHS = [
 MAX_CONTACT_PAGES_FETCHED = 4
 
 
-def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
+def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> tuple[str, list[str]]:
+    """Also returns any mailto: addresses found in the raw HTML of these
+    pages (see outreach_fetch.extract_mailto_emails) -- real addresses a
+    vetting model given only stripped page text could never see for
+    itself."""
     found = []
+    mailtos: list[str] = []
     for path in CONTACT_PAGE_PATHS:
         if len(found) >= MAX_CONTACT_PAGES_FETCHED:
             break
         html = _fetch(f"https://{domain}{path}", timeout=10)
         if html is not None:
             found.append(f"--- {path} ---\n{_page_text(html, max_chars_per_page)}")
-    return "\n\n".join(found)
+            for email in _extract_mailto_emails(html):
+                if email not in mailtos:
+                    mailtos.append(email)
+    return "\n\n".join(found), mailtos
 
 
 CONTACT_FORM_PATHS = ["/contact", "/contact-us"]
@@ -532,12 +541,22 @@ def main() -> None:
         if len(text) < 200:
             print(f"  {domain}: homepage text too thin to judge, skipping")
             continue
-        contact_text = _contact_page_text(domain)
+        page_mailtos = list(_extract_mailto_emails(html))
+        contact_text, contact_mailtos = _contact_page_text(domain)
+        for email in contact_mailtos:
+            if email not in page_mailtos:
+                page_mailtos.append(email)
         if contact_text:
             text = f"{text}\n\n--- Contact/About/privacy/media-kit pages ---\n{contact_text}"
         result = _vet_and_draft(client, base, domain, text, page_url, dead_url, anchor_text)
         if result is None:
             continue
+        if not result["contact_email"] and page_mailtos:
+            # A real mailto: address was sitting in this domain's own page
+            # markup, invisible to the model -- already verified by
+            # construction, see outreach_fetch.extract_mailto_emails.
+            result["contact_email"] = page_mailtos[0]
+            print(f"  {domain}: recovered {page_mailtos[0]!r} from a mailto: link the model's page text couldn't show it")
         if not result["contact_email"]:
             result["contact_form_url"] = _contact_form_url(domain)
             if not result["contact_form_url"]:

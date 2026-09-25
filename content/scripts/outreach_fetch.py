@@ -49,11 +49,31 @@ common on page-builder/SPA sites with no real server-side 404 handling,
 or a themed 404 template served without the matching status code).
 fetch_working_page() returns None for either case, so a human is never
 handed a dead link to paste a pitch into.
+
+extract_mailto_emails(html) closes a real gap confirmed live on
+2026-09-25 (see content/scripts/diagnose_mailto_extraction_gap_20260925.py):
+every script's _page_text() strips a page down to visible text via
+BeautifulSoup's get_text(), which drops every HTML attribute -- including
+a <a href="mailto:x@y.com"> link's actual address when the visible anchor
+text is just "Contact us" or an icon. The vetting model is only ever given
+that stripped text, so a real address sitting in a mailto href is
+invisible to it; if it reports an address anyway (a plausible guess, or
+general knowledge), the existing "claimed contact_email not verified
+against fetched page text" check correctly rejects it -- confirmed live:
+2 of 10 sampled "claimed but unverified" candidates from the same run
+(brooklynsupper.com, thefullhelping.com) had a real mailto: address
+sitting in the raw HTML of a page already fetched for that same
+candidate the whole time. Extracting it directly from the markup, rather
+than asking the model to find or repeat it, needs no separate
+verification step at all -- the address came from the target domain's
+own page source, which is the strongest evidence this pipeline accepts
+anywhere.
 """
 
 from __future__ import annotations
 
 import atexit
+import re
 from urllib.parse import urlsplit
 
 import requests
@@ -242,6 +262,30 @@ def fetch_working_page(url: str, timeout: int = 10) -> bool:
         html, final_url = result
         return not _is_dead_page(html, url, final_url) and not _looks_like_bot_block(None, html)
     return False
+
+
+# Junk addresses that technically match href="mailto:..." but are never a
+# real contact -- a placeholder left in a theme/template, not a real
+# person or inbox at the candidate's own domain.
+_MAILTO_JUNK = {"email@example.com", "your@email.com", "name@example.com", "example@example.com"}
+
+_MAILTO_RE = re.compile(r'href=["\']mailto:([^"\'?]+)', re.IGNORECASE)
+
+
+def extract_mailto_emails(html: str) -> list[str]:
+    """Pulls every real mailto: address out of a page's raw HTML -- see
+    the module docstring for why this exists. Must run against the raw
+    HTML a fetch() call returned, before any caller strips it down to
+    plain text; a stripped-text caller never had this information to
+    begin with. Order-preserving, de-duplicated, case-normalized, with
+    obvious placeholder addresses filtered out."""
+    seen: list[str] = []
+    for raw in _MAILTO_RE.findall(html):
+        email = raw.strip().lower()
+        if not email or email in _MAILTO_JUNK or email in seen:
+            continue
+        seen.append(email)
+    return seen
 
 
 def close() -> None:

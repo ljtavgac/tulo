@@ -80,6 +80,7 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from outreach_fetch import extract_mailto_emails as _extract_mailto_emails
 from outreach_fetch import fetch as _shared_fetch
 from outreach_fetch import fetch_working_page as _shared_fetch_working_page
 
@@ -310,7 +311,7 @@ CONTACT_PAGE_PATHS = [
 MAX_CONTACT_PAGES_FETCHED = 4
 
 
-def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
+def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> tuple[str, list[str]]:
     """Best-effort: a real contact email is often not on the homepage or
     even the Contact/About page, but on a page like /privacy-policy or
     /media-kit instead -- confirmed by manual research on already-queued
@@ -320,15 +321,25 @@ def _contact_page_text(domain: str, max_chars_per_page: int = 1500) -> str:
     page it finds (up to MAX_CONTACT_PAGES_FETCHED) since the first page
     that loads is often not the one with the email on it. A miss here
     just means contact_email stays null, same as before, never blocks
-    vetting."""
+    vetting.
+
+    Also returns any mailto: addresses found in the raw HTML of those same
+    pages (see outreach_fetch.extract_mailto_emails) -- real addresses a
+    vetting model given only stripped page text could never see for
+    itself, confirmed live to recover real contacts this pipeline was
+    otherwise losing."""
     found = []
+    mailtos: list[str] = []
     for path in CONTACT_PAGE_PATHS:
         if len(found) >= MAX_CONTACT_PAGES_FETCHED:
             break
         html = _fetch(f"https://{domain}{path}", timeout=10)
         if html is not None:
             found.append(f"--- {path} ---\n{_page_text(html, max_chars_per_page)}")
-    return "\n\n".join(found)
+            for email in _extract_mailto_emails(html):
+                if email not in mailtos:
+                    mailtos.append(email)
+    return "\n\n".join(found), mailtos
 
 
 CONTACT_FORM_PATHS = ["/contact", "/contact-us"]
@@ -627,20 +638,33 @@ def main() -> None:
         if len(text) < 200:
             print(f"  {domain}: homepage text too thin to judge, skipping")
             continue
-        contact_text = _contact_page_text(domain)
+        page_mailtos = list(_extract_mailto_emails(html))
+        contact_text, contact_mailtos = _contact_page_text(domain)
+        for email in contact_mailtos:
+            if email not in page_mailtos:
+                page_mailtos.append(email)
         if contact_text:
             text = f"{text}\n\n--- Contact/About/privacy/media-kit pages ---\n{contact_text}"
         result = _vet_and_draft(client, base, domain, text)
         if result is None:
             continue
+        if not result["contact_email"] and page_mailtos:
+            # A real mailto: address was sitting in this domain's own page
+            # markup the whole time, invisible to the model (which only
+            # ever sees stripped text) -- already verified by construction
+            # (it came straight from a real fetch of this exact domain),
+            # so it needs no separate check the way a model-claimed address
+            # does. See outreach_fetch.extract_mailto_emails.
+            result["contact_email"] = page_mailtos[0]
+            print(f"  {domain}: recovered {page_mailtos[0]!r} from a mailto: link the model's page text couldn't show it")
         if not result["contact_email"]:
             # Credible, but no real contact email could be found or verified
-            # (even after the web_search fallback inside _vet_and_draft) --
-            # fall back to a bare contact-form URL (see _contact_form_url)
-            # so a human can paste the drafted pitch in by hand rather than
-            # dropping an otherwise-credible candidate outright. Keep
-            # evaluating further candidates toward --count instead of
-            # stopping here either way.
+            # (even after the web_search fallback inside _vet_and_draft, and
+            # the mailto-extraction fallback just above) -- fall back to a
+            # bare contact-form URL (see _contact_form_url) so a human can
+            # paste the drafted pitch in by hand rather than dropping an
+            # otherwise-credible candidate outright. Keep evaluating further
+            # candidates toward --count instead of stopping here either way.
             result["contact_form_url"] = _contact_form_url(domain)
             if not result["contact_form_url"]:
                 skipped_no_email += 1
