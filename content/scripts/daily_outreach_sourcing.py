@@ -203,6 +203,128 @@ WEB_SEARCH_TOOL = {
     "max_uses": 3,
 }
 
+# Built once, byte-identical on every call for the life of the process --
+# required for the cache_control breakpoint below to ever hit (a cache
+# read needs an exact prefix match; rebuilding this string per-candidate
+# with the same inputs would still match, but hoisting it removes any risk
+# of an accidental per-call difference creeping in later).
+#
+# Two-step response protocol (2026-09-26): a full pitch used to be drafted
+# in the same turn as the credibility/email verdict, for every candidate
+# the model judged credible -- including the ones that turned out to have
+# no real way to reach them at all (2026-09-25's real run: 12 of ~24
+# credible candidates, once contact-form-only fallbacks are excluded).
+# That draft was pure waste: output tokens (and, when web_search ran
+# looking for an email, its own $10-per-1,000-searches fee) spent on a
+# pitch that got thrown away either way, since main() only checks for a
+# real contact route (a verified email, or a free non-LLM contact-form
+# check) *after* _vet_and_draft used to already return with a draft
+# attached. Splitting credibility+email-finding (this turn) from drafting
+# (a follow-up turn, only sent once main() has confirmed a route exists --
+# see _vet_candidate/_draft_pitch) fixes that without dropping a single
+# candidate that would previously have been queued.
+_TOOLS_BLOCK = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in TULO_TOOLS)
+SYSTEM_PROMPT_TEXT = (
+    "You vet cold-outreach candidates for Tulo, a free food/recipe website building genuine, "
+    "editorial backlinks -- never a link farm or PBN itself, and only interested in linking from "
+    "real ones either.\n\n"
+    "Given the homepage (and, when available, Contact/About page) text of one candidate site "
+    "below, decide whether it's a real, credible, "
+    "actively-run food/cooking blog: a genuine author voice or byline, evidence of a real "
+    "audience (comments, social presence, an about-the-author bio), original writing that reads "
+    "as human-written (not spun or AI-mill boilerplate), a real About/Contact section. Reject "
+    "generic content aggregators, thin affiliate-only sites, obviously auto-generated text, or "
+    "anything that isn't actually about food/cooking/recipes.\n\n"
+    "Tulo has three fixed, always-real tools:\n"
+    f"{_TOOLS_BLOCK}\n\n"
+    "Tulo also has thousands of individual content pages -- recipes, ingredient guides, cooking "
+    "how-tos, definitions, comparisons, substitute guides. Use the search_tulo_content tool to "
+    "check for one genuinely relevant to this specific site's focus before recommending it; never "
+    "guess or invent a slug/URL for one of these, only the search tool's real results are safe to "
+    "use. If nothing specific fits, use one of the three fixed tools instead -- never force an "
+    "irrelevant content-page match just to avoid a tool page.\n\n"
+    "Contact email: the text you're given (homepage plus any Contact/About/privacy/media-kit pages "
+    "that were reachable) often doesn't contain a real email, even for a genuinely credible site -- "
+    "it may be published somewhere else on the same site instead (privacy policy, media kit, a "
+    "'write for us'/pitch page, footer, etc.). A verified address found directly in that domain's "
+    "own page markup is sometimes already given to you in the user message below -- when it is, use "
+    "it as contact_email directly and skip searching for another. Otherwise, if you don't see one in "
+    "the given text, use the web_search tool (up to 3 searches) ONLY to look for that same domain's "
+    "own published contact email -- e.g. 'site:<domain> contact email', '<domain> media kit', "
+    "'<domain> write for us'. This is not for judging credibility, only for finding an email for a "
+    "site you've already decided about from the given text. If you find a real, currently-published "
+    "address, report it as contact_email AND set contact_email_source_url to the exact page URL "
+    "where you found it -- these two fields are required together, never set one without the other. "
+    "If you can't find a genuine address either in the given text or via web_search, set both to "
+    "null; this never affects the credible verdict.\n\n"
+    "This happens in two steps, so a pitch is never drafted for a candidate that turns out to have "
+    "no way to actually reach them:\n\n"
+    "Step 1 (this turn): respond with ONLY a JSON object (no prose, no markdown fences, no further "
+    "tool calls) with exactly these keys: credible (boolean), reason (one sentence, for a human "
+    "reviewer, why or why not), contact_email (a real email address per the rules above, else null), "
+    "contact_email_source_url (the exact URL it came from if contact_email is set, else null). Do "
+    "NOT draft a pitch in this step, even when credible is true -- a human reviewer decides "
+    "afterward whether a real way to reach this contact (a verified email, or a contact form) "
+    "actually exists, and only then asks you to draft it in a follow-up turn.\n\n"
+    "Step 2 (only if a later turn asks you to): respond with ONLY a JSON object with exactly these "
+    "keys: subject, body (a short, specific, non-generic 3-5 sentence pitch mentioning something "
+    "concrete from this specific site plus exactly one real URL - from the fixed tools list or a "
+    "search_tulo_content result, never invented; use a single hyphen with spaces around it for a "
+    "dash, e.g. 'word - word', never a double hyphen or em dash)."
+)
+# Manual cache-control form (not the top-level auto-cache shortcut): render
+# order is tools -> system -> messages, so a breakpoint on this last (only)
+# system block caches everything through "tools + system" while leaving
+# messages (the per-candidate homepage/contact text, which never repeats)
+# uncached, exactly the boundary that's actually worth caching here.
+SYSTEM_PROMPT = [{"type": "text", "text": SYSTEM_PROMPT_TEXT, "cache_control": {"type": "ephemeral"}}]
+
+
+class _UsageTotals:
+    """Accumulates real, measured token/tool usage across every API call
+    in a run -- previously this pipeline logged nothing at all, so every
+    cost claim about it (including the ones that led to this file's own
+    2026-09-26 rewrite) was a code-based estimate, never a measurement.
+    estimated_cost_usd() prices Sonnet 5 + web_search at the rates
+    verified live against platform.claude.com/docs/en/about-claude/pricing
+    on 2026-09-26 -- re-verify there before trusting this after any
+    pricing change."""
+
+    def __init__(self) -> None:
+        self.api_calls = 0
+        self.input_tokens = 0
+        self.output_tokens = 0
+        self.cache_read_input_tokens = 0
+        self.cache_creation_input_tokens = 0
+        self.web_search_requests = 0
+
+    def add(self, usage) -> None:
+        self.api_calls += 1
+        self.input_tokens += getattr(usage, "input_tokens", 0) or 0
+        self.output_tokens += getattr(usage, "output_tokens", 0) or 0
+        self.cache_read_input_tokens += getattr(usage, "cache_read_input_tokens", 0) or 0
+        self.cache_creation_input_tokens += getattr(usage, "cache_creation_input_tokens", 0) or 0
+        server_tool_use = getattr(usage, "server_tool_use", None)
+        if server_tool_use is not None:
+            self.web_search_requests += getattr(server_tool_use, "web_search_requests", 0) or 0
+
+    def estimated_cost_usd(self) -> float:
+        return (
+            self.input_tokens * 2.00 / 1_000_000
+            + self.output_tokens * 10.00 / 1_000_000
+            + self.cache_read_input_tokens * 0.20 / 1_000_000
+            + self.cache_creation_input_tokens * 2.50 / 1_000_000
+            + self.web_search_requests * 10.00 / 1_000
+        )
+
+    def summary(self) -> str:
+        return (
+            f"${self.estimated_cost_usd():.4f} estimated ({self.api_calls} API call(s), "
+            f"{self.input_tokens} input tok, {self.output_tokens} output tok, "
+            f"{self.cache_read_input_tokens} cache-read tok, {self.cache_creation_input_tokens} cache-write tok, "
+            f"{self.web_search_requests} web_search use(s))"
+        )
+
 
 def _root_domain(url: str) -> str:
     netloc = urlparse(url).netloc.lower()
@@ -445,69 +567,25 @@ def _http_search_tulo_content(base: str, query: str, limit: int = 6) -> list[dic
     return results
 
 
-def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict | None:
-    """One candidate per call. Returns None if the model doesn't judge the
-    site genuinely credible, or if either code-enforced invariant fails
-    after a credible verdict. Never raises for a single bad candidate --
-    the caller moves on to the next one."""
-    from anthropic import Anthropic  # noqa: F401  (import kept local to mirror _draft_haro_replies' style)
-
-    tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in TULO_TOOLS)
-    system_prompt = (
-        "You vet cold-outreach candidates for Tulo, a free food/recipe website building genuine, "
-        "editorial backlinks -- never a link farm or PBN itself, and only interested in linking from "
-        "real ones either.\n\n"
-        "Given the homepage (and, when available, Contact/About page) text of one candidate site "
-        "below, decide whether it's a real, credible, "
-        "actively-run food/cooking blog: a genuine author voice or byline, evidence of a real "
-        "audience (comments, social presence, an about-the-author bio), original writing that reads "
-        "as human-written (not spun or AI-mill boilerplate), a real About/Contact section. Reject "
-        "generic content aggregators, thin affiliate-only sites, obviously auto-generated text, or "
-        "anything that isn't actually about food/cooking/recipes.\n\n"
-        "Tulo has three fixed, always-real tools:\n"
-        f"{tools_block}\n\n"
-        "Tulo also has thousands of individual content pages -- recipes, ingredient guides, cooking "
-        "how-tos, definitions, comparisons, substitute guides. Use the search_tulo_content tool to "
-        "check for one genuinely relevant to this specific site's focus before recommending it; never "
-        "guess or invent a slug/URL for one of these, only the search tool's real results are safe to "
-        "use. If nothing specific fits, use one of the three fixed tools instead -- never force an "
-        "irrelevant content-page match just to avoid a tool page.\n\n"
-        "Contact email: the text you're given (homepage plus any Contact/About/privacy/media-kit pages "
-        "that were reachable) often doesn't contain a real email, even for a genuinely credible site -- "
-        "it may be published somewhere else on the same site instead (privacy policy, media kit, a "
-        "'write for us'/pitch page, footer, etc.). If you don't see one in the given text, use the "
-        "web_search tool (up to 3 searches) ONLY to look for that same domain's own published contact "
-        "email -- e.g. 'site:<domain> contact email', '<domain> media kit', '<domain> write for us'. "
-        "This is not for judging credibility, only for finding an email for a site you've already "
-        "decided about from the given text. If you find a real, currently-published address, report it "
-        "as contact_email AND set contact_email_source_url to the exact page URL where you found it -- "
-        "these two fields are required together, never set one without the other. If you can't find a "
-        "genuine address either in the given text or via web_search, set both to null; this never "
-        "affects the credible verdict.\n\n"
-        "Once decided, respond with ONLY a JSON object (no prose, no markdown fences, no further tool "
-        "calls) with exactly these keys: credible (boolean), reason (one sentence, for a human "
-        "reviewer, why or why not), contact_email (a real email address per the rules above, else "
-        "null), contact_email_source_url (the exact URL it came from if contact_email is set, else "
-        "null), subject, body (a short, specific, non-generic 3-5 sentence pitch mentioning something "
-        "concrete from this specific site plus exactly one real URL - from the fixed tools list or a "
-        "search_tulo_content result, never invented; use a single hyphen with spaces around it for a "
-        "dash, e.g. 'word - word', never a double hyphen or em dash). If credible is false, "
-        "subject/body/contact_email/contact_email_source_url may be null."
-    )
-
-    allowed_urls = {t["url"] for t in TULO_TOOLS}
-    messages: list[dict] = [{"role": "user", "content": f"Candidate domain: {domain}\n\nHomepage text:\n{homepage_text}"}]
+def _run_tool_loop(client, messages: list[dict], base: str, allowed_urls: set[str], totals: "_UsageTotals", max_tokens: int) -> object | None:
+    """Drives one logical turn of the conversation, handling as many
+    literal tool-use round trips as the model needs (up to MAX_TOOL_TURNS)
+    -- shared by both _vet_candidate and _draft_pitch so the two phases
+    can't drift out of sync with each other's tool handling. Mutates
+    `messages` and `totals` in place. Returns the final response (whose
+    stop_reason != "tool_use"), or None if MAX_TOOL_TURNS is exceeded."""
     response = None
     for _ in range(MAX_TOOL_TURNS):
         response = client.messages.create(
             model=MODEL,
-            max_tokens=2048,
-            system=system_prompt,
+            max_tokens=max_tokens,
+            system=SYSTEM_PROMPT,
             tools=[SEARCH_TULO_CONTENT_TOOL, WEB_SEARCH_TOOL],
             messages=messages,
         )
+        totals.add(response.usage)
         if response.stop_reason != "tool_use":
-            break
+            return response
         messages.append({"role": "assistant", "content": response.content})
         tool_results = []
         for block in response.content:
@@ -517,24 +595,50 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
             allowed_urls.update(r["url"] for r in results)
             tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
         messages.append({"role": "user", "content": tool_results})
-    else:
+    return None
+
+
+def _vet_candidate(client, base: str, domain: str, homepage_text: str, known_mailto: str | None, totals: "_UsageTotals"):
+    """Phase 1 only: credibility + finding/verifying a contact email --
+    never drafts a pitch (see SYSTEM_PROMPT_TEXT's two-step protocol and
+    the module comment above it for why). Returns (verdict, messages,
+    allowed_urls) on a credible verdict -- messages/allowed_urls carry the
+    live conversation forward into _draft_pitch(), called only once the
+    caller has confirmed a real contact route exists -- or (None, ..., ...)
+    otherwise; the caller always discards on a None verdict and never
+    calls _draft_pitch(). known_mailto, when set, is a real address this
+    script already extracted from the domain's own fetched HTML (see
+    outreach_fetch.extract_mailto_emails) -- passing it in lets the model
+    skip its own web_search hunt for an email we already have."""
+    allowed_urls = {t["url"] for t in TULO_TOOLS}
+    known_email_note = (
+        f"Already-verified contact email for this domain (found directly in its own page markup): "
+        f"{known_mailto} -- use this as contact_email directly; you do not need to search for "
+        "another.\n\n"
+        if known_mailto else ""
+    )
+    messages: list[dict] = [
+        {"role": "user", "content": f"Candidate domain: {domain}\n\n{known_email_note}Homepage text:\n{homepage_text}"}
+    ]
+    response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=1024)
+    if response is None:
         print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns, skipping")
-        return None
+        return None, messages, allowed_urls
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
     item = _extract_json_object(raw)
     if item is None:
         print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
-        return None
+        return None, messages, allowed_urls
 
     if not item.get("credible"):
         print(f"  {domain}: rejected -- {item.get('reason', 'no reason given')}")
-        return None
+        return None, messages, allowed_urls
 
-    body = item.get("body") or ""
-    if not any(url in body for url in allowed_urls):
-        print(f"  {domain}: dropped -- credible but no real Tulo URL in drafted body")
-        return None
+    # Only a credible verdict continues into a second turn -- append the
+    # model's own reply so _draft_pitch's follow-up question lands in the
+    # same conversation it was decided in.
+    messages.append({"role": "assistant", "content": response.content})
 
     contact_email = (item.get("contact_email") or "").strip() or None
     source_url = (item.get("contact_email_source_url") or "").strip() or None
@@ -542,14 +646,15 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
         # Same invariant as _draft_haro_replies' reporter_email check: never
         # trust a claimed email just because the model said so -- drop the
         # claimed email (not the whole prospect) unless we can verify it
-        # ourselves against real fetched text. First check the text we
-        # already handed the model; if the email instead came from the
-        # model's own web_search (whose result content isn't plaintext we
-        # can read on our side), re-fetch its cited source_url directly and
-        # check the email appears there verbatim -- restricted to the same
-        # domain being vetted, so the model can't point us at an unrelated
-        # third-party page and have us "confirm" text there.
-        verified = contact_email in homepage_text
+        # ourselves against real fetched text. A known_mailto echoed back
+        # verbatim is trivially verified (it came from our own fetch of
+        # this exact domain in the first place); otherwise check the text
+        # we already handed the model, and if the email instead came from
+        # the model's own web_search, re-fetch its cited source_url
+        # directly and check the email appears there verbatim -- restricted
+        # to the same domain being vetted, so the model can't point us at
+        # an unrelated third-party page and have us "confirm" text there.
+        verified = contact_email in homepage_text or (known_mailto is not None and contact_email == known_mailto)
         if not verified and source_url:
             source_domain = _root_domain(source_url)
             if source_domain == domain or source_domain.endswith("." + domain):
@@ -560,12 +665,45 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str) -> dict |
             print(f"  {domain}: claimed contact_email not verified against fetched page text, dropping email only")
             contact_email = None
 
-    return {
-        "target_domain": domain,
-        "contact_email": contact_email,
-        "subject": item.get("subject") or "",
-        "body_preview": body,
-    }
+    return {"contact_email": contact_email}, messages, allowed_urls
+
+
+def _draft_pitch(client, base: str, domain: str, messages: list[dict], allowed_urls: set[str], via_form: bool, totals: "_UsageTotals") -> dict | None:
+    """Phase 2 -- only ever called by main() once a real contact route
+    (a verified email, or a free non-LLM contact-form check) is confirmed
+    to exist for an already-credible candidate. Continues the exact
+    conversation _vet_candidate started, so the model can reuse whatever
+    search_tulo_content match it already found instead of searching again."""
+    reason = "a contact form (no email address was found or verified)" if via_form else "the verified contact email above"
+    messages.append({
+        "role": "user",
+        "content": (
+            f"Confirmed: this candidate can actually be reached, via {reason}. Draft the pitch now. "
+            "Respond with ONLY a JSON object (no prose, no markdown fences, no further tool calls) with "
+            "exactly these keys: subject, body (a short, specific, non-generic 3-5 sentence pitch "
+            "mentioning something concrete from this specific site plus exactly one real URL - from the "
+            "fixed tools list or a search_tulo_content result you already found, never invented; use a "
+            "single hyphen with spaces around it for a dash, e.g. 'word - word', never a double hyphen "
+            "or em dash)."
+        ),
+    })
+    response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=2048)
+    if response is None:
+        print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns while drafting, skipping")
+        return None
+
+    raw = "".join(block.text for block in response.content if block.type == "text").strip()
+    item = _extract_json_object(raw)
+    if item is None:
+        print(f"  {domain}: draft response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
+        return None
+
+    body = item.get("body") or ""
+    if not any(url in body for url in allowed_urls):
+        print(f"  {domain}: dropped -- credible but no real Tulo URL in drafted body")
+        return None
+
+    return {"subject": item.get("subject") or "", "body_preview": body}
 
 
 def main() -> None:
@@ -621,6 +759,7 @@ def main() -> None:
 
     print(f"\n{len(candidates)} total new candidate domain(s) to evaluate (cap {MAX_CANDIDATES_PER_RUN} per run).")
 
+    usage_totals = _UsageTotals()
     queued: list[dict] = []
     evaluated = 0
     skipped_no_email = 0
@@ -645,46 +784,73 @@ def main() -> None:
                 page_mailtos.append(email)
         if contact_text:
             text = f"{text}\n\n--- Contact/About/privacy/media-kit pages ---\n{contact_text}"
-        result = _vet_and_draft(client, base, domain, text)
-        if result is None:
+
+        known_mailto = page_mailtos[0] if page_mailtos else None
+        if known_mailto and known_mailto in seen_emails:
+            # Already know -- for free, before ever calling the model --
+            # that this candidate's real contact is someone already in the
+            # queue. Always going to be discarded, so don't pay to vet or
+            # draft it at all.
+            skipped_duplicate_email += 1
+            print(f"  {domain}: mailto {known_mailto!r} already in queue, skipping before calling the model")
             continue
-        if not result["contact_email"] and page_mailtos:
+
+        verdict, convo, allowed_urls = _vet_candidate(client, base, domain, text, known_mailto, usage_totals)
+        if verdict is None:
+            continue
+
+        contact_email = verdict["contact_email"]
+        if not contact_email and page_mailtos:
             # A real mailto: address was sitting in this domain's own page
             # markup the whole time, invisible to the model (which only
             # ever sees stripped text) -- already verified by construction
             # (it came straight from a real fetch of this exact domain),
             # so it needs no separate check the way a model-claimed address
-            # does. See outreach_fetch.extract_mailto_emails.
-            result["contact_email"] = page_mailtos[0]
-            print(f"  {domain}: recovered {page_mailtos[0]!r} from a mailto: link the model's page text couldn't show it")
-        if not result["contact_email"]:
-            # Credible, but no real contact email could be found or verified
-            # (even after the web_search fallback inside _vet_and_draft, and
-            # the mailto-extraction fallback just above) -- fall back to a
-            # bare contact-form URL (see _contact_form_url) so a human can
-            # paste the drafted pitch in by hand rather than dropping an
-            # otherwise-credible candidate outright. Keep evaluating further
-            # candidates toward --count instead of stopping here either way.
-            result["contact_form_url"] = _contact_form_url(domain)
-            if not result["contact_form_url"]:
-                skipped_no_email += 1
-                print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
-                continue
-            queued_manual_form += 1
-            print(f"  {domain}: credible but no email -- queuing for manual outreach via {result['contact_form_url']}")
-        else:
-            email_key = result["contact_email"].strip().lower()
+            # does. See outreach_fetch.extract_mailto_emails. (known_mailto
+            # was already handed to the model above, so this branch only
+            # fires when the model's own reply didn't just echo it back --
+            # e.g. a JSON hiccup -- not on the normal path.)
+            contact_email = page_mailtos[0]
+            print(f"  {domain}: recovered {contact_email!r} from a mailto: link the model's page text couldn't show it")
+
+        if contact_email:
+            email_key = contact_email.strip().lower()
             if email_key in seen_emails:
                 # A different, never-before-seen domain that happens to share a
                 # contact with someone already in the queue (a multi-blog
                 # network, or the same person's other site) -- skip it so this
                 # person is never emailed twice across different days just
-                # because the domain looked new.
+                # because the domain looked new. Caught before drafting: the
+                # candidate was always going to be discarded.
                 skipped_duplicate_email += 1
                 print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
                 continue
+            draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=False, totals=usage_totals)
+            if draft is None:
+                continue
             seen_emails.add(email_key)
-            result["contact_form_url"] = None
+            result = {**draft, "target_domain": domain, "contact_email": contact_email, "contact_form_url": None}
+        else:
+            # Credible, but no real contact email could be found or verified
+            # (even after the web_search fallback, and the mailto-extraction
+            # fallback above) -- fall back to a bare contact-form URL (see
+            # _contact_form_url) so a human can paste the drafted pitch in by
+            # hand rather than dropping an otherwise-credible candidate
+            # outright. Checked (and the pitch only drafted) BEFORE spending
+            # a second model call -- previously the draft always happened
+            # first and got thrown away here when neither route existed.
+            contact_form_url = _contact_form_url(domain)
+            if not contact_form_url:
+                skipped_no_email += 1
+                print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
+                continue
+            draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=True, totals=usage_totals)
+            if draft is None:
+                continue
+            queued_manual_form += 1
+            print(f"  {domain}: credible but no email -- queuing for manual outreach via {contact_form_url}")
+            result = {**draft, "target_domain": domain, "contact_email": None, "contact_form_url": contact_form_url}
+
         result["source_query"] = "daily_outreach_sourcing"
         queued.append(result)
         contact_display = result["contact_email"] or f"form only: {result['contact_form_url']}"
@@ -695,6 +861,7 @@ def main() -> None:
         f"out of {evaluated} evaluated ({skipped_no_email} credible-but-unreachable, "
         f"{skipped_duplicate_email} duplicate-contact skipped)."
     )
+    print(f"API usage: {usage_totals.summary()}")
 
     if args.dry_run:
         print("\n--dry-run: not creating any prospects. Would have queued:")

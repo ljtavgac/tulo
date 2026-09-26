@@ -119,6 +119,91 @@ SEARCH_TULO_CONTENT_TOOL = {
 WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 3}
 DISCOVERY_WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 1}
 
+# Static (candidate-independent) system prompt + two-step vet/draft
+# protocol + usage tracking -- see daily_outreach_sourcing.py's identical
+# comment (2026-09-26) for the full rationale. page_url/dead_url/
+# anchor_text are all per-candidate, so (unlike the old version) they live
+# only in the per-call user message now, never in this static prompt --
+# otherwise the system block would differ on every call and never hit the
+# prompt cache.
+_TOOLS_BLOCK = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in TULO_TOOLS)
+SYSTEM_PROMPT_TEXT = (
+    "You vet broken-link outreach candidates for Tulo, a free food/recipe website. We found a dead "
+    "outbound link on this site's own page (the page, the dead link, and its anchor text are given "
+    "in the user message below), which returns a dead/404 response. Judge the site's overall "
+    "credibility from the homepage/contact text below first -- a genuine author voice, evidence of "
+    "a real audience, original writing, a real About/Contact section -- reject generic aggregators "
+    "or thin affiliate-only sites even if they do have a dead link.\n\n"
+    "Tulo has three fixed, always-real tools:\n"
+    f"{_TOOLS_BLOCK}\n\n"
+    "Tulo also has thousands of content pages -- recipes, ingredient guides, cooking how-tos. Use "
+    "search_tulo_content to find ONE real Tulo page that's a genuinely sensible replacement for the "
+    "dead link, judging by its anchor text and the dead URL's own path/topic (both given in the user "
+    "message) -- never guess or invent a slug/URL, only the search tool's real results or the three "
+    "fixed tools are safe to use. The pitch must name the specific page it's on, the dead link, and "
+    "propose the one Tulo page as a replacement -- this is a 'here's a specific problem on your "
+    "site, here's a specific fix' ask, not a generic cold pitch.\n\n"
+    "Contact email: the text you're given often doesn't contain a real email. A verified address "
+    "found directly in that domain's own page markup is sometimes already given to you in the user "
+    "message below -- when it is, use it as contact_email directly and skip searching for another. "
+    "Otherwise, if you don't see one, use the web_search tool (up to 3 searches) ONLY to look for "
+    "that domain's own published contact email. If found, report contact_email AND "
+    "contact_email_source_url together. If you can't find one either way, set both to null; this "
+    "never affects the credible verdict.\n\n"
+    "This happens in two steps, so a pitch is never drafted for a candidate that turns out to have "
+    "no way to actually reach them:\n\n"
+    "Step 1 (this turn): respond with ONLY a JSON object (no prose, no markdown fences, no further "
+    "tool calls) with exactly these keys: credible (boolean), reason (one sentence), contact_email "
+    "(else null), contact_email_source_url (else null). Do NOT draft a pitch in this step, even when "
+    "credible is true -- a human reviewer decides afterward whether a real way to reach this contact "
+    "(a verified email, or a contact form) actually exists, and only then asks you to draft it in a "
+    "follow-up turn.\n\n"
+    "Step 2 (only if a later turn asks you to): respond with ONLY a JSON object with exactly these "
+    "keys: subject, body (a short, specific 3-5 sentence pitch naming the page and the dead link, "
+    "proposing exactly one real URL - from the fixed tools list or a search_tulo_content result, "
+    "never invented; use a single hyphen with spaces around it for a dash, never an em dash)."
+)
+SYSTEM_PROMPT = [{"type": "text", "text": SYSTEM_PROMPT_TEXT, "cache_control": {"type": "ephemeral"}}]
+
+
+class _UsageTotals:
+    """See daily_outreach_sourcing.py's identical class."""
+
+    def __init__(self) -> None:
+        self.api_calls = 0
+        self.input_tokens = 0
+        self.output_tokens = 0
+        self.cache_read_input_tokens = 0
+        self.cache_creation_input_tokens = 0
+        self.web_search_requests = 0
+
+    def add(self, usage) -> None:
+        self.api_calls += 1
+        self.input_tokens += getattr(usage, "input_tokens", 0) or 0
+        self.output_tokens += getattr(usage, "output_tokens", 0) or 0
+        self.cache_read_input_tokens += getattr(usage, "cache_read_input_tokens", 0) or 0
+        self.cache_creation_input_tokens += getattr(usage, "cache_creation_input_tokens", 0) or 0
+        server_tool_use = getattr(usage, "server_tool_use", None)
+        if server_tool_use is not None:
+            self.web_search_requests += getattr(server_tool_use, "web_search_requests", 0) or 0
+
+    def estimated_cost_usd(self) -> float:
+        return (
+            self.input_tokens * 2.00 / 1_000_000
+            + self.output_tokens * 10.00 / 1_000_000
+            + self.cache_read_input_tokens * 0.20 / 1_000_000
+            + self.cache_creation_input_tokens * 2.50 / 1_000_000
+            + self.web_search_requests * 10.00 / 1_000
+        )
+
+    def summary(self) -> str:
+        return (
+            f"${self.estimated_cost_usd():.4f} estimated ({self.api_calls} API call(s), "
+            f"{self.input_tokens} input tok, {self.output_tokens} output tok, "
+            f"{self.cache_read_input_tokens} cache-read tok, {self.cache_creation_input_tokens} cache-write tok, "
+            f"{self.web_search_requests} web_search use(s))"
+        )
+
 
 def _root_domain(url: str) -> str:
     netloc = urlparse(url).netloc.lower()
@@ -364,60 +449,20 @@ def _http_search_tulo_content(base: str, query: str, limit: int = 6) -> list[dic
     return results
 
 
-def _vet_and_draft(client, base: str, domain: str, homepage_text: str, page_url: str, dead_url: str, anchor_text: str) -> dict | None:
-    from anthropic import Anthropic  # noqa: F401
-
-    tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in TULO_TOOLS)
-    system_prompt = (
-        "You vet broken-link outreach candidates for Tulo, a free food/recipe website. We found a "
-        f"dead outbound link on this site's own page {page_url}: it links to {dead_url} (anchor text: "
-        f"'{anchor_text}') which returns a dead/404 response. Judge the site's overall credibility "
-        "from the homepage/contact text below first -- a genuine author voice, evidence of a real "
-        "audience, original writing, a real About/Contact section -- reject generic aggregators or "
-        "thin affiliate-only sites even if they do have a dead link.\n\n"
-        "Tulo has three fixed, always-real tools:\n"
-        f"{tools_block}\n\n"
-        "Tulo also has thousands of content pages -- recipes, ingredient guides, cooking how-tos. "
-        "Use search_tulo_content to find ONE real Tulo page that's a genuinely sensible replacement "
-        f"for the dead link, judging by its anchor text ('{anchor_text}') and the dead URL's own "
-        "path/topic -- never guess or invent a slug/URL, only the search tool's real results or the "
-        "three fixed tools are safe to use. The pitch must name the specific page it's on, the dead "
-        "link, and propose the one Tulo page as a replacement -- this is a 'here's a specific problem "
-        "on your site, here's a specific fix' ask, not a generic cold pitch.\n\n"
-        "Contact email: the text you're given often doesn't contain a real email. If you don't see "
-        "one, use the web_search tool (up to 3 searches) ONLY to look for that domain's own published "
-        "contact email. If found, report contact_email AND contact_email_source_url together. If you "
-        "can't find one either way, set both to null; this never affects the credible verdict.\n\n"
-        "Once decided, respond with ONLY a JSON object (no prose, no markdown fences, no further tool "
-        "calls) with exactly these keys: credible (boolean), reason (one sentence), contact_email "
-        "(else null), contact_email_source_url (else null), subject, body (a short, specific 3-5 "
-        "sentence pitch naming the page and the dead link, proposing exactly one real URL - from the "
-        "fixed tools list or a search_tulo_content result, never invented; use a single hyphen with "
-        "spaces around it for a dash, never an em dash). If credible is false, "
-        "subject/body/contact_email/contact_email_source_url may be null."
-    )
-
-    allowed_urls = {t["url"] for t in TULO_TOOLS}
-    messages: list[dict] = [
-        {
-            "role": "user",
-            "content": (
-                f"Candidate domain: {domain}\nPage with dead link: {page_url}\nDead link: {dead_url} "
-                f"(anchor text: '{anchor_text}')\n\nHomepage text:\n{homepage_text}"
-            ),
-        }
-    ]
+def _run_tool_loop(client, messages: list[dict], base: str, allowed_urls: set[str], totals: "_UsageTotals", max_tokens: int) -> object | None:
+    """See daily_outreach_sourcing.py's identical function."""
     response = None
     for _ in range(MAX_TOOL_TURNS):
         response = client.messages.create(
             model=MODEL,
-            max_tokens=2048,
-            system=system_prompt,
+            max_tokens=max_tokens,
+            system=SYSTEM_PROMPT,
             tools=[SEARCH_TULO_CONTENT_TOOL, WEB_SEARCH_TOOL],
             messages=messages,
         )
+        totals.add(response.usage)
         if response.stop_reason != "tool_use":
-            break
+            return response
         messages.append({"role": "assistant", "content": response.content})
         tool_results = []
         for block in response.content:
@@ -427,29 +472,49 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str, page_url:
             allowed_urls.update(r["url"] for r in results)
             tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
         messages.append({"role": "user", "content": tool_results})
-    else:
+    return None
+
+
+def _vet_candidate(client, base: str, domain: str, homepage_text: str, page_url: str, dead_url: str, anchor_text: str, known_mailto: str | None, totals: "_UsageTotals"):
+    """Phase 1 only -- credibility + email, never drafts. See
+    daily_outreach_sourcing.py's identical function."""
+    allowed_urls = {t["url"] for t in TULO_TOOLS}
+    known_email_note = (
+        f"Already-verified contact email for this domain (found directly in its own page markup): "
+        f"{known_mailto} -- use this as contact_email directly; you do not need to search for "
+        "another.\n\n"
+        if known_mailto else ""
+    )
+    messages: list[dict] = [
+        {
+            "role": "user",
+            "content": (
+                f"Candidate domain: {domain}\nPage with dead link: {page_url}\nDead link: {dead_url} "
+                f"(anchor text: '{anchor_text}')\n\n{known_email_note}Homepage text:\n{homepage_text}"
+            ),
+        }
+    ]
+    response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=1024)
+    if response is None:
         print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns, skipping")
-        return None
+        return None, messages, allowed_urls
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
     item = _extract_json_object(raw)
     if item is None:
         print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
-        return None
+        return None, messages, allowed_urls
 
     if not item.get("credible"):
         print(f"  {domain}: rejected -- {item.get('reason', 'no reason given')}")
-        return None
+        return None, messages, allowed_urls
 
-    body = item.get("body") or ""
-    if not any(url in body for url in allowed_urls):
-        print(f"  {domain}: dropped -- credible but no real Tulo URL in drafted body")
-        return None
+    messages.append({"role": "assistant", "content": response.content})
 
     contact_email = (item.get("contact_email") or "").strip() or None
     source_url = (item.get("contact_email_source_url") or "").strip() or None
     if contact_email:
-        verified = contact_email in homepage_text
+        verified = contact_email in homepage_text or (known_mailto is not None and contact_email == known_mailto)
         if not verified and source_url:
             source_domain = _root_domain(source_url)
             if source_domain == domain or source_domain.endswith("." + domain):
@@ -460,12 +525,41 @@ def _vet_and_draft(client, base: str, domain: str, homepage_text: str, page_url:
             print(f"  {domain}: claimed contact_email not verified against fetched page text, dropping email only")
             contact_email = None
 
-    return {
-        "target_domain": domain,
-        "contact_email": contact_email,
-        "subject": item.get("subject") or "",
-        "body_preview": body,
-    }
+    return {"contact_email": contact_email}, messages, allowed_urls
+
+
+def _draft_pitch(client, base: str, domain: str, messages: list[dict], allowed_urls: set[str], via_form: bool, totals: "_UsageTotals") -> dict | None:
+    """Phase 2 -- only called once main() has confirmed a real contact
+    route exists. See daily_outreach_sourcing.py's identical function."""
+    reason = "a contact form (no email address was found or verified)" if via_form else "the verified contact email above"
+    messages.append({
+        "role": "user",
+        "content": (
+            f"Confirmed: this candidate can actually be reached, via {reason}. Draft the pitch now. "
+            "Respond with ONLY a JSON object (no prose, no markdown fences, no further tool calls) with "
+            "exactly these keys: subject, body (a short, specific 3-5 sentence pitch naming the page "
+            "and the dead link, proposing exactly one real URL - from the fixed tools list or a "
+            "search_tulo_content result you already found, never invented; use a single hyphen with "
+            "spaces around it for a dash, never an em dash)."
+        ),
+    })
+    response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=2048)
+    if response is None:
+        print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns while drafting, skipping")
+        return None
+
+    raw = "".join(block.text for block in response.content if block.type == "text").strip()
+    item = _extract_json_object(raw)
+    if item is None:
+        print(f"  {domain}: draft response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
+        return None
+
+    body = item.get("body") or ""
+    if not any(url in body for url in allowed_urls):
+        print(f"  {domain}: dropped -- credible but no real Tulo URL in drafted body")
+        return None
+
+    return {"subject": item.get("subject") or "", "body_preview": body}
 
 
 def main() -> None:
@@ -524,6 +618,7 @@ def main() -> None:
 
     print(f"\n{len(candidates)} candidate domain(s) with a real dead link to evaluate.")
 
+    usage_totals = _UsageTotals()
     queued: list[dict] = []
     evaluated = 0
     skipped_no_email = 0
@@ -548,31 +643,49 @@ def main() -> None:
                 page_mailtos.append(email)
         if contact_text:
             text = f"{text}\n\n--- Contact/About/privacy/media-kit pages ---\n{contact_text}"
-        result = _vet_and_draft(client, base, domain, text, page_url, dead_url, anchor_text)
-        if result is None:
+
+        known_mailto = page_mailtos[0] if page_mailtos else None
+        if known_mailto and known_mailto in seen_emails:
+            skipped_duplicate_email += 1
+            print(f"  {domain}: mailto {known_mailto!r} already in queue, skipping before calling the model")
             continue
-        if not result["contact_email"] and page_mailtos:
+
+        verdict, convo, allowed_urls = _vet_candidate(client, base, domain, text, page_url, dead_url, anchor_text, known_mailto, usage_totals)
+        if verdict is None:
+            continue
+
+        contact_email = verdict["contact_email"]
+        if not contact_email and page_mailtos:
             # A real mailto: address was sitting in this domain's own page
             # markup, invisible to the model -- already verified by
             # construction, see outreach_fetch.extract_mailto_emails.
-            result["contact_email"] = page_mailtos[0]
-            print(f"  {domain}: recovered {page_mailtos[0]!r} from a mailto: link the model's page text couldn't show it")
-        if not result["contact_email"]:
-            result["contact_form_url"] = _contact_form_url(domain)
-            if not result["contact_form_url"]:
-                skipped_no_email += 1
-                print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
-                continue
-            queued_manual_form += 1
-            print(f"  {domain}: credible but no email -- queuing for manual outreach via {result['contact_form_url']}")
-        else:
-            email_key = result["contact_email"].strip().lower()
+            contact_email = page_mailtos[0]
+            print(f"  {domain}: recovered {contact_email!r} from a mailto: link the model's page text couldn't show it")
+
+        if contact_email:
+            email_key = contact_email.strip().lower()
             if email_key in seen_emails:
                 skipped_duplicate_email += 1
                 print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
                 continue
+            draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=False, totals=usage_totals)
+            if draft is None:
+                continue
             seen_emails.add(email_key)
-            result["contact_form_url"] = None
+            result = {**draft, "target_domain": domain, "contact_email": contact_email, "contact_form_url": None}
+        else:
+            contact_form_url = _contact_form_url(domain)
+            if not contact_form_url:
+                skipped_no_email += 1
+                print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
+                continue
+            draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=True, totals=usage_totals)
+            if draft is None:
+                continue
+            queued_manual_form += 1
+            print(f"  {domain}: credible but no email -- queuing for manual outreach via {contact_form_url}")
+            result = {**draft, "target_domain": domain, "contact_email": None, "contact_form_url": contact_form_url}
+
         result["source_query"] = f"broken_link:{page_url}"
         queued.append(result)
         contact_display = result["contact_email"] or f"form only: {result['contact_form_url']}"
@@ -583,6 +696,7 @@ def main() -> None:
         f"({queued_manual_form} needing manual form outreach, {skipped_no_email} credible-but-unreachable, "
         f"{skipped_duplicate_email} duplicate-contact skipped)."
     )
+    print(f"API usage: {usage_totals.summary()}")
 
     if args.dry_run:
         print("\n--dry-run: not creating any prospects. Would have queued:")

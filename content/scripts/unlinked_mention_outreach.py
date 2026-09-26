@@ -115,6 +115,95 @@ SEARCH_TULO_CONTENT_TOOL = {
 WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 3}
 DISCOVERY_WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 1}
 
+# Static (candidate-independent) system prompt + two-step vet/draft
+# protocol + usage tracking -- see daily_outreach_sourcing.py's identical
+# comment (2026-09-26) for the full rationale. mention_context is
+# per-candidate, so (unlike the old version, which baked it into the
+# system prompt) it now lives only in the per-call user message --
+# otherwise the system block would differ on every call and never hit the
+# prompt cache. Deliberately still no web_search tool here, matching the
+# original: this script's contact_email can only ever come from the given
+# page/contact text, never a search.
+_TOOLS_BLOCK = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in TULO_TOOLS)
+SYSTEM_PROMPT_TEXT = (
+    "You vet unlinked-brand-mention outreach candidates for Tulo, a free food/recipe website with "
+    "a Kitchen Conversion Calculator, a Cooking Time & Temperature Guide, and a Custom Recipe "
+    "Generator. We found the word 'Tulo' in text on a page, with no hyperlink to tulo.io anywhere "
+    "on that page. 'Tulo' is a short, generic-sounding word -- it may not refer to us at all (it "
+    "could be an unrelated person's name, a different product, a place, or a coincidence). Read "
+    "the mention context given in the user message below FIRST and decide: does this genuinely, "
+    "unambiguously refer to Tulo the food/recipe/kitchen-tools website (not some other Tulo)? Set "
+    "mention_is_about_tulo_io accordingly -- if there is real doubt, set it false rather than "
+    "guess. Only if that's true should you also judge the site's overall credibility (genuine "
+    "author voice, real audience, human-written content, a real About/Contact section) and draft "
+    "a pitch.\n\n"
+    "Tulo has three fixed, always-real tools:\n"
+    f"{_TOOLS_BLOCK}\n\n"
+    "If the mention is genuinely about us and the site is credible, use search_tulo_content to "
+    "find the one real Tulo page the mention is most likely referring to (or use one of the three "
+    "fixed tools if that fits better) -- never guess or invent a slug/URL. The pitch should simply "
+    "and politely ask them to add a hyperlink to that page, since they already mentioned Tulo by "
+    "name.\n\n"
+    "Contact email: a real email if visible in the given text, else null -- do NOT use web_search "
+    "for this one, the page text you're given is enough. A verified address found directly in that "
+    "domain's own page markup is sometimes already given to you in the user message below -- when "
+    "it is, use it as contact_email directly.\n\n"
+    "This happens in two steps, so a pitch is never drafted for a candidate that turns out to have "
+    "no way to actually reach them:\n\n"
+    "Step 1 (this turn): respond with ONLY a JSON object (no prose, no markdown fences, no further "
+    "tool calls) with exactly these keys: mention_is_about_tulo_io (boolean), credible (boolean, "
+    "only meaningful if mention_is_about_tulo_io is true), reason (one sentence), contact_email "
+    "(per the rules above, else null). Do NOT draft a pitch in this step, even when both booleans "
+    "are true -- a human reviewer decides afterward whether a real way to reach this contact (a "
+    "verified email, or a contact form) actually exists, and only then asks you to draft it in a "
+    "follow-up turn.\n\n"
+    "Step 2 (only if a later turn asks you to): respond with ONLY a JSON object with exactly these "
+    "keys: subject, body (a short, specific, polite 2-4 sentence ask to add a link, containing "
+    "exactly one real URL - from the fixed tools list or a search_tulo_content result you already "
+    "found, never invented; use a single hyphen with spaces around it for a dash, never an em "
+    "dash)."
+)
+SYSTEM_PROMPT = [{"type": "text", "text": SYSTEM_PROMPT_TEXT, "cache_control": {"type": "ephemeral"}}]
+
+
+class _UsageTotals:
+    """See daily_outreach_sourcing.py's identical class."""
+
+    def __init__(self) -> None:
+        self.api_calls = 0
+        self.input_tokens = 0
+        self.output_tokens = 0
+        self.cache_read_input_tokens = 0
+        self.cache_creation_input_tokens = 0
+        self.web_search_requests = 0
+
+    def add(self, usage) -> None:
+        self.api_calls += 1
+        self.input_tokens += getattr(usage, "input_tokens", 0) or 0
+        self.output_tokens += getattr(usage, "output_tokens", 0) or 0
+        self.cache_read_input_tokens += getattr(usage, "cache_read_input_tokens", 0) or 0
+        self.cache_creation_input_tokens += getattr(usage, "cache_creation_input_tokens", 0) or 0
+        server_tool_use = getattr(usage, "server_tool_use", None)
+        if server_tool_use is not None:
+            self.web_search_requests += getattr(server_tool_use, "web_search_requests", 0) or 0
+
+    def estimated_cost_usd(self) -> float:
+        return (
+            self.input_tokens * 2.00 / 1_000_000
+            + self.output_tokens * 10.00 / 1_000_000
+            + self.cache_read_input_tokens * 0.20 / 1_000_000
+            + self.cache_creation_input_tokens * 2.50 / 1_000_000
+            + self.web_search_requests * 10.00 / 1_000
+        )
+
+    def summary(self) -> str:
+        return (
+            f"${self.estimated_cost_usd():.4f} estimated ({self.api_calls} API call(s), "
+            f"{self.input_tokens} input tok, {self.output_tokens} output tok, "
+            f"{self.cache_read_input_tokens} cache-read tok, {self.cache_creation_input_tokens} cache-write tok, "
+            f"{self.web_search_requests} web_search use(s))"
+        )
+
 
 def _root_domain(url: str) -> str:
     netloc = urlparse(url).netloc.lower()
@@ -345,57 +434,22 @@ def _http_search_tulo_content(base: str, query: str, limit: int = 6) -> list[dic
     return results
 
 
-def _vet_and_draft(client, base: str, domain: str, page_url: str, mention_context: str, page_text: str) -> dict | None:
-    from anthropic import Anthropic  # noqa: F401
-
-    tools_block = "\n".join(f"- {t['name']}: {t['description']} ({t['url']})" for t in TULO_TOOLS)
-    system_prompt = (
-        "You vet unlinked-brand-mention outreach candidates for Tulo, a free food/recipe website with "
-        "a Kitchen Conversion Calculator, a Cooking Time & Temperature Guide, and a Custom Recipe "
-        "Generator. We found the word 'Tulo' in text on a page, with no hyperlink to tulo.io anywhere "
-        "on that page. 'Tulo' is a short, generic-sounding word -- it may not refer to us at all (it "
-        "could be an unrelated person's name, a different product, a place, or a coincidence). Read "
-        "the mention context below FIRST and decide: does this genuinely, unambiguously refer to "
-        "Tulo the food/recipe/kitchen-tools website (not some other Tulo)? Set "
-        "mention_is_about_tulo_io accordingly -- if there is real doubt, set it false rather than "
-        "guess. Only if that's true should you also judge the site's overall credibility (genuine "
-        "author voice, real audience, human-written content, a real About/Contact section) and draft "
-        "a pitch.\n\n"
-        "Mention context (the word 'Tulo' with surrounding text):\n"
-        f"{mention_context}\n\n"
-        "Tulo has three fixed, always-real tools:\n"
-        f"{tools_block}\n\n"
-        "If the mention is genuinely about us and the site is credible, use search_tulo_content to "
-        "find the one real Tulo page the mention is most likely referring to (or use one of the three "
-        "fixed tools if that fits better) -- never guess or invent a slug/URL. The pitch should simply "
-        "and politely ask them to add a hyperlink to that page, since they already mentioned Tulo by "
-        "name.\n\n"
-        "Once decided, respond with ONLY a JSON object (no prose, no markdown fences, no further tool "
-        "calls) with exactly these keys: mention_is_about_tulo_io (boolean), credible (boolean, only "
-        "meaningful if mention_is_about_tulo_io is true), reason (one sentence), contact_email (a real "
-        "email if visible in the given text, else null -- do NOT use web_search for this one, the "
-        "page text you were given is enough), subject, body (a short, specific, polite 2-4 sentence "
-        "ask to add a link, containing exactly one real URL - from the fixed tools list or a "
-        "search_tulo_content result, never invented; use a single hyphen with spaces around it for a "
-        "dash, never an em dash). If mention_is_about_tulo_io or credible is false, "
-        "subject/body/contact_email may be null."
-    )
-
-    allowed_urls = {t["url"] for t in TULO_TOOLS}
-    messages: list[dict] = [
-        {"role": "user", "content": f"Candidate domain: {domain}\nPage: {page_url}\n\nFull page text:\n{page_text}"}
-    ]
+def _run_tool_loop(client, messages: list[dict], base: str, allowed_urls: set[str], totals: "_UsageTotals", max_tokens: int) -> object | None:
+    """See daily_outreach_sourcing.py's identical function. No web_search
+    tool here, matching the original: this script's contact_email can
+    only come from the given page/contact text."""
     response = None
     for _ in range(MAX_TOOL_TURNS):
         response = client.messages.create(
             model=MODEL,
-            max_tokens=2048,
-            system=system_prompt,
+            max_tokens=max_tokens,
+            system=SYSTEM_PROMPT,
             tools=[SEARCH_TULO_CONTENT_TOOL],
             messages=messages,
         )
+        totals.add(response.usage)
         if response.stop_reason != "tool_use":
-            break
+            return response
         messages.append({"role": "assistant", "content": response.content})
         tool_results = []
         for block in response.content:
@@ -405,21 +459,80 @@ def _vet_and_draft(client, base: str, domain: str, page_url: str, mention_contex
             allowed_urls.update(r["url"] for r in results)
             tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": json.dumps(results)})
         messages.append({"role": "user", "content": tool_results})
-    else:
+    return None
+
+
+def _vet_candidate(client, base: str, domain: str, page_url: str, mention_context: str, page_text: str, known_mailto: str | None, totals: "_UsageTotals"):
+    """Phase 1 only -- mention-relevance + credibility + email, never
+    drafts. See daily_outreach_sourcing.py's identical function."""
+    allowed_urls = {t["url"] for t in TULO_TOOLS}
+    known_email_note = (
+        f"Already-verified contact email for this domain (found directly in its own page markup): "
+        f"{known_mailto} -- use this as contact_email directly.\n\n"
+        if known_mailto else ""
+    )
+    messages: list[dict] = [
+        {
+            "role": "user",
+            "content": (
+                f"Candidate domain: {domain}\nPage: {page_url}\n\n"
+                f"Mention context (the word 'Tulo' with surrounding text):\n{mention_context}\n\n"
+                f"{known_email_note}Full page text:\n{page_text}"
+            ),
+        }
+    ]
+    response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=1024)
+    if response is None:
         print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns, skipping")
-        return None
+        return None, messages, allowed_urls
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
     item = _extract_json_object(raw)
     if item is None:
         print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
-        return None
+        return None, messages, allowed_urls
 
     if not item.get("mention_is_about_tulo_io"):
         print(f"  {domain}: rejected -- mention doesn't genuinely refer to Tulo ({item.get('reason', 'no reason given')})")
-        return None
+        return None, messages, allowed_urls
     if not item.get("credible"):
         print(f"  {domain}: rejected -- {item.get('reason', 'no reason given')}")
+        return None, messages, allowed_urls
+
+    messages.append({"role": "assistant", "content": response.content})
+
+    contact_email = (item.get("contact_email") or "").strip() or None
+    if contact_email and contact_email not in page_text and contact_email != known_mailto:
+        print(f"  {domain}: claimed contact_email not found verbatim on page, dropping email only")
+        contact_email = None
+
+    return {"contact_email": contact_email}, messages, allowed_urls
+
+
+def _draft_pitch(client, base: str, domain: str, messages: list[dict], allowed_urls: set[str], via_form: bool, totals: "_UsageTotals") -> dict | None:
+    """Phase 2 -- only called once main() has confirmed a real contact
+    route exists. See daily_outreach_sourcing.py's identical function."""
+    reason = "a contact form (no email address was found or verified)" if via_form else "the verified contact email above"
+    messages.append({
+        "role": "user",
+        "content": (
+            f"Confirmed: this candidate can actually be reached, via {reason}. Draft the pitch now. "
+            "Respond with ONLY a JSON object (no prose, no markdown fences, no further tool calls) with "
+            "exactly these keys: subject, body (a short, specific, polite 2-4 sentence ask to add a "
+            "link, containing exactly one real URL - from the fixed tools list or a search_tulo_content "
+            "result you already found, never invented; use a single hyphen with spaces around it for a "
+            "dash, never an em dash)."
+        ),
+    })
+    response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=2048)
+    if response is None:
+        print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns while drafting, skipping")
+        return None
+
+    raw = "".join(block.text for block in response.content if block.type == "text").strip()
+    item = _extract_json_object(raw)
+    if item is None:
+        print(f"  {domain}: draft response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
         return None
 
     body = item.get("body") or ""
@@ -427,17 +540,7 @@ def _vet_and_draft(client, base: str, domain: str, page_url: str, mention_contex
         print(f"  {domain}: dropped -- credible but no real Tulo URL in drafted body")
         return None
 
-    contact_email = (item.get("contact_email") or "").strip() or None
-    if contact_email and contact_email not in page_text:
-        print(f"  {domain}: claimed contact_email not found verbatim on page, dropping email only")
-        contact_email = None
-
-    return {
-        "target_domain": domain,
-        "contact_email": contact_email,
-        "subject": item.get("subject") or "",
-        "body_preview": body,
-    }
+    return {"subject": item.get("subject") or "", "body_preview": body}
 
 
 def main() -> None:
@@ -491,6 +594,7 @@ def main() -> None:
 
     print(f"\n{len(candidates)} candidate domain(s) with an unlinked mention to evaluate.")
 
+    usage_totals = _UsageTotals()
     queued: list[dict] = []
     evaluated = 0
     skipped_not_us = 0
@@ -509,32 +613,50 @@ def main() -> None:
         contact_text, page_mailtos = _contact_page_text(domain)
         if contact_text:
             page_text = f"{page_text}\n\n--- Contact/About/privacy/media-kit pages ---\n{contact_text}"
-        result = _vet_and_draft(client, base, domain, page_url, mention_context, page_text)
-        if result is None:
+
+        known_mailto = page_mailtos[0] if page_mailtos else None
+        if known_mailto and known_mailto in seen_emails:
+            skipped_duplicate_email += 1
+            print(f"  {domain}: mailto {known_mailto!r} already in queue, skipping before calling the model")
+            continue
+
+        verdict, convo, allowed_urls = _vet_candidate(client, base, domain, page_url, mention_context, page_text, known_mailto, usage_totals)
+        if verdict is None:
             skipped_not_us += 1
             continue
-        if not result["contact_email"] and page_mailtos:
+
+        contact_email = verdict["contact_email"]
+        if not contact_email and page_mailtos:
             # A real mailto: address was sitting in this domain's own page
             # markup, invisible to the model -- already verified by
             # construction, see outreach_fetch.extract_mailto_emails.
-            result["contact_email"] = page_mailtos[0]
-            print(f"  {domain}: recovered {page_mailtos[0]!r} from a mailto: link the model's page text couldn't show it")
-        if not result["contact_email"]:
-            result["contact_form_url"] = _contact_form_url(domain)
-            if not result["contact_form_url"]:
-                skipped_no_email += 1
-                print(f"  {domain}: real mention but no contact email or contact form found, skipping")
-                continue
-            queued_manual_form += 1
-            print(f"  {domain}: real mention but no email -- queuing for manual outreach via {result['contact_form_url']}")
-        else:
-            email_key = result["contact_email"].strip().lower()
+            contact_email = page_mailtos[0]
+            print(f"  {domain}: recovered {contact_email!r} from a mailto: link the model's page text couldn't show it")
+
+        if contact_email:
+            email_key = contact_email.strip().lower()
             if email_key in seen_emails:
                 skipped_duplicate_email += 1
                 print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
                 continue
+            draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=False, totals=usage_totals)
+            if draft is None:
+                continue
             seen_emails.add(email_key)
-            result["contact_form_url"] = None
+            result = {**draft, "target_domain": domain, "contact_email": contact_email, "contact_form_url": None}
+        else:
+            contact_form_url = _contact_form_url(domain)
+            if not contact_form_url:
+                skipped_no_email += 1
+                print(f"  {domain}: real mention but no contact email or contact form found, skipping")
+                continue
+            draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=True, totals=usage_totals)
+            if draft is None:
+                continue
+            queued_manual_form += 1
+            print(f"  {domain}: real mention but no email -- queuing for manual outreach via {contact_form_url}")
+            result = {**draft, "target_domain": domain, "contact_email": None, "contact_form_url": contact_form_url}
+
         result["source_query"] = f"unlinked_mention:{page_url}"
         queued.append(result)
         contact_display = result["contact_email"] or f"form only: {result['contact_form_url']}"
@@ -545,6 +667,7 @@ def main() -> None:
         f"({queued_manual_form} needing manual form outreach, {skipped_no_email} no-email skipped, "
         f"{skipped_duplicate_email} duplicate-contact skipped)."
     )
+    print(f"API usage: {usage_totals.summary()}")
 
     if args.dry_run:
         print("\n--dry-run: not creating any prospects. Would have queued:")
