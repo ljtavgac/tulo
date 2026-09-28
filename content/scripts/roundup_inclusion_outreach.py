@@ -341,7 +341,7 @@ def _contact_form_url(domain: str) -> str | None:
     it were a real contact page."""
     for path in CONTACT_FORM_PATHS:
         url = f"https://{domain}{path}"
-        if _shared_fetch_working_page(url, timeout=10):
+        if _shared_fetch_working_page(url, timeout=20):
             return url
     return None
 
@@ -378,6 +378,36 @@ def _existing_domains_and_emails(base: str, auth: tuple[str, str]) -> tuple[set[
     domains = {_canonical_domain(row["target_domain"].lower()) for row in rows}
     emails = {row["contact_email"].strip().lower() for row in rows if (row.get("contact_email") or "").strip()}
     return domains, emails
+
+
+def _mark_skipped(base: str, auth: tuple[str, str], domain: str, reason: str) -> None:
+    """Records a candidate this run evaluated and discarded for good (not
+    credible, or credible with no verifiable contact route) as a
+    zero-cost "skipped" row (see the status docstring on
+    POST /admin/outreach-queue/create), so _existing_domains_and_emails
+    treats it as seen on every future run instead of re-fetching and
+    re-vetting the same domain daily for nothing -- the fix for "same
+    domains over and over". subject/body_preview are short fixed
+    placeholders, not model output. Best-effort: a failure here just
+    means this domain gets re-evaluated again tomorrow, so it's logged
+    and swallowed rather than raised."""
+    try:
+        r = requests.post(
+            f"{base}/admin/outreach-queue/create",
+            auth=auth,
+            json={
+                "pitch_type": "content_pitch",
+                "target_domain": domain,
+                "subject": "(auto-skipped, no pitch drafted)",
+                "body_preview": reason,
+                "source_query": "roundup_inclusion_outreach",
+                "status": "skipped",
+            },
+            timeout=30,
+        )
+        r.raise_for_status()
+    except requests.RequestException as exc:
+        print(f"  {domain}: failed to record as skipped ({exc}) -- may be re-evaluated again tomorrow")
 
 
 def _remaining_daily_quota(base: str, auth: tuple[str, str], cap: int = DAILY_QUEUE_CAP) -> int:
@@ -472,17 +502,17 @@ def _vet_candidate(client, base: str, domain: str, homepage_text: str, roundup_u
     response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=1024)
     if response is None:
         print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns, skipping")
-        return None, messages, allowed_urls
+        return None, messages, allowed_urls, "exceeded_turns"
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
     item = _extract_json_object(raw)
     if item is None:
         print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
-        return None, messages, allowed_urls
+        return None, messages, allowed_urls, "invalid_json"
 
     if not item.get("credible"):
         print(f"  {domain}: rejected -- {item.get('reason', 'no reason given')}")
-        return None, messages, allowed_urls
+        return None, messages, allowed_urls, "not_credible"
 
     messages.append({"role": "assistant", "content": response.content})
 
@@ -500,7 +530,7 @@ def _vet_candidate(client, base: str, domain: str, homepage_text: str, roundup_u
             print(f"  {domain}: claimed contact_email not verified against fetched page text, dropping email only")
             contact_email = None
 
-    return {"contact_email": contact_email}, messages, allowed_urls
+    return {"contact_email": contact_email}, messages, allowed_urls, None
 
 
 def _draft_pitch(client, base: str, domain: str, messages: list[dict], allowed_urls: set[str], via_form: bool, totals: "_UsageTotals") -> dict | None:
@@ -609,10 +639,13 @@ def main() -> None:
         if known_mailto and known_mailto in seen_emails:
             skipped_duplicate_email += 1
             print(f"  {domain}: mailto {known_mailto!r} already in queue, skipping before calling the model")
+            _mark_skipped(base, auth, domain, f"duplicate contact email {known_mailto} already in queue")
             continue
 
-        verdict, convo, allowed_urls = _vet_candidate(client, base, domain, text, roundup_url, known_mailto, usage_totals)
+        verdict, convo, allowed_urls, vet_skip_reason = _vet_candidate(client, base, domain, text, roundup_url, known_mailto, usage_totals)
         if verdict is None:
+            if vet_skip_reason == "not_credible":
+                _mark_skipped(base, auth, domain, "rejected during vetting: not a credible candidate")
             continue
 
         contact_email = verdict["contact_email"]
@@ -628,6 +661,7 @@ def main() -> None:
             if email_key in seen_emails:
                 skipped_duplicate_email += 1
                 print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
+                _mark_skipped(base, auth, domain, f"duplicate contact email {contact_email} already in queue")
                 continue
             draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=False, totals=usage_totals)
             if draft is None:
@@ -639,6 +673,7 @@ def main() -> None:
             if not contact_form_url:
                 skipped_no_email += 1
                 print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
+                _mark_skipped(base, auth, domain, "credible but no verifiable contact email or contact form found")
                 continue
             draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=True, totals=usage_totals)
             if draft is None:

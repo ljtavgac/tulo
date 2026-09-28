@@ -481,7 +481,7 @@ def _contact_form_url(domain: str) -> str | None:
     it were a real contact page."""
     for path in CONTACT_FORM_PATHS:
         url = f"https://{domain}{path}"
-        if _shared_fetch_working_page(url, timeout=10):
+        if _shared_fetch_working_page(url, timeout=20):
             return url
     return None
 
@@ -500,6 +500,41 @@ def _existing_domains_and_emails(base: str, auth: tuple[str, str]) -> tuple[set[
     domains = {_canonical_domain(row["target_domain"].lower()) for row in rows}
     emails = {row["contact_email"].strip().lower() for row in rows if (row.get("contact_email") or "").strip()}
     return domains, emails
+
+
+def _mark_skipped(base: str, auth: tuple[str, str], domain: str, reason: str) -> None:
+    """Records a candidate this run evaluated and discarded for good --
+    rejected as not credible, or credible with no verifiable contact
+    route -- as a zero-cost "skipped" row (see the status docstring on
+    POST /admin/outreach-queue/create) rather than just printing and
+    forgetting it. Without this, the exact same domain gets re-fetched
+    and re-vetted (a real API call) by tomorrow's run, since
+    _existing_domains_and_emails only ever saw queued/approved/rejected
+    prospects -- a discarded candidate never became one of those. This is
+    the fix for "same domains over and over": each run's fixed discovery
+    queries now surface genuinely new candidates once the ones they keep
+    re-finding are marked seen. subject/body_preview are short fixed
+    placeholders, not model output -- no drafting happens for a domain
+    that ends up here. Best-effort: a failure here just means this
+    domain gets re-evaluated again tomorrow, same as before this
+    existed, so it's logged and swallowed rather than raised."""
+    try:
+        r = requests.post(
+            f"{base}/admin/outreach-queue/create",
+            auth=auth,
+            json={
+                "pitch_type": "tool_pitch",
+                "target_domain": domain,
+                "subject": "(auto-skipped, no pitch drafted)",
+                "body_preview": reason,
+                "source_query": "daily_outreach_sourcing",
+                "status": "skipped",
+            },
+            timeout=30,
+        )
+        r.raise_for_status()
+    except requests.RequestException as exc:
+        print(f"  {domain}: failed to record as skipped ({exc}) -- may be re-evaluated again tomorrow")
 
 
 def _remaining_daily_quota(base: str, auth: tuple[str, str], cap: int = DAILY_QUEUE_CAP) -> int:
@@ -602,12 +637,18 @@ def _vet_candidate(client, base: str, domain: str, homepage_text: str, known_mai
     """Phase 1 only: credibility + finding/verifying a contact email --
     never drafts a pitch (see SYSTEM_PROMPT_TEXT's two-step protocol and
     the module comment above it for why). Returns (verdict, messages,
-    allowed_urls) on a credible verdict -- messages/allowed_urls carry the
-    live conversation forward into _draft_pitch(), called only once the
-    caller has confirmed a real contact route exists -- or (None, ..., ...)
-    otherwise; the caller always discards on a None verdict and never
-    calls _draft_pitch(). known_mailto, when set, is a real address this
-    script already extracted from the domain's own fetched HTML (see
+    allowed_urls, None) on a credible verdict -- messages/allowed_urls
+    carry the live conversation forward into _draft_pitch(), called only
+    once the caller has confirmed a real contact route exists -- or
+    (None, ..., ..., skip_reason) otherwise; the caller always discards
+    on a None verdict and never calls _draft_pitch(). skip_reason is
+    "not_credible" for a genuine rejection (the model judged this
+    candidate unfit -- re-vetting it tomorrow would almost certainly
+    reach the same verdict, so the caller marks it permanently skipped)
+    versus "exceeded_turns"/"invalid_json" for a transient tool-loop/
+    parsing failure (worth retrying on a later run, so the caller leaves
+    it unmarked). known_mailto, when set, is a real address this script
+    already extracted from the domain's own fetched HTML (see
     outreach_fetch.extract_mailto_emails) -- passing it in lets the model
     skip its own web_search hunt for an email we already have."""
     allowed_urls = {t["url"] for t in TULO_TOOLS}
@@ -623,17 +664,17 @@ def _vet_candidate(client, base: str, domain: str, homepage_text: str, known_mai
     response = _run_tool_loop(client, messages, base, allowed_urls, totals, max_tokens=1024)
     if response is None:
         print(f"  {domain}: exceeded {MAX_TOOL_TURNS} tool-use turns, skipping")
-        return None, messages, allowed_urls
+        return None, messages, allowed_urls, "exceeded_turns"
 
     raw = "".join(block.text for block in response.content if block.type == "text").strip()
     item = _extract_json_object(raw)
     if item is None:
         print(f"  {domain}: model response wasn't valid JSON, skipping (raw: {raw[:200]!r})")
-        return None, messages, allowed_urls
+        return None, messages, allowed_urls, "invalid_json"
 
     if not item.get("credible"):
         print(f"  {domain}: rejected -- {item.get('reason', 'no reason given')}")
-        return None, messages, allowed_urls
+        return None, messages, allowed_urls, "not_credible"
 
     # Only a credible verdict continues into a second turn -- append the
     # model's own reply so _draft_pitch's follow-up question lands in the
@@ -665,7 +706,7 @@ def _vet_candidate(client, base: str, domain: str, homepage_text: str, known_mai
             print(f"  {domain}: claimed contact_email not verified against fetched page text, dropping email only")
             contact_email = None
 
-    return {"contact_email": contact_email}, messages, allowed_urls
+    return {"contact_email": contact_email}, messages, allowed_urls, None
 
 
 def _draft_pitch(client, base: str, domain: str, messages: list[dict], allowed_urls: set[str], via_form: bool, totals: "_UsageTotals") -> dict | None:
@@ -793,10 +834,13 @@ def main() -> None:
             # draft it at all.
             skipped_duplicate_email += 1
             print(f"  {domain}: mailto {known_mailto!r} already in queue, skipping before calling the model")
+            _mark_skipped(base, auth, domain, f"duplicate contact email {known_mailto} already in queue")
             continue
 
-        verdict, convo, allowed_urls = _vet_candidate(client, base, domain, text, known_mailto, usage_totals)
+        verdict, convo, allowed_urls, vet_skip_reason = _vet_candidate(client, base, domain, text, known_mailto, usage_totals)
         if verdict is None:
+            if vet_skip_reason == "not_credible":
+                _mark_skipped(base, auth, domain, "rejected during vetting: not a credible candidate")
             continue
 
         contact_email = verdict["contact_email"]
@@ -824,6 +868,7 @@ def main() -> None:
                 # candidate was always going to be discarded.
                 skipped_duplicate_email += 1
                 print(f"  {domain}: credible with a real email, but that email is already in the queue, skipping")
+                _mark_skipped(base, auth, domain, f"duplicate contact email {contact_email} already in queue")
                 continue
             draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=False, totals=usage_totals)
             if draft is None:
@@ -843,6 +888,7 @@ def main() -> None:
             if not contact_form_url:
                 skipped_no_email += 1
                 print(f"  {domain}: credible but no verifiable contact email or contact form found, skipping")
+                _mark_skipped(base, auth, domain, "credible but no verifiable contact email or contact form found")
                 continue
             draft = _draft_pitch(client, base, domain, convo, allowed_urls, via_form=True, totals=usage_totals)
             if draft is None:

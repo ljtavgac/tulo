@@ -4523,7 +4523,23 @@ async def outreach_queue_create(
     Deliberately no dedup against existing rows: this is a one-off
     research batch, not a recurring automated job, so a rerun creating a
     duplicate is a human reject-and-move-on, not a real problem worth
-    the extra complexity of a same-domain/same-subject lookup here."""
+    the extra complexity of a same-domain/same-subject lookup here.
+
+    Optional status: "queued" (default) | "skipped". "skipped" is for a
+    sourcing script to record a candidate domain it evaluated and
+    discarded (rejected as not credible, or credible but no verifiable
+    contact route) without ever drafting a real pitch for it -- costs no
+    extra API tokens (subject/body_preview are short fixed placeholders,
+    not model output). The row exists purely so this domain shows up in
+    _existing_domains_and_emails' (see content/scripts/outreach_fetch.py
+    callers) status="all" query on every future run and stops being
+    re-discovered and re-evaluated for free by the same fixed discovery
+    queries every day -- see the "same domains over and over" problem
+    this fixes. Never shown in the portal's default "queued" tab (that
+    view filters to a specific status list that excludes "skipped"); a
+    human can still find one under show=all and click "undo" to put a
+    domain back in front of a sourcing script's dedup logic if it's
+    worth reconsidering."""
     payload = await request.json()
 
     pitch_type = payload.get("pitch_type")
@@ -4532,6 +4548,9 @@ async def outreach_queue_create(
             status_code=400,
             detail=f"pitch_type must be one of {', '.join(sorted(_PITCH_TYPE_LABELS))}",
         )
+    status = payload.get("status") or "queued"
+    if status not in ("queued", "skipped"):
+        raise HTTPException(status_code=400, detail="status must be one of queued, skipped")
     target_domain = (payload.get("target_domain") or "").strip()
     subject = (payload.get("subject") or "").strip()
     body_preview = (payload.get("body_preview") or "").strip()
@@ -4548,7 +4567,7 @@ async def outreach_queue_create(
         subject=subject,
         body_preview=body_preview,
         is_example=False,
-        status="queued",
+        status=status,
     )
     db.add(prospect)
     db.commit()
