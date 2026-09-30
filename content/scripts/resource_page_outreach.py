@@ -51,6 +51,15 @@ RESOURCE_PAGE_QUERY_TEMPLATES = [
     "food blogger recommended kitchen tools and resources page",
     "cooking teacher classroom resources and links page",
     "meal prep helpful resources and tools list blog",
+    # Added 2026-09-30: same re-exhaustion problem as the other sourcing
+    # scripts once skip-tracking stopped letting rejected domains recur
+    # for free (see the daily-link-building cost audit this was added
+    # from) -- more professional/educational angles the 7 templates above
+    # don't reach yet.
+    "homeschool cooking curriculum resources and tools page",
+    "personal trainer nutrition cooking tools resource page",
+    "recipe developer recommended kitchen conversion tools",
+    "cooking blog beginner resources and helpful links page",
 ]
 
 EXCLUDED_DOMAIN_SUFFIXES = {

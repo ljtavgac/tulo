@@ -50,6 +50,12 @@ MENTION_QUERY_TEMPLATES = [
     '"Tulo" ingredient substitution tool',
     '"trytulo" recipe',
     '"Tulo" recipe converter',
+    # Added 2026-09-30: two more phrasings, kept short -- this script's
+    # ceiling is genuinely how many unlinked mentions exist (see the note
+    # above), not query count, so it gets the smallest addition of the
+    # four sourcing scripts widened in this pass.
+    '"Tulo" kitchen tools blog',
+    '"trytulo.com"',
 ]
 
 EXCLUDED_DOMAIN_SUFFIXES = {

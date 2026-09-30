@@ -48,6 +48,18 @@ RESOURCE_QUERY_TEMPLATES = [
     "kitchen tips and recipe resources page for home cooks",
     "cooking substitutions and measurement conversion resources blog",
     "meal planning and recipe resource links roundup blog post",
+    # Added 2026-09-30: same re-exhaustion problem as the other sourcing
+    # scripts once skip-tracking stopped letting rejected domains recur
+    # for free (see the daily-link-building cost audit this was added
+    # from) -- these target audience/niche angles the 6 templates above
+    # don't reach yet. Unlike roundup_inclusion_outreach.py this script
+    # pitches the 3 fixed tools, not a recipe category, so diversity here
+    # comes from who's publishing the resource page, not which recipes
+    # it's about.
+    "recipe blogger helpful kitchen resources roundup",
+    "baking blog conversion and measurement resources page",
+    "air fryer recipes helpful resources and guides page",
+    "cookbook author recommended kitchen tools resources",
 ]
 
 # Only these are treated as a genuinely dead link -- see module docstring

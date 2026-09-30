@@ -59,6 +59,26 @@ ROUNDUP_QUERY_TEMPLATES = [
     "best breakfast recipes roundup blog post",
     "best baking recipes roundup blog post",
     "best slow cooker recipes roundup blog post",
+    # Added 2026-09-30: the original 9 templates were re-exhausting within
+    # a couple days once skip-tracking stopped letting the same rejected
+    # domains be re-evaluated for free (see the daily-link-building cost
+    # audit this was added from) -- these draw directly from Tulo's own
+    # published category_roundup pages (29 live as of this addition,
+    # confirmed via content/CONTENT_QUEUE.csv), so search_tulo_content has
+    # a real page to cite for each. Cuisine collections and niche-
+    # ingredient roundups (turnip, persimmon, swordfish, ...) are a
+    # genuinely different, less-crawled search space than the generic
+    # "best X dinner recipes" queries above -- real bloggers write "50
+    # best Mexican recipes" or "best turnip recipes" roundup posts, and
+    # niche-ingredient roundups face less SEO competition, not more.
+    "best mexican recipes roundup blog post",
+    "best italian recipes roundup blog post",
+    "best thai recipes roundup blog post",
+    "best indian recipes roundup blog post",
+    "best taco recipes roundup blog post",
+    "best pie recipes roundup blog post",
+    "best sandwich recipes roundup blog post",
+    "best dip recipes roundup blog post",
 ]
 
 EXCLUDED_DOMAIN_SUFFIXES = {
