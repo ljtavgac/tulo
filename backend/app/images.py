@@ -13,6 +13,7 @@ PEXELS_ACCESS_KEY as environment variables.
 """
 
 import os
+import time
 from dataclasses import dataclass
 
 import requests
@@ -152,11 +153,33 @@ def _is_reachable(url: str) -> bool:
     # universally supported -- stream=True plus closing right after
     # reading the status/headers avoids actually downloading the image
     # body, so this stays cheap.
-    try:
-        with requests.get(url, timeout=5, stream=True) as r:
-            return r.status_code == 200
-    except requests.RequestException:
-        return False
+    #
+    # Two attempts, not one: a single 5-second GET against a third-party
+    # CDN is exactly the kind of check that produces false negatives under
+    # a transient blip -- a slow response, a one-off timeout, a momentary
+    # rate-limit -- and the revalidation caller (fetch_images(revalidate=
+    # True), see main.py's _run_periodic_image_fetch) treats "unreachable"
+    # as license to silently replace an already-correct, possibly
+    # irreplaceable (see _needs_fetch's manual_override carve-out) photo
+    # with a brand new search result. Confirmed as the real mechanism
+    # behind a staging-only image regression (2026-10-02): two pages whose
+    # photos were fine on prod ended up with a completely different, still
+    # perfectly "valid" Pexels photo on staging, with no commit, no admin
+    # action, and no error anywhere -- consistent with exactly one flaky
+    # reachability check per page silently triggering a fresh, unrelated
+    # search. A real dead URL still fails both attempts and is still
+    # replaced; this only protects against a single bad request being
+    # mistaken for a dead photo.
+    for attempt in range(2):
+        try:
+            with requests.get(url, timeout=5, stream=True) as r:
+                if r.status_code == 200:
+                    return True
+        except requests.RequestException:
+            pass
+        if attempt == 0:
+            time.sleep(1)
+    return False
 
 
 def _search_unsplash(

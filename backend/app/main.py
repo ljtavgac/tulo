@@ -27,7 +27,7 @@ from sqlalchemy.orm import Session
 
 from .content_audit import run_full_audit, scan_ai_tells, scan_image_relevance_risk
 from .database import Base, SessionLocal, engine, get_db
-from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _category_fallback_query, _recipe_dish_must_match_terms, _search_query_for, fetch_images
+from .fetch_stock_images import SINGLE_IMAGE_TEMPLATES, _category_fallback_query, _recipe_dish_must_match_terms, _revalidation_canary_passes, _search_query_for, fetch_images
 from .images import (
     ALLOWED_IMAGE_HOSTS,
     PEXELS_ACCESS_KEY,
@@ -159,13 +159,26 @@ async def _run_periodic_image_fetch() -> None:
         db = SessionLocal()
         try:
             due_for_revalidate = time.monotonic() - last_revalidate >= IMAGE_REVALIDATE_INTERVAL_SECONDS
-            pages_updated, images_written = await asyncio.to_thread(
-                fetch_images, db, revalidate=due_for_revalidate
+            # A canary check, not just "is it time yet" -- see
+            # _revalidation_canary_passes()'s own docstring for the real
+            # staging-wide regression (2026-10-02) this guards against: a
+            # provider-wide outage/rate-limit window makes _is_reachable()
+            # misjudge many genuinely-fine photos as dead in the same pass,
+            # each replacement individually silent and plausible-looking.
+            # Skipping this pass entirely when the canary fails means
+            # last_revalidate is deliberately left unmoved, so the very
+            # next 5-minute tick retries the canary instead of waiting a
+            # full new 24-hour cycle for a transient window to clear.
+            revalidate_this_pass = due_for_revalidate and await asyncio.to_thread(
+                _revalidation_canary_passes, db
             )
-            if due_for_revalidate:
+            pages_updated, images_written = await asyncio.to_thread(
+                fetch_images, db, revalidate=revalidate_this_pass
+            )
+            if revalidate_this_pass:
                 last_revalidate = time.monotonic()
             if images_written:
-                label = "Background image fetch (revalidating)" if due_for_revalidate else "Background image fetch"
+                label = "Background image fetch (revalidating)" if revalidate_this_pass else "Background image fetch"
                 print(f"{label}: {pages_updated} page(s) updated, {images_written} image(s) written.")
                 _revalidate_frontend()
         except Exception as e:
