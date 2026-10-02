@@ -4525,21 +4525,33 @@ async def outreach_queue_create(
     duplicate is a human reject-and-move-on, not a real problem worth
     the extra complexity of a same-domain/same-subject lookup here.
 
-    Optional status: "queued" (default) | "skipped". "skipped" is for a
-    sourcing script to record a candidate domain it evaluated and
-    discarded (rejected as not credible, or credible but no verifiable
-    contact route) without ever drafting a real pitch for it -- costs no
-    extra API tokens (subject/body_preview are short fixed placeholders,
-    not model output). The row exists purely so this domain shows up in
-    _existing_domains_and_emails' (see content/scripts/outreach_fetch.py
-    callers) status="all" query on every future run and stops being
-    re-discovered and re-evaluated for free by the same fixed discovery
-    queries every day -- see the "same domains over and over" problem
-    this fixes. Never shown in the portal's default "queued" tab (that
-    view filters to a specific status list that excludes "skipped"); a
-    human can still find one under show=all and click "undo" to put a
-    domain back in front of a sourcing script's dedup logic if it's
-    worth reconsidering."""
+    Optional status: "queued" (default) | "skipped" | "article_pending_review".
+    "skipped" is for a sourcing script to record a candidate domain it
+    evaluated and discarded (rejected as not credible, or credible but no
+    verifiable contact route) without ever drafting a real pitch for it --
+    costs no extra API tokens (subject/body_preview are short fixed
+    placeholders, not model output). The row exists purely so this domain
+    shows up in _existing_domains_and_emails' (see
+    content/scripts/outreach_fetch.py callers) status="all" query on every
+    future run and stops being re-discovered and re-evaluated for free by
+    the same fixed discovery queries every day -- see the "same domains
+    over and over" problem this fixes. Never shown in the portal's default
+    "queued" tab (that view filters to a specific status list that
+    excludes "skipped"); a human can still find one under show=all and
+    click "undo" to put a domain back in front of a sourcing script's
+    dedup logic if it's worth reconsidering.
+
+    "article_pending_review" creates a content_opportunity row directly in
+    the same state generate_haro_article.py normally reaches via
+    article_requested -> link-article, for a hand-authored page a human
+    (or an agent working from the repo, not the automated per-query
+    pipeline) wrote directly into seed_templates.py rather than one the
+    bot generated from a single content_opportunity row. Requires
+    target_slug (the real staging slug just added) and proposed_title in
+    the payload; proposed_template_type/rationale/source_group_id are
+    optional. Goes through the exact same _resolve_pending_articles
+    staging-to-prod promotion check as a bot-generated row -- no separate
+    review path."""
     payload = await request.json()
 
     pitch_type = payload.get("pitch_type")
@@ -4549,13 +4561,18 @@ async def outreach_queue_create(
             detail=f"pitch_type must be one of {', '.join(sorted(_PITCH_TYPE_LABELS))}",
         )
     status = payload.get("status") or "queued"
-    if status not in ("queued", "skipped"):
-        raise HTTPException(status_code=400, detail="status must be one of queued, skipped")
+    if status not in ("queued", "skipped", "article_pending_review"):
+        raise HTTPException(status_code=400, detail="status must be one of queued, skipped, article_pending_review")
     target_domain = (payload.get("target_domain") or "").strip()
     subject = (payload.get("subject") or "").strip()
     body_preview = (payload.get("body_preview") or "").strip()
     if not (target_domain and subject and body_preview):
         raise HTTPException(status_code=400, detail="target_domain, subject, and body_preview are required")
+
+    target_slug = (payload.get("target_slug") or "").strip() or None
+    proposed_title = (payload.get("proposed_title") or "").strip() or None
+    if status == "article_pending_review" and not (target_slug and proposed_title):
+        raise HTTPException(status_code=400, detail="target_slug and proposed_title are required when status=article_pending_review")
 
     prospect = OutreachProspect(
         pitch_type=pitch_type,
@@ -4568,6 +4585,11 @@ async def outreach_queue_create(
         body_preview=body_preview,
         is_example=False,
         status=status,
+        target_slug=target_slug,
+        proposed_title=proposed_title,
+        proposed_template_type=(payload.get("proposed_template_type") or None),
+        rationale=(payload.get("rationale") or None),
+        source_group_id=(payload.get("source_group_id") or None),
     )
     db.add(prospect)
     db.commit()
