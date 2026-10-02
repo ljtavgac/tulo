@@ -1,10 +1,10 @@
-name: Lookup chicken tender outreach prospect (one-off)
+name: Apply chicken tender outreach queue consolidation (one-off)
 
 on:
   workflow_dispatch: {}
 
 jobs:
-  lookup:
+  apply:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,9 +14,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install requests
-      - name: Lookup
+      - name: Apply
         env:
           BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
           OUTREACH_ADMIN_USER: ${{ secrets.OUTREACH_ADMIN_USER }}
           OUTREACH_ADMIN_PASSWORD: ${{ secrets.OUTREACH_ADMIN_PASSWORD }}
-        run: python3 content/scripts/_lookup_chicken_tender.py
+        run: python3 content/scripts/_apply_chicken_tender_consolidation.py
