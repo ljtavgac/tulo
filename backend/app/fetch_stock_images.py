@@ -419,6 +419,62 @@ def _apply_result(
     return False
 
 
+# How many already-has-a-real-photo pages to spot-check before trusting a
+# revalidation pass at all, and how high a failure rate among them means
+# "something's wrong with the provider or network right now," not "this
+# many photos all happened to die since the last pass."
+_REVALIDATION_CANARY_SAMPLE_SIZE = 10
+_REVALIDATION_CANARY_MAX_FAILURE_RATE = 0.3
+
+
+def _revalidation_canary_passes(db: Session) -> bool:
+    """Spot-checks a random sample of pages that already have a real,
+    allowed-host image_url, and returns False if too many of them come
+    back unreachable to trust a revalidation pass's results at all.
+
+    Root cause this guards against, confirmed live (2026-10-02): a
+    staging-only image regression across dozens of unrelated pages, with
+    no commit, no admin action, and no error anywhere -- each replacement
+    individually looked legitimate (a real, differently-sourced stock
+    photo, often from the OTHER provider than what was there before), the
+    signature of _run_periodic_image_fetch's revalidation pass
+    (fetch_images(revalidate=True)) hitting a provider-wide outage or
+    rate-limit window: _is_reachable() misjudged many genuinely-fine
+    photos as dead all at once (and the live re-search that followed often
+    fell back to the other provider, since the first one was having the
+    same bad window), not any one photo actually being dead. _is_reachable
+    itself now retries once (see its own docstring) to absorb a single
+    request's bad luck, but a sustained outage spanning that same 1-second
+    gap needs a different kind of guard: checking whether failures are
+    correlated across many unrelated photos/hosts/providers at once, which
+    a single URL's retry can never detect on its own.
+
+    Deliberately checked ONCE per revalidation pass, against a small
+    sample, rather than per-page inside fetch_images() -- the failure
+    this guards against is a property of the provider/network RIGHT NOW,
+    not of any individual page, so one canary check speaks for the whole
+    pass. A real, isolated dead photo is still caught: this only ever
+    blocks a revalidation pass when something looks systemically wrong,
+    never when 1-2 photos out of a healthy sample happen to be down."""
+    candidates = [
+        p.content.get("image_url")
+        for p in db.query(Page).filter(Page.template_type.in_(list(SINGLE_IMAGE_TEMPLATES.keys()))).all()
+        if is_allowed_image_url(p.content.get("image_url"))
+    ]
+    if not candidates:
+        return True
+    sample = random.sample(candidates, min(_REVALIDATION_CANARY_SAMPLE_SIZE, len(candidates)))
+    failures = sum(1 for url in sample if not _is_reachable(url))
+    failure_rate = failures / len(sample)
+    if failure_rate > _REVALIDATION_CANARY_MAX_FAILURE_RATE:
+        print(
+            f"  _revalidation_canary_passes: {failures}/{len(sample)} known-good photos came back "
+            f"unreachable -- skipping this revalidation pass (provider/network looks unhealthy right now)."
+        )
+        return False
+    return True
+
+
 def fetch_images(
     db: Session,
     force: bool = False,
@@ -571,6 +627,25 @@ def fetch_images(
         # someone found it by hand via /admin/image-audit and re-ran with
         # force=true.
         if not (force_this_page or _needs_fetch(content.get("image_url"), revalidate)):
+            return page, None, 0
+
+        # A revalidation pass reaching this point means _is_reachable()
+        # judged the CURRENT photo dead -- the one case that should never
+        # silently fire for a page a human deliberately set via the admin
+        # override tool (see /admin/review-queue/override-image), the same
+        # protection apply_baked_images() already gives this exact
+        # attribution tag for a different write path. _is_reachable() now
+        # retries once before giving up (see its own docstring on the
+        # staging regression that motivated this), but a manual choice is
+        # worth a harder guarantee than "probably still correct" -- if a
+        # manually-set photo genuinely goes dead, that's a deliberate
+        # re-override, not something this background loop should guess at.
+        if (
+            not force_this_page
+            and revalidate
+            and is_allowed_image_url(content.get("image_url"))
+            and (content.get("image_attribution") or {}).get("source") == "manual_override"
+        ):
             return page, None, 0
 
         query = content[query_key]
@@ -856,7 +931,16 @@ def fetch_images(
             # reaches this specific card's photo without touching its 5
             # siblings.
             force_this_card = force_this_page or card.get("slug") in requested_card_slugs
-            if force_this_card or _needs_fetch(card.get("image_url"), revalidate):
+            # Same manual-override carve-out as the single-image path above
+            # -- a revalidation pass alone should never replace a photo a
+            # human deliberately set on this card.
+            card_is_manual_override = (
+                not force_this_card
+                and revalidate
+                and is_allowed_image_url(card.get("image_url"))
+                and (card.get("image_attribution") or {}).get("source") == "manual_override"
+            )
+            if not card_is_manual_override and (force_this_card or _needs_fetch(card.get("image_url"), revalidate)):
                 query = card.get("image_query")
                 if not query:
                     continue
