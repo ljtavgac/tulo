@@ -76,21 +76,10 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* This heading is for accessibility/SEO only -- kept visually
-          hidden since the recipes/ingredients/tools content below is
-          still the point, visible the moment the page loads. The intro
-          paragraph right after it IS visible, unlike before; it exists
-          for the same reason the heading does (a crawler and a
-          screen-reader user both need to be told what this site is
-          before the carousels start), just as prose a sighted visitor
-          can also read. */}
+      {/* No visible hero copy or CTAs -- the recipes/ingredients/tools
+          content below is the point, visible the moment the page loads.
+          This heading is for accessibility/SEO only. */}
       <h1 className="sr-only">{SITE_NAME} - recipes, ingredient guides, and kitchen tools</h1>
-      <p className="mx-auto max-w-3xl px-4 pt-8 text-center text-ink/80">
-        Tulo is a cooking reference built around the recipe you already have in mind, not a
-        blog to scroll past first. Every recipe adjusts live to your serving size and
-        measurement units, with ingredient guides, step-by-step techniques, and substitute
-        comparisons linked right from the instructions.
-      </p>
       <JsonLd
         data={{
           "@context": "https://schema.org",
