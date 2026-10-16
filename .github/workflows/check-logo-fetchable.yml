@@ -1,0 +1,11 @@
+name: Check logo fetchable (one-off, read-only)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 content/scripts/_check_logo_fetchable.py
