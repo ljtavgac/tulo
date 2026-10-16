@@ -16,10 +16,14 @@ import { sectionForTemplate, TOOL_PAGES } from "@/lib/taxonomy";
 // spaced out between carousels instead of mid-article.
 const AD_AFTER_SECTION_INDEX = new Set([1, 3, 5]);
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPage<HomepageContent>("homepage");
-  const description = page?.content.meta_description;
+// Hardcoded rather than pulled from the backend's homepage Page row (as
+// description used to be) -- both are brand-level SEO copy, not content
+// that changes with what's in the carousels, so they belong with the
+// title below as fixed literals, not a live lookup.
+const DESCRIPTION =
+  "Recipes that scale to your serving size, plus ingredient guides, how-to techniques, substitutes, and free kitchen tools.";
 
+export async function generateMetadata(): Promise<Metadata> {
   return {
     // Brand-level, not food-specific -- this is now the permanent
     // multi-vertical root (see the / -> /food removal this replaced), and
@@ -27,10 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
     // vertical launches. The tagline lives here rather than in SITE_NAME
     // itself since every other page's title still wants the bare "Tulo"
     // (via layout.tsx's title.template), not this longer form.
-    title: { absolute: "Tulo — Made for You" },
-    description,
+    title: { absolute: "Tulo — Recipes, Ingredient Guides & Kitchen Tools" },
+    description: DESCRIPTION,
     alternates: { canonical: "/" },
-    openGraph: { title: SITE_NAME, description, url: "/" },
+    openGraph: { title: SITE_NAME, description: DESCRIPTION, url: "/" },
   };
 }
 
@@ -72,10 +76,21 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* No visible hero copy or CTAs -- the recipes/ingredients/tools
-          content below is the point, visible the moment the page loads.
-          This heading is for accessibility/SEO only. */}
+      {/* This heading is for accessibility/SEO only -- kept visually
+          hidden since the recipes/ingredients/tools content below is
+          still the point, visible the moment the page loads. The intro
+          paragraph right after it IS visible, unlike before; it exists
+          for the same reason the heading does (a crawler and a
+          screen-reader user both need to be told what this site is
+          before the carousels start), just as prose a sighted visitor
+          can also read. */}
       <h1 className="sr-only">{SITE_NAME} - recipes, ingredient guides, and kitchen tools</h1>
+      <p className="mx-auto max-w-3xl px-4 pt-8 text-center text-ink/80">
+        Tulo is a cooking reference built around the recipe you already have in mind, not a
+        blog to scroll past first. Every recipe adjusts live to your serving size and
+        measurement units, with ingredient guides, step-by-step techniques, and substitute
+        comparisons linked right from the instructions.
+      </p>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -87,6 +102,20 @@ export default async function HomePage() {
             target: `${SITE_URL}/food/search?q={search_term_string}`,
             "query-input": "required name=search_term_string",
           },
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+          logo: `${SITE_URL}/brand/tulo-light.png`,
+          // No sameAs: Tulo has no real, live social profiles anywhere in
+          // this codebase today (checked -- none are linked from the
+          // footer, contact page, or anywhere else). Adding one here
+          // would be inventing a source of truth that doesn't exist;
+          // add sameAs URLs once real profiles exist to link.
         }}
       />
 
